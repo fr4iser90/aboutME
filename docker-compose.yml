@@ -1,0 +1,56 @@
+services:
+  about-me-db:
+    build:
+      context: ./database
+      dockerfile: Dockerfile
+    image: fr4iser/about-me:db
+    container_name: about-me-db
+    ports:
+      - "5452:5432"
+    volumes:
+      - about-me-db-data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  about-me-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: fr4iser/about-me:backend
+    container_name: about-me-backend
+    ports:
+      - "8090:8000"
+    depends_on:
+      about-me-db:
+        condition: service_healthy
+    env_file:
+      - .env
+    volumes:
+      - backend_logs:/app/logs
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
+  about-me-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: fr4iser/about-me:frontend
+    container_name: about-me-frontend
+    ports:
+      - "4040:4000"
+    depends_on:
+      - about-me-backend
+    env_file:
+      - .env
+    volumes:
+      - frontend_logs:/app/logs
+    restart: unless-stopped
+
+volumes:
+  about-me-db-data:
+    driver: local
+  backend_logs:
+    driver: local
+  frontend_logs:
+    driver: local
