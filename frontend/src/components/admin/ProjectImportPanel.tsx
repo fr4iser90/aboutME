@@ -181,6 +181,14 @@ export function ProjectImportPanel() {
                   </button>
                 </div>
                 <ProjectCard project={project} />
+                <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 w-11/12 flex justify-between items-center pointer-events-none">
+                  <span className="font-bold text-base galaxy-text truncate max-w-[70%]">
+                    {project.name || project.title}
+                  </span>
+                  {project.archived && (
+                    <span className="ml-2 px-2 py-0.5 rounded bg-yellow-400 text-xs font-semibold text-slate-900 shadow">Archiviert</span>
+                  )}
+                </div>
                 {editIndex === idx && (
                   <div className="absolute inset-0 bg-white bg-opacity-95 flex flex-col p-4 z-10 rounded-lg shadow-lg">
                     <h3 className="text-lg font-bold mb-2">Projekt bearbeiten</h3>
