@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 
+const API_URL = process.env.BACKEND_URL || 'http://localhost:8090';
+
 interface Project {
   id: number;
   title: string;
@@ -22,7 +24,7 @@ export function ProjectList({ onEdit }: ProjectListProps) {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch('/api/admin/projects');
+        const response = await fetch(`${API_URL}/api/admin/projects`);
         if (!response.ok) {
           throw new Error('Failed to fetch projects');
         }
@@ -44,7 +46,7 @@ export function ProjectList({ onEdit }: ProjectListProps) {
     }
 
     try {
-      const response = await fetch(`/api/admin/projects/${id}`, {
+      const response = await fetch(`${API_URL}/api/admin/projects/${id}`, {
         method: 'DELETE',
       });
 
@@ -68,7 +70,7 @@ export function ProjectList({ onEdit }: ProjectListProps) {
       {projects.map((project) => (
         <div
           key={project.id}
-          className="bg-white rounded-lg shadow-md overflow-hidden"
+          className="galaxy-card rounded-lg shadow-md overflow-hidden"
         >
           {project.thumbnail_url && (
             <img
@@ -78,15 +80,15 @@ export function ProjectList({ onEdit }: ProjectListProps) {
             />
           )}
           <div className="p-4">
-            <h3 className="text-lg font-semibold text-gray-900">
+            <h3 className="text-lg font-semibold galaxy-text">
               {project.title}
             </h3>
-            <p className="mt-2 text-gray-600">{project.description}</p>
+            <p className="mt-2 text-slate-300">{project.description}</p>
             <div className="mt-4 flex flex-wrap gap-2">
               {project.technologies.map((tech) => (
                 <span
                   key={tech}
-                  className="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+                  className="px-2 py-1 bg-purple-900/30 text-purple-300 rounded-full text-sm"
                 >
                   {tech}
                 </span>
@@ -99,7 +101,7 @@ export function ProjectList({ onEdit }: ProjectListProps) {
                     href={project.github_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-800"
+                    className="galaxy-text hover:underline"
                   >
                     GitHub
                   </a>
@@ -109,7 +111,7 @@ export function ProjectList({ onEdit }: ProjectListProps) {
                     href={project.demo_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-800"
+                    className="galaxy-text hover:underline"
                   >
                     Demo
                   </a>
@@ -118,13 +120,13 @@ export function ProjectList({ onEdit }: ProjectListProps) {
               <div className="space-x-2">
                 <button
                   onClick={() => onEdit(project)}
-                  className="p-2 text-gray-600 hover:text-gray-900"
+                  className="p-2 text-slate-400 hover:text-white"
                 >
                   <PencilSquareIcon className="h-5 w-5" />
                 </button>
                 <button
                   onClick={() => handleDelete(project.id)}
-                  className="p-2 text-red-600 hover:text-red-900"
+                  className="p-2 text-red-400 hover:text-red-600"
                 >
                   <TrashIcon className="h-5 w-5" />
                 </button>

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Navbar from '@/components/layout/Navbar';
 
 // Get API URL from environment variable or use default
-const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8090';
+const API_URL = process.env.BACKEND_URL || 'http://localhost:8090';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
