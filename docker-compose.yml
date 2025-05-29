@@ -31,26 +31,26 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
 
-  about-me-frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    image: fr4iser/about-me:frontend
-    container_name: about-me-frontend
-    ports:
-      - "4040:4000"
-    depends_on:
-      - about-me-backend
-    env_file:
-      - .env
-    volumes:
-      - frontend_logs:/app/logs
-    restart: unless-stopped
+#  about-me-frontend:
+#    build:
+#      context: ./frontend
+#      dockerfile: Dockerfile
+#    image: fr4iser/about-me:frontend
+#    container_name: about-me-frontend
+#    ports:
+#      - "4040:4000"
+#    depends_on:
+#      - about-me-backend
+#    env_file:
+#      - .env
+#    volumes:
+#      - frontend_logs:/app/logs
+#    restart: unless-stopped
 
 volumes:
   about-me-db-data:
     driver: local
   backend_logs:
     driver: local
-  frontend_logs:
-    driver: local
+#  frontend_logs:
+#    driver: local

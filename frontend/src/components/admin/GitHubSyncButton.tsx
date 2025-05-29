@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
-
-const API_URL = process.env.BACKEND_URL || 'http://localhost:8090';
+import { apiRequest } from '@/lib/api';
 
 export function GitHubSyncButton() {
   const [isLoading, setIsLoading] = useState(false);
@@ -14,21 +13,19 @@ export function GitHubSyncButton() {
   const handleSync = async () => {
     setIsLoading(true);
     try {
-      // Extrahiere Username aus URL oder nimm direkt den String
       let username = input.trim();
       if (username.startsWith('https://github.com/')) {
         username = username.replace('https://github.com/', '').replace(/\/$/, '');
       }
-      const response = await fetch(`${API_URL}/api/admin/projects/github/sync?username=${encodeURIComponent(username)}`, {
-        method: 'POST',
+      
+      await apiRequest(`/api/admin/projects/github/sync?username=${encodeURIComponent(username)}`, {
+        method: 'GET',
       });
-      if (!response.ok) {
-        throw new Error('Failed to sync projects');
-      }
+      
       router.refresh();
     } catch (error) {
       console.error('Error syncing projects:', error);
-      alert('Failed to sync projects. Please try again.');
+      alert(error instanceof Error ? error.message : 'Failed to sync projects. Please try again.');
     } finally {
       setIsLoading(false);
     }

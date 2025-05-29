@@ -48,23 +48,10 @@ class SectionUpdate(SectionBase):
     section_metadata: Optional[Dict[str, Any]] = None
 
 
-class SectionInDBBase(SectionBase):
+class Section(SectionBase):
     id: int
     created_at: datetime
     updated_at: datetime
 
     class Config:
-        orm_mode = True  # Changed from from_attributes = True for Pydantic v1 compatibility if needed
-        # If using Pydantic v2, from_attributes = True is correct.
-        # Assuming Pydantic v1 for broader compatibility for now, orm_mode is the equivalent.
-        # If FastAPI/Pydantic version is known to be v2, stick to from_attributes.
-        # Let's assume Pydantic v2 for now as it's newer.
         from_attributes = True
-
-
-class Section(SectionInDBBase):
-    pass
-
-
-class SectionInDB(SectionInDBBase):
-    pass

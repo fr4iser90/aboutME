@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, DateTime, func
 from sqlalchemy.dialects.postgresql import JSONB
 from app.db.session import Base
 
@@ -13,3 +13,5 @@ class Skill(Base):
     description = Column(String, nullable=True)  # Description of the skill category
     items = Column(JSONB, nullable=False)  # List of skills with their levels
     order = Column(Integer, nullable=False, default=0)  # Order within categories
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now(), server_default=func.now())

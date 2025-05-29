@@ -4,11 +4,11 @@ INSERT INTO sections (name, title, type, content, "order") VALUES
   ('nixos', 'NixOS', 'text', '{"text": "Mein Weg zu NixOS begann mit Debian, dann 3 Wochen Walls, viel gebrickt, viel gelernt. Jetzt liebe ich die Flexibilität!"}', 2),
   ('homelab', 'Homelab', 'text', '{"text": "Hier findest du bald Fotos, Hardware-Setups und Automatisierungen aus meinem Homelab."}', 3),
   ('angeln', 'Angeln', 'text', '{"text": "Ich angle am liebsten an der Pleiße und Lauer in Leipzig – Ansitz auf Friedfisch und Aktivangeln im Sommer."}', 4),
-  ('contact', 'Kontakt', 'contact_form', '{}', 5);
+  ('contact', 'Kontakt', 'text', '{"text": "Kontaktformular wird hier angezeigt."}', 5);
 
 -- Beispiel-Initialdaten für Projects
 -- Note: These projects are global examples. User-specific projects would be linked via user_id.
-INSERT INTO projects (name, description, status, details, github_url) VALUES
+INSERT INTO projects (name, description, status, details, source_url) VALUES
   ('2D Multiplayer Framework', 'Framework für 2D Multiplayer-Spiele, gebaut mit KI-Unterstützung.', 'WIP', '{"features": ["Netzwerk-Logik", "KI-Integration", "Dynamische Configs"]}', 'https://github.com/fr4iser90/2d-multiplayer-framework'),
   ('NixOSControlCenter', 'Webinterface zur Verwaltung von NixOS-Konfigurationen.', 'Done', '{"features": ["Hardware-Checks", "Generische Configs", "Rebuild per Klick"]}', 'https://github.com/fr4iser90/NixOSControlCenter');
 

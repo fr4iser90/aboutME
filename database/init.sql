@@ -1,3 +1,6 @@
+-- Enable UUID extension
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 -- USERS
 CREATE TABLE IF NOT EXISTS users (
     id VARCHAR(255) PRIMARY KEY DEFAULT 'admin',
@@ -12,7 +15,9 @@ CREATE TABLE IF NOT EXISTS themes (
     name VARCHAR(100) NOT NULL UNIQUE,
     description TEXT,
     style_properties JSONB NOT NULL,
-    thumbnail_url VARCHAR(255),
+    custom_css TEXT,
+    custom_js TEXT,
+    is_active BOOLEAN DEFAULT TRUE,
     is_default BOOLEAN DEFAULT FALSE
 );
 
@@ -23,7 +28,11 @@ CREATE TABLE IF NOT EXISTS sections (
     title VARCHAR(128) NOT NULL,
     type VARCHAR(32) NOT NULL DEFAULT 'text',
     content JSONB,
-    "order" INTEGER NOT NULL DEFAULT 0
+    "order" INTEGER NOT NULL DEFAULT 0,
+    is_visible BOOLEAN DEFAULT TRUE,
+    section_metadata JSONB,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 -- USER PAGE LAYOUTS
@@ -37,17 +46,19 @@ CREATE TABLE IF NOT EXISTS user_page_layouts (
     is_visible BOOLEAN DEFAULT TRUE,
     background_image_url VARCHAR(255),
     layout_variant VARCHAR(50),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     UNIQUE (user_id, section_order)
 );
 
 -- USER PROFILES
 CREATE TABLE IF NOT EXISTS user_profiles (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE UNIQUE, -- Ensure one profile per user
+    user_id VARCHAR(255) NOT NULL REFERENCES users(id) ON DELETE CASCADE UNIQUE,
     display_name VARCHAR(255),
     bio TEXT,
     profile_picture_url VARCHAR(255),
-    selected_theme_id INTEGER REFERENCES themes(id), -- Link to a chosen theme
+    selected_theme_id INTEGER REFERENCES themes(id),
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
@@ -55,26 +66,40 @@ CREATE TABLE IF NOT EXISTS user_profiles (
 -- PROJECTS
 CREATE TABLE IF NOT EXISTS projects (
     id SERIAL PRIMARY KEY,
-    user_id UUID REFERENCES users(id) ON DELETE CASCADE, -- Optional: if projects are user-specific
-    name VARCHAR(128) NOT NULL, -- Name should not be globally unique if user_id is present
+    name VARCHAR(128) NOT NULL,
     description TEXT,
     status VARCHAR(32) NOT NULL DEFAULT 'WIP',
-    archived_reason VARCHAR(255),
+    source_type VARCHAR(32) NOT NULL DEFAULT 'manual',
+    source_url VARCHAR(255),
+    github_username VARCHAR(255),
+    github_repo VARCHAR(255),
+    live_url VARCHAR(255),
+    thumbnail_url VARCHAR(255),
     details JSONB,
-    github_url VARCHAR(255),
+    "order" INTEGER NOT NULL DEFAULT 0,
+    is_visible BOOLEAN DEFAULT TRUE,
+    -- GitHub specific fields
+    stars_count INTEGER DEFAULT 0,
+    forks_count INTEGER DEFAULT 0,
+    watchers_count INTEGER DEFAULT 0,
+    language VARCHAR(50),
+    topics TEXT[],
+    last_updated TIMESTAMPTZ,
+    homepage_url VARCHAR(255),
+    open_issues_count INTEGER DEFAULT 0,
+    default_branch VARCHAR(50),
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    CONSTRAINT uq_project_name_user UNIQUE (user_id, name) -- Name unique per user
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 -- SKILLS
 CREATE TABLE IF NOT EXISTS skills (
     id SERIAL PRIMARY KEY,
-    user_id UUID REFERENCES users(id) ON DELETE CASCADE, -- Optional: if skills are user-specific
+    user_id VARCHAR(255) REFERENCES users(id) ON DELETE CASCADE,
     category VARCHAR(64) NOT NULL,
     description TEXT,
-    items JSONB,
-    "order" INTEGER NOT NULL DEFAULT 0, -- Order within a user's skill categories
+    items JSONB NOT NULL,
+    "order" INTEGER NOT NULL DEFAULT 0,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
@@ -82,13 +107,13 @@ CREATE TABLE IF NOT EXISTS skills (
 -- AI GENERATED CONTENT
 CREATE TABLE IF NOT EXISTS ai_generated_content (
     id SERIAL PRIMARY KEY,
-    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    user_page_layout_id INTEGER REFERENCES user_page_layouts(id) ON DELETE SET NULL, -- Optional: link to where it's used
+    user_id VARCHAR(255) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    user_page_layout_id INTEGER REFERENCES user_page_layouts(id) ON DELETE SET NULL,
     source_url VARCHAR(2048),
-    source_type VARCHAR(50) NOT NULL, -- 'github_profile', 'webpage_url', 'raw_text'
+    source_type VARCHAR(50) NOT NULL,
     summary TEXT NOT NULL,
-    raw_data_input JSONB, -- The actual input text/data given to the AI
-    generation_parameters JSONB, -- AI model, prompt details, etc.
+    raw_data_input JSONB,
+    generation_parameters JSONB,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

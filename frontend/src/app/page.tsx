@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, FC } from 'react'; // Added FC
 import Navbar from '@/components/layout/Navbar';
+import { apiRequest } from '@/lib/api';
 // Import existing section components - they will be refactored later
 import About from '@/components/sections/About';
 import Projects from '@/components/sections/Projects';
@@ -30,13 +31,7 @@ const Home: FC = () => { // Used FC type
   useEffect(() => {
     async function fetchSections() {
       try {
-        // Ensure this URL is correct based on your backend service and port
-        // If running locally via docker-compose, backend might be on http://localhost:8090
-        const response = await fetch('http://localhost:8090/api/sections/');
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await apiRequest('/api/public/sections') as ApiSection[];
         setSections(data);
       } catch (e: any) {
         setError(e.message);

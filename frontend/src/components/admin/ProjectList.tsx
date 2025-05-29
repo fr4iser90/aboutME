@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation'; // Import useRouter
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 
 const API_URL = process.env.BACKEND_URL || 'http://localhost:8090';
@@ -20,30 +21,40 @@ interface ProjectListProps {
 export function ProjectList({ onEdit }: ProjectListProps) {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter(); // Initialize useRouter
 
   useEffect(() => {
     const fetchProjects = async () => {
+      setIsLoading(true);
       try {
-        const token = localStorage.getItem('token');
+        // Token is sent via HttpOnly cookie automatically by the browser
         const response = await fetch(`${API_URL}/api/admin/projects`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
+          credentials: 'include', // Ensures cookies are sent with the request
         });
+
+        if (response.status === 401) {
+          console.error('Unauthorized: Failed to fetch projects. Redirecting to login.');
+          // Attempt to clear the HttpOnly cookie by calling the backend logout endpoint
+          await fetch(`${API_URL}/api/auth/logout`, { method: 'POST', credentials: 'include' });
+          router.push('/login');
+          return;
+        }
+
         if (!response.ok) {
-          throw new Error('Failed to fetch projects');
+          throw new Error(`Failed to fetch projects. Status: ${response.status}`);
         }
         const data = await response.json();
         setProjects(data);
       } catch (error) {
         console.error('Error fetching projects:', error);
+        // Optionally, set an error state here to display to the user
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchProjects();
-  }, []);
+  }, [router]); // Add router to dependency array
 
   const handleDelete = async (id: number) => {
     if (!confirm('Are you sure you want to delete this project?')) {
@@ -53,10 +64,18 @@ export function ProjectList({ onEdit }: ProjectListProps) {
     try {
       const response = await fetch(`${API_URL}/api/admin/projects/${id}`, {
         method: 'DELETE',
+        credentials: 'include', // Ensures cookies are sent
       });
 
+      if (response.status === 401) {
+        console.error('Unauthorized: Failed to delete project. Redirecting to login.');
+        await fetch(`${API_URL}/api/auth/logout`, { method: 'POST', credentials: 'include' });
+        router.push('/login');
+        return;
+      }
+
       if (!response.ok) {
-        throw new Error('Failed to delete project');
+        throw new Error(`Failed to delete project. Status: ${response.status}`);
       }
 
       setProjects(projects.filter(project => project.id !== id));
@@ -90,7 +109,7 @@ export function ProjectList({ onEdit }: ProjectListProps) {
             </h3>
             <p className="mt-2 text-slate-300">{project.description}</p>
             <div className="mt-4 flex flex-wrap gap-2">
-              {project.technologies.map((tech) => (
+              {(project.technologies || []).map((tech) => (
                 <span
                   key={tech}
                   className="px-2 py-1 bg-purple-900/30 text-purple-300 rounded-full text-sm"
@@ -142,4 +161,4 @@ export function ProjectList({ onEdit }: ProjectListProps) {
       ))}
     </div>
   );
-} 
+}

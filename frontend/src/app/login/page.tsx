@@ -3,48 +3,38 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/layout/Navbar';
+import { apiRequest } from '@/lib/api';
 
-// Get API URL from environment variable or use default
-const API_URL = process.env.BACKEND_URL || 'http://localhost:8090';
-
-export default function LoginPage() {
+export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState('');
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
+    console.log('Login attempt initiated');
+    setError('');
 
     try {
-      const response = await fetch(`${API_URL}/api/auth/login`, {
+      console.log('Calling login API endpoint');
+      const response = await apiRequest('/api/auth/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Origin': window.location.origin,
-        },
-        credentials: 'include',
-        mode: 'cors',
         body: JSON.stringify({ email, password }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.detail || 'Login failed');
-      }
+      console.log('Login successful, checking cookies');
+      const cookies = document.cookie;
+      console.log('Current cookies:', cookies);
 
-      const data = await response.json();
-      // The token is now expected to be set as an HttpOnly cookie by the backend.
-      // No need to store it in localStorage for middleware-based auth.
-      // If data.access_token was used for other client-side purposes, that logic might need adjustment.
-      // For now, we assume the cookie is the primary mechanism.
-      
-      // Redirect to admin dashboard
-      router.push('/admin');
+      // Check if we're still on the login page before redirecting
+      if (window.location.pathname === '/login') {
+        console.log('Still on login page, redirecting to home');
+        router.push('/');
+      }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Invalid email or password');
+      console.error('Login failed:', err);
+      setError('Login failed. Please check your credentials.');
     }
   };
 
@@ -59,9 +49,6 @@ export default function LoginPage() {
             </h2>
           </div>
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-            {error && (
-              <div className="text-red-500 text-center text-sm">{error}</div>
-            )}
             <div className="rounded-md shadow-sm space-y-4">
               <div>
                 <label htmlFor="email" className="sr-only">
@@ -71,6 +58,7 @@ export default function LoginPage() {
                   id="email"
                   name="email"
                   type="email"
+                  autoComplete="email"
                   required
                   className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-slate-700 bg-slate-900 text-white placeholder-slate-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
                   placeholder="Email address"
@@ -86,6 +74,7 @@ export default function LoginPage() {
                   id="password"
                   name="password"
                   type="password"
+                  autoComplete="current-password"
                   required
                   className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-slate-700 bg-slate-900 text-white placeholder-slate-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
                   placeholder="Password"
@@ -94,6 +83,10 @@ export default function LoginPage() {
                 />
               </div>
             </div>
+
+            {error && (
+              <div className="text-red-500 text-sm text-center">{error}</div>
+            )}
 
             <div>
               <button

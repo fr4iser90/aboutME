@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, func
 from sqlalchemy.dialects.postgresql import JSONB
 from app.db.session import Base
 
@@ -18,3 +18,5 @@ class Section(Base):
     section_metadata = Column(
         JSONB, nullable=True
     )  # Additional metadata like background image, layout variant
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now(), server_default=func.now())

@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { ProjectCard } from '@/components/sections/ProjectCard';
+import { useRouter } from 'next/navigation';
 
 const SOURCES = [
   { label: 'GitHub', value: 'github' },
   { label: 'GitLab', value: 'gitlab' },
+  { label: 'Manuell', value: 'manual' },
 ];
 
 export function ProjectImportPanel() {
@@ -17,6 +19,7 @@ export function ProjectImportPanel() {
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const [editData, setEditData] = useState<any>(null);
   const [selectAll, setSelectAll] = useState(true);
+  const router = useRouter();
 
   const fetchProjects = async () => {
     setLoading(true);
@@ -43,7 +46,23 @@ export function ProjectImportPanel() {
         }
         url = `https://gitlab.com/api/v4/users/${username}/projects?per_page=100&order_by=last_activity_at`;
         if (token) headers['PRIVATE-TOKEN'] = token;
+      } else if (source === 'manual') {
+        // For manual import, we'll create a single empty project
+        setProjects([{
+          name: 'Neues Projekt',
+          description: '',
+          source_url: '',
+          live_url: '',
+          thumbnail_url: '',
+          language: '',
+          topics: [],
+          status: 'WIP',
+          is_visible: true
+        }]);
+        setLoading(false);
+        return;
       }
+      
       const res = await fetch(url, { headers });
       if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
       const data = await res.json();
@@ -82,17 +101,22 @@ export function ProjectImportPanel() {
     const API_URL = process.env.BACKEND_URL || 'http://localhost:8090';
     const toImport = Array.from(selected).map(idx => projects[idx]);
     try {
-      const token = localStorage.getItem('token');
-      const username = input.trim();
-      const res = await fetch(`${API_URL}/api/admin/projects/github/sync?username=${encodeURIComponent(username)}`, {
+      const res = await fetch(`${API_URL}/api/admin/projects/import/${source}`, {
         method: 'POST',
         headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(toImport)
       });
-      if (!res.ok) throw new Error('Import failed');
+      
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.detail || 'Import failed');
+      }
+      
       alert('Import erfolgreich!');
+      router.refresh();
     } catch (e: any) {
       alert('Import fehlgeschlagen: ' + e.message);
     }
@@ -119,31 +143,37 @@ export function ProjectImportPanel() {
         >
           {SOURCES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
         </select>
-        <input
-          type="text"
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          placeholder="Username oder URL"
-          className="galaxy-card px-2 py-1 flex-1"
-        />
-        <input
-          type="text"
-          value={token}
-          onChange={e => setToken(e.target.value)}
-          placeholder="Token (optional)"
-          className="galaxy-card px-2 py-1 flex-1"
-        />
+        {source !== 'manual' && (
+          <>
+            <input
+              type="text"
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              placeholder="Username oder URL"
+              className="galaxy-card px-2 py-1 flex-1"
+            />
+            <input
+              type="text"
+              value={token}
+              onChange={e => setToken(e.target.value)}
+              placeholder="Token (optional)"
+              className="galaxy-card px-2 py-1 flex-1"
+            />
+          </>
+        )}
         <button
           onClick={fetchProjects}
-          disabled={loading || !input.trim()}
+          disabled={loading || (source !== 'manual' && !input.trim())}
           className="galaxy-card galaxy-text px-4 py-2 hover:brightness-110 disabled:opacity-50"
         >
-          {loading ? 'Lade...' : 'Projekte laden'}
+          {loading ? 'Lade...' : source === 'manual' ? 'Neues Projekt' : 'Projekte laden'}
         </button>
       </div>
-      <div className="text-xs text-slate-400 mb-4">
-        Ohne Token werden nur öffentliche Projekte importiert und ggf. weniger Informationen angezeigt. Mit Token bekommst du alle Projekte und mehr Details (z.B. private Repos, Commit-Infos, höhere Rate-Limits).
-      </div>
+      {source !== 'manual' && (
+        <div className="text-xs text-slate-400 mb-4">
+          Ohne Token werden nur öffentliche Projekte importiert und ggf. weniger Informationen angezeigt. Mit Token bekommst du alle Projekte und mehr Details (z.B. private Repos, Commit-Infos, höhere Rate-Limits).
+        </div>
+      )}
       {error && <div className="text-red-600 mb-4">{error}</div>}
       {projects.length > 0 && (
         <>
@@ -221,10 +251,31 @@ export function ProjectImportPanel() {
                     />
                     <input
                       type="text"
-                      value={editData.github_url || editData.web_url || ''}
-                      onChange={e => setEditData({ ...editData, github_url: e.target.value, web_url: e.target.value })}
+                      value={editData.github_url || editData.web_url || editData.source_url || ''}
+                      onChange={e => setEditData({ ...editData, github_url: e.target.value, web_url: e.target.value, source_url: e.target.value })}
                       className="border rounded px-2 py-1 mb-2"
                       placeholder="GitHub/GitLab URL"
+                    />
+                    <input
+                      type="text"
+                      value={editData.live_url || editData.homepage || ''}
+                      onChange={e => setEditData({ ...editData, live_url: e.target.value, homepage: e.target.value })}
+                      className="border rounded px-2 py-1 mb-2"
+                      placeholder="Live URL"
+                    />
+                    <input
+                      type="text"
+                      value={editData.language || ''}
+                      onChange={e => setEditData({ ...editData, language: e.target.value })}
+                      className="border rounded px-2 py-1 mb-2"
+                      placeholder="Sprache"
+                    />
+                    <input
+                      type="text"
+                      value={editData.topics?.join(', ') || ''}
+                      onChange={e => setEditData({ ...editData, topics: e.target.value.split(',').map(t => t.trim()) })}
+                      className="border rounded px-2 py-1 mb-2"
+                      placeholder="Topics (kommagetrennt)"
                     />
                     <button
                       onClick={handleEditSave}

@@ -2,29 +2,47 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
-  // IMPORTANT: Replace 'auth_token' with the actual name of your authentication cookie.
-  // This cookie should be set upon successful login (ideally as HttpOnly, Secure).
-  const authTokenCookie = request.cookies.get('auth_token')?.value;
-
-  if (!authTokenCookie) {
-    // If no auth token cookie is found, redirect to the login page.
-    // The `matcher` in the config below ensures this middleware only runs for /admin/* routes.
-    const loginUrl = new URL('/login', request.url);
-
-    // Optional: You can add a 'from' query parameter to redirect the user back
-    // to the originally requested page after successful login.
-    // loginUrl.searchParams.set('from', request.nextUrl.pathname);
-
-    return NextResponse.redirect(loginUrl);
+export async function middleware(request: NextRequest) {
+  const path = request.nextUrl.pathname;
+  console.log(`[Middleware] Processing path: ${path}`);
+  
+  // Nur Admin-Routen schützen
+  if (path.startsWith('/admin')) {
+    console.log('[Middleware] Admin route detected');
+    const authToken = request.cookies.get('auth_token');
+    console.log('[Middleware] Auth token present:', !!authToken);
+    
+    if (!authToken) {
+      console.log('[Middleware] No auth token found, redirecting to login');
+      const loginUrl = new URL('/login', request.url);
+      return NextResponse.redirect(loginUrl);
+    }
+    
+    try {
+      console.log('[Middleware] Validating admin token');
+      const response = await fetch('http://localhost:8090/api/auth/validate', {
+        headers: {
+          Cookie: `auth_token=${authToken.value}`
+        }
+      });
+      
+      if (!response.ok) {
+        console.log('[Middleware] Token invalid, redirecting to login');
+        const loginUrl = new URL('/login', request.url);
+        return NextResponse.redirect(loginUrl);
+      }
+      
+      console.log('[Middleware] Admin access granted');
+    } catch (error) {
+      console.error('[Middleware] Error during token validation:', error);
+      const loginUrl = new URL('/login', request.url);
+      return NextResponse.redirect(loginUrl);
+    }
   }
 
-  // If the auth token cookie exists, allow the request to proceed.
   return NextResponse.next();
 }
 
 export const config = {
-  // This matcher applies the middleware to all routes under the /admin path.
-  // For example: /admin, /admin/projects, /admin/settings, etc.
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/:path*']
 };

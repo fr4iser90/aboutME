@@ -1,59 +1,90 @@
-from datetime import timedelta
-from fastapi import APIRouter, Depends, HTTPException, status, Response # Added Response
+from fastapi import APIRouter, Depends, HTTPException, status, Response
 from sqlalchemy.orm import Session
+import logging
 from app.core.auth import (
     verify_password,
     create_access_token,
-    ACCESS_TOKEN_EXPIRE_MINUTES,
-    get_current_user, # This import seems unused in this file currently
+    get_current_user,
 )
 from app.db.session import get_db
 from app.models.user import User
-from app.schemas.auth import Token, LoginRequest
+from app.schemas.auth import LoginRequest
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-
-@router.post("/login") # Removed response_model=Token as we now control the response directly for cookie setting
+@router.post("/login")
 async def login(response: Response, login_data: LoginRequest, db: Session = Depends(get_db)):
+    logger.debug(f"Login attempt for email: {login_data.email}")
+    
     user = db.query(User).filter(User.email == login_data.email).first()
-    if not user or not verify_password(login_data.password, user.hashed_password):
+    if not user:
+        logger.debug(f"No user found for email: {login_data.email}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
-            headers={"WWW-Authenticate": "Bearer"},
         )
 
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": user.email}, expires_delta=access_token_expires
-    )
+    if not verify_password(login_data.password, user.hashed_password):
+        logger.debug(f"Invalid password for user: {login_data.email}")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password",
+        )
 
-    response.set_cookie(
-        key="auth_token",
-        value=access_token, # Storing the JWT directly in the cookie
-        httponly=True,
-        secure=True,  # Assuming HTTPS in production
-        samesite="lax",
-        path="/",
-        max_age=int(ACCESS_TOKEN_EXPIRE_MINUTES * 60) if ACCESS_TOKEN_EXPIRE_MINUTES else None,
-    )
-    # Optionally, you can still return the token or user info in the body
-    # For now, returning a simple success message.
-    # If the frontend needs the token for non-HttpOnly purposes, it can be returned here.
-    # However, relying solely on the HttpOnly cookie is more secure.
-    return {"message": "Login successful"}
+    logger.debug(f"Creating access token for user: {login_data.email}")
+    access_token = create_access_token(data={"sub": user.email})
+    logger.debug(f"Created token: {access_token[:10]}...")
 
+    logger.debug("Setting auth cookie with settings:")
+    cookie_settings = {
+        "key": "auth_token",
+        "value": access_token,
+        "httponly": True,
+        "secure": False,
+        "samesite": "lax",
+        "path": "/",
+        "domain": "localhost",
+        "max_age": 1800
+    }
+    logger.debug(f"Cookie settings: {cookie_settings}")
+    
+    response.set_cookie(**cookie_settings)
+    
+    logger.debug(f"Login successful for user: {login_data.email}")
+    return {
+        "message": "Login successful",
+        "user": {
+            "email": user.email,
+            "is_active": user.is_active
+        }
+    }
 
 @router.post("/logout")
 async def logout(response: Response):
-    response.set_cookie(
+    logger.debug("Logout request received")
+    response.delete_cookie(
         key="auth_token",
-        value="",  # Clear the value
         httponly=True,
-        secure=True,  # Ensure these match the settings during login
-        samesite="lax",
+        secure=False,  # In Entwicklung auf False
+        samesite="lax",  # In Entwicklung auf "lax"
         path="/",
-        max_age=0  # Expire the cookie immediately
+        domain="localhost"  # Cookie für localhost
     )
+    logger.debug("Logout successful - cookie cleared")
     return {"message": "Logout successful"}
+
+@router.get("/validate")
+async def validate_auth(current_user: User = Depends(get_current_user)):
+    """Validate the current authentication token."""
+    logger.debug(f"Token validation requested for user: {current_user.email}")
+    return {
+        "valid": True,
+        "user": {
+            "email": current_user.email,
+            "is_active": current_user.is_active
+        }
+    }

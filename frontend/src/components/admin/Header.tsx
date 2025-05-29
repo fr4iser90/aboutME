@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { ArrowRightOnRectangleIcon, SunIcon, MoonIcon } from '@heroicons/react/24/outline';
+import { apiRequest, clearAuthCookie } from '@/lib/api';
 
 // Get API URL from environment variable or use default
 const API_URL = process.env.BACKEND_URL || 'http://localhost:8090';
@@ -10,21 +11,18 @@ export const Header = () => {
   const router = useRouter();
 
   const handleLogout = async () => {
+    console.log('Logout initiated');
     try {
-      // Call the backend logout endpoint
-      // This endpoint should clear the HttpOnly authentication cookie
-      await fetch(`${API_URL}/api/auth/logout`, {
+      console.log('Calling logout API endpoint');
+      await apiRequest('/api/auth/logout', {
         method: 'POST',
-        credentials: 'include', // Important to send cookies
       });
+      console.log('Logout API call successful');
     } catch (error) {
-      console.error('Logout failed:', error);
-      // Still attempt to redirect even if logout API call fails
+      console.error('Logout API call failed:', error);
     } finally {
-      // Remove any local token if it was used for supplementary purposes (optional)
-      // localStorage.removeItem('token'); 
-      
-      // Redirect to the login page
+      console.log('Clearing auth cookie and redirecting to login page');
+      clearAuthCookie();
       router.push('/login');
     }
   };

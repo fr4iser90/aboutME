@@ -43,8 +43,8 @@ def create_project_from_repo(repo_data: Dict[str, Any]) -> Dict[str, Any]:
         "thumbnail_url": repo_data.get("owner", {}).get("avatar_url", ""),
         "source_type": "github",
         "source_url": repo_data["html_url"],
-        "stars": repo_data["stargazers_count"],
-        "forks": repo_data["forks_count"],
+        "stars_count": repo_data["stargazers_count"],
+        "forks_count": repo_data["forks_count"],
         "status": "active",
         "details": {
             "default_branch": repo_data["default_branch"],

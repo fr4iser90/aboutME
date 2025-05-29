@@ -1,6 +1,18 @@
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { validateAuth } from '@/lib/api';
 
 export default function Navbar() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const isValid = await validateAuth();
+      setIsLoggedIn(isValid);
+    };
+    checkAuth();
+  }, []);
+
   return (
     <nav className="fixed top-0 w-full bg-slate-950/80 backdrop-blur-sm z-50 border-b border-purple-900/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -34,6 +46,11 @@ export default function Navbar() {
               <Link href="/#contact" className="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                 Contact
               </Link>
+              {isLoggedIn && (
+                <Link href="/admin" className="text-white bg-purple-600 hover:bg-purple-700 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                  Admin
+                </Link>
+              )}
               <Link href="/login" className="text-white bg-purple-600 hover:bg-purple-700 px-3 py-2 rounded-md text-sm font-medium transition-colors">
                 Login
               </Link>
