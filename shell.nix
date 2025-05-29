@@ -57,6 +57,7 @@ pkgs.mkShell {
     pkgs.tree
     pkgs.nodejs_20    # Add Node.js
     pkgs.nodePackages.npm    # Add npm
+    pkgs.nodePackages.npm-check-updates    # Add npm-check-updates
     pkgs.docker    # Add Docker
     pkgs.docker-compose    # Add Docker Compose
     pkgs.curl    # Add curl for health checks
@@ -412,6 +413,92 @@ pkgs.mkShell {
       echo "Everything has been cleaned!"
     }
 
+    update-frontend-deps() {
+      local auto_update=false
+      
+      # Check if --auto flag is provided
+      if [ "$1" = "--auto" ]; then
+        auto_update=true
+      fi
+      
+      echo ">>> Checking for frontend dependency updates..."
+      cd frontend
+      
+      # First, ensure ESLint is properly configured
+      if [ ! -f ".eslintrc.json" ]; then
+        echo "Configuring ESLint..."
+        npx eslint --init
+      fi
+      
+      echo "Running npm-check-updates..."
+      ncu
+      
+      if [ "$auto_update" = true ]; then
+        echo "Auto-update mode: Updating all dependencies..."
+        ncu -u
+        npm install
+        echo "Running security fixes..."
+        npm audit fix --force
+        echo "Running lint fix..."
+        npm run lint -- --fix
+        echo "All updates and fixes completed!"
+      else
+        echo "Do you want to update all dependencies? (y/n)"
+        read -r answer
+        if [ "$answer" = "y" ]; then
+          echo "Updating all dependencies..."
+          ncu -u
+          npm install
+          echo "Running security fixes..."
+          npm audit fix --force
+          echo "Running lint fix..."
+          npm run lint -- --fix
+          
+          # Check if there are still ESLint errors
+          if npm run lint 2>&1 | grep -q "Error:"; then
+            echo "There are still ESLint errors. Do you want to see them? (y/n)"
+            read -r show_errors
+            if [ "$show_errors" = "y" ]; then
+              npm run lint
+            fi
+          fi
+          
+          echo "All updates and fixes completed!"
+        else
+          echo "Update cancelled."
+        fi
+      fi
+      cd -
+    }
+
+    update-backend-deps() {
+      echo ">>> Checking for backend dependency updates..."
+      if [ -f "backend/requirements.txt" ]; then
+        cd backend
+        echo "Current Python dependencies:"
+        pip list --outdated
+        echo "Do you want to update all dependencies? (y/n)"
+        read -r answer
+        if [ "$answer" = "y" ]; then
+          echo "Updating all Python dependencies..."
+          pip install --upgrade -r requirements.txt
+          echo "Backend dependencies updated!"
+        else
+          echo "Update cancelled."
+        fi
+        cd -
+      else
+        echo "No requirements.txt found in backend directory."
+      fi
+    }
+
+    update-all() {
+      echo ">>> Starting full dependency update..."
+      update-frontend-deps
+      update-backend-deps
+      echo ">>> All dependency checks completed!"
+    }
+
     get-frontend-port() {
       local env_file="frontend/.env.local" # Corrected path
       local port="4000" # Default to the host port defined in npm dev
@@ -532,7 +619,10 @@ pkgs.mkShell {
     echo "  get-backend-tree    - Show backend directory structure (excluding common large dirs)"
     echo "  trivy               - Run Trivy security scan"
     echo "  lint-fix            - Attempt to auto-fix Python linting issues with black"
-    echo "  start-backend-dev   - Alias for start-main-services" # Added for consistency if used
-    echo "  stop-backend-dev    - Stops main backend and db"    # Added for consistency
+    echo "  start-backend-dev   - Alias for start-main-services"
+    echo "  stop-backend-dev    - Stops main backend and db"
+    echo "  update-frontend-deps - Check and update frontend dependencies"
+    echo "  update-backend-deps - Check and update backend dependencies"
+    echo "  update-all          - Check and update all dependencies (frontend and backend)"
   '';
 }

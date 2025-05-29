@@ -9,32 +9,28 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Login attempt initiated');
+    if (isLoading) return;
+    
     setError('');
+    setIsLoading(true);
 
     try {
-      console.log('Calling login API endpoint');
-      const response = await apiRequest('/api/auth/login', {
+      await apiRequest('/api/auth/login', {
         method: 'POST',
         body: JSON.stringify({ email, password }),
       });
 
-      console.log('Login successful, checking cookies');
-      const cookies = document.cookie;
-      console.log('Current cookies:', cookies);
-
-      // Check if we're still on the login page before redirecting
-      if (window.location.pathname === '/login') {
-        console.log('Still on login page, redirecting to home');
-        router.push('/');
-      }
-    } catch (err) {
+      router.replace('/');
+    } catch (err: any) {
       console.error('Login failed:', err);
-      setError('Login failed. Please check your credentials.');
+      setError(err.message || 'Login failed. Please check your credentials.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -60,7 +56,8 @@ export default function Login() {
                   type="email"
                   autoComplete="email"
                   required
-                  className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-slate-700 bg-slate-900 text-white placeholder-slate-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
+                  disabled={isLoading}
+                  className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-slate-700 bg-slate-900 text-white placeholder-slate-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm disabled:opacity-50"
                   placeholder="Email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -76,7 +73,8 @@ export default function Login() {
                   type="password"
                   autoComplete="current-password"
                   required
-                  className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-slate-700 bg-slate-900 text-white placeholder-slate-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
+                  disabled={isLoading}
+                  className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-slate-700 bg-slate-900 text-white placeholder-slate-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm disabled:opacity-50"
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -91,9 +89,10 @@ export default function Login() {
             <div>
               <button
                 type="submit"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+                disabled={isLoading}
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Sign in
+                {isLoading ? 'Signing in...' : 'Sign in'}
               </button>
             </div>
           </form>

@@ -28,7 +28,7 @@ export function ProjectImportPanel() {
     setSelected(new Set());
     try {
       let url = '';
-      let headers: any = {};
+      const headers: any = {};
       const token = localStorage.getItem('auth_token');
       if (token) headers['Authorization'] = `Bearer ${token}`;
       

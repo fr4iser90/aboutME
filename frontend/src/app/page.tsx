@@ -29,19 +29,31 @@ const Home: FC = () => { // Used FC type
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let isMounted = true;
+
     async function fetchSections() {
       try {
-        const data = await apiRequest('/api/public/sections') as ApiSection[];
-        setSections(data);
+        const data = await apiRequest<ApiSection[]>('/api/public/sections');
+        if (isMounted) {
+          setSections(data);
+          setError(null);
+        }
       } catch (e: any) {
-        setError(e.message);
-        console.error("Failed to fetch sections:", e);
+        if (isMounted) {
+          console.error("Failed to fetch sections:", e);
+          setError(e.message || 'Failed to fetch sections');
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     }
 
     fetchSections();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   // For now, we'll keep the static Hero and Contact sections
@@ -57,6 +69,16 @@ const Home: FC = () => { // Used FC type
       <Projects />
     </>
   );
+
+  const renderSectionContent = (content: any) => {
+    if (typeof content === 'string') {
+      return <div dangerouslySetInnerHTML={{ __html: content }} />;
+    }
+    if (typeof content === 'object' && content !== null) {
+      return <pre className="whitespace-pre-wrap">{JSON.stringify(content, null, 2)}</pre>;
+    }
+    return <div>No content available</div>;
+  };
 
   return (
     <>
@@ -92,18 +114,28 @@ const Home: FC = () => { // Used FC type
         {/* Dynamic Sections Area */}
         <section id="dynamic-content" className="py-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold mb-8 galaxy-text text-center">Fetched Sections Data</h2>
-            {loading && <p className="text-center text-slate-300">Loading sections...</p>}
-            {error && <p className="text-center text-red-500">Error loading sections: {error}</p>}
-            {!loading && !error && sections.length > 0 && (
-              <div className="bg-slate-800 p-4 rounded-lg">
-                <h3 className="text-xl font-semibold mb-2 text-slate-200">API Response:</h3>
-                <pre className="text-sm text-slate-300 whitespace-pre-wrap">
-                  {JSON.stringify(sections, null, 2)}
-                </pre>
+            {loading ? (
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto"></div>
+                <p className="mt-4 text-slate-300">Loading sections...</p>
               </div>
-            )}
-            {!loading && !error && sections.length === 0 && (
+            ) : error ? (
+              <div className="text-center text-red-500">
+                <p>Error loading sections: {error}</p>
+                <p className="text-sm text-slate-400 mt-2">Showing static content instead</p>
+              </div>
+            ) : sections.length > 0 ? (
+              <div className="space-y-8">
+                {sections.map((section) => (
+                  <div key={section.id} className="bg-slate-800 p-6 rounded-lg">
+                    <h3 className="text-xl font-semibold mb-4 text-slate-200">{section.title}</h3>
+                    <div className="text-slate-300">
+                      {renderSectionContent(section.content)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
               <p className="text-center text-slate-400">No sections data found from API.</p>
             )}
           </div>
