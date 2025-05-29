@@ -36,8 +36,11 @@ export default function LoginPage() {
       }
 
       const data = await response.json();
-      // Store the token in localStorage
-      localStorage.setItem('token', data.access_token);
+      // The token is now expected to be set as an HttpOnly cookie by the backend.
+      // No need to store it in localStorage for middleware-based auth.
+      // If data.access_token was used for other client-side purposes, that logic might need adjustment.
+      // For now, we assume the cookie is the primary mechanism.
+      
       // Redirect to admin dashboard
       router.push('/admin');
     } catch (err) {
@@ -105,4 +108,4 @@ export default function LoginPage() {
       </main>
     </>
   );
-} 
+}
