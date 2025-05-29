@@ -7,7 +7,7 @@ export const Header = () => {
   const router = useRouter();
 
   const handleLogout = async () => {
-    // Implement logout logic
+    localStorage.removeItem('token'); // Clear the token
     router.push('/login');
   };
 

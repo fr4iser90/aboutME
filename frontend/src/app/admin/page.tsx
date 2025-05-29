@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
-import { redirect } from 'next/navigation';
+'use client';
+
 import { AdminLayout } from '@/components/admin/AdminLayout';
 
 export default function AdminDashboard() {
-  // In the App Router, we use server components by default
-  // Authentication check will be handled by middleware
+  // The authentication check and redirection are now handled by frontend/src/middleware.ts
+  // No need for the useEffect hook here anymore.
 
   return (
     <AdminLayout>
@@ -16,4 +16,4 @@ export default function AdminDashboard() {
       </div>
     </AdminLayout>
   );
-} 
+}

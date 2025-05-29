@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.core.auth import get_current_user
 from app.db.session import get_db
 from app import crud, schemas
+from app.models.project import Project
 from app.models.user import User
 from app.core.github import fetch_user_repositories, create_project_from_repo
 
@@ -120,13 +121,13 @@ def update_project(
 
 # GitHub Integration routes
 @router.post("/projects/github/sync")
-async def sync_github_projects(
+def sync_github_projects(
     username: str,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
     """Sync projects from GitHub repositories."""
-    repos = await fetch_user_repositories(username)
+    repos = fetch_user_repositories(username)
     projects = []
 
     for repo in repos:

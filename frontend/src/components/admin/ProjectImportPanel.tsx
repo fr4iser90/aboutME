@@ -26,6 +26,9 @@ export function ProjectImportPanel() {
     try {
       let url = '';
       let headers: any = {};
+      const token = localStorage.getItem('auth_token');
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+      
       if (source === 'github') {
         let username = input.trim();
         if (username.startsWith('https://github.com/')) {
@@ -79,10 +82,14 @@ export function ProjectImportPanel() {
     const API_URL = process.env.BACKEND_URL || 'http://localhost:8090';
     const toImport = Array.from(selected).map(idx => projects[idx]);
     try {
-      const res = await fetch(`${API_URL}/api/admin/projects/import`, {
+      const token = localStorage.getItem('token');
+      const username = input.trim();
+      const res = await fetch(`${API_URL}/api/admin/projects/github/sync?username=${encodeURIComponent(username)}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ source, projects: toImport }),
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
       });
       if (!res.ok) throw new Error('Import failed');
       alert('Import erfolgreich!');

@@ -24,7 +24,12 @@ export function ProjectList({ onEdit }: ProjectListProps) {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch(`${API_URL}/api/admin/projects`);
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_URL}/api/admin/projects`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch projects');
         }
