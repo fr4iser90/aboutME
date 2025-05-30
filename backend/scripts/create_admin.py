@@ -49,7 +49,6 @@ def ensure_admin_user():
             id="me",  # Fixed ID for the single user
             email=admin_email,
             hashed_password=hashed_password,
-            is_active=True,
             github_username=github_username
         )
         db.add(user)

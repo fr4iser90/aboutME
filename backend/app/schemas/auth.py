@@ -23,14 +23,11 @@ class UserLogin(BaseModel):
 class UserCreate(BaseModel):
     email: EmailStr
     password: str
-    is_superuser: bool = False
 
 
 class UserResponse(BaseModel):
     id: int
     email: str
-    is_active: bool
-    is_superuser: bool
 
     class Config:
         from_attributes = True

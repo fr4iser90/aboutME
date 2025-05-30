@@ -1,12 +1,11 @@
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- USERS
+-- USERS (Single User)
 CREATE TABLE IF NOT EXISTS users (
     id VARCHAR(255) PRIMARY KEY DEFAULT 'me',
     email VARCHAR(255) UNIQUE NOT NULL,
     hashed_password VARCHAR(255) NOT NULL,
-    is_active BOOLEAN DEFAULT TRUE,
     github_username VARCHAR(255),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
@@ -38,34 +37,6 @@ CREATE TABLE IF NOT EXISTS sections (
     section_metadata JSONB,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
--- USER PAGE LAYOUTS
-CREATE TABLE IF NOT EXISTS user_page_layouts (
-    id SERIAL PRIMARY KEY,
-    user_id VARCHAR(255) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    section_id INTEGER NOT NULL REFERENCES sections(id),
-    custom_title VARCHAR(255),
-    custom_content JSONB,
-    section_order INTEGER NOT NULL,
-    is_visible BOOLEAN DEFAULT TRUE,
-    background_image_url VARCHAR(255),
-    layout_variant VARCHAR(50),
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    UNIQUE (user_id, section_order)
-);
-
--- USER PROFILES
-CREATE TABLE IF NOT EXISTS user_profiles (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id VARCHAR(255) NOT NULL REFERENCES users(id) ON DELETE CASCADE UNIQUE,
-    display_name VARCHAR(255),
-    bio TEXT,
-    profile_picture_url VARCHAR(255),
-    selected_theme_id INTEGER REFERENCES themes(id),
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 -- PROJECTS
@@ -101,13 +72,41 @@ CREATE TABLE IF NOT EXISTS projects (
 -- SKILLS
 CREATE TABLE IF NOT EXISTS skills (
     id SERIAL PRIMARY KEY,
-    user_id VARCHAR(255) REFERENCES users(id) ON DELETE CASCADE,
     category VARCHAR(64) NOT NULL,
     description TEXT,
     items JSONB NOT NULL,
     display_order INTEGER NOT NULL DEFAULT 0,
+    is_visible BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- USER PAGE LAYOUTS (für deine About-Me-Seite)
+CREATE TABLE IF NOT EXISTS user_page_layouts (
+    id SERIAL PRIMARY KEY,
+    user_id VARCHAR(255) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    section_id INTEGER NOT NULL REFERENCES sections(id),
+    custom_title VARCHAR(255),
+    custom_content JSONB,
+    section_order INTEGER NOT NULL,
+    is_visible BOOLEAN DEFAULT TRUE,
+    background_image_url VARCHAR(255),
+    layout_variant VARCHAR(50),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    UNIQUE (user_id, section_order)
+);
+
+-- USER PROFILES (für deine About-Me-Seite)
+CREATE TABLE IF NOT EXISTS user_profiles (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id VARCHAR(255) NOT NULL REFERENCES users(id) ON DELETE CASCADE UNIQUE,
+    display_name VARCHAR(255),
+    bio TEXT,
+    profile_picture_url VARCHAR(255),
+    selected_theme_id INTEGER REFERENCES themes(id),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 -- AI GENERATED CONTENT

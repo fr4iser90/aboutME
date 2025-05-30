@@ -80,21 +80,15 @@ async def get_current_user(
         raise credentials_exception
     
     logger.debug(f"Successfully authenticated user: {email}")
-    return User.model_validate(user)
-
-async def get_current_active_user(
-    current_user: User = Depends(get_current_user),
-) -> User:
-    if not current_user.is_active:
-        logger.debug(f"User {current_user.email} is inactive")
-        raise HTTPException(status_code=400, detail="Inactive user")
-    return current_user
+    return User(
+        id=user.id,
+        email=user.email,
+        hashed_password=user.hashed_password,
+        github_username=user.github_username,
+        created_at=user.created_at,
+        updated_at=user.updated_at
+    )
 
 async def get_current_superuser(current_user: User = Depends(get_current_user)) -> User:
-    if not current_user.is_superuser:
-        logger.debug(f"User {current_user.email} is not a superuser")
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="The user doesn't have enough privileges",
-        )
+    # Since we're the only user, we're always a superuser
     return current_user

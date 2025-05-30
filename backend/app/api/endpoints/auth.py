@@ -59,8 +59,7 @@ async def login(response: Response, login_data: LoginRequest, db: Session = Depe
     return {
         "message": "Login successful",
         "user": {
-            "email": user.email,
-            "is_active": user.is_active
+            "email": user.email
         }
     }
 
@@ -85,7 +84,6 @@ async def validate_auth(current_user: User = Depends(get_current_user)):
     return {
         "valid": True,
         "user": {
-            "email": current_user.email,
-            "is_active": current_user.is_active
+            "email": current_user.email
         }
     }

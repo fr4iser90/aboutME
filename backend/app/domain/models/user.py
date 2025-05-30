@@ -6,5 +6,6 @@ class User(BaseModel):
     id: str
     email: str
     hashed_password: str
-    is_active: bool = True
-    github_username: Optional[str] = None 
+    github_username: Optional[str] = None
+    created_at: datetime
+    updated_at: datetime 
