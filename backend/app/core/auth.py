@@ -6,8 +6,9 @@ from fastapi import Request, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 import logging
 import os
-from app.db.session import get_db
-from app.models.user import User
+from app.infrastructure.database.session import get_db
+from app.domain.models.user import User
+from app.infrastructure.database.models.user import UserModel
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
@@ -73,13 +74,13 @@ async def get_current_user(
         logger.debug(f"JWT decode error: {str(e)}")
         raise credentials_exception
 
-    user = db.query(User).filter(User.email == email).first()
+    user = db.query(UserModel).filter(UserModel.email == email).first()
     if user is None:
         logger.debug(f"No user found for email: {email}")
         raise credentials_exception
     
     logger.debug(f"Successfully authenticated user: {email}")
-    return user
+    return User.model_validate(user)
 
 async def get_current_active_user(
     current_user: User = Depends(get_current_user),

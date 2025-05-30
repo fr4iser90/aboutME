@@ -63,6 +63,7 @@ pkgs.mkShell {
     pkgs.curl    # Add curl for health checks
     pkgs.lsof
     pkgs.tmux    # Add tmux for terminal sessions
+    pkgs.pyright    # Add pyright for Python type checking
   ];
   
   shellHook = ''
@@ -596,6 +597,10 @@ pkgs.mkShell {
       return $exit_code
     }
 
+    check-backend() {
+      ./scripts/check_backend.sh "$@"
+    }
+
     echo "Python development environment activated"
     echo "PYTHONPATH set to: $PYTHONPATH"
     echo "Available commands:"
@@ -624,5 +629,6 @@ pkgs.mkShell {
     echo "  update-frontend-deps - Check and update frontend dependencies"
     echo "  update-backend-deps - Check and update backend dependencies"
     echo "  update-all          - Check and update all dependencies (frontend and backend)"
+    echo "  check-backend       - Run type checking and compilation checks on backend code"
   '';
 }

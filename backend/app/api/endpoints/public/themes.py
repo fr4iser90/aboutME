@@ -1,11 +1,22 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.db.session import get_db
-from app import crud, schemas
+from app.infrastructure.database.session import get_db
+from app.schemas import theme as schemas
+from app.domain.services.theme_service import ThemeService
+from app.infrastructure.database.repositories.theme_repository_impl import SQLAlchemyThemeRepository
 
 router = APIRouter()
 
+def get_theme_service(db: Session = Depends(get_db)) -> ThemeService:
+    repository = SQLAlchemyThemeRepository(db)
+    return ThemeService(repository)
+
 @router.get("/", response_model=schemas.Theme)
-def get_active_theme(db: Session = Depends(get_db)):
+async def get_active_theme(
+    theme_service: ThemeService = Depends(get_theme_service)
+):
     """Get the currently active theme"""
-    return crud.crud_theme.get_active_theme(db) 
+    theme = await theme_service.get_active_theme()
+    if not theme:
+        raise HTTPException(status_code=404, detail="No active theme found")
+    return theme 

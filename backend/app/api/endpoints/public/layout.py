@@ -1,11 +1,22 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.db.session import get_db
-from app import crud, schemas
+from app.infrastructure.database.session import get_db
+from app.schemas import layout as schemas
+from app.domain.services.layout_service import LayoutService
+from app.infrastructure.database.repositories.layout_repository_impl import SQLAlchemyLayoutRepository
 
 router = APIRouter()
 
+def get_layout_service(db: Session = Depends(get_db)) -> LayoutService:
+    repository = SQLAlchemyLayoutRepository(db)
+    return LayoutService(repository)
+
 @router.get("/", response_model=schemas.Layout)
-def get_layout(db: Session = Depends(get_db)):
+async def get_layout(
+    layout_service: LayoutService = Depends(get_layout_service)
+):
     """Get the current layout configuration"""
-    return crud.crud_layout.get(db) 
+    layout = await layout_service.get_current_layout()
+    if not layout:
+        raise HTTPException(status_code=404, detail="No layout configuration found")
+    return layout 

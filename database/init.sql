@@ -3,23 +3,27 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- USERS
 CREATE TABLE IF NOT EXISTS users (
-    id VARCHAR(255) PRIMARY KEY DEFAULT 'admin',
-    email VARCHAR(255) NOT NULL UNIQUE,
+    id VARCHAR(255) PRIMARY KEY DEFAULT 'me',
+    email VARCHAR(255) UNIQUE NOT NULL,
     hashed_password VARCHAR(255) NOT NULL,
     is_active BOOLEAN DEFAULT TRUE,
-    github_username VARCHAR(255) UNIQUE
+    github_username VARCHAR(255),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- THEMES
 CREATE TABLE IF NOT EXISTS themes (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL UNIQUE,
+    name VARCHAR(100) UNIQUE NOT NULL,
     description TEXT,
     style_properties JSONB NOT NULL,
     custom_css TEXT,
     custom_js TEXT,
     is_active BOOLEAN DEFAULT TRUE,
-    is_default BOOLEAN DEFAULT FALSE
+    is_default BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- SECTIONS
@@ -29,11 +33,11 @@ CREATE TABLE IF NOT EXISTS sections (
     title VARCHAR(128) NOT NULL,
     type VARCHAR(32) NOT NULL DEFAULT 'text',
     content JSONB,
-    "order" INTEGER NOT NULL DEFAULT 0,
+    display_order INTEGER NOT NULL DEFAULT 0,
     is_visible BOOLEAN DEFAULT TRUE,
     section_metadata JSONB,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- USER PAGE LAYOUTS
@@ -74,23 +78,24 @@ CREATE TABLE IF NOT EXISTS projects (
     source_url VARCHAR(255),
     github_username VARCHAR(255),
     github_repo VARCHAR(255),
+    gitlab_username VARCHAR(255),
+    gitlab_repo VARCHAR(255),
     live_url VARCHAR(255),
     thumbnail_url VARCHAR(255),
     details JSONB,
-    "order" INTEGER NOT NULL DEFAULT 0,
+    display_order INTEGER NOT NULL DEFAULT 0,
     is_visible BOOLEAN DEFAULT TRUE,
-    -- GitHub specific fields
     stars_count INTEGER DEFAULT 0,
     forks_count INTEGER DEFAULT 0,
     watchers_count INTEGER DEFAULT 0,
     language VARCHAR(50),
     topics TEXT[],
-    last_updated TIMESTAMPTZ,
+    last_updated TIMESTAMP WITH TIME ZONE,
     homepage_url VARCHAR(255),
     open_issues_count INTEGER DEFAULT 0,
     default_branch VARCHAR(50),
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- SKILLS
@@ -100,9 +105,9 @@ CREATE TABLE IF NOT EXISTS skills (
     category VARCHAR(64) NOT NULL,
     description TEXT,
     items JSONB NOT NULL,
-    "order" INTEGER NOT NULL DEFAULT 0,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    display_order INTEGER NOT NULL DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- AI GENERATED CONTENT

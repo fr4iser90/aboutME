@@ -1,36 +1,45 @@
 from typing import List
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.core.auth import get_current_user
-from app.db.session import get_db
-from app import crud, schemas
-from app.models.user import User
+from app.infrastructure.database.session import get_db
+from app.schemas import theme as schemas
+from app.domain.models.user import User
+from app.domain.services.theme_service import ThemeService
+from app.infrastructure.database.repositories.theme_repository_impl import SQLAlchemyThemeRepository
 
 router = APIRouter()
 
+def get_theme_service(db: Session = Depends(get_db)) -> ThemeService:
+    repository = SQLAlchemyThemeRepository(db)
+    return ThemeService(repository)
+
 @router.get("/", response_model=List[schemas.Theme])
 def list_themes(
-    db: Session = Depends(get_db), 
+    theme_service: ThemeService = Depends(get_theme_service),
     current_user: User = Depends(get_current_user)
 ):
     """List all themes (admin only)"""
-    return crud.crud_theme.get_multi(db)
+    return theme_service.get_all_themes()
 
 @router.post("/", response_model=schemas.Theme)
 def create_theme(
     theme: schemas.ThemeCreate,
-    db: Session = Depends(get_db),
+    theme_service: ThemeService = Depends(get_theme_service),
     current_user: User = Depends(get_current_user),
 ):
     """Create a new theme"""
-    return crud.crud_theme.create(db, obj_in=theme)
+    return theme_service.create_theme(theme)
 
 @router.put("/{theme_id}", response_model=schemas.Theme)
 def update_theme(
     theme_id: int,
     theme: schemas.ThemeUpdate,
-    db: Session = Depends(get_db),
+    theme_service: ThemeService = Depends(get_theme_service),
     current_user: User = Depends(get_current_user),
 ):
     """Update an existing theme"""
-    return crud.crud_theme.update(db, id=theme_id, obj_in=theme) 
+    updated_theme = theme_service.update_theme(theme_id, theme)
+    if not updated_theme:
+        raise HTTPException(status_code=404, detail="Theme not found")
+    return updated_theme 

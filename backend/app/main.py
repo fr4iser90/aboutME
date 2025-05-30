@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 import logging
 from .api.api import api_router
-from app.core.scheduler import start_scheduler
+from app.infrastructure.scheduler.scheduler import start_scheduler
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)

@@ -19,15 +19,12 @@ class SkillsContent(BaseModel):
 
 
 class SectionBase(BaseModel):
-    name: str = Field(
-        ...,
-        description="Unique identifier for the section (e.g., 'about', 'projects', 'skills')",
-    )
-    title: str = Field(..., description="Display title for the section")
-    type: str = Field(..., description="Content type: 'text', 'projects', 'skills'")
-    content: Optional[Union[TextContent, ProjectsContent, SkillsContent]] = None
-    order: int = Field(default=0, description="Order on the page")
-    is_visible: bool = Field(default=True, description="Whether the section is visible")
+    name: str
+    title: str
+    type: str
+    content: Optional[Dict[str, Any]] = None
+    order: int = 0
+    is_visible: bool = True
     section_metadata: Optional[Dict[str, Any]] = Field(
         default=None,
         description="Additional metadata like background image, layout variant",
@@ -38,14 +35,17 @@ class SectionCreate(SectionBase):
     pass
 
 
-class SectionUpdate(SectionBase):
+class SectionUpdate(BaseModel):
     name: Optional[str] = None
     title: Optional[str] = None
     type: Optional[str] = None
-    content: Optional[Union[TextContent, ProjectsContent, SkillsContent]] = None
+    content: Optional[Dict[str, Any]] = None
     order: Optional[int] = None
     is_visible: Optional[bool] = None
     section_metadata: Optional[Dict[str, Any]] = None
+
+    class Config:
+        from_attributes = True
 
 
 class Section(SectionBase):

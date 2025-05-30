@@ -6,8 +6,9 @@ from app.core.auth import (
     create_access_token,
     get_current_user,
 )
-from app.db.session import get_db
-from app.models.user import User
+from app.infrastructure.database.session import get_db
+from app.domain.models.user import User
+from app.infrastructure.database.models.user import UserModel
 from app.schemas.auth import LoginRequest
 
 # Configure logging
@@ -20,7 +21,7 @@ router = APIRouter()
 async def login(response: Response, login_data: LoginRequest, db: Session = Depends(get_db)):
     logger.debug(f"Login attempt for email: {login_data.email}")
     
-    user = db.query(User).filter(User.email == login_data.email).first()
+    user = db.query(UserModel).filter(UserModel.email == login_data.email).first()
     if not user:
         logger.debug(f"No user found for email: {login_data.email}")
         raise HTTPException(

@@ -1,0 +1,36 @@
+{
+  "include": [
+    "app"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/__pycache__"
+  ],
+  "ignore": [
+    "app/tests"
+  ],
+  "reportMissingImports": true,
+  "reportMissingTypeStubs": true,
+  "pythonVersion": "3.11",
+  "typeCheckingMode": "strict",
+  "useLibraryCodeForTypes": true,
+  "venvPath": ".",
+  "venv": ".venv",
+  "extraPaths": [
+    "."
+  ],
+  "reportGeneralTypeIssues": "error",
+  "reportOptionalMemberAccess": "error",
+  "reportOptionalSubscript": "error",
+  "reportPrivateImportUsage": "error",
+  "reportUnboundVariable": "error",
+  "reportUndefinedVariable": "error",
+  "reportUnknownMemberType": "error",
+  "reportUnknownParameterType": "error",
+  "reportUnknownVariableType": "error",
+  "reportUnusedCallResult": "error",
+  "reportUnusedClass": "error",
+  "reportUnusedFunction": "error",
+  "reportUnusedImport": "error",
+  "reportUnusedVariable": "error"
+} 

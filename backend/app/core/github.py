@@ -71,4 +71,4 @@ def create_project_from_repo(repo_data: Dict[str, Any]) -> Dict[str, Any]:
             "forks_count": 0,
             "status": "WIP",
             "details": {}
-        }
+        } 
