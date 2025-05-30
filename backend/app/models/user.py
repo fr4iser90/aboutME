@@ -11,3 +11,4 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
+    github_username = Column(String, unique=True, index=True)  # Added for GitHub/GitLab sync

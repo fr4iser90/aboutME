@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 import logging
 from .api.api import api_router
+from app.core.scheduler import start_scheduler
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
@@ -41,3 +42,8 @@ async def root():
 @app.get("/ping")
 async def ping():
     return {"status": "ok"}
+
+@app.on_event("startup")
+async def startup_event():
+    """Start background tasks on application startup"""
+    start_scheduler()

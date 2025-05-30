@@ -67,7 +67,7 @@ def import_github_projects(
                 open_issues_count=project_data.open_issues_count,
                 default_branch=project_data.default_branch,
                 is_visible=True,
-                status="WIP"
+                status="Archived" if project_data.archived else "WIP"
             )
             project = crud.crud_project.create(db, obj_in=project_create)
             imported_projects.append(project)

@@ -80,6 +80,7 @@ class GitHubProjectImport(BaseModel):
     default_branch: Optional[str] = None
     updated_at: Optional[datetime] = None
     owner: Optional[dict] = None
+    archived: Optional[bool] = False
 
 
 class GitLabProjectImport(BaseModel):
