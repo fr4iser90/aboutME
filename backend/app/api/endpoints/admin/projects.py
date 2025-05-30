@@ -13,11 +13,11 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 @router.get("/", response_model=List[schemas.Project])
-def get_projects(
+async def get_projects(
     db: Session = Depends(deps.get_db),
     project_service: ProjectService = Depends(deps.get_project_service)
 ):
-    return project_service.get_all_projects()
+    return await project_service.get_all_projects()
 
 @router.post("/", response_model=schemas.Project)
 def create_project(
