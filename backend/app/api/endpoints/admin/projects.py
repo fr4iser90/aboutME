@@ -20,64 +20,64 @@ async def get_projects(
     return await project_service.get_all_projects()
 
 @router.post("/", response_model=schemas.Project)
-def create_project(
+async def create_project(
     project: schemas.ProjectCreate,
     db: Session = Depends(deps.get_db),
     project_service: ProjectService = Depends(deps.get_project_service)
 ):
-    return project_service.create_project(project)
+    return await project_service.create_project(project)
 
 @router.get("/{project_id}", response_model=schemas.Project)
-def get_project(
+async def get_project(
     project_id: int,
     db: Session = Depends(deps.get_db),
     project_service: ProjectService = Depends(deps.get_project_service)
 ):
-    project = project_service.get_project(project_id)
+    project = await project_service.get_project(project_id)
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
     return project
 
 @router.put("/{project_id}", response_model=schemas.Project)
-def update_project(
+async def update_project(
     project_id: int,
     project: schemas.ProjectUpdate,
     db: Session = Depends(deps.get_db),
     project_service: ProjectService = Depends(deps.get_project_service)
 ):
-    updated_project = project_service.update_project(project_id, project)
+    updated_project = await project_service.update_project(project_id, project)
     if not updated_project:
         raise HTTPException(status_code=404, detail="Project not found")
     return updated_project
 
 @router.delete("/{project_id}")
-def delete_project(
+async def delete_project(
     project_id: int,
     db: Session = Depends(deps.get_db),
     project_service: ProjectService = Depends(deps.get_project_service)
 ):
-    if not project_service.delete_project(project_id):
+    if not await project_service.delete_project(project_id):
         raise HTTPException(status_code=404, detail="Project not found")
     return {"message": "Project deleted successfully"}
 
 @router.post("/import/github")
-def import_github_projects(
+async def import_github_projects(
     projects_data: List[schemas.GitHubProjectImport],
     db: Session = Depends(deps.get_db),
     project_service: ProjectService = Depends(deps.get_project_service)
 ):
-    return project_service.import_github_projects(projects_data)
+    return await project_service.import_github_projects(projects_data)
 
 @router.post("/import/gitlab")
-def import_gitlab_projects(
+async def import_gitlab_projects(
     projects_data: List[schemas.GitLabProjectImport],
     db: Session = Depends(deps.get_db),
     project_service: ProjectService = Depends(deps.get_project_service)
 ):
-    return project_service.import_gitlab_projects(projects_data)
+    return await project_service.import_gitlab_projects(projects_data)
 
 @router.post("/import/manual", response_model=List[schemas.Project])
-def import_manual_projects(
+async def import_manual_projects(
     projects_data: List[schemas.ManualProjectImport],
     db: Session = Depends(deps.get_db),
     current_user: User = Depends(get_current_user),
@@ -99,7 +99,7 @@ def import_manual_projects(
                 is_visible=project_data.is_visible,
                 status=project_data.status
             )
-            project = project_service.create_project(project_create)
+            project = await project_service.create_project(project_create)
             imported_projects.append(project)
             
         logger.debug(f"Successfully imported {len(imported_projects)} manual projects")

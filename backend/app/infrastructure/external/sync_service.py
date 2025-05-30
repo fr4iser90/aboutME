@@ -28,6 +28,21 @@ class SyncService:
             if not repo:
                 continue
                 
+            # Log repository status
+            is_archived = repo.get('archived', False)
+            has_release = repo.get('has_releases', False)
+            is_prerelease = repo.get('is_prerelease', False)
+            
+            # Set status based on archived and release status
+            if is_archived:
+                status = "ARCHIVED"
+            elif has_release and not is_prerelease:
+                status = "ACTIVE"
+            else:
+                status = "WIP"
+                
+            logger.info(f"Repository {repo.get('name', '')} is {status} on {source_type} (archived: {is_archived}, has_release: {has_release}, is_prerelease: {is_prerelease})")
+                
             # GitHub/GitLab liefert topics als Liste, das ist genau was wir brauchen
             topics = repo.get("topics", []) or []
             
@@ -38,7 +53,7 @@ class SyncService:
             project = Project(
                 name=repo.get("name", ""),
                 description=repo.get("description") or "",
-                status="WIP",
+                status=status,
                 source_type=source_type,
                 source_url=repo.get("html_url") or repo.get("web_url"),
                 github_username=owner.get("login") if source_type == "github" else None,
@@ -75,10 +90,12 @@ class SyncService:
             )
 
             if existing:
+                logger.info(f"Updating existing project: {repo.get('name', '')}")
                 updated_project = self._project_repository.update(existing.id, project)
                 if updated_project:
                     synced_projects.append(updated_project)
             else:
+                logger.info(f"Creating new project: {repo.get('name', '')}")
                 created_project = self._project_repository.create(project)
                 if created_project:
                     synced_projects.append(created_project)

@@ -14,6 +14,15 @@ class GitHubService:
 
         for repo in repos:
             project_data = create_project_from_repo(repo)
+
+            # Set project status based on GitHub archived status
+            if repo.get("archived", False):
+                project_data["status"] = "Archived"
+            else:
+                # You might want to retain existing status if not archived,
+                # or explicitly set to WIP. For now, setting to WIP.
+                project_data["status"] = "WIP"
+            
             existing = self._project_repository.get_by_name_and_source(
                 name=repo["name"],
                 source_type="github",
@@ -38,4 +47,4 @@ class GitHubService:
         return self._project_repository.get_by_source(
             source_type="github",
             source_username=username
-        ) 
+        )

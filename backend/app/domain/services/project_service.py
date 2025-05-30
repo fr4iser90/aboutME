@@ -5,6 +5,7 @@ from app.domain.models.project import Project
 from app.domain.models.user import User
 from app.core.github import fetch_user_repositories, create_project_from_repo
 from app.core.gitlab import fetch_user_repositories as fetch_gitlab_repositories, create_project_from_repo as create_project_from_gitlab_repo
+from app.schemas.project import ProjectStatus, GitHubProjectImport, ProjectUpdate, ProjectCreate
 
 logger = logging.getLogger(__name__)
 
@@ -32,31 +33,44 @@ class ProjectService:
         """Delete a project."""
         return self._project_repository.delete(project_id)
 
-    async def import_github_projects(self, username: str) -> List[Dict[str, Any]]:
-        """Import projects from GitHub."""
-        repos = fetch_user_repositories(username)
-        projects = []
-
-        for repo in repos:
-            project_data = create_project_from_repo(repo)
-            existing = self._project_repository.get_by_name_and_source(
-                name=repo["name"],
-                source_type="github",
-                source_username=username
-            )
-
-            if existing:
+    async def import_github_projects(self, projects: List[GitHubProjectImport]) -> List[Project]:
+        """Import projects from GitHub"""
+        imported_projects = []
+        
+        for project_data in projects:
+            # Check if project already exists
+            existing_project = await self.project_repository.get_by_name(project_data.name)
+            
+            if existing_project:
                 # Update existing project
-                for key, value in project_data.items():
-                    setattr(existing, key, value)
-                self._project_repository.update(existing.id, existing)
+                project_update = ProjectUpdate(
+                    description=project_data.description,
+                    source_url=project_data.source_url,
+                    live_url=project_data.live_url,
+                    thumbnail_url=project_data.thumbnail_url,
+                    details=project_data.details,
+                    is_visible=project_data.is_visible,
+                    status=ProjectStatus.ARCHIVED if project_data.archived else ProjectStatus.ACTIVE
+                )
+                updated_project = await self.update_project(existing_project.id, project_update)
+                imported_projects.append(updated_project)
             else:
                 # Create new project
-                project = Project(**project_data)
-                self._project_repository.create(project)
-            projects.append(project_data)
-
-        return projects
+                project_create = ProjectCreate(
+                    name=project_data.name,
+                    description=project_data.description,
+                    source_type="github",
+                    source_url=project_data.source_url,
+                    live_url=project_data.live_url,
+                    thumbnail_url=project_data.thumbnail_url,
+                    details=project_data.details,
+                    is_visible=project_data.is_visible,
+                    status=ProjectStatus.ARCHIVED if project_data.archived else ProjectStatus.ACTIVE
+                )
+                new_project = await self.create_project(project_create)
+                imported_projects.append(new_project)
+        
+        return imported_projects
 
     async def import_gitlab_projects(self, username: str) -> List[Dict[str, Any]]:
         """Import projects from GitLab."""
@@ -96,13 +110,21 @@ class ProjectService:
             List of synced projects
         """
         if projects_data is None:
-            logger.debug(f"Fetching repositories for user: {user.email}")
+            logger.info(f"Fetching repositories for user: {user.email}")
             projects_data = fetch_user_repositories(user.github_username)
 
         synced_projects = []
         for repo in projects_data:
-            logger.debug(f"Processing repository: {repo['name']}")
+            logger.info(f"Processing repository: {repo['name']}")
             project_data = create_project_from_repo(repo)
+            
+            # Log archived status
+            is_archived = repo.get('archived', False)
+            logger.info(f"Repository {repo['name']} is {'archived' if is_archived else 'active'} on GitHub")
+            
+            # Set correct status based on archived flag
+            project_data['status'] = ProjectStatus.ARCHIVED if is_archived else ProjectStatus.ACTIVE
+            
             project = Project(**project_data)
             
             # Check if project already exists
@@ -112,20 +134,20 @@ class ProjectService:
             )
 
             if existing:
-                logger.debug(f"Updating existing project: {repo['name']}")
+                logger.info(f"Updating existing project: {repo['name']}")
                 # Update existing project
                 project = self._project_repository.update(
                     project_id=existing.id,
                     project=project
                 )
             else:
-                logger.debug(f"Creating new project: {repo['name']}")
+                logger.info(f"Creating new project: {repo['name']}")
                 # Create new project
                 project = self._project_repository.create(project)
             
             synced_projects.append(project)
 
-        logger.debug(f"Successfully synced {len(synced_projects)} projects")
+        logger.info(f"Successfully synced {len(synced_projects)} projects")
         return synced_projects
 
     async def get_visible_projects(self) -> List[Project]:

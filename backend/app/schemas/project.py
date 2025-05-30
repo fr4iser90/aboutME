@@ -1,12 +1,25 @@
 from typing import Optional, Dict, Any, List
 from pydantic import BaseModel, HttpUrl
 from datetime import datetime
+from enum import Enum
+
+class ProjectStatus(str, Enum):
+    """Project status options:
+    - ACTIVE: Project is active and production-ready
+    - WIP: Project is still in development
+    - ARCHIVED: Project is completed and preserved for reference
+    - DEPRECATED: Project is outdated and should be replaced
+    """
+    ACTIVE = 'ACTIVE'
+    WIP = 'WIP'
+    ARCHIVED = 'ARCHIVED'
+    DEPRECATED = 'DEPRECATED'
 
 # Base fields that every project has
 class ProjectBase(BaseModel):
     name: str
     description: Optional[str] = None
-    status: str = "WIP"
+    status: ProjectStatus = ProjectStatus.WIP
     source_type: str = "manual"
     source_url: Optional[str] = None
     live_url: Optional[str] = None
@@ -108,17 +121,13 @@ class Project(ProjectBase):
 # Import schemas
 class GitHubProjectImport(BaseModel):
     name: str
-    description: Optional[str] = None
-    html_url: str
-    homepage: Optional[str] = None
-    stargazers_count: int = 0
-    forks_count: int = 0
-    watchers_count: int = 0
-    language: Optional[str] = None
-    topics: Optional[List[str]] = None
-    updated_at: Optional[datetime] = None
-    default_branch: Optional[str] = None
-    owner: Dict[str, Any]
+    description: str
+    source_url: str
+    live_url: Optional[str] = None
+    thumbnail_url: Optional[str] = None
+    details: Optional[Dict[str, Any]] = None
+    is_visible: bool = True
+    archived: bool = False
 
 class GitLabProjectImport(BaseModel):
     name: str

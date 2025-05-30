@@ -9,6 +9,10 @@ class SQLAlchemySectionRepository(SectionRepository):
     def __init__(self, db: Session):
         self._db = db
 
+    def get(self, section_id: int) -> Optional[Section]:
+        """Get a section by ID"""
+        return self.get_by_id(section_id)
+
     def get_by_id(self, section_id: int) -> Optional[Section]:
         stmt = select(SectionModel).where(SectionModel.id == section_id)
         model = self._db.execute(stmt).scalar_one_or_none()

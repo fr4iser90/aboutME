@@ -42,10 +42,10 @@ CREATE TABLE IF NOT EXISTS sections (
 -- PROJECTS
 CREATE TABLE IF NOT EXISTS projects (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(128) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     description TEXT,
-    status VARCHAR(32) NOT NULL DEFAULT 'WIP',
-    source_type VARCHAR(32) NOT NULL DEFAULT 'manual',
+    status VARCHAR(50) DEFAULT 'WIP' CHECK (status IN ('ACTIVE', 'WIP', 'ARCHIVED', 'DEPRECATED')),
+    source_type VARCHAR(50) DEFAULT 'manual',
     source_url VARCHAR(255),
     github_username VARCHAR(255),
     github_repo VARCHAR(255),
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS projects (
     live_url VARCHAR(255),
     thumbnail_url VARCHAR(255),
     details JSONB,
-    display_order INTEGER NOT NULL DEFAULT 0,
+    display_order INTEGER DEFAULT 0,
     is_visible BOOLEAN DEFAULT TRUE,
     stars_count INTEGER DEFAULT 0,
     forks_count INTEGER DEFAULT 0,
