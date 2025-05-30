@@ -32,7 +32,10 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
 
   useEffect(() => {
     if (project) {
-      setFormData(project);
+      setFormData({
+        ...project,
+        technologies: project.technologies || [],
+      });
     }
   }, [project]);
 
