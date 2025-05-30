@@ -1,5 +1,6 @@
 from typing import Optional, Dict, Any, List
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel, HttpUrl, ConfigDict, Field
+from pydantic.fields import AliasChoices, AliasPath
 from datetime import datetime
 from enum import Enum
 
@@ -120,11 +121,19 @@ class Project(ProjectBase):
 
 # Import schemas
 class GitHubProjectImport(BaseModel):
+    model_config = ConfigDict(extra='ignore')
+
     name: str
-    description: str
-    source_url: str
-    live_url: Optional[str] = None
-    thumbnail_url: Optional[str] = None
+    github_username: Optional[str] = Field(default=None, validation_alias=AliasPath('owner', 'login'))
+    description: Optional[str] = None  # Allow null descriptions
+    
+    # Accept 'html_url' from GitHub data as 'source_url' for our model
+    source_url: str = Field(validation_alias=AliasChoices('source_url', 'html_url'))
+    
+    # Accept 'homepage' from GitHub data as 'live_url' for our model
+    live_url: Optional[str] = Field(default=None, validation_alias=AliasChoices('live_url', 'homepage'))
+    
+    thumbnail_url: Optional[str] = Field(default=None, validation_alias=AliasPath('owner', 'avatar_url'))
     details: Optional[Dict[str, Any]] = None
     is_visible: bool = True
     archived: bool = False
