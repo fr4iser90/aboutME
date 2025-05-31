@@ -42,6 +42,19 @@ interface ProjectEditorProps {
   onCancel: () => void;
 }
 
+// Definiere die Override-Felder als konstantes Tupel für Typensicherheit
+const overrideFields = [
+  'title',
+  'description',
+  'own_description',
+  'short_description',
+  'highlight',
+  'learnings',
+  'challenges',
+  'role',
+] as const;
+type OverrideField = typeof overrideFields[number];
+
 export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps) {
   console.log('ProjectEditor - project data:', project);
   console.log('ProjectEditor - project.sourceType:', project?.sourceType);
@@ -96,6 +109,16 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
   });
   const [newTech, setNewTech] = useState('');
   const [fieldsVisibility, setFieldsVisibility] = useState<{ [key: string]: boolean }>(defaultVisibility);
+  const [override, setOverride] = useState<Record<OverrideField, boolean>>({
+    title: false,
+    description: false,
+    own_description: false,
+    short_description: false,
+    highlight: false,
+    learnings: false,
+    challenges: false,
+    role: false,
+  });
 
   useEffect(() => {
     if (project) {
@@ -240,68 +263,56 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
           />
         </div>
 
-        {formData.show_on_portfolio ? (
+        {formData.show_on_portfolio && (
           <div className="space-y-4 border-b border-purple-900 pb-4 mb-4">
-            <div>
-              <label htmlFor="own_description" className="block text-sm font-medium galaxy-text">Eigene Beschreibung</label>
-              <textarea
-                id="own_description"
-                value={formData.own_description}
-                onChange={e => setFormData({ ...formData, own_description: e.target.value })}
-                rows={2}
-                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
-              />
+            <div className="grid grid-cols-2 gap-2 mb-4">
+              {Object.entries(fieldsVisibility).map(([field, visible]) => (
+                <label key={field} className="flex items-center space-x-2 text-sm galaxy-text">
+                  <input
+                    type="checkbox"
+                    checked={visible}
+                    onChange={() => handleVisibilityChange(field)}
+                    className="form-checkbox text-purple-500"
+                  />
+                  <span>{field.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())} sichtbar</span>
+                </label>
+              ))}
             </div>
-            <div>
-              <label htmlFor="short_description" className="block text-sm font-medium galaxy-text">Kurze Beschreibung</label>
-              <input
-                type="text"
-                id="short_description"
-                value={formData.short_description}
-                onChange={e => setFormData({ ...formData, short_description: e.target.value })}
-                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
-              />
-            </div>
-            <div>
-              <label htmlFor="highlight" className="block text-sm font-medium galaxy-text">Highlight</label>
-              <input
-                type="text"
-                id="highlight"
-                value={formData.highlight}
-                onChange={e => setFormData({ ...formData, highlight: e.target.value })}
-                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
-              />
-            </div>
-            <div>
-              <label htmlFor="learnings" className="block text-sm font-medium galaxy-text">Learnings</label>
-              <textarea
-                id="learnings"
-                value={formData.learnings}
-                onChange={e => setFormData({ ...formData, learnings: e.target.value })}
-                rows={2}
-                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
-              />
-            </div>
-            <div>
-              <label htmlFor="challenges" className="block text-sm font-medium galaxy-text">Challenges</label>
-              <textarea
-                id="challenges"
-                value={formData.challenges}
-                onChange={e => setFormData({ ...formData, challenges: e.target.value })}
-                rows={2}
-                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
-              />
-            </div>
-            <div>
-              <label htmlFor="role" className="block text-sm font-medium galaxy-text">Rolle</label>
-              <input
-                type="text"
-                id="role"
-                value={formData.role}
-                onChange={e => setFormData({ ...formData, role: e.target.value })}
-                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
-              />
-            </div>
+            {overrideFields.map((field) => (
+              <div key={field} className="mb-2">
+                <label className="flex items-center space-x-2 text-sm galaxy-text">
+                  <input
+                    type="checkbox"
+                    checked={override[field]}
+                    onChange={() => setOverride((prev) => ({ ...prev, [field]: !prev[field] }))}
+                    className="form-checkbox text-purple-500"
+                  />
+                  <span>Eigenen {field.replace(/_/g, ' ')} verwenden</span>
+                </label>
+                {override[field] ? (
+                  field === 'description' || field === 'own_description' || field === 'learnings' || field === 'challenges' ? (
+                    <textarea
+                      className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                      value={formData[field as keyof ProjectFormData] as string || ''}
+                      onChange={e => setFormData({ ...formData, [field]: e.target.value })}
+                      rows={2}
+                      placeholder={`Eigener ${field.replace(/_/g, ' ')}`}
+                    />
+                  ) : (
+                    <input
+                      className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                      value={formData[field as keyof ProjectFormData] as string || ''}
+                      onChange={e => setFormData({ ...formData, [field]: e.target.value })}
+                      placeholder={`Eigener ${field.replace(/_/g, ' ')}`}
+                    />
+                  )
+                ) : (
+                  <div className="text-gray-400 italic mt-1">
+                    {project && (project as any)[field] ? (project as any)[field] : `Kein Wert aus GitHub/DB für ${field}`}
+                  </div>
+                )}
+              </div>
+            ))}
             <div>
               <label htmlFor="custom_tags" className="block text-sm font-medium galaxy-text">Eigene Tags (kommagetrennt)</label>
               <input
@@ -349,8 +360,6 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
               />
             </div>
           </div>
-        ) : (
-          <div className="text-gray-400 italic mb-4 border-b border-purple-900 pb-4">Dieses Projekt wird nicht auf dem Portfolio angezeigt.</div>
         )}
 
         <div className="space-y-4 bg-slate-900/40 rounded-lg p-4 mb-4">
