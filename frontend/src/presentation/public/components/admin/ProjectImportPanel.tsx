@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ProjectCard } from '@/presentation/public/components/sections/ProjectCard';
 import { useRouter } from 'next/navigation';
+import { apiClient } from '@/shared/utils/api';
 
 const SOURCES = [
   { label: 'GitHub', value: 'github' },
@@ -29,8 +30,6 @@ export function ProjectImportPanel() {
     try {
       let url = '';
       const headers: any = {};
-      const token = localStorage.getItem('auth_token');
-      if (token) headers['Authorization'] = `Bearer ${token}`;
       
       if (source === 'github') {
         let username = input.trim();
@@ -47,7 +46,6 @@ export function ProjectImportPanel() {
         url = `https://gitlab.com/api/v4/users/${username}/projects?per_page=100&order_by=last_activity_at`;
         if (token) headers['PRIVATE-TOKEN'] = token;
       } else if (source === 'manual') {
-        // For manual import, we'll create a single empty project
         setProjects([{
           name: 'Neues Projekt',
           description: '',
@@ -98,23 +96,9 @@ export function ProjectImportPanel() {
   };
 
   const handleImport = async () => {
-    const API_URL = process.env.BACKEND_URL || 'http://localhost:8090';
     const toImport = Array.from(selected).map(idx => projects[idx]);
     try {
-      const res = await fetch(`${API_URL}/api/admin/projects/import/${source}`, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        body: JSON.stringify(toImport)
-      });
-      
-      if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.detail || 'Import failed');
-      }
-      
+      await apiClient.importProjects(source, toImport);
       alert('Import erfolgreich!');
       router.refresh();
     } catch (e: any) {

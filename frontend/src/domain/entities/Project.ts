@@ -17,7 +17,8 @@ export interface Project {
   createdAt: Date; // From DB
   updatedAt: Date; // Corresponds to 'last_updated' or 'updated_at' in DB
   details?: ProjectDetails; // Mapped from 'details' JSONB
-  // Consider adding 'sourceType', 'sourceUrl' if needed from DB 'projects' table
+  sourceType?: 'github' | 'gitlab' | 'manual' | string; // Added for project source grouping
+  // Consider adding 'sourceUrl' if needed from DB 'projects' table
 }
 
 export interface ProjectDetails {

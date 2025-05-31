@@ -1,13 +1,15 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { validateAuth } from '@/shared/utils/api';
+import { apiClient } from '@/shared/utils/api';
+import { usePathname } from 'next/navigation';
 
-export default function Navbar() {
+export function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const checkAuth = async () => {
-      const isValid = await validateAuth();
+      const isValid = await apiClient.validateAuth();
       setIsLoggedIn(isValid);
     };
     checkAuth();

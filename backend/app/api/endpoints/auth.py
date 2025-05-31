@@ -41,19 +41,18 @@ async def login(response: Response, login_data: LoginRequest, db: Session = Depe
     logger.debug(f"Created token: {access_token[:10]}...")
 
     logger.debug("Setting auth cookie with settings:")
-    cookie_settings = {
+    # Define parameters for setting the cookie, omitting the domain
+    cookie_params = {
         "key": "auth_token",
         "value": access_token,
         "httponly": True,
-        "secure": False,
+        "secure": False,  # Should be True in production over HTTPS
         "samesite": "lax",
         "path": "/",
-        "domain": "localhost",
-        "max_age": 1800
+        "max_age": 1800  # 30 minutes
     }
-    logger.debug(f"Cookie settings: {cookie_settings}")
-    
-    response.set_cookie(**cookie_settings)
+    logger.debug(f"Setting cookie with params: {cookie_params}")
+    response.set_cookie(**cookie_params)
     
     logger.debug(f"Login successful for user: {login_data.email}")
     return {
@@ -66,15 +65,15 @@ async def login(response: Response, login_data: LoginRequest, db: Session = Depe
 @router.post("/logout")
 async def logout(response: Response):
     logger.debug("Logout request received")
+    # Define parameters for deleting the cookie, omitting the domain
     response.delete_cookie(
         key="auth_token",
         httponly=True,
-        secure=False,  # In Entwicklung auf False
-        samesite="lax",  # In Entwicklung auf "lax"
-        path="/",
-        domain="localhost"  # Cookie für localhost
+        secure=False, # Match settings from set_cookie
+        samesite="lax", # Match settings from set_cookie
+        path="/"
     )
-    logger.debug("Logout successful - cookie cleared")
+    logger.debug("Logout successful - cookie cleared (domain omitted)")
     return {"message": "Logout successful"}
 
 @router.get("/validate")

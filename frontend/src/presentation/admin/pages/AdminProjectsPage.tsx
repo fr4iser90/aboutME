@@ -1,180 +1,116 @@
-import { useAdminProjects } from '@/application/admin/useProjects';
-import { ProjectForm } from '@/presentation/admin/components/ProjectForm';
 import { useEffect, useState } from 'react';
 import { Project } from '@/domain/entities/Project';
-import { Button } from '@/components/ui/button';
-import { Plus, Pencil, Trash2 } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+import { apiClient } from '@/shared/utils/api';
+import { ProjectEditor } from '@/presentation/public/components/admin/ProjectEditor';
+import { ProjectImportPanel } from '@/presentation/public/components/admin/ProjectImportPanel';
 
-export const AdminProjectsPage = () => {
-  const { getAllProjects, createProject, updateProject, deleteProject } = useAdminProjects();
+export default function AdminProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [showImportPanel, setShowImportPanel] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
 
   const fetchProjects = async () => {
     try {
-      const data = await getAllProjects();
-      setProjects(data);
+      setLoading(true);
+      const response = await apiClient.getProjects();
+      setProjects(response.data);
+      setError(null);
     } catch (err) {
-      setError('Failed to load projects');
-      console.error(err);
+      setError('Failed to fetch projects');
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchProjects();
-  }, [getAllProjects]);
-
-  const handleCreate = async (project: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>) => {
-    try {
-      await createProject(project);
-      setIsFormOpen(false);
-      fetchProjects();
-    } catch (err) {
-      setError('Failed to create project');
-      console.error(err);
-    }
+  const handleSelectProject = (project: Project) => {
+    setSelectedProject(project);
   };
 
-  const handleUpdate = async (project: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>) => {
-    if (!selectedProject) return;
-    try {
-      await updateProject(selectedProject.id, project);
-      setIsFormOpen(false);
-      setSelectedProject(null);
-      fetchProjects();
-    } catch (err) {
-      setError('Failed to update project');
-      console.error(err);
-    }
+  const handleNewProject = () => {
+    setSelectedProject({} as Project);
   };
 
-  const handleDelete = async () => {
-    if (!selectedProject) return;
-    try {
-      await deleteProject(selectedProject.id);
-      setIsDeleteDialogOpen(false);
-      setSelectedProject(null);
-      fetchProjects();
-    } catch (err) {
-      setError('Failed to delete project');
-      console.error(err);
-    }
+  const handleSave = async () => {
+    await fetchProjects();
+    setSelectedProject(null);
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div className="text-red-500">{error}</div>;
-  }
+  const handleCancel = () => {
+    setSelectedProject(null);
+  };
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Manage Projects</h1>
-        <Button onClick={() => {
-          setSelectedProject(null);
-          setIsFormOpen(true);
-        }}>
-          <Plus className="w-4 h-4 mr-2" />
-          Add Project
-        </Button>
-      </div>
-
-      <div className="grid gap-6">
-        {projects.map((project) => (
-          <div
-            key={project.id}
-            className="flex items-center justify-between p-4 border rounded-lg"
+    <div className="flex h-full">
+      {/* Sidebar: Projektliste */}
+      <div className="w-72 border-r bg-muted/40 flex flex-col">
+        <div className="flex items-center justify-between p-4 border-b">
+          <span className="font-bold text-lg">Projects</span>
+          <button
+            className="px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700"
+            onClick={handleNewProject}
+            title="Neues Projekt anlegen"
           >
-            <div>
-              <h3 className="text-lg font-semibold">{project.title}</h3>
-              <p className="text-gray-600 dark:text-gray-300">
-                {project.description}
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  setSelectedProject(project);
-                  setIsFormOpen(true);
-                }}
-              >
-                <Pencil className="w-4 h-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  setSelectedProject(project);
-                  setIsDeleteDialogOpen(true);
-                }}
-              >
-                <Trash2 className="w-4 h-4" />
-              </Button>
-            </div>
-          </div>
-        ))}
+            +
+          </button>
+        </div>
+        <button
+          className="m-4 px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+          onClick={() => setShowImportPanel((prev) => !prev)}
+        >
+          {showImportPanel ? 'Import schließen' : 'Importieren'}
+        </button>
+        {showImportPanel && <div className="p-2"><ProjectImportPanel /></div>}
+        <div className="flex-1 overflow-y-auto">
+          {loading ? (
+            <div className="p-4 text-center text-slate-400">Loading...</div>
+          ) : error ? (
+            <div className="p-4 text-center text-red-500">{error}</div>
+          ) : projects.length === 0 ? (
+            <div className="p-4 text-center text-slate-400">No projects found.</div>
+          ) : (
+            <ul>
+              {projects.map((project) => (
+                <li
+                  key={project.id}
+                  className={`p-3 cursor-pointer hover:bg-purple-900/30 ${selectedProject?.id === project.id ? 'bg-purple-900/60 text-white' : ''}`}
+                  onClick={() => handleSelectProject(project)}
+                >
+                  <div className="font-medium truncate">{project.title}</div>
+                  <div className="text-xs text-slate-400 truncate">{project.description}</div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
 
-      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              {selectedProject ? 'Edit Project' : 'Create Project'}
-            </DialogTitle>
-          </DialogHeader>
-          <ProjectForm
-            project={selectedProject ?? undefined}
-            onSubmit={selectedProject ? handleUpdate : handleCreate}
-            onCancel={() => {
-              setIsFormOpen(false);
-              setSelectedProject(null);
-            }}
+      {/* Mitte: Editor/Vorschau */}
+      <div className="flex-1 flex flex-col p-8 overflow-auto">
+        {selectedProject ? (
+          <ProjectEditor
+            project={selectedProject}
+            onSave={handleSave}
+            onCancel={handleCancel}
           />
-        </DialogContent>
-      </Dialog>
+        ) : (
+          <div className="h-full flex items-center justify-center text-slate-400">
+            Select a project to edit or create a new one
+          </div>
+        )}
+      </div>
 
-      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the
-              project.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      {/* Rechts: Copilot (Platzhalter) */}
+      <div className="w-96 border-l bg-muted/40 p-4">
+        <div className="font-bold mb-2">Copilot</div>
+        {/* Hier kann deine KI-Hilfe-Komponente rein */}
+        <div className="text-slate-400">KI-Hilfe kommt hier hin.</div>
+      </div>
     </div>
   );
-};
+}

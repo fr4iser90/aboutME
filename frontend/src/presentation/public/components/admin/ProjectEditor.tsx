@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ProjectCard } from '@/presentation/public/components/ProjectCard';
-import type { Project as DomainProject, ProjectDetails } from '@/domain/entities/Project'; // Import ProjectDetails
+import type { Project as DomainProject, ProjectDetails } from '@/domain/entities/Project';
+import { apiClient } from '@/shared/utils/api';
 
 // Form data uses camelCase, consistent with DomainProject and frontend standards
 interface ProjectFormData {
@@ -18,12 +19,10 @@ interface ProjectFormData {
   forksCount?: number;
   watchersCount?: number;
   homepageUrl?: string;
-  createdAt: string | Date; // Stays as is, will be new Date() for new projects
-  updatedAt: string | Date; // Stays as is
-  details?: ProjectDetails; // Use the imported ProjectDetails type
+  createdAt: string | Date;
+  updatedAt: string | Date;
+  details?: ProjectDetails;
 }
-
-const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8090';
 
 interface ProjectEditorProps {
   project?: DomainProject | null;
@@ -63,8 +62,8 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
     forksCount: 0,
     watchersCount: 0,
     homepageUrl: '',
-    createdAt: new Date().toISOString(), // Default for new project
-    updatedAt: new Date().toISOString(), // Default for new project
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
     details: {
       languages_map: {},
       fields_visibility: defaultVisibility
@@ -75,11 +74,7 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
 
   useEffect(() => {
     if (project) {
-      // Use the languages_map from project details if it exists, otherwise create from single language
       const languagesMap = project.details?.languages_map || (project.language ? { [project.language]: 0 } : {});
-      
-      console.log('Loading project:', project);
-      console.log('Languages map:', languagesMap);
       
       setFormData({
         id: project.id,
@@ -135,24 +130,15 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
 
     try {
       const currentProjectDetails = project?.details || {};
-      const details: ProjectDetails = { // Ensure 'details' conforms to ProjectDetails
+      const details: ProjectDetails = {
         ...currentProjectDetails,
         fields_visibility: fieldsVisibility,
       };
-      const url = project?.id
-        ? `${API_URL}/api/admin/projects/${project.id}`
-        : `${API_URL}/api/admin/projects`;
       
-      const response = await fetch(url, {
-        method: project?.id ? 'PUT' : 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ...formData, details }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to save project');
+      if (project?.id) {
+        await apiClient.updateProject(project.id, { ...formData, details });
+      } else {
+        await apiClient.createProject({ ...formData, details });
       }
 
       onSave();
@@ -319,14 +305,12 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
               const languages = e.target.value.split(',').map(lang => lang.trim()).filter(Boolean);
               const newLanguagesMap = { ...formData.details?.languages_map };
               
-              // Remove languages that are no longer in the list
               Object.keys(newLanguagesMap).forEach(lang => {
                 if (!languages.includes(lang)) {
                   delete newLanguagesMap[lang];
                 }
               });
               
-              // Add new languages with 0 bytes if they don't exist
               languages.forEach(lang => {
                 if (!newLanguagesMap[lang]) {
                   newLanguagesMap[lang] = 0;
@@ -344,7 +328,6 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
             className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
             placeholder="e.g., TypeScript, Python, Rust"
           />
-          {/* Display language badges with byte counts */}
           <div className="mt-2 flex flex-wrap gap-2">
             {formData.details?.languages_map && Object.entries(formData.details.languages_map).map(([lang, bytes]) => (
               <span

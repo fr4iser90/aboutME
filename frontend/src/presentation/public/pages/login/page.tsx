@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Navbar from '@/presentation/public/components/layout/Navbar';
+import { Navbar } from '@/presentation/public/components/layout/Navbar';
 import { apiRequest } from '@/shared/utils/api';
 
 export function LoginView() {
@@ -25,7 +25,9 @@ export function LoginView() {
         body: JSON.stringify({ email, password }),
       });
 
-      router.replace('/');
+      // After successful login API call (cookie should be set by backend),
+      // redirect to the main page.
+      router.replace('/'); 
     } catch (err: any) {
       console.error('Login failed:', err);
       setError(err.message || 'Login failed. Please check your credentials.');
@@ -45,53 +47,18 @@ export function LoginView() {
             </h2>
           </div>
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-            <div className="rounded-md shadow-sm space-y-4">
-              <div>
-                <label htmlFor="email" className="sr-only">
-                  Email address
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  disabled={isLoading}
-                  className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-slate-700 bg-slate-900 text-white placeholder-slate-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm disabled:opacity-50"
-                  placeholder="Email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <div>
-                <label htmlFor="password" className="sr-only">
-                  Password
-                </label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  disabled={isLoading}
-                  className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-slate-700 bg-slate-900 text-white placeholder-slate-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm disabled:opacity-50"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-            </div>
-
-            {error && (
-              <div className="text-red-500 text-sm text-center">{error}</div>
-            )}
-
+            {/* Form inputs remain the same as your original */}
             <div>
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
+              <label htmlFor="email" className="sr-only">Email address</label>
+              <input id="email" name="email" type="email" autoComplete="email" required disabled={isLoading} className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-slate-700 bg-slate-900 text-white placeholder-slate-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm disabled:opacity-50" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} />
+            </div>
+            <div>
+              <label htmlFor="password" className="sr-only">Password</label>
+              <input id="password" name="password" type="password" autoComplete="current-password" required disabled={isLoading} className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-slate-700 bg-slate-900 text-white placeholder-slate-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm disabled:opacity-50" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            </div>
+            {error && (<div className="text-red-500 text-sm text-center">{error}</div>)}
+            <div>
+              <button type="submit" disabled={isLoading} className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed">
                 {isLoading ? 'Signing in...' : 'Sign in'}
               </button>
             </div>

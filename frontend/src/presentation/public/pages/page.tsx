@@ -1,7 +1,7 @@
 "use client"; // Required for useEffect and useState
 
 import React, { useEffect, useState, FC } from 'react'; // Added FC
-import Navbar from '@/presentation/public/components/layout/Navbar';
+import { Navbar } from '@/presentation/public/components/layout/Navbar';
 import { apiRequest } from '@/shared/utils/api';
 // Import existing section components - they will be refactored later
 import About from '@/presentation/public/components/sections/About';
