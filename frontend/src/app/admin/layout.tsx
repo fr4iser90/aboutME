@@ -16,11 +16,17 @@ import {
   SplitSquareHorizontal,
   X
 } from 'lucide-react';
-// ProjectEditor import is removed from here as pages will handle their main editor content.
-// The right sidebar will be dedicated to Copilot or other global tools.
+// ProjectEditor import is removed from here as the editor will be shown by the page in the main content area.
 import AdminContext from './AdminContext'; // Import the context
 import CopilotChat from './components/CopilotChat';
 import type { LLMContext } from '@/lib/llm-service';
+
+// Components for Spalte 2 (List Sidebar) when projects are active
+import { ProjectList } from '@/presentation/public/components/admin/ProjectList';
+import { ProjectImportPanel } from '@/presentation/public/components/admin/ProjectImportPanel';
+import { GitHubSyncButton } from '@/presentation/public/components/admin/GitHubSyncButton';
+import type { Project as DomainProject } from '@/domain/entities/Project';
+
 
 interface Tab {
   id: string;
@@ -248,14 +254,34 @@ export default function AdminLayout({
         </ScrollArea>
       </div>
 
-      {/* Column 2: List Sidebar (Placeholder for now) */}
-      <div className="w-64 border-r bg-muted/50 p-4 hidden md:block"> {/* Hidden on small screens for now */}
-        <h2 className="text-lg font-semibold mb-4">Context List</h2>
-        {/* Content here will be dynamic based on Spalte 1 selection */}
-        <p className="text-sm text-gray-500">e.g., Project List, Skill List</p>
+      {/* Column 2: List Sidebar (Dynamic Content) */}
+      <div className="w-72 border-r bg-muted/50 p-4 hidden md:flex md:flex-col space-y-4 overflow-y-auto"> {/* Increased width, flex-col */}
+        {activeTab === 'projects' && (
+          <>
+            <div>
+              <h2 className="text-lg font-semibold mb-2">Project Tools</h2>
+              <ProjectImportPanel />
+              <div className="mt-2">
+                <GitHubSyncButton />
+              </div>
+            </div>
+            <div className="flex-grow overflow-hidden"> {/* Allow ProjectList to scroll if content overflows */}
+              <h2 className="text-lg font-semibold my-2">Project List</h2>
+              <ScrollArea className="h-full"> {/* Ensure ScrollArea takes available height */}
+                <ProjectList onEditProject={(project) => handleSetSelectedProject(project as DomainProject)} viewMode="simple" />
+              </ScrollArea>
+            </div>
+          </>
+        )}
+        {activeTab !== 'projects' && (
+          <>
+            <h2 className="text-lg font-semibold mb-4">Context List</h2>
+            <p className="text-sm text-gray-500">Content for {activeTab} list...</p>
+          </>
+        )}
       </div>
 
-      {/* Column 3: Main Content Area (for page children) */}
+      {/* Column 3: Main Content Area (for page children, which will show editor) */}
       <div className="flex-1 flex flex-col overflow-hidden"> {/* Added overflow-hidden */}
         {/* Tabs */}
         <div className="border-b">
