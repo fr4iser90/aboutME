@@ -10,6 +10,7 @@ interface ProjectCardProps {
 }
 
 export const ProjectCard = ({ project }: ProjectCardProps) => {
+  const cardDesc = project.short_description || project.own_description || project.description;
   return (
     <Card className="flex flex-col h-full">
       {project.imageUrl && (
@@ -26,7 +27,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
         <h3 className="text-xl font-semibold">{project.title}</h3>
       </CardHeader>
       <CardContent className="flex-grow">
-        <p className="text-gray-600 dark:text-gray-300">{project.description}</p>
+        <p className="text-gray-600 dark:text-gray-300">{cardDesc}</p>
         <div className="mt-4 flex flex-wrap gap-2">
           {project.technologies?.map((tech) => (
             <Badge key={tech} variant="secondary">

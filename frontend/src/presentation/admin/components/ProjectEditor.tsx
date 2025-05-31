@@ -265,6 +265,12 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
 
         {formData.show_on_portfolio && (
           <div className="space-y-4 border-b border-purple-900 pb-4 mb-4">
+            <div className="mb-2">
+              <label className="block text-sm font-medium galaxy-text">Beschreibung (aus GitHub, nicht editierbar)</label>
+              <div className="text-gray-400 italic mt-1 bg-slate-900/40 rounded p-2">
+                {project?.description || 'Keine GitHub-Beschreibung vorhanden.'}
+              </div>
+            </div>
             <div className="grid grid-cols-2 gap-2 mb-4">
               {Object.entries(fieldsVisibility).map(([field, visible]) => (
                 <label key={field} className="flex items-center space-x-2 text-sm galaxy-text">
