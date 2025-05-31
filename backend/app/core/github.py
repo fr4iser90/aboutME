@@ -77,7 +77,15 @@ def create_project_from_repo(repo: Dict[str, Any], github_token=None) -> Dict[st
     """Create a project from a GitHub repository."""
     owner = repo["owner"]["login"]
     repo_name = repo["name"]
+    
+    # Log primary language
+    primary_language = repo.get("language")
+    logger.info(f"Creating project from repo {repo_name} - Primary language: {primary_language}")
+    
+    # Fetch and log languages map
     languages_map = fetch_languages(owner, repo_name, github_token)
+    logger.info(f"Languages map for {repo_name}: {languages_map}")
+    
     return {
         "name": repo["name"],
         "description": repo.get("description", ""),

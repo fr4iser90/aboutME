@@ -1,7 +1,7 @@
 from datetime import datetime
 from sqlalchemy.orm import Session
 from app.domain.models.project import Project
-from app.core.github import fetch_user_repositories
+from app.core.github import fetch_user_repositories, fetch_languages
 from app.core.gitlab import fetch_user_repositories as fetch_gitlab_repositories
 import logging
 from typing import List
@@ -42,7 +42,23 @@ class SyncService:
                 status = "WIP"
                 
             logger.info(f"Repository {repo.get('name', '')} is {status} on {source_type} (archived: {is_archived}, has_release: {has_release}, is_prerelease: {is_prerelease})")
-                
+            
+            # Log language information
+            primary_language = repo.get("language")
+            logger.info(f"Repository {repo.get('name', '')} primary language: {primary_language}")
+            
+            # Get languages map from GitHub API
+            languages_map = {}
+            if source_type == "github":
+                owner = repo.get("owner", {}).get("login")
+                repo_name = repo.get("name")
+                if owner and repo_name:
+                    try:
+                        languages_map = fetch_languages(owner, repo_name)
+                        logger.info(f"Repository {repo_name} languages map: {languages_map}")
+                    except Exception as e:
+                        logger.error(f"Failed to fetch languages for {repo_name}: {str(e)}")
+            
             # GitHub/GitLab liefert topics als Liste, das ist genau was wir brauchen
             topics = repo.get("topics", []) or []
             
@@ -68,7 +84,23 @@ class SyncService:
                     "license": repo.get("license", {}).get("name") if repo.get("license") else None,
                     "size": repo.get("size"),
                     "has_wiki": repo.get("has_wiki", False),
-                    "has_pages": repo.get("has_pages", False)
+                    "has_pages": repo.get("has_pages", False),
+                    "languages_map": languages_map,
+                    "fields_visibility": {
+                        "title": True,
+                        "description": True,
+                        "imageUrl": True,
+                        "githubUrl": True,
+                        "liveUrl": True,
+                        "technologies": True,
+                        "status": True,
+                        "language": True,
+                        "topics": True,
+                        "starsCount": True,
+                        "forksCount": True,
+                        "watchersCount": True,
+                        "homepageUrl": True
+                    }
                 },
                 display_order=0,
                 is_visible=True,

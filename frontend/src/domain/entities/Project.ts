@@ -21,7 +21,7 @@ export interface Project {
 }
 
 export interface ProjectDetails {
-  languages_map?: { [key: string]: boolean };
+  languages_map?: { [key: string]: number }; // Changed from boolean to number to match GitHub API response
   fields_visibility?: { [key: string]: boolean };
   // Add any other known properties that might exist in the 'details' JSONB field
   // For example, if you store other specific structured data there.

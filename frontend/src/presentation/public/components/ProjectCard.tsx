@@ -34,6 +34,15 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
             </Badge>
           ))}
         </div>
+        {project.details?.languages_map && Object.keys(project.details.languages_map).length > 0 && (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {Object.keys(project.details.languages_map).map((lang) => (
+              <Badge key={lang} variant="outline" className="bg-blue-900/30 text-blue-300">
+                {lang}
+              </Badge>
+            ))}
+          </div>
+        )}
       </CardContent>
       <CardFooter className="flex gap-2">
         {project.githubUrl && (

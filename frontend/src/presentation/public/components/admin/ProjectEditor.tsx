@@ -32,25 +32,6 @@ interface ProjectEditorProps {
 }
 
 export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps) {
-  const [formData, setFormData] = useState<ProjectFormData>({
-    id: undefined,
-    title: '',
-    description: '',
-    imageUrl: '',
-    githubUrl: '',
-    liveUrl: '',
-    technologies: [],
-    status: 'WIP',
-    language: '',
-    topics: [],
-    starsCount: 0,
-    forksCount: 0,
-    watchersCount: 0,
-    homepageUrl: '',
-    createdAt: new Date().toISOString(), // Default for new project
-    updatedAt: new Date().toISOString(), // Default for new project
-  });
-  const [newTech, setNewTech] = useState('');
   // defaultVisibility keys should match ProjectFormData (camelCase)
   const defaultVisibility = {
     title: true,
@@ -67,10 +48,39 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
     watchersCount: true,
     homepageUrl: true,
   };
+
+  const [formData, setFormData] = useState<ProjectFormData>({
+    id: undefined,
+    title: '',
+    description: '',
+    imageUrl: '',
+    githubUrl: '',
+    liveUrl: '',
+    technologies: [],
+    status: 'WIP',
+    topics: [],
+    starsCount: 0,
+    forksCount: 0,
+    watchersCount: 0,
+    homepageUrl: '',
+    createdAt: new Date().toISOString(), // Default for new project
+    updatedAt: new Date().toISOString(), // Default for new project
+    details: {
+      languages_map: {},
+      fields_visibility: defaultVisibility
+    }
+  });
+  const [newTech, setNewTech] = useState('');
   const [fieldsVisibility, setFieldsVisibility] = useState<{ [key: string]: boolean }>(defaultVisibility);
 
   useEffect(() => {
     if (project) {
+      // Use the languages_map from project details if it exists, otherwise create from single language
+      const languagesMap = project.details?.languages_map || (project.language ? { [project.language]: 0 } : {});
+      
+      console.log('Loading project:', project);
+      console.log('Languages map:', languagesMap);
+      
       setFormData({
         id: project.id,
         title: project.title, 
@@ -80,7 +90,6 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
         liveUrl: project.liveUrl || '',       
         technologies: project.technologies || [],
         status: project.status || 'WIP',
-        language: project.language || '',
         topics: project.topics || [],
         starsCount: project.starsCount || 0,
         forksCount: project.forksCount || 0,
@@ -88,11 +97,35 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
         homepageUrl: project.homepageUrl || '',
         createdAt: project.createdAt ? (project.createdAt instanceof Date ? project.createdAt.toISOString() : project.createdAt) : new Date().toISOString(),
         updatedAt: project.updatedAt ? (project.updatedAt instanceof Date ? project.updatedAt.toISOString() : project.updatedAt) : new Date().toISOString(),
-        details: project.details || {}, // Removed 'as any'
+        details: {
+          ...project.details,
+          languages_map: languagesMap
+        }
       });
-      const initialVisibility = project.details?.fields_visibility || {}; // Removed 'as any'
+      const initialVisibility = project.details?.fields_visibility || {};
       setFieldsVisibility({ ...defaultVisibility, ...initialVisibility });
     } else {
+      setFormData({
+        id: undefined,
+        title: '',
+        description: '',
+        imageUrl: '',
+        githubUrl: '',
+        liveUrl: '',
+        technologies: [],
+        status: 'WIP',
+        topics: [],
+        starsCount: 0,
+        forksCount: 0,
+        watchersCount: 0,
+        homepageUrl: '',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        details: {
+          languages_map: {},
+          fields_visibility: defaultVisibility
+        }
+      });
       setFieldsVisibility(defaultVisibility);
     }
   }, [project]);
@@ -275,14 +308,54 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
         </div>
 
         <div>
-          <label htmlFor="language" className="block text-sm font-medium galaxy-text">Language</label>
+          <label htmlFor="languages" className="block text-sm font-medium galaxy-text">
+            Languages (comma separated)
+          </label>
           <input
             type="text"
-            id="language"
-            value={formData.language}
-            onChange={e => setFormData({ ...formData, language: e.target.value })}
+            id="languages"
+            value={Object.keys(formData.details?.languages_map || {}).join(', ')}
+            onChange={(e) => {
+              const languages = e.target.value.split(',').map(lang => lang.trim()).filter(Boolean);
+              const newLanguagesMap = { ...formData.details?.languages_map };
+              
+              // Remove languages that are no longer in the list
+              Object.keys(newLanguagesMap).forEach(lang => {
+                if (!languages.includes(lang)) {
+                  delete newLanguagesMap[lang];
+                }
+              });
+              
+              // Add new languages with 0 bytes if they don't exist
+              languages.forEach(lang => {
+                if (!newLanguagesMap[lang]) {
+                  newLanguagesMap[lang] = 0;
+                }
+              });
+              
+              setFormData({
+                ...formData,
+                details: {
+                  ...formData.details,
+                  languages_map: newLanguagesMap
+                }
+              });
+            }}
             className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+            placeholder="e.g., TypeScript, Python, Rust"
           />
+          {/* Display language badges with byte counts */}
+          <div className="mt-2 flex flex-wrap gap-2">
+            {formData.details?.languages_map && Object.entries(formData.details.languages_map).map(([lang, bytes]) => (
+              <span
+                key={lang}
+                className="px-2 py-1 text-xs rounded-full bg-blue-900/30 text-blue-700"
+                title={`${lang}: ${bytes} bytes`}
+              >
+                {lang}
+              </span>
+            ))}
+          </div>
         </div>
 
         <div>
@@ -336,16 +409,6 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
           ))}
         </div>
 
-        {formData.details?.languages_map && Object.keys(formData.details.languages_map).length > 0 && (
-          <div className="mt-2 flex flex-wrap gap-2">
-            {Object.keys(formData.details.languages_map).map((lang) => (
-              <span key={lang} className="px-2 py-1 rounded bg-blue-900/30 text-blue-300 text-xs">
-                {lang}
-              </span>
-            ))}
-          </div>
-        )}
-
         <div className="flex justify-end space-x-4">
           <button
             type="button"
@@ -383,15 +446,6 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
           watchersCount: fieldsVisibility.watchersCount ? formData.watchersCount : undefined, 
           homepageUrl: fieldsVisibility.homepageUrl ? formData.homepageUrl : undefined,
         } as DomainProject} /> 
-        {formData.details?.languages_map && Object.keys(formData.details.languages_map).length > 0 && (
-          <div className="mt-2 flex flex-wrap gap-2">
-            {Object.keys(formData.details.languages_map).map((lang) => (
-              <span key={lang} className="px-2 py-1 rounded bg-blue-900/30 text-blue-300 text-xs">
-                {lang}
-              </span>
-            ))}
-          </div>
-        )}
       </div>
     </div>
   );
