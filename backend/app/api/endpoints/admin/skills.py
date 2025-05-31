@@ -18,7 +18,7 @@ def get_skill_service(db: Session = Depends(get_db)) -> SkillService:
     repository = SQLAlchemySkillRepository(db)
     return SkillService(repository)
 
-@router.get("/", response_model=List[Skill])
+@router.get("/", response_model=List[Skill], response_model_by_alias=True)
 def list_skills(
     skill_service: SkillService = Depends(get_skill_service),
     current_user: User = Depends(get_current_user)
@@ -26,7 +26,7 @@ def list_skills(
     """List all skills (admin only)"""
     return skill_service.list_skills()
 
-@router.get("/category/{category}", response_model=List[Skill])
+@router.get("/category/{category}", response_model=List[Skill], response_model_by_alias=True)
 def list_skills_by_category(
     category: str,
     skill_service: SkillService = Depends(get_skill_service),
@@ -35,7 +35,7 @@ def list_skills_by_category(
     """List skills by category (admin only)"""
     return skill_service.list_skills_by_category(category)
 
-@router.post("/", response_model=Skill)
+@router.post("/", response_model=Skill, response_model_by_alias=True)
 def create_skill(
     skill: SkillCreate,
     skill_service: SkillService = Depends(get_skill_service),
@@ -45,7 +45,7 @@ def create_skill(
     domain_skill = Skill(**skill.dict())
     return skill_service.create_skill(domain_skill)
 
-@router.put("/{skill_id}", response_model=Skill)
+@router.put("/{skill_id}", response_model=Skill, response_model_by_alias=True)
 def update_skill(
     skill_id: int,
     skill: SkillUpdate,
@@ -70,7 +70,7 @@ def delete_skill(
         raise HTTPException(status_code=404, detail="Skill not found")
     return {"status": "success"}
 
-@router.put("/{skill_id}/reorder/{new_order}", response_model=Skill)
+@router.put("/{skill_id}/reorder/{new_order}", response_model=Skill, response_model_by_alias=True)
 def reorder_skill(
     skill_id: int,
     new_order: int,
@@ -81,4 +81,4 @@ def reorder_skill(
     updated = skill_service.reorder_skill(skill_id, new_order)
     if not updated:
         raise HTTPException(status_code=404, detail="Skill not found")
-    return updated 
+    return updated

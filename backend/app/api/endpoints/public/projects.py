@@ -12,14 +12,14 @@ def get_project_service(db: Session = Depends(get_db)) -> ProjectService:
     repository = SQLAlchemyProjectRepository(db)
     return ProjectService(repository)
 
-@router.get("/", response_model=List[schemas.Project])
+@router.get("/", response_model=List[schemas.Project], response_model_by_alias=True)
 async def list_visible_projects(
     project_service: ProjectService = Depends(get_project_service)
 ):
     """Get all visible projects"""
     return await project_service.get_visible_projects()
 
-@router.get("/{project_id}", response_model=schemas.Project)
+@router.get("/{project_id}", response_model=schemas.Project, response_model_by_alias=True)
 async def get_project(
     project_id: int,
     project_service: ProjectService = Depends(get_project_service)
@@ -28,4 +28,4 @@ async def get_project(
     project = await project_service.get_visible_project(project_id)
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
-    return project 
+    return project

@@ -516,11 +516,11 @@ pkgs.mkShell {
       echo "$port"
     }
     
-    get-frontend-tree() {
+    tree-frontend() {
       tree frontend -I 'node_modules|.next|.swc|dist|build' # Corrected path, added common build dirs
     }
 
-    get-backend-tree() {
+    tree-backend() {
       tree backend -I '__pycache__|.pytest_cache|.venv|dist|build' # Corrected path, added common build/venv dirs
     }   
 

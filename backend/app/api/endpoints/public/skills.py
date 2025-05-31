@@ -12,7 +12,7 @@ def get_skill_service(db: Session = Depends(get_db)) -> SkillService:
     repository = SQLAlchemySkillRepository(db)
     return SkillService(repository)
 
-@router.get("/", response_model=List[schemas.Skill])
+@router.get("/", response_model=List[schemas.Skill], response_model_by_alias=True)
 async def list_skills(
     skill_service: SkillService = Depends(get_skill_service)
 ):
@@ -24,4 +24,4 @@ async def list_skill_categories(
     skill_service: SkillService = Depends(get_skill_service)
 ):
     """Get all skill categories"""
-    return await skill_service.get_skill_categories() 
+    return await skill_service.get_skill_categories()

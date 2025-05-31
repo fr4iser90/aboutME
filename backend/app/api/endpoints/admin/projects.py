@@ -12,14 +12,14 @@ from app.api import deps
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
-@router.get("/", response_model=List[schemas.Project])
+@router.get("/", response_model=List[schemas.Project], response_model_by_alias=True)
 async def get_projects(
     db: Session = Depends(deps.get_db),
     project_service: ProjectService = Depends(deps.get_project_service)
 ):
     return await project_service.get_all_projects()
 
-@router.post("/", response_model=schemas.Project)
+@router.post("/", response_model=schemas.Project, response_model_by_alias=True)
 async def create_project(
     project: schemas.ProjectCreate,
     db: Session = Depends(deps.get_db),
@@ -27,7 +27,7 @@ async def create_project(
 ):
     return await project_service.create_project(project)
 
-@router.get("/{project_id}", response_model=schemas.Project)
+@router.get("/{project_id}", response_model=schemas.Project, response_model_by_alias=True)
 async def get_project(
     project_id: int,
     db: Session = Depends(deps.get_db),
@@ -38,7 +38,7 @@ async def get_project(
         raise HTTPException(status_code=404, detail="Project not found")
     return project
 
-@router.put("/{project_id}", response_model=schemas.Project)
+@router.put("/{project_id}", response_model=schemas.Project, response_model_by_alias=True)
 async def update_project(
     project_id: int,
     project: schemas.ProjectUpdate,
@@ -76,7 +76,7 @@ async def import_gitlab_projects(
 ):
     return await project_service.import_gitlab_projects(projects_data)
 
-@router.post("/import/manual", response_model=List[schemas.Project])
+@router.post("/import/manual", response_model=List[schemas.Project], response_model_by_alias=True)
 async def import_manual_projects(
     projects_data: List[schemas.ManualProjectImport],
     db: Session = Depends(deps.get_db),
@@ -109,4 +109,4 @@ async def import_manual_projects(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to import manual projects: {str(e)}"
-        ) 
+        )

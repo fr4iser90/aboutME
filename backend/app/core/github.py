@@ -62,8 +62,22 @@ def fetch_user_repositories(username: str) -> List[Dict[str, Any]]:
     return repos
 
 
-def create_project_from_repo(repo: Dict[str, Any]) -> Dict[str, Any]:
+def fetch_languages(owner: str, repo: str, github_token=None):
+    url = f"{GITHUB_API_URL}/repos/{owner}/{repo}/languages"
+    headers = {}
+    if github_token:
+        headers["Authorization"] = f"token {github_token}"
+    resp = requests.get(url, headers=headers)
+    if resp.ok:
+        return resp.json()  # Dict: { "Python": 12345, "Shell": 234 }
+    return {}
+
+
+def create_project_from_repo(repo: Dict[str, Any], github_token=None) -> Dict[str, Any]:
     """Create a project from a GitHub repository."""
+    owner = repo["owner"]["login"]
+    repo_name = repo["name"]
+    languages_map = fetch_languages(owner, repo_name, github_token)
     return {
         "name": repo["name"],
         "description": repo.get("description", ""),
@@ -79,7 +93,8 @@ def create_project_from_repo(repo: Dict[str, Any]) -> Dict[str, Any]:
             "has_wiki": repo.get("has_wiki", False),
             "has_pages": repo.get("has_pages", False),
             "default_branch": repo.get("default_branch"),
-            "open_issues": repo.get("open_issues_count", 0)
+            "open_issues": repo.get("open_issues_count", 0),
+            "languages_map": languages_map,
         },
         "stars_count": repo.get("stargazers_count", 0),
         "forks_count": repo.get("forks_count", 0),
