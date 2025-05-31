@@ -12,8 +12,8 @@ CREATE TABLE IF NOT EXISTS site_owner (
     email VARCHAR(255) UNIQUE NOT NULL,
     hashed_password VARCHAR(255) NOT NULL,
     source_username VARCHAR(255), -- Optional: For GitHub/GitLab integration if the owner links their account
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 -- THEMES
@@ -27,8 +27,8 @@ CREATE TABLE IF NOT EXISTS themes (
     custom_js TEXT,
     is_active BOOLEAN DEFAULT TRUE,
     is_default BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 -- SECTIONS
@@ -43,8 +43,8 @@ CREATE TABLE IF NOT EXISTS sections (
     is_visible BOOLEAN DEFAULT TRUE, -- Whether this section type is available for use
     theme_id INTEGER REFERENCES themes(id) ON DELETE SET NULL, -- Optional: a default theme association
     section_metadata JSONB,         -- Additional metadata about the section type
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 -- PROJECTS
@@ -55,23 +55,27 @@ CREATE TABLE IF NOT EXISTS projects (
     description TEXT,
     status VARCHAR(50) DEFAULT 'WIP' CHECK (status IN ('ACTIVE', 'WIP', 'ARCHIVED', 'DEPRECATED')),
     source_type VARCHAR(50) DEFAULT 'manual' CHECK (source_type IN ('manual', 'github', 'gitlab')),
-    source_username VARCHAR(255), -- Corresponds to site_owner.source_username if projects are synced
+    source_username VARCHAR(255),
     source_repo VARCHAR(255),
     source_url VARCHAR(255),
     live_url VARCHAR(255),
+    homepage_url VARCHAR(255),
     thumbnail_url VARCHAR(255),
-    details JSONB,
     display_order INTEGER DEFAULT 0,
     is_visible BOOLEAN DEFAULT TRUE,
+    show_on_portfolio BOOLEAN DEFAULT TRUE,
     stars_count INTEGER DEFAULT 0,
     forks_count INTEGER DEFAULT 0,
     watchers_count INTEGER DEFAULT 0,
+    open_issues_count INTEGER DEFAULT 0,
     language VARCHAR(50),
     topics TEXT[],
-    last_updated TIMESTAMP WITH TIME ZONE,
-    homepage_url VARCHAR(255),
-    open_issues_count INTEGER DEFAULT 0,
     default_branch VARCHAR(50),
+    last_updated TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+    -- 📄 Beschreibungen
     own_description TEXT,
     short_description TEXT,
     highlight TEXT,
@@ -79,12 +83,141 @@ CREATE TABLE IF NOT EXISTS projects (
     challenges TEXT,
     role TEXT,
     custom_tags TEXT[],
-    show_on_portfolio BOOLEAN DEFAULT TRUE,
+    use_own_description BOOLEAN DEFAULT FALSE,
+    use_short_description BOOLEAN DEFAULT FALSE,
+
+    -- 📽 Medien
+    video_url VARCHAR(255),
+    video_host VARCHAR(50),
+    gallery_urls TEXT[],
+    gif_urls TEXT[],
+
+    -- 🧠 Inhalte für Modal
+    testimonials TEXT[],
+    deployment_notes TEXT,
+    achievements TEXT[],
+    duration TEXT,
+    timeline JSONB,
+    releases JSONB,
+    changelog TEXT,
+
+    -- 🔧 Technik & Details
+    tech_stack JSONB,
+    ci_tools TEXT[],
+    uptime_percentage NUMERIC(5,2),
+    bug_count INTEGER,
+    analytics JSONB,
+
+    -- 👥 Beteiligung
+    is_open_source BOOLEAN DEFAULT FALSE,
+    contribution_notes TEXT,
+    owner_type TEXT,
+    partners TEXT[],
+    sponsors TEXT[],
     team TEXT[],
-    screenshots TEXT[],
-    links JSONB,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    team_roles JSONB,
+
+    -- 🌍 Internationalisierung
+    translations JSONB,
+
+    -- 🔗 Weitere
+    related_projects TEXT[],
+    demo_credentials JSONB,
+    roadmap JSONB,
+    license TEXT,
+    blog_url VARCHAR(255),
+
+    -- 🎨 UI Konfiguration
+    ui_config JSONB DEFAULT '{}'::jsonb  -- Speichert UI-spezifische Einstellungen wie Sichtbarkeit von Feldern
+);
+
+-- POSTS
+-- Flexible table for all types of blog posts (project updates, general posts, etc.)
+CREATE TABLE IF NOT EXISTS posts (
+    id SERIAL PRIMARY KEY,
+    type VARCHAR(50) NOT NULL DEFAULT 'general' CHECK (type IN ('general', 'project', 'update', 'tutorial', 'news', 'review', 'interview', 'case-study')),
+    project_id INTEGER REFERENCES projects(id) ON DELETE SET NULL, -- Optional: Link to a project
+    section_id INTEGER REFERENCES sections(id) ON DELETE SET NULL, -- Optional: Link to a section
+    
+    -- 📝 Basic Content
+    slug VARCHAR(255) UNIQUE NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    subtitle TEXT,
+    content_markdown TEXT,
+    excerpt TEXT, -- Short summary for previews
+    
+    -- 🖼 Media
+    cover_image_url VARCHAR(255),
+    cover_image_alt TEXT,
+    gallery_urls TEXT[],
+    video_url VARCHAR(255),
+    video_host VARCHAR(50),
+    audio_url VARCHAR(255),
+    audio_duration INTEGER, -- Duration in seconds
+    audio_transcript TEXT, -- For accessibility
+    
+    -- 📊 SEO & Stats
+    seo_title VARCHAR(255),
+    seo_description TEXT,
+    seo_keywords TEXT[],
+    reading_time INTEGER, -- Estimated reading time in minutes
+    view_count INTEGER DEFAULT 0,
+    like_count INTEGER DEFAULT 0,
+    comment_count INTEGER DEFAULT 0,
+    
+    -- 🏷 Organization
+    author TEXT,
+    tags TEXT[],
+    categories TEXT[],
+    series TEXT, -- For multi-part posts
+    related_posts INTEGER[], -- References to other posts
+    
+    -- 📅 Publishing
+    published_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    is_published BOOLEAN DEFAULT TRUE,
+    is_featured BOOLEAN DEFAULT FALSE,
+    is_pinned BOOLEAN DEFAULT FALSE,
+    
+    -- 🌍 Internationalization
+    language VARCHAR(10) DEFAULT 'en',
+    translations JSONB, -- Store translations for other languages
+    
+    -- 🔒 Access Control
+    is_private BOOLEAN DEFAULT FALSE,
+    access_level VARCHAR(20) DEFAULT 'public' CHECK (access_level IN ('public', 'private', 'premium')),
+    
+    -- 📈 Analytics
+    analytics JSONB, -- Store additional analytics data
+    
+    -- 🎨 Customization
+    custom_css TEXT,
+    custom_js TEXT,
+    layout_variant VARCHAR(50) DEFAULT 'default',
+    
+    -- 📚 Tutorial Specific
+    difficulty_level VARCHAR(20) CHECK (difficulty_level IN ('beginner', 'intermediate', 'advanced', 'expert')),
+    estimated_completion_time INTEGER, -- In minutes
+    prerequisites TEXT[], -- Required knowledge/skills
+    learning_objectives TEXT[], -- What will be learned
+    resources JSONB, -- Additional resources, links, downloads
+    
+    -- 📝 Content Management
+    revision_history JSONB, -- Track changes and versions
+    last_reviewed_at TIMESTAMPTZ,
+    last_reviewed_by TEXT,
+    content_status VARCHAR(20) DEFAULT 'draft' CHECK (content_status IN ('draft', 'review', 'approved', 'published', 'archived')),
+    
+    -- 🎯 Engagement
+    target_audience TEXT[],
+    engagement_metrics JSONB, -- Store likes, shares, comments details
+    feedback JSONB, -- Store user feedback and ratings
+    
+    -- 🔄 Workflow
+    assigned_to TEXT,
+    review_notes TEXT,
+    publication_schedule TIMESTAMPTZ,
+    expiration_date TIMESTAMPTZ
 );
 
 -- SKILLS
@@ -96,8 +229,8 @@ CREATE TABLE IF NOT EXISTS skills (
     items JSONB NOT NULL,
     display_order INTEGER NOT NULL DEFAULT 0,
     is_visible BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 -- OWNER PAGE LAYOUTS

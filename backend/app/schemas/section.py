@@ -1,5 +1,5 @@
 from typing import Optional, Dict, Any, Union, List
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime
 
 
@@ -23,29 +23,20 @@ class SectionBase(BaseModel):
     title: str
     type: str
     content: Optional[Dict[str, Any]] = None
-    order: int = 0
+    display_order: int = 0
     is_visible: bool = True
-    section_metadata: Optional[Dict[str, Any]] = Field(
-        default=None,
-        description="Additional metadata like background image, layout variant",
-    )
+    theme_id: Optional[int] = None
+    section_metadata: Optional[Dict[str, Any]] = None
 
 
 class SectionCreate(SectionBase):
     pass
 
 
-class SectionUpdate(BaseModel):
+class SectionUpdate(SectionBase):
     name: Optional[str] = None
     title: Optional[str] = None
     type: Optional[str] = None
-    content: Optional[Dict[str, Any]] = None
-    order: Optional[int] = None
-    is_visible: Optional[bool] = None
-    section_metadata: Optional[Dict[str, Any]] = None
-
-    class Config:
-        from_attributes = True
 
 
 class Section(SectionBase):
@@ -53,5 +44,4 @@ class Section(SectionBase):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

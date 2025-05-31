@@ -44,3 +44,122 @@ INSERT INTO themes (name, description, style_properties, is_default) VALUES
 -- Beispiel (NICHT FÜR PRODUKTION MIT KLARTEXTPASSWORT):
 -- INSERT INTO site_owner (id, email, hashed_password, source_username) VALUES
 --   ('me', 'admin@example.com', 'your_securely_hashed_password_here', 'your_github_username');
+
+-- Beispiel-Posts für verschiedene Content-Typen
+INSERT INTO posts (
+    type, project_id, title, slug, subtitle, content_markdown, excerpt,
+    cover_image_url, tags, categories, is_published, is_featured,
+    difficulty_level, estimated_completion_time, prerequisites,
+    learning_objectives, resources, content_status
+) VALUES
+    -- Projekt-Roadmap
+    ('project', 1, '2D Multiplayer Framework Roadmap', '2d-multiplayer-framework-roadmap',
+    'Die Zukunft unseres Open-Source Multiplayer-Frameworks',
+    '# Roadmap 2024
+
+## Q1: Foundation
+- [x] Basis-Netzwerk-Architektur
+- [ ] KI-Integration für Spieler-Matching
+- [ ] Dynamische Config-Generierung
+
+## Q2: Features
+- [ ] In-Game Chat System
+- [ ] Spieler-Statistiken
+- [ ] Custom Game Modes
+
+## Q3: Performance
+- [ ] Optimierung der Netzwerk-Latenz
+- [ ] Server-Scaling
+- [ ] Load Balancing
+
+## Q4: Community
+- [ ] Dokumentation
+- [ ] Beispiel-Spiele
+- [ ] Community-Tools',
+    'Eine detaillierte Roadmap für die Entwicklung des 2D Multiplayer Frameworks',
+    'https://example.com/roadmap-cover.jpg',
+    ARRAY['roadmap', 'gaming', 'open-source', 'networking'],
+    ARRAY['development', 'planning'],
+    TRUE, TRUE,
+    NULL, NULL, NULL,
+    NULL,
+    '{"github": "https://github.com/fr4iser90/2d-multiplayer-framework",
+      "discord": "https://discord.gg/2d-multiplayer",
+      "milestones": [
+        {"title": "Alpha Release", "date": "2024-03-01"},
+        {"title": "Beta Release", "date": "2024-06-01"},
+        {"title": "1.0 Release", "date": "2024-09-01"}
+      ]}',
+    'published'
+    ),
+
+    -- Tutorial
+    ('tutorial', 2, 'NixOS Control Center Setup', 'nixos-control-center-tutorial',
+    'Wie du das NixOS Control Center in deinem Homelab einrichtest',
+    '# NixOS Control Center Tutorial
+
+## Voraussetzungen
+- NixOS System
+- Docker
+- Port 8080 frei
+
+## Installation
+1. Clone das Repository
+2. Konfiguriere die Umgebungsvariablen
+3. Starte mit Docker Compose
+
+## Konfiguration
+- Hardware-Checks einrichten
+- Backup-Strategie planen
+- Monitoring aktivieren',
+    'Ein Schritt-für-Schritt Guide zur Installation des NixOS Control Centers',
+    'https://example.com/nixos-tutorial.jpg',
+    ARRAY['nixos', 'homelab', 'tutorial', 'docker'],
+    ARRAY['system-administration', 'devops'],
+    TRUE, FALSE,
+    'intermediate', 45,
+    ARRAY['Linux Basics', 'Docker Grundlagen', 'NixOS Grundkenntnisse'],
+    ARRAY['NixOS Control Center installieren', 'Docker Compose verstehen', 'Backup-Strategien planen'],
+    '{"github": "https://github.com/fr4iser90/NixOSControlCenter",
+      "docker": "https://hub.docker.com/r/fr4iser/nixos-control-center",
+      "docs": "https://docs.nixos-control-center.example.com"}',
+    'published'
+    ),
+
+    -- Case Study
+    ('case-study', 1, 'KI-Integration in Multiplayer-Spiele', 'ai-multiplayer-case-study',
+    'Wie wir KI nutzen, um besseres Spieler-Matching zu ermöglichen',
+    '# Case Study: KI im Multiplayer
+
+## Herausforderung
+- Unausgewogene Teams
+- Lange Wartezeiten
+- Schlechte Spielerfahrung
+
+## Lösung
+- KI-basiertes Matchmaking
+- Skill-basierte Team-Bildung
+- Dynamische Anpassung
+
+## Ergebnisse
+- 40% kürzere Wartezeiten
+- 60% bessere Team-Balance
+- 85% zufriedenere Spieler',
+    'Eine detaillierte Analyse unserer KI-Integration im Multiplayer Framework',
+    'https://example.com/ai-case-study.jpg',
+    ARRAY['ai', 'gaming', 'case-study', 'machine-learning'],
+    ARRAY['research', 'implementation'],
+    TRUE, TRUE,
+    NULL, NULL, NULL,
+    NULL,
+    '{"metrics": {
+        "wait_time_reduction": "40%",
+        "team_balance_improvement": "60%",
+        "player_satisfaction": "85%"
+      },
+      "charts": [
+        "https://example.com/charts/wait-time.png",
+        "https://example.com/charts/team-balance.png"
+      ]}',
+    'published'
+    );
