@@ -22,6 +22,9 @@ export const config = {
       base: '/api/admin/projects',
       import: (source: string) => `/api/admin/projects/import/${source}`,
     },
+    sections: {
+      base: '/api/admin/sections',
+    },
     llm: {
       generateContent: (model: string) => `/models/${model}:generateContent`,
       embedContent: (model: string) => `/models/${model}:embedContent`,
