@@ -22,6 +22,18 @@ interface ProjectFormData {
   createdAt: string | Date;
   updatedAt: string | Date;
   details?: ProjectDetails;
+  // Custom fields
+  own_description?: string;
+  short_description?: string;
+  highlight?: string;
+  learnings?: string;
+  challenges?: string;
+  role?: string;
+  custom_tags?: string[];
+  show_on_portfolio?: boolean;
+  team?: string[];
+  screenshots?: string[];
+  links?: { [key: string]: string };
 }
 
 interface ProjectEditorProps {
@@ -31,6 +43,8 @@ interface ProjectEditorProps {
 }
 
 export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps) {
+  console.log('ProjectEditor - project data:', project);
+  console.log('ProjectEditor - project.sourceType:', project?.sourceType);
   // defaultVisibility keys should match ProjectFormData (camelCase)
   const defaultVisibility = {
     title: true,
@@ -67,7 +81,18 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
     details: {
       languages_map: {},
       fields_visibility: defaultVisibility
-    }
+    },
+    own_description: '',
+    short_description: '',
+    highlight: '',
+    learnings: '',
+    challenges: '',
+    role: '',
+    custom_tags: [],
+    show_on_portfolio: true,
+    team: [],
+    screenshots: [],
+    links: {},
   });
   const [newTech, setNewTech] = useState('');
   const [fieldsVisibility, setFieldsVisibility] = useState<{ [key: string]: boolean }>(defaultVisibility);
@@ -95,7 +120,18 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
         details: {
           ...project.details,
           languages_map: languagesMap
-        }
+        },
+        own_description: project.own_description || '',
+        short_description: project.short_description || '',
+        highlight: project.highlight || '',
+        learnings: project.learnings || '',
+        challenges: project.challenges || '',
+        role: project.role || '',
+        custom_tags: project.custom_tags || [],
+        show_on_portfolio: typeof project.show_on_portfolio === 'boolean' ? project.show_on_portfolio : true,
+        team: project.team || [],
+        screenshots: project.screenshots || [],
+        links: project.links || {},
       });
       const initialVisibility = project.details?.fields_visibility || {};
       setFieldsVisibility({ ...defaultVisibility, ...initialVisibility });
@@ -119,7 +155,18 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
         details: {
           languages_map: {},
           fields_visibility: defaultVisibility
-        }
+        },
+        own_description: '',
+        short_description: '',
+        highlight: '',
+        learnings: '',
+        challenges: '',
+        role: '',
+        custom_tags: [],
+        show_on_portfolio: true,
+        team: [],
+        screenshots: [],
+        links: {},
       });
       setFieldsVisibility(defaultVisibility);
     }
@@ -183,196 +230,130 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
       {/* Editor (links) */}
       <form onSubmit={handleSubmit} className="space-y-4 flex-1">
         <div>
-          <label htmlFor="title" className="block text-sm font-medium galaxy-text">
-            Title
-          </label>
+          <label htmlFor="show_on_portfolio" className="block text-sm font-medium galaxy-text">Auf Portfolio anzeigen</label>
           <input
-            type="text"
-            id="title"
-            value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
-            required
+            type="checkbox"
+            id="show_on_portfolio"
+            checked={formData.show_on_portfolio}
+            onChange={e => setFormData({ ...formData, show_on_portfolio: e.target.checked })}
+            className="form-checkbox text-purple-500 ml-2"
           />
         </div>
 
-        <div>
-          <label htmlFor="description" className="block text-sm font-medium galaxy-text">
-            Description
-          </label>
-          <textarea
-            id="description"
-            value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            rows={3}
-            className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="imageUrl" className="block text-sm font-medium galaxy-text">
-            Image URL
-          </label>
-          <input
-            type="url"
-            id="imageUrl"
-            value={formData.imageUrl}
-            onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-            className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="githubUrl" className="block text-sm font-medium galaxy-text">
-            GitHub URL
-          </label>
-          <input
-            type="url"
-            id="githubUrl"
-            value={formData.githubUrl}
-            onChange={(e) => setFormData({ ...formData, githubUrl: e.target.value })}
-            className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="liveUrl" className="block text-sm font-medium galaxy-text">
-            Demo URL
-          </label>
-          <input
-            type="url"
-            id="liveUrl"
-            value={formData.liveUrl}
-            onChange={(e) => setFormData({ ...formData, liveUrl: e.target.value })}
-            className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium galaxy-text">Technologies</label>
-          <div className="mt-1 flex gap-2">
-            <input
-              type="text"
-              value={newTech}
-              onChange={(e) => setNewTech(e.target.value)}
-              className="block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
-              placeholder="Add technology"
-            />
-            <button
-              type="button"
-              onClick={handleAddTech}
-              className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
-            >
-              Add
-            </button>
+        {formData.show_on_portfolio ? (
+          <div className="space-y-4 border-b border-purple-900 pb-4 mb-4">
+            <div>
+              <label htmlFor="own_description" className="block text-sm font-medium galaxy-text">Eigene Beschreibung</label>
+              <textarea
+                id="own_description"
+                value={formData.own_description}
+                onChange={e => setFormData({ ...formData, own_description: e.target.value })}
+                rows={2}
+                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+              />
+            </div>
+            <div>
+              <label htmlFor="short_description" className="block text-sm font-medium galaxy-text">Kurze Beschreibung</label>
+              <input
+                type="text"
+                id="short_description"
+                value={formData.short_description}
+                onChange={e => setFormData({ ...formData, short_description: e.target.value })}
+                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+              />
+            </div>
+            <div>
+              <label htmlFor="highlight" className="block text-sm font-medium galaxy-text">Highlight</label>
+              <input
+                type="text"
+                id="highlight"
+                value={formData.highlight}
+                onChange={e => setFormData({ ...formData, highlight: e.target.value })}
+                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+              />
+            </div>
+            <div>
+              <label htmlFor="learnings" className="block text-sm font-medium galaxy-text">Learnings</label>
+              <textarea
+                id="learnings"
+                value={formData.learnings}
+                onChange={e => setFormData({ ...formData, learnings: e.target.value })}
+                rows={2}
+                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+              />
+            </div>
+            <div>
+              <label htmlFor="challenges" className="block text-sm font-medium galaxy-text">Challenges</label>
+              <textarea
+                id="challenges"
+                value={formData.challenges}
+                onChange={e => setFormData({ ...formData, challenges: e.target.value })}
+                rows={2}
+                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+              />
+            </div>
+            <div>
+              <label htmlFor="role" className="block text-sm font-medium galaxy-text">Rolle</label>
+              <input
+                type="text"
+                id="role"
+                value={formData.role}
+                onChange={e => setFormData({ ...formData, role: e.target.value })}
+                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+              />
+            </div>
+            <div>
+              <label htmlFor="custom_tags" className="block text-sm font-medium galaxy-text">Eigene Tags (kommagetrennt)</label>
+              <input
+                type="text"
+                id="custom_tags"
+                value={formData.custom_tags?.join(', ') || ''}
+                onChange={e => setFormData({ ...formData, custom_tags: e.target.value.split(',').map(t => t.trim()).filter(Boolean) })}
+                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+              />
+            </div>
+            <div>
+              <label htmlFor="team" className="block text-sm font-medium galaxy-text">Team (kommagetrennt)</label>
+              <input
+                type="text"
+                id="team"
+                value={formData.team?.join(', ') || ''}
+                onChange={e => setFormData({ ...formData, team: e.target.value.split(',').map(t => t.trim()).filter(Boolean) })}
+                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+              />
+            </div>
+            <div>
+              <label htmlFor="screenshots" className="block text-sm font-medium galaxy-text">Screenshots (Bild-URLs, kommagetrennt)</label>
+              <input
+                type="text"
+                id="screenshots"
+                value={formData.screenshots?.join(', ') || ''}
+                onChange={e => setFormData({ ...formData, screenshots: e.target.value.split(',').map(t => t.trim()).filter(Boolean) })}
+                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+              />
+            </div>
+            <div>
+              <label htmlFor="links" className="block text-sm font-medium galaxy-text">Links (Format: label|url, kommagetrennt)</label>
+              <input
+                type="text"
+                id="links"
+                value={Object.entries(formData.links || {}).map(([k,v]) => `${k}|${v}`).join(', ')}
+                onChange={e => {
+                  const entries = e.target.value.split(',').map(pair => pair.split('|').map(s => s.trim()));
+                  const linksObj: { [key: string]: string } = {};
+                  entries.forEach(([label, url]) => { if(label && url) linksObj[label] = url; });
+                  setFormData({ ...formData, links: linksObj });
+                }}
+                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                placeholder="z.B. Demo|https://demo.com, Blog|https://blog.com"
+              />
+            </div>
           </div>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {formData.technologies.map((tech) => (
-              <span
-                key={tech}
-                className="inline-flex items-center px-2 py-1 rounded-full text-sm bg-gray-100"
-              >
-                {tech}
-                <button
-                  type="button"
-                  onClick={() => handleRemoveTech(tech)}
-                  className="ml-1 text-gray-500 hover:text-gray-700"
-                >
-                  ×
-                </button>
-              </span>
-            ))}
-          </div>
-        </div>
+        ) : (
+          <div className="text-gray-400 italic mb-4 border-b border-purple-900 pb-4">Dieses Projekt wird nicht auf dem Portfolio angezeigt.</div>
+        )}
 
-        <div>
-          <label htmlFor="status" className="block text-sm font-medium galaxy-text">Status</label>
-          <select
-            id="status"
-            value={formData.status}
-            onChange={e => setFormData({ ...formData, status: e.target.value })}
-            className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
-          >
-            <option value="WIP">WIP</option>
-            <option value="ACTIVE">ACTIVE</option>
-            <option value="ARCHIVED">ARCHIVED</option>
-            <option value="DEPRECATED">DEPRECATED</option>
-          </select>
-        </div>
-
-        <div>
-          <label htmlFor="languages" className="block text-sm font-medium galaxy-text">
-            Languages (comma separated)
-          </label>
-          <input
-            type="text"
-            id="languages"
-            value={Object.keys(formData.details?.languages_map || {}).join(', ')}
-            onChange={(e) => {
-              const languages = e.target.value.split(',').map(lang => lang.trim()).filter(Boolean);
-              const newLanguagesMap = { ...formData.details?.languages_map };
-              
-              Object.keys(newLanguagesMap).forEach(lang => {
-                if (!languages.includes(lang)) {
-                  delete newLanguagesMap[lang];
-                }
-              });
-              
-              languages.forEach(lang => {
-                if (!newLanguagesMap[lang]) {
-                  newLanguagesMap[lang] = 0;
-                }
-              });
-              
-              setFormData({
-                ...formData,
-                details: {
-                  ...formData.details,
-                  languages_map: newLanguagesMap
-                }
-              });
-            }}
-            className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
-            placeholder="e.g., TypeScript, Python, Rust"
-          />
-          <div className="mt-2 flex flex-wrap gap-2">
-            {formData.details?.languages_map && Object.entries(formData.details.languages_map).map(([lang, bytes]) => (
-              <span
-                key={lang}
-                className="px-2 py-1 text-xs rounded-full bg-blue-900/30 text-blue-700"
-                title={`${lang}: ${bytes} bytes`}
-              >
-                {lang}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="topics" className="block text-sm font-medium galaxy-text">Topics (comma separated)</label>
-          <input
-            type="text"
-            id="topics"
-            value={formData.topics?.join(', ') || ''}
-            onChange={e => setFormData({ ...formData, topics: e.target.value.split(',').map(t => t.trim()).filter(Boolean) })}
-            className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="homepageUrl" className="block text-sm font-medium galaxy-text">Homepage URL</label>
-          <input
-            type="url"
-            id="homepageUrl"
-            value={formData.homepageUrl}
-            onChange={e => setFormData({ ...formData, homepageUrl: e.target.value })}
-            className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
-          />
-        </div>
-
-        <div className="grid grid-cols-3 gap-2">
+        <div className="space-y-4 bg-slate-900/40 rounded-lg p-4 mb-4">
           <div>
             <label className="block text-sm font-medium galaxy-text">Stars</label>
             <input type="number" value={formData.starsCount} readOnly className="mt-1 block w-full rounded-md galaxy-card text-white appearance-none" style={{ MozAppearance: 'textfield' }} />
@@ -385,21 +366,116 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
             <label className="block text-sm font-medium galaxy-text">Watchers</label>
             <input type="number" value={formData.watchersCount} readOnly className="mt-1 block w-full rounded-md galaxy-card text-white appearance-none" style={{ MozAppearance: 'textfield' }} />
           </div>
+          <div>
+            <label className="block text-sm font-medium galaxy-text">Status</label>
+            <input type="text" value={formData.status} readOnly className="mt-1 block w-full rounded-md galaxy-card text-white" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium galaxy-text">Sprache</label>
+            <input type="text" value={formData.language || ''} readOnly className="mt-1 block w-full rounded-md galaxy-card text-white" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium galaxy-text">Topics</label>
+            <input type="text" value={formData.topics?.join(', ') || ''} readOnly className="mt-1 block w-full rounded-md galaxy-card text-white" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium galaxy-text">Homepage URL</label>
+            <input type="text" value={formData.homepageUrl || ''} readOnly className="mt-1 block w-full rounded-md galaxy-card text-white" />
+          </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-2 mb-4">
-          {Object.entries(fieldsVisibility).map(([field, visible]) => (
-            <label key={field} className="flex items-center space-x-2 text-sm galaxy-text">
+        {project?.sourceType !== 'github' && (
+          <>
+            <div>
+              <label htmlFor="title" className="block text-sm font-medium galaxy-text">Title</label>
               <input
-                type="checkbox"
-                checked={visible}
-                onChange={() => handleVisibilityChange(field)}
-                className="form-checkbox text-purple-500"
+                type="text"
+                id="title"
+                value={formData.title}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                required
               />
-              <span>{field.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())} sichtbar</span>
-            </label>
-          ))}
-        </div>
+            </div>
+            <div>
+              <label htmlFor="description" className="block text-sm font-medium galaxy-text">Description</label>
+              <textarea
+                id="description"
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                rows={3}
+                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="imageUrl" className="block text-sm font-medium galaxy-text">Image URL</label>
+              <input
+                type="url"
+                id="imageUrl"
+                value={formData.imageUrl}
+                onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+              />
+            </div>
+            <div>
+              <label htmlFor="githubUrl" className="block text-sm font-medium galaxy-text">GitHub URL</label>
+              <input
+                type="url"
+                id="githubUrl"
+                value={formData.githubUrl}
+                onChange={(e) => setFormData({ ...formData, githubUrl: e.target.value })}
+                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+              />
+            </div>
+            <div>
+              <label htmlFor="liveUrl" className="block text-sm font-medium galaxy-text">Demo URL</label>
+              <input
+                type="url"
+                id="liveUrl"
+                value={formData.liveUrl}
+                onChange={(e) => setFormData({ ...formData, liveUrl: e.target.value })}
+                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium galaxy-text">Technologies</label>
+              <div className="mt-1 flex gap-2">
+                <input
+                  type="text"
+                  value={newTech}
+                  onChange={(e) => setNewTech(e.target.value)}
+                  className="block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                  placeholder="Add technology"
+                />
+                <button
+                  type="button"
+                  onClick={handleAddTech}
+                  className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+                >
+                  Add
+                </button>
+              </div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {formData.technologies.map((tech) => (
+                  <span
+                    key={tech}
+                    className="inline-flex items-center px-2 py-1 rounded-full text-sm bg-gray-100"
+                  >
+                    {tech}
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveTech(tech)}
+                      className="ml-1 text-gray-500 hover:text-gray-700"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
 
         <div className="flex justify-end space-x-4">
           <button

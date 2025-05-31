@@ -20,6 +20,18 @@ export interface Project {
   sourceType?: 'github' | 'gitlab' | 'manual' | string; // From DB
   sourceUsername?: string; // From DB
   sourceRepo?: string; // From DB
+  // Custom fields
+  own_description?: string;
+  short_description?: string;
+  highlight?: string;
+  learnings?: string;
+  challenges?: string;
+  role?: string;
+  custom_tags?: string[];
+  show_on_portfolio?: boolean;
+  team?: string[];
+  screenshots?: string[];
+  links?: { [key: string]: string };
 }
 
 export interface ProjectDetails {
