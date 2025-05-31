@@ -7,8 +7,8 @@ from app.core.auth import (
     get_current_user,
 )
 from app.infrastructure.database.session import get_db
-from app.domain.models.user import User
-from app.infrastructure.database.models.user import UserModel
+from app.domain.models.user import SiteOwner # Updated import
+from app.infrastructure.database.models.user import SiteOwnerModel # Updated import
 from app.schemas.auth import LoginRequest
 
 # Configure logging
@@ -21,23 +21,23 @@ router = APIRouter()
 async def login(response: Response, login_data: LoginRequest, db: Session = Depends(get_db)):
     logger.debug(f"Login attempt for email: {login_data.email}")
     
-    user = db.query(UserModel).filter(UserModel.email == login_data.email).first()
-    if not user:
-        logger.debug(f"No user found for email: {login_data.email}")
+    site_owner_db = db.query(SiteOwnerModel).filter(SiteOwnerModel.email == login_data.email).first() # Updated model and var name
+    if not site_owner_db:
+        logger.debug(f"No site owner found for email: {login_data.email}") # Updated message
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
         )
 
-    if not verify_password(login_data.password, user.hashed_password):
-        logger.debug(f"Invalid password for user: {login_data.email}")
+    if not verify_password(login_data.password, site_owner_db.hashed_password): # Updated var name
+        logger.debug(f"Invalid password for site owner: {login_data.email}") # Updated message
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
         )
 
-    logger.debug(f"Creating access token for user: {login_data.email}")
-    access_token = create_access_token(data={"sub": user.email})
+    logger.debug(f"Creating access token for site owner: {login_data.email}") # Updated message
+    access_token = create_access_token(data={"sub": site_owner_db.email}) # Updated var name
     logger.debug(f"Created token: {access_token[:10]}...")
 
     logger.debug("Setting auth cookie with settings:")
@@ -54,11 +54,11 @@ async def login(response: Response, login_data: LoginRequest, db: Session = Depe
     logger.debug(f"Setting cookie with params: {cookie_params}")
     response.set_cookie(**cookie_params)
     
-    logger.debug(f"Login successful for user: {login_data.email}")
+    logger.debug(f"Login successful for site owner: {login_data.email}") # Updated message
     return {
         "message": "Login successful",
-        "user": {
-            "email": user.email
+        "user": { # Consider renaming this key to site_owner for consistency if frontend expects it
+            "email": site_owner_db.email # Updated var name
         }
     }
 
@@ -77,12 +77,12 @@ async def logout(response: Response):
     return {"message": "Logout successful"}
 
 @router.get("/validate")
-async def validate_auth(current_user: User = Depends(get_current_user)):
+async def validate_auth(current_site_owner: SiteOwner = Depends(get_current_user)): # Updated param name and type
     """Validate the current authentication token."""
-    logger.debug(f"Token validation requested for user: {current_user.email}")
+    logger.debug(f"Token validation requested for site owner: {current_site_owner.email}") # Updated message and var name
     return {
         "valid": True,
-        "user": {
-            "email": current_user.email
+        "user": { # Consider renaming this key to site_owner for consistency
+            "email": current_site_owner.email # Updated var name
         }
     }

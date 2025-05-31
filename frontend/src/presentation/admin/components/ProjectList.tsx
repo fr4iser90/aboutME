@@ -3,19 +3,22 @@ import { ProjectCard } from '@/presentation/public/components/sections/ProjectCa
 import type { Project } from '@/domain/entities/Project';
 import { apiClient } from '@/shared/utils/api';
 import { ProjectImportPanel } from './ProjectImportPanel';
+import { useTabContext } from '@/app/admin/layout';
+import { ProjectEditor } from './ProjectEditor';
 
 interface ProjectListProps {
-  onEditProject: (project: Project) => void; // Callback to parent to handle editing
   viewMode?: 'card' | 'simple'; // Add viewMode prop
+  onEditProject?: (project: Project) => void; // Add onEditProject prop
 }
 
-export function ProjectList({ onEditProject, viewMode = 'card' }: ProjectListProps) {
+export function ProjectList({ viewMode = 'card', onEditProject }: ProjectListProps) {
   console.log("ProjectList component rendering"); // Log 1
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [addMode, setAddMode] = useState<'none' | 'manual' | 'import'>('none');
+  const tabContext = useTabContext();
 
   useEffect(() => {
     console.log("ProjectList useEffect running"); // Log 2
@@ -50,9 +53,17 @@ export function ProjectList({ onEditProject, viewMode = 'card' }: ProjectListPro
     }
   };
 
-  // Call the onEditProject prop when an edit button is clicked
   const handleEditClick = (project: Project) => {
-    onEditProject(project);
+    if (onEditProject) {
+      onEditProject(project);
+    } else if (tabContext) { // Fallback to opening in tab if onEditProject is not provided
+      tabContext.openTab({
+        id: `project-${project.id}`,
+        title: project.title,
+        icon: <></>, // Placeholder icon
+        content: <ProjectEditor project={project} onSave={() => { fetchProjects(); tabContext.closeTab(`project-${project.id}`); }} onCancel={() => tabContext.closeTab(`project-${project.id}`)} />,
+      });
+    }
   };
 
   if (loading) {
@@ -118,7 +129,7 @@ export function ProjectList({ onEditProject, viewMode = 'card' }: ProjectListPro
                 </button>
                 <button
                   className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
-                  onClick={() => { setAddMode('manual'); onEditProject({} as Project); setShowAddModal(false); }}
+                  onClick={() => { setAddMode('manual'); setShowAddModal(false); }}
                 >
                   Manuell anlegen
                 </button>

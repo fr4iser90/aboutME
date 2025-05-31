@@ -3,7 +3,7 @@ from pydantic import EmailStr # BaseModel removed
 from .base import CamelCaseModel # Import CamelCaseModel
 
 
-class UserBase(CamelCaseModel): # Inherit from CamelCaseModel
+class SiteOwnerBase(CamelCaseModel): # Inherit from CamelCaseModel
     email: EmailStr
     # Add other common user fields if any, e.g., is_active, is_superuser
     # For now, keeping it as per original structure.
@@ -11,14 +11,14 @@ class UserBase(CamelCaseModel): # Inherit from CamelCaseModel
     # is_superuser: bool = False
 
 
-class UserCreate(UserBase): # Inherits from UserBase -> CamelCaseModel
+class SiteOwnerCreate(SiteOwnerBase): # Inherits from SiteOwnerBase -> CamelCaseModel
     password: str
     # email will be camelCased if received as email, or can be email
     # password will be camelCased if received as password, or can be password
 
 
-class UserUpdate(CamelCaseModel): # Inherit directly from CamelCaseModel for clarity if it has distinct fields
-    # Or inherit from UserBase if it truly extends it with optional fields.
+class SiteOwnerUpdate(CamelCaseModel): # Inherit directly from CamelCaseModel for clarity if it has distinct fields
+    # Or inherit from SiteOwnerBase if it truly extends it with optional fields.
     # Assuming it's more of a partial update model.
     email: Optional[EmailStr] = None
     password: Optional[str] = None
@@ -27,7 +27,7 @@ class UserUpdate(CamelCaseModel): # Inherit directly from CamelCaseModel for cla
     # Config class for from_attributes is inherited
 
 
-class User(UserBase): # Inherits from UserBase -> CamelCaseModel
+class SiteOwner(SiteOwnerBase): # Inherits from SiteOwnerBase -> CamelCaseModel
     id: str # Will become id
     # email is inherited
     # is_active: bool

@@ -2,9 +2,9 @@
 "use client";
 
 import { useAdminContext } from '../AdminContext';
-import { ProjectList } from '@/presentation/public/components/admin/ProjectList';
+import { ProjectList } from '@/presentation/admin/components/ProjectList';
 // This is the ProjectEditor that includes form and preview, for the main content area (Column 3)
-import { ProjectEditor } from '@/presentation/public/components/admin/ProjectEditor'; 
+import { ProjectEditor } from '@/presentation/admin/components/ProjectEditor'; 
 import type { Project as DomainProject } from '@/domain/entities/Project';
 
 export default function AdminProjectsPage() {

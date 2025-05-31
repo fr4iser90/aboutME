@@ -598,7 +598,7 @@ pkgs.mkShell {
     }
 
     check-backend() {
-      ./scripts/check_backend.sh "$@"
+      bash ./scripts/check_backend.sh "$@"
     }
 
     echo "Python development environment activated"

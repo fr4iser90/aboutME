@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react'; // Added useMemo
+import { useState, useEffect, useMemo, createContext, useContext } from 'react'; // Added useMemo and createContext
 import { usePathname } from 'next/navigation'; // To potentially make tab content more dynamic
 import Link from 'next/link'; // Import Link for navigation
 import { cn } from '@/lib/utils';
@@ -22,7 +22,8 @@ import CopilotChat from './components/CopilotChat';
 import type { LLMContext } from '@/lib/llm-service';
 
 // Components for Spalte 2 (List Sidebar) when projects are active
-import { ProjectList } from '@/presentation/public/components/admin/ProjectList';
+import { ProjectList } from '@/presentation/admin/components/ProjectList';
+import type { Project as DomainProject } from '@/domain/entities/Project'; // Import DomainProject
 
 
 interface Tab {
@@ -31,6 +32,16 @@ interface Tab {
   icon: React.ReactNode; // Reverted to React.ReactNode
   content: React.ReactNode;
 }
+
+interface TabContextType {
+  openTab: (tab: Tab) => void;
+  closeTab: (tabId: string) => void;
+  setActiveTab: (tabId: string) => void;
+  activeTab: string;
+  openTabs: Tab[];
+}
+export const TabContext = createContext<TabContextType | undefined>(undefined);
+export const useTabContext = () => useContext(TabContext);
 
 export default function AdminLayout({
   children,
@@ -47,10 +58,10 @@ export default function AdminLayout({
                            'projects'; // Fallback to projects
 
   const [activeTab, setActiveTab] = useState(initialActiveTab); 
-  const [selectedProject, setSelectedProjectInternal] = useState<any>(null); // Renamed internal setter
+  const [selectedProject, setSelectedProjectInternal] = useState<DomainProject | null>(null); // Typed selectedProject
 
   // Function to handle setting selected project and ensuring sidebar is open
-  const handleSetSelectedProject = (project: any | null) => {
+  const handleSetSelectedProject = (project: DomainProject | null) => {
     console.log('AdminLayout: handleSetSelectedProject called with project:', project); // DEBUG LOG
     setSelectedProjectInternal(project);
     if (project) {
@@ -176,27 +187,33 @@ export default function AdminLayout({
     }
   };
 
-  const closeTab = (tabId: string) => {
-    // Prevent closing the tab that displays the main page content if it's the only one matching the page
-    if (tabId === activeTab && (pathname.startsWith(`/admin/${tabId}`) || (tabId === 'dashboard' && pathname === '/admin'))) {
-        if (openTabs.length === 1) return; // Don't close the last tab if it's the page content
-    }
-
-    const remainingTabs = openTabs.filter(tab => tab.id !== tabId);
-    setOpenTabs(remainingTabs);
-
-    if (activeTab === tabId) {
-      if (remainingTabs.length > 0) {
-        setActiveTab(remainingTabs[0].id);
-        // const newActiveNav = navigation.find(n => n.id === remainingTabs[0].id);
-        // if (newActiveNav?.path) router.push(newActiveNav.path);
-      } else {
-        // Fallback if all tabs are closed - this state should ideally be avoided
-        // by not allowing the last "page content" tab to be closed.
-        // router.push('/admin'); // Go to dashboard
-        setActiveTab('dashboard'); // Or whatever default
+  const openTab = (tab: Tab) => {
+    setOpenTabs((prev) => {
+      if (prev.find((t) => t.id === tab.id)) {
+        setActiveTab(tab.id);
+        return prev;
       }
-    }
+      setActiveTab(tab.id);
+      return [...prev, tab];
+    });
+  };
+
+  const closeTab = (tabId: string) => {
+    setOpenTabs((prev) => {
+      const idx = prev.findIndex((t) => t.id === tabId);
+      if (idx === -1) return prev;
+      const newTabs = prev.filter((t) => t.id !== tabId);
+      // If closing the active tab, activate the previous or next tab
+      if (activeTab === tabId) {
+        if (newTabs.length > 0) {
+          const newIdx = idx > 0 ? idx - 1 : 0;
+          setActiveTab(newTabs[newIdx].id);
+        } else {
+          setActiveTab('dashboard');
+        }
+      }
+      return newTabs;
+    });
   };
 
   const copilotContext: LLMContext = {
@@ -233,67 +250,66 @@ export default function AdminLayout({
   }), [selectedProject]); // handleSetSelectedProject is stable
 
   return (
-    <AdminContext.Provider value={adminContextValue}>
-      {/* Removed one redundant wrapping div here */}
-      <div className="flex h-screen bg-background">
-        {/* Column 1: Icon Sidebar */}
-        <div className="w-16 border-r bg-muted/40">
-          <ScrollArea className="h-full py-4">
-            <div className="flex flex-col items-center gap-4">
-            {navigation.map((item) => (
-              <Link key={item.id} href={item.path} passHref>
-                <Button
-                  variant={activeTab === item.id ? "secondary" : "ghost"}
-                  size="icon"
-                  className="w-10 h-10"
-                  aria-label={item.title} // Added for accessibility
-                  // onClick is removed; Link handles navigation, useEffect handles tab state
-                >
-                  {item.icon}
-                </Button>
-              </Link>
-            ))}
-          </div>
-        </ScrollArea>
-      </div>
-
-      {/* Column 2: List Sidebar (Dynamic Content) */}
-      <div className="w-72 border-r bg-muted/50 p-4 hidden md:flex md:flex-col space-y-4 overflow-y-auto"> {/* Increased width, flex-col */}
-        {activeTab === 'projects' && (
-          <>
-            <div>
-              <h2 className="text-lg font-semibold mb-2">Project Tools</h2>
+    <TabContext.Provider value={{ openTab, closeTab, setActiveTab, activeTab, openTabs }}>
+      <AdminContext.Provider value={adminContextValue}>
+        <div className="flex h-screen bg-background">
+          {/* Column 1: Icon Sidebar */}
+          <div className="w-16 border-r bg-muted/40">
+            <ScrollArea className="h-full py-4">
+              <div className="flex flex-col items-center gap-4">
+              {navigation.map((item) => (
+                <Link key={item.id} href={item.path} passHref>
+                  <Button
+                    variant={activeTab === item.id ? "secondary" : "ghost"}
+                    size="icon"
+                    className="w-10 h-10"
+                    aria-label={item.title} // Added for accessibility
+                    // onClick is removed; Link handles navigation, useEffect handles tab state
+                  >
+                    {item.icon}
+                  </Button>
+                </Link>
+              ))}
             </div>
-            <div className="flex-grow overflow-hidden"> {/* Allow ProjectList to scroll if content overflows */}
-              <h2 className="text-lg font-semibold my-2">Project List</h2>
-              <ScrollArea className="h-full"> {/* Ensure ScrollArea takes available height */}
-                <ProjectList onEditProject={(project) => handleSetSelectedProject(project as DomainProject)} viewMode="simple" />
-              </ScrollArea>
-            </div>
-          </>
-        )}
-        {activeTab !== 'projects' && (
-          <>
-            <h2 className="text-lg font-semibold mb-4">Context List</h2>
-            <p className="text-sm text-gray-500">Content for {activeTab} list...</p>
-          </>
-        )}
-      </div>
+          </ScrollArea>
+        </div>
 
-      {/* Column 3: Main Content Area (for page children, which will show editor) */}
-      <div className="flex-1 flex flex-col overflow-hidden"> {/* Added overflow-hidden */}
-        {/* Tabs */}
-        <div className="border-b">
-          <div className="flex items-center px-4 h-10 overflow-x-auto"> {/* Added overflow-x-auto for tabs */}
-            {openTabs.map((tab) => {
-              const navItem = navigation.find(n => n.id === tab.id);
-              const iconToDisplay = navItem ? navItem.icon : <FolderGit2 className="w-4 h-4" />;
+        {/* Column 2: List Sidebar (Dynamic Content) */}
+        <div className="w-72 border-r bg-muted/50 p-4 hidden md:flex md:flex-col space-y-4 overflow-y-auto"> {/* Increased width, flex-col */}
+          {activeTab === 'projects' && (
+            <>
+              <div>
+                <h2 className="text-lg font-semibold mb-2">Project Tools</h2>
+              </div>
+              <div className="flex-grow overflow-hidden"> {/* Allow ProjectList to scroll if content overflows */}
+                <h2 className="text-lg font-semibold my-2">Project List</h2>
+                <ScrollArea className="h-full"> {/* Ensure ScrollArea takes available height */}
+                  <ProjectList 
+                    onEditProject={(project: DomainProject) => handleSetSelectedProject(project)} 
+                    viewMode="simple" 
+                  />
+                </ScrollArea>
+              </div>
+            </>
+          )}
+          {activeTab !== 'projects' && (
+            <>
+              <h2 className="text-lg font-semibold mb-4">Context List</h2>
+              <p className="text-sm text-gray-500">Content for {activeTab} list...</p>
+            </>
+          )}
+        </div>
 
-              return (
+        {/* Column 3: Main Content Area (for page children, which will show editor) */}
+        <div className="flex-1 flex flex-col overflow-hidden"> {/* Added overflow-hidden */}
+          {/* Tab Bar */}
+          <div className="border-b">
+            <div className="flex items-center px-4 h-10 overflow-x-auto">
+              {openTabs.map((tab) => (
                 <div
                   key={tab.id}
                   className={cn(
-                    "flex items-center gap-2 px-3 py-1.5 text-sm border-r whitespace-nowrap", // Added whitespace-nowrap
+                    "flex items-center gap-2 px-3 py-1.5 text-sm border-r whitespace-nowrap",
                     activeTab === tab.id ? "bg-muted" : "hover:bg-muted/50"
                   )}
                 >
@@ -301,13 +317,10 @@ export default function AdminLayout({
                     className="flex items-center gap-2"
                     onClick={() => setActiveTab(tab.id)}
                   >
-                    <>
-                      {iconToDisplay ? iconToDisplay : <></>}
-                      {iconToDisplay && <span style={{ marginLeft: '0.25rem' }}>{tab.title}</span>}
-                      {!iconToDisplay && <span>{tab.title}</span>}
-                    </>
+                    {tab.icon}
+                    <span>{tab.title}</span>
                   </button>
-                  {(openTabs.length > 1 || !((pathname.startsWith(`/admin/${tab.id}`) || (tab.id === 'dashboard' && pathname === '/admin')))) && (
+                  {openTabs.length > 1 && (
                     <button
                       className="p-1 hover:bg-muted rounded-sm"
                       onClick={() => closeTab(tab.id)}
@@ -316,39 +329,39 @@ export default function AdminLayout({
                     </button>
                   )}
                 </div>
-              );
-            })}
+              ))}
+            </div>
+          </div>
+
+          {/* Main Content Area: render active tab content */}
+          <div className="flex-1 overflow-auto p-6">
+            {openTabs.find((tab) => tab.id === activeTab)?.content}
           </div>
         </div>
 
-        {/* Tab Content Area (Page Children) */}
-        <div className="flex-1 overflow-auto p-6">
-          {activeContent}
-        </div>
-      </div>
-
-      {/* Column 4: Right Sidebar (Copilot) */}
-      {isRightSidebarOpen && (
-        <div className="w-80 border-l bg-muted/40 flex flex-col">
-          {/* Copilot is now always shown if sidebar is open, ProjectEditor is in main content */}
-          <div className="flex items-center justify-between p-4 border-b">
-                <div className="flex items-center gap-2">
-                  <MessageSquare className="w-4 h-4" />
-                  <span className="font-medium">Copilot</span>
+        {/* Column 4: Right Sidebar (Copilot) */}
+        {isRightSidebarOpen && (
+          <div className="w-80 border-l bg-muted/40 flex flex-col">
+            {/* Copilot is now always shown if sidebar is open, ProjectEditor is in main content */}
+            <div className="flex items-center justify-between p-4 border-b">
+                  <div className="flex items-center gap-2">
+                    <MessageSquare className="w-4 h-4" />
+                    <span className="font-medium">Copilot</span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setIsRightSidebarOpen(false)}
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setIsRightSidebarOpen(false)}
-                >
-                  <X className="w-4 h-4" />
-                </Button>
-              </div>
-              <CopilotChat context={copilotContext} />
-            {/* Extraneous tags removed below */}
+                <CopilotChat context={copilotContext} />
+              {/* Extraneous tags removed below */}
+          </div>
+        )}
         </div>
-      )}
-      </div>
-    </AdminContext.Provider>
+      </AdminContext.Provider>
+    </TabContext.Provider>
   );
 }

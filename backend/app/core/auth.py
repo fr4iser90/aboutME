@@ -7,8 +7,8 @@ from sqlalchemy.orm import Session
 import logging
 import os
 from app.infrastructure.database.session import get_db
-from app.domain.models.user import User
-from app.infrastructure.database.models.user import UserModel
+from app.domain.models.user import SiteOwner # Updated import
+from app.infrastructure.database.models.user import SiteOwnerModel # Updated import
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
@@ -49,11 +49,11 @@ async def cookie_extractor(request: Request) -> Optional[str]:
         logger.debug(f"Cookie extraction - Token value: {token[:10]}...")
     return token
 
-async def get_current_user(
+async def get_current_user( # Function name can remain get_current_user for broader compatibility if preferred
     token: Optional[str] = Depends(cookie_extractor),
     db: Session = Depends(get_db)
-) -> User:
-    logger.debug("Attempting to get current user")
+) -> SiteOwner: # Updated return type
+    logger.debug("Attempting to get current site owner") # Updated log
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials or token expired",
@@ -74,21 +74,21 @@ async def get_current_user(
         logger.debug(f"JWT decode error: {str(e)}")
         raise credentials_exception
 
-    user = db.query(UserModel).filter(UserModel.email == email).first()
-    if user is None:
-        logger.debug(f"No user found for email: {email}")
+    site_owner_db = db.query(SiteOwnerModel).filter(SiteOwnerModel.email == email).first() # Updated model and var name
+    if site_owner_db is None:
+        logger.debug(f"No site owner found for email: {email}") # Updated log
         raise credentials_exception
     
-    logger.debug(f"Successfully authenticated user: {email}")
-    return User(
-        id=user.id,
-        email=user.email,
-        hashed_password=user.hashed_password,
-        source_username=user.source_username,
-        created_at=user.created_at,
-        updated_at=user.updated_at
+    logger.debug(f"Successfully authenticated site owner: {email}") # Updated log
+    return SiteOwner( # Updated domain model instantiation
+        id=site_owner_db.id,
+        email=site_owner_db.email,
+        hashed_password=site_owner_db.hashed_password,
+        source_username=site_owner_db.source_username,
+        created_at=site_owner_db.created_at,
+        updated_at=site_owner_db.updated_at
     )
 
-async def get_current_superuser(current_user: User = Depends(get_current_user)) -> User:
-    # Since we're the only user, we're always a superuser
-    return current_user
+async def get_current_superuser(current_site_owner: SiteOwner = Depends(get_current_user)) -> SiteOwner: # Updated param and type hints
+    # Since we're the only site owner, we're always a superuser
+    return current_site_owner

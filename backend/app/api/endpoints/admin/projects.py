@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 import logging
 from app.core.auth import get_current_user
 from app.domain.models.project import Project
-from app.domain.models.user import User
+from app.domain.models.user import SiteOwner # Changed User to SiteOwner
 from app.domain.services.project_service import ProjectService
 from app.schemas import project as schemas
 from app.api import deps
@@ -80,11 +80,11 @@ async def import_gitlab_projects(
 async def import_manual_projects(
     projects_data: List[schemas.ManualProjectImport],
     db: Session = Depends(deps.get_db),
-    current_user: User = Depends(get_current_user),
+    current_site_owner: SiteOwner = Depends(get_current_user), # Renamed and updated type
     project_service: ProjectService = Depends(deps.get_project_service)
 ):
     """Import multiple projects manually"""
-    logger.debug(f"Manual project import requested by user: {current_user.email}")
+    logger.debug(f"Manual project import requested by site owner: {current_site_owner.email}") # Updated log and var
     try:
         imported_projects = []
         for project_data in projects_data:

@@ -5,7 +5,7 @@ import logging
 from app.core.auth import get_current_user
 from app.infrastructure.database.session import get_db
 from app.domain.models.section import Section
-from app.domain.models.user import User
+from app.domain.models.user import SiteOwner # Changed User to SiteOwner
 from app.domain.repositories.section_repository import SectionRepository
 from app.domain.services.section_service import SectionService
 from app.infrastructure.database.repositories.section_repository_impl import SQLAlchemySectionRepository
@@ -21,7 +21,7 @@ def get_section_service(db: Session = Depends(get_db)) -> SectionService:
 @router.get("/", response_model=List[Section])
 def list_sections(
     section_service: SectionService = Depends(get_section_service),
-    current_user: User = Depends(get_current_user)
+    current_site_owner: SiteOwner = Depends(get_current_user) # Renamed and updated type
 ):
     """List all sections (admin only)"""
     return section_service.list_sections()
@@ -30,7 +30,7 @@ def list_sections(
 def create_section(
     section: SectionCreate,
     section_service: SectionService = Depends(get_section_service),
-    current_user: User = Depends(get_current_user),
+    current_site_owner: SiteOwner = Depends(get_current_user), # Renamed and updated type
 ):
     """Create a new section"""
     domain_section = Section(**section.dict())
@@ -41,7 +41,7 @@ def update_section(
     section_id: int,
     section: SectionUpdate,
     section_service: SectionService = Depends(get_section_service),
-    current_user: User = Depends(get_current_user),
+    current_site_owner: SiteOwner = Depends(get_current_user), # Renamed and updated type
 ):
     """Update an existing section"""
     domain_section = Section(**section.dict())
@@ -54,7 +54,7 @@ def update_section(
 def delete_section(
     section_id: int,
     section_service: SectionService = Depends(get_section_service),
-    current_user: User = Depends(get_current_user),
+    current_site_owner: SiteOwner = Depends(get_current_user), # Renamed and updated type
 ):
     """Delete a section"""
     if not section_service.delete_section(section_id):
@@ -66,10 +66,10 @@ def reorder_section(
     section_id: int,
     new_order: int,
     section_service: SectionService = Depends(get_section_service),
-    current_user: User = Depends(get_current_user),
+    current_site_owner: SiteOwner = Depends(get_current_user), # Renamed and updated type
 ):
     """Reorder a section"""
     updated = section_service.reorder_section(section_id, new_order)
     if not updated:
         raise HTTPException(status_code=404, detail="Section not found")
-    return updated 
+    return updated

@@ -2,7 +2,7 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 import logging
 from app.core.auth import get_current_user
-from app.domain.models.user import User
+from app.domain.models.user import SiteOwner # Changed User to SiteOwner
 from app.domain.services.github_service import GitHubService
 from app.infrastructure.database.repositories.project_repository_impl import SQLAlchemyProjectRepository
 from app.infrastructure.database.session import get_db
@@ -18,10 +18,10 @@ def get_github_service(db = Depends(get_db)) -> GitHubService:
 async def sync_github(
     username: str,
     github_service: GitHubService = Depends(get_github_service),
-    current_user: User = Depends(get_current_user)
+    current_site_owner: SiteOwner = Depends(get_current_user) # Renamed and updated type
 ):
     """Sync projects from GitHub repositories."""
-    logger.debug(f"GitHub sync requested by user: {current_user.email}")
+    logger.debug(f"GitHub sync requested by site owner: {current_site_owner.email}") # Updated log and var
     try:
         logger.debug("Starting GitHub sync process")
         projects = await github_service.sync_projects(username)
@@ -38,7 +38,7 @@ async def sync_github(
 async def get_github_projects(
     username: str,
     github_service: GitHubService = Depends(get_github_service),
-    current_user: User = Depends(get_current_user),
+    current_site_owner: SiteOwner = Depends(get_current_user), # Renamed and updated type
 ):
     """Get all GitHub projects for a user."""
-    return await github_service.get_projects(username) 
+    return await github_service.get_projects(username)

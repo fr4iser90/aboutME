@@ -5,7 +5,7 @@ import logging
 from app.core.auth import get_current_user
 from app.infrastructure.database.session import get_db
 from app.schemas import layout as schemas
-from app.domain.models.user import User
+from app.domain.models.user import SiteOwner # Changed User to SiteOwner
 from app.domain.services.layout_service import LayoutService
 from app.infrastructure.database.repositories.layout_repository_impl import SQLAlchemyLayoutRepository
 
@@ -19,7 +19,7 @@ def get_layout_service(db: Session = Depends(get_db)) -> LayoutService:
 @router.get("/", response_model=schemas.Layout)
 async def get_layout(
     layout_service: LayoutService = Depends(get_layout_service),
-    current_user: User = Depends(get_current_user)
+    current_site_owner: SiteOwner = Depends(get_current_user) # Renamed and updated type
 ):
     """Get the current layout configuration"""
     return await layout_service.get_layout()
@@ -28,7 +28,7 @@ async def get_layout(
 async def update_layout(
     layout: schemas.LayoutUpdate,
     layout_service: LayoutService = Depends(get_layout_service),
-    current_user: User = Depends(get_current_user)
+    current_site_owner: SiteOwner = Depends(get_current_user) # Renamed and updated type
 ):
     """Update the layout configuration"""
     existing_layout = await layout_service.get_layout()
@@ -49,7 +49,7 @@ async def update_layout(
 async def preview_layout(
     layout: schemas.LayoutUpdate,
     layout_service: LayoutService = Depends(get_layout_service),
-    current_user: User = Depends(get_current_user)
+    current_site_owner: SiteOwner = Depends(get_current_user) # Renamed and updated type
 ):
     """Generate a preview of the layout configuration"""
     try:
@@ -74,7 +74,7 @@ async def preview_layout(
 @router.get("/templates", response_model=List[schemas.LayoutTemplate])
 async def get_layout_templates(
     layout_service: LayoutService = Depends(get_layout_service),
-    current_user: User = Depends(get_current_user)
+    current_site_owner: SiteOwner = Depends(get_current_user) # Renamed and updated type
 ):
     """Get available layout templates"""
     return await layout_service.get_templates()
@@ -83,7 +83,7 @@ async def get_layout_templates(
 async def apply_layout_template(
     template_id: int,
     layout_service: LayoutService = Depends(get_layout_service),
-    current_user: User = Depends(get_current_user)
+    current_site_owner: SiteOwner = Depends(get_current_user) # Renamed and updated type
 ):
     """Apply a layout template"""
     template = await layout_service.get_template(template_id)
@@ -100,4 +100,4 @@ async def apply_layout_template(
             detail="Failed to apply template"
         )
     
-    return updated_layout 
+    return updated_layout

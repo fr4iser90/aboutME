@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Project } from '@/domain/entities/Project';
 import { apiClient } from '@/shared/utils/api';
-import { ProjectEditor } from '@/presentation/public/components/admin/ProjectEditor';
+import { ProjectEditor } from '@/presentation/admin/components/ProjectEditor';
 
 export default function AdminProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);

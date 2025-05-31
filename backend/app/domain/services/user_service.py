@@ -1,34 +1,34 @@
 from typing import Optional
-from app.domain.models.user import User
-from app.infrastructure.database.repositories.user_repository_impl import UserRepository
+from app.domain.models.user import SiteOwner
+from app.infrastructure.database.repositories.user_repository_impl import SiteOwnerRepository # Updated import
 
-class UserService:
-    def __init__(self, user_repository: UserRepository):
-        self.user_repository = user_repository
+class SiteOwnerService:
+    def __init__(self, site_owner_repository: SiteOwnerRepository): # Updated type hint
+        self.site_owner_repository = site_owner_repository
 
-    def get_user(self) -> Optional[User]:
-        return self.user_repository.get_user()
+    def get_site_owner(self) -> Optional[SiteOwner]:
+        return self.site_owner_repository.get_site_owner() # Updated method call
 
-    def create_user(self, user: User) -> User:
-        # Check if user already exists
-        existing_user = self.user_repository.get_user()
-        if existing_user:
-            raise ValueError("User already exists")
+    def create_site_owner(self, site_owner: SiteOwner) -> SiteOwner:
+        # Check if site_owner already exists
+        existing_site_owner = self.site_owner_repository.get_site_owner() # Updated method call
+        if existing_site_owner:
+            raise ValueError("Site Owner already exists")
 
-        return self.user_repository.create_user(user)
+        return self.site_owner_repository.create_site_owner(site_owner) # Updated method call
 
-    def update_user(self, user: User) -> Optional[User]:
-        # Check if user exists
-        existing_user = self.user_repository.get_user()
-        if not existing_user:
-            raise ValueError("User does not exist")
+    def update_site_owner(self, site_owner: SiteOwner) -> Optional[SiteOwner]:
+        # Check if site_owner exists
+        existing_site_owner = self.site_owner_repository.get_site_owner() # Updated method call
+        if not existing_site_owner:
+            raise ValueError("Site Owner does not exist")
 
-        return self.user_repository.update_user(user)
+        return self.site_owner_repository.update_site_owner(site_owner) # Updated method call
 
-    def delete_user(self) -> bool:
-        # Check if user exists
-        existing_user = self.user_repository.get_user()
-        if not existing_user:
-            raise ValueError("User does not exist")
+    def delete_site_owner(self) -> bool:
+        # Check if site_owner exists
+        existing_site_owner = self.site_owner_repository.get_site_owner() # Updated method call
+        if not existing_site_owner:
+            raise ValueError("Site Owner does not exist")
 
-        return self.user_repository.delete_user()
+        return self.site_owner_repository.delete_site_owner() # Updated method call

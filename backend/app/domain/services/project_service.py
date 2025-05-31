@@ -2,7 +2,7 @@ from typing import List, Dict, Any, Optional
 import logging
 from app.domain.repositories.project_repository import ProjectRepository
 from app.domain.models.project import Project, ProjectStatus
-from app.domain.models.user import User
+from app.domain.models.user import SiteOwner # Changed User to SiteOwner
 from app.core.github import fetch_user_repositories, create_project_from_repo
 from app.core.gitlab import fetch_user_repositories as fetch_gitlab_repositories, create_project_from_repo as create_project_from_gitlab_repo
 from app.schemas.project import GitHubProjectImport
@@ -123,7 +123,7 @@ class ProjectService:
         
         return projects_to_return
 
-    async def sync_github_projects(self, user: User, projects_data_list: List[Dict[str, Any]] = None) -> List[Project]:
+    async def sync_github_projects(self, user: SiteOwner, projects_data_list: List[Dict[str, Any]] = None) -> List[Project]: # Changed User to SiteOwner type hint
         """
         Synchronize GitHub projects for a user.
         This is for the full sync, typically run by the scheduler or a sync button.

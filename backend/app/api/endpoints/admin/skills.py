@@ -5,7 +5,7 @@ import logging
 from app.core.auth import get_current_user
 from app.infrastructure.database.session import get_db
 from app.domain.models.skill import Skill
-from app.domain.models.user import User
+from app.domain.models.user import SiteOwner # Changed User to SiteOwner
 from app.domain.repositories.skill_repository import SkillRepository
 from app.domain.services.skill_service import SkillService
 from app.infrastructure.database.repositories.skill_repository_impl import SQLAlchemySkillRepository
@@ -21,7 +21,7 @@ def get_skill_service(db: Session = Depends(get_db)) -> SkillService:
 @router.get("/", response_model=List[Skill], response_model_by_alias=True)
 def list_skills(
     skill_service: SkillService = Depends(get_skill_service),
-    current_user: User = Depends(get_current_user)
+    current_site_owner: SiteOwner = Depends(get_current_user) # Renamed and updated type
 ):
     """List all skills (admin only)"""
     return skill_service.list_skills()
@@ -30,7 +30,7 @@ def list_skills(
 def list_skills_by_category(
     category: str,
     skill_service: SkillService = Depends(get_skill_service),
-    current_user: User = Depends(get_current_user)
+    current_site_owner: SiteOwner = Depends(get_current_user) # Renamed and updated type
 ):
     """List skills by category (admin only)"""
     return skill_service.list_skills_by_category(category)
@@ -39,7 +39,7 @@ def list_skills_by_category(
 def create_skill(
     skill: SkillCreate,
     skill_service: SkillService = Depends(get_skill_service),
-    current_user: User = Depends(get_current_user),
+    current_site_owner: SiteOwner = Depends(get_current_user), # Renamed and updated type
 ):
     """Create a new skill"""
     domain_skill = Skill(**skill.dict())
@@ -50,7 +50,7 @@ def update_skill(
     skill_id: int,
     skill: SkillUpdate,
     skill_service: SkillService = Depends(get_skill_service),
-    current_user: User = Depends(get_current_user),
+    current_site_owner: SiteOwner = Depends(get_current_user), # Renamed and updated type
 ):
     """Update an existing skill"""
     domain_skill = Skill(**skill.dict())
@@ -63,7 +63,7 @@ def update_skill(
 def delete_skill(
     skill_id: int,
     skill_service: SkillService = Depends(get_skill_service),
-    current_user: User = Depends(get_current_user),
+    current_site_owner: SiteOwner = Depends(get_current_user), # Renamed and updated type
 ):
     """Delete a skill"""
     if not skill_service.delete_skill(skill_id):
@@ -75,7 +75,7 @@ def reorder_skill(
     skill_id: int,
     new_order: int,
     skill_service: SkillService = Depends(get_skill_service),
-    current_user: User = Depends(get_current_user),
+    current_site_owner: SiteOwner = Depends(get_current_user), # Renamed and updated type
 ):
     """Reorder a skill"""
     updated = skill_service.reorder_skill(skill_id, new_order)

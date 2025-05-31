@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app.core.auth import get_current_user
 from app.infrastructure.database.session import get_db
 from app.schemas import theme as schemas
-from app.domain.models.user import User
+from app.domain.models.user import SiteOwner # Changed User to SiteOwner
 from app.domain.services.theme_service import ThemeService
 from app.infrastructure.database.repositories.theme_repository_impl import SQLAlchemyThemeRepository
 
@@ -17,7 +17,7 @@ def get_theme_service(db: Session = Depends(get_db)) -> ThemeService:
 @router.get("/", response_model=List[schemas.Theme])
 def list_themes(
     theme_service: ThemeService = Depends(get_theme_service),
-    current_user: User = Depends(get_current_user)
+    current_site_owner: SiteOwner = Depends(get_current_user) # Renamed and updated type
 ):
     """List all themes (admin only)"""
     return theme_service.get_all_themes()
@@ -26,7 +26,7 @@ def list_themes(
 def create_theme(
     theme: schemas.ThemeCreate,
     theme_service: ThemeService = Depends(get_theme_service),
-    current_user: User = Depends(get_current_user),
+    current_site_owner: SiteOwner = Depends(get_current_user), # Renamed and updated type
 ):
     """Create a new theme"""
     return theme_service.create_theme(theme)
@@ -36,10 +36,10 @@ def update_theme(
     theme_id: int,
     theme: schemas.ThemeUpdate,
     theme_service: ThemeService = Depends(get_theme_service),
-    current_user: User = Depends(get_current_user),
+    current_site_owner: SiteOwner = Depends(get_current_user), # Renamed and updated type
 ):
     """Update an existing theme"""
     updated_theme = theme_service.update_theme(theme_id, theme)
     if not updated_theme:
         raise HTTPException(status_code=404, detail="Theme not found")
-    return updated_theme 
+    return updated_theme

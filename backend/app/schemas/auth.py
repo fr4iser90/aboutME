@@ -15,18 +15,20 @@ class TokenData(BaseModel):
     email: str | None = None
 
 
-class UserLogin(BaseModel):
+class SiteOwnerLogin(BaseModel): # Renamed
     email: EmailStr
     password: str
 
 
-class UserCreate(BaseModel):
+# This SiteOwnerCreate might be redundant if schemas.user.SiteOwnerCreate is sufficient.
+# If kept, it should be consistent. For now, renaming.
+class SiteOwnerAuthCreate(BaseModel): # Renamed to avoid conflict if schemas.user.SiteOwnerCreate is imported
     email: EmailStr
     password: str
 
 
-class UserResponse(BaseModel):
-    id: int
+class SiteOwnerResponse(BaseModel): # Renamed
+    id: str # Changed from int to str to match SiteOwner model
     email: str
 
     class Config:

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ProjectCard } from '@/presentation/public/components/ProjectCard';
+import { ProjectCard } from '@/presentation/public/components/sections/ProjectCard';
 import type { Project as DomainProject, ProjectDetails } from '@/domain/entities/Project';
 import { apiClient } from '@/shared/utils/api';
 
@@ -12,7 +12,7 @@ interface ProjectFormData {
   githubUrl: string;
   liveUrl?: string;
   technologies: string[];
-  status?: string;
+  status: string;
   language?: string;
   topics?: string[];
   starsCount?: number;
@@ -134,11 +134,20 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
         ...currentProjectDetails,
         fields_visibility: fieldsVisibility,
       };
+
+      const payload = {
+        ...formData,
+        createdAt: new Date(formData.createdAt),
+        updatedAt: new Date(formData.updatedAt),
+        details,
+      };
       
       if (project?.id) {
-        await apiClient.updateProject(project.id, { ...formData, details });
+        // Ensure status is part of the payload if it's optional in formData but required in Project
+        await apiClient.updateProject(project.id, payload as DomainProject);
       } else {
-        await apiClient.createProject({ ...formData, details });
+        // Ensure status is part of the payload
+        await apiClient.createProject(payload as Omit<DomainProject, 'id'>);
       }
 
       onSave();
