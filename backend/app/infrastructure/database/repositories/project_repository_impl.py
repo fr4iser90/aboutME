@@ -45,7 +45,7 @@ class SQLAlchemyProjectRepository(ProjectRepository):
         db_project = self._db.query(ProjectModel).filter(
             ProjectModel.name == name,
             ProjectModel.source_type == source_type,
-            (ProjectModel.github_username == source_username) | (ProjectModel.gitlab_username == source_username)
+            ProjectModel.source_username == source_username
         ).first()
         return self._to_domain(db_project) if db_project else None
 

@@ -1,62 +1,52 @@
 // frontend/src/app/admin/projects/page.tsx
 "use client";
 
-import { useState } from 'react';
 import { useAdminContext } from '../AdminContext';
 import { ProjectList } from '@/presentation/public/components/admin/ProjectList';
-import { ProjectImportPanel } from '@/presentation/public/components/admin/ProjectImportPanel';
-import { GitHubSyncButton } from '@/presentation/public/components/admin/GitHubSyncButton';
-// This is the ProjectEditor that includes form and preview, for the main content area
+// This is the ProjectEditor that includes form and preview, for the main content area (Column 3)
 import { ProjectEditor } from '@/presentation/public/components/admin/ProjectEditor'; 
 import type { Project as DomainProject } from '@/domain/entities/Project';
 
 export default function AdminProjectsPage() {
-  const { setSelectedProject: setSelectedProjectInLayout } = useAdminContext();
-  const [projectToEdit, setProjectToEdit] = useState<DomainProject | null>(null);
+  const { selectedProject, setSelectedProject: setSelectedProjectInLayout } = useAdminContext();
 
-  const handleEditProject = (project: DomainProject) => {
-    setProjectToEdit(project);
-    setSelectedProjectInLayout(project); // Inform the layout/Copilot
+  // This function is called when "edit" is clicked, either from Column 2's simple list (via context)
+  // or from the card view's edit button within this page.
+  const handleSelectProjectForEditing = (project: DomainProject) => {
+    setSelectedProjectInLayout(project);
   };
 
-  const handleEditorSave = () => {
-    setProjectToEdit(null);
-    setSelectedProjectInLayout(null);
-    // Here, you would typically refetch the project list or update it.
-    // For now, just closing the editor.
+  const handleEditorSaveOrCancel = () => {
+    setSelectedProjectInLayout(null); // Clear selection in layout, reverts this page to overview
+    // Optionally, trigger a refetch of the project list in Column 2 if needed
   };
 
-  const handleEditorCancel = () => {
-    setProjectToEdit(null);
-    setSelectedProjectInLayout(null);
-  };
+  console.log("--- AdminProjectsPage (Column 3) RENDERING --- selectedProject from context:", selectedProject);
 
-  console.log("--- AdminProjectsPage RENDERING --- projectToEdit:", projectToEdit);
-
-  if (projectToEdit) {
+  if (selectedProject) {
+    // If a project is selected (via context), show the editor
     return (
       <ProjectEditor
-        project={projectToEdit}
-        onSave={handleEditorSave}
-        onCancel={handleEditorCancel}
+        project={selectedProject as DomainProject} 
+        onSave={handleEditorSaveOrCancel}
+        onCancel={handleEditorSaveOrCancel}
       />
     );
   }
 
+  // If no project is selected for editing, show the Projects Overview (card view)
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Projects Management</h1>
-        {/* GitHubSyncButton can be placed here or with ProjectImportPanel */}
+        <h1 className="text-2xl font-bold">Projects Overview</h1>
+        {/* Add New Project button could go here, or rely on Import Panel in Column 2 */}
       </div>
-      
-      <ProjectImportPanel />
-
-      <div className="my-4">
-        <GitHubSyncButton />
-      </div>
-
-      <ProjectList onEditProject={handleEditProject} />
+      {/* This ProjectList shows cards. Clicking edit on a card will call handleSelectProjectForEditing,
+          which updates the context, causing this page to re-render and show the editor. */}
+      <ProjectList 
+        onEditProject={handleSelectProjectForEditing} 
+        viewMode="card" 
+      />
     </div>
   );
 }

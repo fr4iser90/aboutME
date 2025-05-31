@@ -91,8 +91,8 @@ def create_project_from_repo(repo: Dict[str, Any], github_token=None) -> Dict[st
         "description": repo.get("description", ""),
         "source_type": "github",
         "source_url": repo["html_url"],
-        "github_username": repo["owner"]["login"],
-        "github_repo": repo["name"],
+        "source_username": repo["owner"]["login"],
+        "source_repo": repo["name"],
         "live_url": repo.get("homepage"),
         "thumbnail_url": repo["owner"]["avatar_url"],
         "details": {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react'; // Added useEffect for potential future use if needed for path checking
+import { useState, useEffect, useMemo } from 'react'; // Added useMemo
 import { usePathname } from 'next/navigation'; // To potentially make tab content more dynamic
 import Link from 'next/link'; // Import Link for navigation
 import { cn } from '@/lib/utils';
@@ -23,9 +23,6 @@ import type { LLMContext } from '@/lib/llm-service';
 
 // Components for Spalte 2 (List Sidebar) when projects are active
 import { ProjectList } from '@/presentation/public/components/admin/ProjectList';
-import { ProjectImportPanel } from '@/presentation/public/components/admin/ProjectImportPanel';
-import { GitHubSyncButton } from '@/presentation/public/components/admin/GitHubSyncButton';
-import type { Project as DomainProject } from '@/domain/entities/Project';
 
 
 interface Tab {
@@ -54,6 +51,7 @@ export default function AdminLayout({
 
   // Function to handle setting selected project and ensuring sidebar is open
   const handleSetSelectedProject = (project: any | null) => {
+    console.log('AdminLayout: handleSetSelectedProject called with project:', project); // DEBUG LOG
     setSelectedProjectInternal(project);
     if (project) {
       setIsRightSidebarOpen(true); // Ensure sidebar is open when a project is selected
@@ -229,8 +227,13 @@ export default function AdminLayout({
   }
 
 
+  const adminContextValue = useMemo(() => ({
+    selectedProject,
+    setSelectedProject: handleSetSelectedProject
+  }), [selectedProject]); // handleSetSelectedProject is stable
+
   return (
-    <AdminContext.Provider value={{ selectedProject, setSelectedProject: handleSetSelectedProject }}>
+    <AdminContext.Provider value={adminContextValue}>
       {/* Removed one redundant wrapping div here */}
       <div className="flex h-screen bg-background">
         {/* Column 1: Icon Sidebar */}
@@ -260,10 +263,6 @@ export default function AdminLayout({
           <>
             <div>
               <h2 className="text-lg font-semibold mb-2">Project Tools</h2>
-              <ProjectImportPanel />
-              <div className="mt-2">
-                <GitHubSyncButton />
-              </div>
             </div>
             <div className="flex-grow overflow-hidden"> {/* Allow ProjectList to scroll if content overflows */}
               <h2 className="text-lg font-semibold my-2">Project List</h2>

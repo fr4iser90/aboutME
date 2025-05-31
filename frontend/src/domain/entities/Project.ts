@@ -2,9 +2,9 @@ export interface Project {
   id: string;
   title: string; // Corresponds to 'name' in DB
   description: string;
-  status?: string; // From DB
+  status: string; // From DB, will be 'ACTIVE', 'WIP', 'ARCHIVED', 'DEPRECATED'
   imageUrl?: string; // Corresponds to 'thumbnail_url' in DB
-  githubUrl?: string; // Corresponds to 'github_repo' or a constructed URL
+  githubUrl?: string; // Corresponds to 'source_url' in DB
   liveUrl?: string; // Corresponds to 'live_url' in DB
   homepageUrl?: string; // Corresponds to 'homepage_url' in DB
   technologies: string[]; // May be derived from 'topics' or 'details'
@@ -17,8 +17,9 @@ export interface Project {
   createdAt: Date; // From DB
   updatedAt: Date; // Corresponds to 'last_updated' or 'updated_at' in DB
   details?: ProjectDetails; // Mapped from 'details' JSONB
-  sourceType?: 'github' | 'gitlab' | 'manual' | string; // Added for project source grouping
-  // Consider adding 'sourceUrl' if needed from DB 'projects' table
+  sourceType?: 'github' | 'gitlab' | 'manual' | string; // From DB
+  sourceUsername?: string; // From DB
+  sourceRepo?: string; // From DB
 }
 
 export interface ProjectDetails {

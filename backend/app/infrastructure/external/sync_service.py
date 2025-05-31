@@ -1,6 +1,6 @@
 from datetime import datetime
 from sqlalchemy.orm import Session
-from app.domain.models.project import Project
+from app.domain.models.project import Project, ProjectStatus
 from app.core.github import fetch_user_repositories, fetch_languages
 from app.core.gitlab import fetch_user_repositories as fetch_gitlab_repositories
 import logging
@@ -35,11 +35,11 @@ class SyncService:
             
             # Set status based on archived and release status
             if is_archived:
-                status = "ARCHIVED"
+                status = ProjectStatus.ARCHIVED
             elif has_release and not is_prerelease:
-                status = "ACTIVE"
+                status = ProjectStatus.ACTIVE
             else:
-                status = "WIP"
+                status = ProjectStatus.WIP
                 
             logger.info(f"Repository {repo.get('name', '')} is {status} on {source_type} (archived: {is_archived}, has_release: {has_release}, is_prerelease: {is_prerelease})")
             
@@ -72,10 +72,8 @@ class SyncService:
                 status=status,
                 source_type=source_type,
                 source_url=repo.get("html_url") or repo.get("web_url"),
-                github_username=owner.get("login") if source_type == "github" else None,
-                github_repo=repo.get("name") if source_type == "github" else None,
-                gitlab_username=namespace.get("username") if source_type == "gitlab" else None,
-                gitlab_repo=repo.get("path") if source_type == "gitlab" else None,
+                source_username=owner.get("login") if source_type == "github" else namespace.get("username"),
+                source_repo=repo.get("name") if source_type == "github" else repo.get("path"),
                 live_url=repo.get("homepage"),
                 thumbnail_url=owner.get("avatar_url") or namespace.get("avatar_url"),
                 details={

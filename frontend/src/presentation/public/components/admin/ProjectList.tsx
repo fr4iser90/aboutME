@@ -9,12 +9,13 @@ interface ProjectListProps {
   viewMode?: 'card' | 'simple'; // Add viewMode prop
 }
 
-export function ProjectList({ onEditProject, viewMode = 'card' }: ProjectListProps) { // Default to 'card'
+export function ProjectList({ onEditProject, viewMode = 'card' }: ProjectListProps) {
   console.log("ProjectList component rendering"); // Log 1
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showImportPanel, setShowImportPanel] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [addMode, setAddMode] = useState<'none' | 'manual' | 'import'>('none');
 
   useEffect(() => {
     console.log("ProjectList useEffect running"); // Log 2
@@ -88,40 +89,63 @@ export function ProjectList({ onEditProject, viewMode = 'card' }: ProjectListPro
   const groupedProjects = groupProjectsBySource(projects);
   const sourceOrder: (keyof typeof groupedProjects)[] = ['github', 'gitlab', 'manual', 'other'];
 
-  // Restore the original rendering logic
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold galaxy-text">Projects Overview</h2>
         <div className="space-x-2 flex items-center">
-          {/* Add Project button is now managed by the parent AdminProjectsView */}
-          {/* Import Project button remains here or could also be moved to parent */}
           <button
-            onClick={() => setShowImportPanel((prev) => !prev)}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-            title="Projekte importieren (GitHub, GitLab, Manuell)"
+            onClick={() => { setShowAddModal(true); setAddMode('none'); }}
+            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+            title="Projekt hinzufügen oder importieren"
           >
-            Importieren
+            +
           </button>
         </div>
       </div>
 
-      {showImportPanel && (
-        <div className="my-4">
-          <ProjectImportPanel />
-          <div className="flex justify-end mt-2">
-            <button
-              onClick={() => setShowImportPanel(false)}
-              className="px-3 py-1 text-sm bg-slate-700 text-white rounded hover:bg-slate-800"
-            >
-              Import schließen
-            </button>
+      {showAddModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-slate-900 p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h3 className="text-lg font-bold mb-4 galaxy-text">Projekt hinzufügen</h3>
+            {addMode === 'none' && (
+              <div className="flex flex-col gap-4">
+                <button
+                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                  onClick={() => { setAddMode('import'); }}
+                >
+                  Projekte importieren
+                </button>
+                <button
+                  className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+                  onClick={() => { setAddMode('manual'); onEditProject({} as Project); setShowAddModal(false); }}
+                >
+                  Manuell anlegen
+                </button>
+                <button
+                  className="px-4 py-2 bg-slate-700 text-white rounded hover:bg-slate-800"
+                  onClick={() => setShowAddModal(false)}
+                >
+                  Abbrechen
+                </button>
+              </div>
+            )}
+            {addMode === 'import' && (
+              <>
+                <ProjectImportPanel />
+                <div className="flex justify-end mt-2">
+                  <button
+                    onClick={() => setShowAddModal(false)}
+                    className="px-3 py-1 text-sm bg-slate-700 text-white rounded hover:bg-slate-800"
+                  >
+                    Schließen
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
-
-      {/* The block for rendering ProjectEditor internally has been removed. 
-          Editing is now handled by the parent component via onEditProject callback. */}
 
       {sourceOrder.map((sourceKey) => {
         const projectsInGroup = groupedProjects[sourceKey];

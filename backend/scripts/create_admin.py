@@ -18,9 +18,9 @@ def ensure_admin_user():
 
     admin_email = os.getenv("ADMIN_EMAIL")
     admin_password = os.getenv("ADMIN_PASSWORD")
-    github_username = os.getenv("GIT_USERNAME")
+    source_username = os.getenv("GIT_USERNAME")
 
-    if not all([admin_email, admin_password, github_username]):
+    if not all([admin_email, admin_password, source_username]):
         logger.error(
             "Error: ADMIN_EMAIL, ADMIN_PASSWORD and GIT_USERNAME environment variables must be set."
         )
@@ -33,15 +33,15 @@ def ensure_admin_user():
 
         if existing_user:
             logger.info(f"User with email '{admin_email}' already exists.")
-            # Update github_username if it's not set
-            if not existing_user.github_username:
-                existing_user.github_username = github_username
+            # Update source_username if it's not set
+            if not existing_user.source_username:
+                existing_user.source_username = source_username
                 db.commit()
-                logger.info(f"Updated github_username for user '{admin_email}'")
+                logger.info(f"Updated source_username for user '{admin_email}'")
             return
 
         # If user does not exist, create new one
-        logger.info(f"Creating new user: Email='{admin_email}', GitHub='{github_username}'")
+        logger.info(f"Creating new user: Email='{admin_email}', Source='{source_username}'")
 
         hashed_password = get_password_hash(admin_password)
 
@@ -49,7 +49,7 @@ def ensure_admin_user():
             id="me",  # Fixed ID for the single user
             email=admin_email,
             hashed_password=hashed_password,
-            github_username=github_username
+            source_username=source_username
         )
         db.add(user)
         db.commit()

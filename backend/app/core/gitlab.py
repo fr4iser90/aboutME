@@ -21,37 +21,30 @@ def fetch_user_repositories(username: str) -> List[Dict[str, Any]]:
     response.raise_for_status()
     return response.json()
 
-def create_project_from_repo(repo_data: Dict[str, Any]) -> Dict[str, Any]:
-    """Convert GitLab repository data into a project format."""
-    try:
-        return {
-            "name": repo_data.get("name", ""),
-            "description": repo_data.get("description", "") or "",
-            "thumbnail_url": repo_data.get("avatar_url", ""),
-            "source_type": "gitlab",
-            "source_url": repo_data.get("web_url", ""),
-            "stars_count": repo_data.get("star_count", 0),
-            "forks_count": repo_data.get("forks_count", 0),
-            "status": "Archived" if repo_data.get("archived", False) else "WIP",
-            "details": {
-                "default_branch": repo_data.get("default_branch", "main"),
-                "open_issues": repo_data.get("open_issues_count", 0),
-                "license": repo_data.get("license", {}).get("name") if repo_data.get("license") else None,
-                "visibility": repo_data.get("visibility", "private"),
-                "has_wiki": repo_data.get("wiki_enabled", False),
-                "has_pages": repo_data.get("pages_enabled", False)
-            }
-        }
-    except Exception as e:
-        logger.error(f"Error creating project from repo data: {str(e)}")
-        return {
-            "name": repo_data.get("name", "Unknown"),
-            "description": "",
-            "thumbnail_url": "",
-            "source_type": "gitlab",
-            "source_url": repo_data.get("web_url", ""),
-            "stars_count": 0,
-            "forks_count": 0,
-            "status": "WIP",
-            "details": {}
-        } 
+def create_project_from_repo(repo: Dict[str, Any]) -> Dict[str, Any]:
+    """Create a project from a GitLab repository."""
+    return {
+        "name": repo["name"],
+        "description": repo.get("description", ""),
+        "source_type": "gitlab",
+        "source_url": repo["web_url"],
+        "source_username": repo["namespace"]["username"],
+        "source_repo": repo["path"],
+        "live_url": repo.get("homepage"),
+        "thumbnail_url": repo["namespace"].get("avatar_url"),
+        "details": {
+            "default_branch": repo.get("default_branch"),
+            "open_issues": repo.get("open_issues_count", 0),
+            "visibility": repo.get("visibility"),
+            "archived": repo.get("archived", False),
+        },
+        "stars_count": repo.get("star_count", 0),
+        "forks_count": repo.get("forks_count", 0),
+        "language": repo.get("language"),
+        "topics": repo.get("topics", []),
+        "last_updated": repo.get("last_activity_at"),
+        "homepage_url": repo.get("homepage"),
+        "open_issues_count": repo.get("open_issues_count", 0),
+        "default_branch": repo.get("default_branch"),
+        "archived": repo.get("archived", False)
+    } 

@@ -84,7 +84,7 @@ async def get_current_user(
         id=user.id,
         email=user.email,
         hashed_password=user.hashed_password,
-        github_username=user.github_username,
+        source_username=user.source_username,
         created_at=user.created_at,
         updated_at=user.updated_at
     )

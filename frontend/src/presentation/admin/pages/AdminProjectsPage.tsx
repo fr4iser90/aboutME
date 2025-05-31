@@ -2,12 +2,10 @@ import { useEffect, useState } from 'react';
 import { Project } from '@/domain/entities/Project';
 import { apiClient } from '@/shared/utils/api';
 import { ProjectEditor } from '@/presentation/public/components/admin/ProjectEditor';
-import { ProjectImportPanel } from '@/presentation/public/components/admin/ProjectImportPanel';
 
 export default function AdminProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [showImportPanel, setShowImportPanel] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -59,13 +57,6 @@ export default function AdminProjectsPage() {
             +
           </button>
         </div>
-        <button
-          className="m-4 px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
-          onClick={() => setShowImportPanel((prev) => !prev)}
-        >
-          {showImportPanel ? 'Import schließen' : 'Importieren'}
-        </button>
-        {showImportPanel && <div className="p-2"><ProjectImportPanel /></div>}
         <div className="flex-1 overflow-y-auto">
           {loading ? (
             <div className="p-4 text-center text-slate-400">Loading...</div>

@@ -17,17 +17,17 @@ def run_sync():
     try:
         sync_service = SyncService(db)
         
-        # Get GitHub username from environment
-        github_username = os.getenv("GIT_USERNAME")
-        if github_username:
+        # Get source username from environment
+        source_username = os.getenv("GIT_USERNAME")
+        if source_username:
             try:
                 # Run async function in event loop
                 loop = asyncio.new_event_loop()
                 asyncio.set_event_loop(loop)
-                loop.run_until_complete(sync_service.sync_projects(github_username.strip()))
+                loop.run_until_complete(sync_service.sync_projects(source_username.strip()))
                 loop.close()
             except Exception as e:
-                logger.error(f"Failed to sync projects for {github_username}: {str(e)}")
+                logger.error(f"Failed to sync projects for {source_username}: {str(e)}")
 
     except Exception as e:
         logger.error(f"Scheduled sync failed: {str(e)}")

@@ -8,8 +8,8 @@ export interface Project {
   topics: string[];
   status: 'WIP' | 'Completed' | 'Archived';
   source_type: 'manual' | 'github' | 'gitlab';
-  github_username?: string;
-  github_repo?: string;
+  source_username?: string;
+  source_repo?: string;
   stars_count?: number;
   forks_count?: number;
   watchers_count?: number;
