@@ -1,8 +1,12 @@
-// frontend/src/app/admin/skills/page.tsx
-"use client";
+'use client';
 
-import { AdminSkillsView } from "@/presentation/admin/pages/AdminSkillsPage";
+import AdminSkillsPageContent from '@/presentation/admin/pages/skills/page'; // This will be the AdminSkillsPage function
+// import type { Metadata } from 'next';
 
-export default function AdminSkillsPage() {
-  return <AdminSkillsView />;
+// export const metadata: Metadata = {
+//   title: 'Admin - Skills',
+// };
+
+export default function AdminSkillsPageWrapper() { // Renaming wrapper to avoid conflict if needed
+  return <AdminSkillsPageContent />;
 }

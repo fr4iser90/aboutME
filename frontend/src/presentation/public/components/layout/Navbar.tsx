@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { apiClient } from '@/shared/utils/api';
+import { apiClient } from '@/domain/shared/utils/api';
 import { usePathname } from 'next/navigation';
 
 export function Navbar() {

@@ -1,0 +1,309 @@
+'use client';
+
+import { useState, useEffect, useMemo } from 'react';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import { Button } from '@/presentation/shared/ui/button';
+import { ScrollArea } from '@/presentation/shared/ui/scroll-area';
+import { 
+  LayoutDashboard, 
+  FolderGit2, 
+  Settings, 
+  Palette, 
+  User, 
+  MessageSquare,
+  SplitSquareHorizontal,
+  X
+} from 'lucide-react';
+import AdminContext from '@/presentation/admin/components/AdminContext';
+import CopilotChat from '@/presentation/admin/components/CopilotChat';
+import { ProjectList } from '@/presentation/admin/components/features/projects/ProjectList';
+import type { Project as DomainProject } from '@/domain/entities/Project';
+import { TabContext, type Tab } from '@/presentation/admin/contexts/TabContext';
+
+export default function AdminLayoutContent({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  console.log("--- AdminLayout (Full UI with Tabs) RENDERING ---");
+  const pathname = usePathname();
+
+  const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(true);
+  const initialActiveTab = pathname.startsWith('/admin/projects') ? 'projects' : 
+                         pathname.startsWith('/admin/dashboard') ? 'dashboard' : 
+                         'projects';
+
+  const [activeTab, setActiveTab] = useState(initialActiveTab); 
+  const [selectedProject, setSelectedProjectInternal] = useState<DomainProject | null>(null);
+
+  const handleSetSelectedProject = (project: DomainProject | null) => {
+    console.log('AdminLayout: handleSetSelectedProject called with project:', project);
+    setSelectedProjectInternal(project);
+    if (project) {
+      setIsRightSidebarOpen(true);
+    }
+  };
+
+  const navigation = [
+    { id: 'dashboard', title: 'Dashboard', icon: <LayoutDashboard className="w-5 h-5" />, path: '/admin' },
+    { id: 'projects', title: 'Projects', icon: <FolderGit2 className="w-5 h-5" />, path: '/admin/projects' },
+    { id: 'sections', title: 'Sections', icon: <SplitSquareHorizontal className="w-5 h-5" />, path: '/admin/sections' },
+    { id: 'skills', title: 'Skills', icon: <Palette className="w-5 h-5" />, path: '/admin/skills' },
+    { id: 'about', title: 'About Me', icon: <User className="w-5 h-5" />, path: '/admin/about' },
+    { id: 'settings', title: 'Settings', icon: <Settings className="w-5 h-5" />, path: '/admin/settings' },
+  ];
+
+  const getInitialOpenTabs = () => {
+    const tabs: Tab[] = [];
+    if (pathname.startsWith('/admin/projects')) {
+      tabs.push({
+        id: 'projects', 
+        title: 'Projects',
+        icon: <FolderGit2 className="w-4 h-4" />,
+        content: <>{children}</>
+      });
+    } else if (pathname.startsWith('/admin/dashboard')) {
+      tabs.push({
+        id: 'dashboard',
+        title: 'Dashboard',
+        icon: <LayoutDashboard className="w-4 h-4" />,
+        content: <>{children}</>
+      });
+    } else if (pathname.startsWith('/admin/skills')) {
+      tabs.push({
+        id: 'skills',
+        title: 'Skills',
+        icon: <Palette className="w-4 h-4" />,
+        content: <>{children}</>
+      });
+    }
+    if (!tabs.find(t => t.id === activeTab) && tabs.length > 0) {
+      setActiveTab(tabs[0].id);
+    } else if (tabs.length === 0 && navigation.length > 0) {
+      if (activeTab === 'projects' && !tabs.find(t => t.id === 'projects')) {
+        tabs.push({
+          id: 'projects', 
+          title: 'Projects',
+          icon: <FolderGit2 className="w-4 h-4" />,
+          content: <>{children}</>
+        });
+      }
+    }
+    return tabs;
+  };
+
+  const [openTabs, setOpenTabs] = useState<Tab[]>(getInitialOpenTabs());
+
+  useEffect(() => {
+    const currentPathTabId = pathname.split('/admin/')[1]?.split('/')[0] || 'dashboard';
+    if (!openTabs.find(tab => tab.id === currentPathTabId) && navigation.find(nav => nav.id === currentPathTabId)) {
+      const navItem = navigation.find(nav => nav.id === currentPathTabId);
+      if (navItem) {
+        setOpenTabs(prevTabs => {
+          const newTabs = [...prevTabs];
+          if (!newTabs.find(t => t.id === navItem.id)) {
+            newTabs.push({
+              id: navItem.id,
+              title: navItem.title,
+              icon: navItem.icon,
+              content: <>{children}</>
+            });
+          }
+          return newTabs;
+        });
+      }
+    }
+    setActiveTab(currentPathTabId);
+  }, [pathname, children, navigation]);
+
+  const handleTabClick = (tabId: string) => {
+    if (openTabs.find(tab => tab.id === tabId)) {
+      setActiveTab(tabId);
+      return;
+    }
+
+    const newTabDef = navigation.find(nav => nav.id === tabId);
+    if (newTabDef) {
+      let contentForNewTab = <>{children}</>;
+      if (pathname !== newTabDef.path) {
+        contentForNewTab = <div>{newTabDef.title} Content Area (placeholder)</div>;
+      }
+      
+      setOpenTabs([...openTabs, {
+        id: newTabDef.id,
+        title: newTabDef.title,
+        icon: newTabDef.icon, 
+        content: contentForNewTab
+      }]);
+      setActiveTab(tabId);
+    }
+  };
+
+  const openTab = (tab: Tab) => {
+    setOpenTabs((prev) => {
+      if (prev.find((t) => t.id === tab.id)) {
+        setActiveTab(tab.id);
+        return prev;
+      }
+      setActiveTab(tab.id);
+      return [...prev, tab];
+    });
+  };
+
+  const closeTab = (tabId: string) => {
+    setOpenTabs((prev) => {
+      const idx = prev.findIndex((t) => t.id === tabId);
+      if (idx === -1) return prev;
+      const newTabs = prev.filter((t) => t.id !== tabId);
+      if (activeTab === tabId) {
+        if (newTabs.length > 0) {
+          const newIdx = idx > 0 ? idx - 1 : 0;
+          setActiveTab(newTabs[newIdx].id);
+        } else {
+          setActiveTab('dashboard');
+        }
+      }
+      return newTabs;
+    });
+  };
+
+  const copilotContext = {
+    currentTab: activeTab,
+    selectedProject,
+  };
+  
+  let activeContent = <div>Loading content...</div>;
+  const currentActiveTabObject = openTabs.find(tab => tab.id === activeTab);
+
+  if (currentActiveTabObject) {
+    const currentPathMainSection = pathname.split('/admin/')[1]?.split('/')[0] || 'dashboard';
+    if (activeTab === currentPathMainSection) {
+      activeContent = <>{children}</>;
+    } else {
+      activeContent = currentActiveTabObject.content;
+    }
+  } else if (openTabs.length === 0 && navigation.find(n => n.id === activeTab)) {
+    const currentPathMainSection = pathname.split('/admin/')[1]?.split('/')[0] || 'dashboard';
+    if(activeTab === currentPathMainSection) {
+      activeContent = <>{children}</>;
+    }
+  }
+
+  const adminContextValue = useMemo(() => ({
+    selectedProject,
+    setSelectedProject: handleSetSelectedProject
+  }), [selectedProject]);
+
+  return (
+    <TabContext.Provider value={{ openTab, closeTab, setActiveTab, activeTab, openTabs }}>
+      <AdminContext.Provider value={adminContextValue}>
+        <div className="flex h-screen bg-background">
+          {/* Column 1: Icon Sidebar */}
+          <div className="w-16 border-r bg-muted/40">
+            <ScrollArea className="h-full py-4">
+              <div className="flex flex-col items-center gap-4">
+                {navigation.map((item) => (
+                  <Link key={item.id} href={item.path} passHref>
+                    <Button
+                      variant={activeTab === item.id ? "secondary" : "ghost"}
+                      size="icon"
+                      className="w-10 h-10"
+                      aria-label={item.title}
+                    >
+                      {item.icon}
+                    </Button>
+                  </Link>
+                ))}
+              </div>
+            </ScrollArea>
+          </div>
+
+          {/* Column 2: List Sidebar */}
+          <div className="w-72 border-r bg-muted/50 p-4 hidden md:flex md:flex-col space-y-4 overflow-y-auto">
+            {activeTab === 'projects' && (
+              <>
+                <div>
+                  <h2 className="text-lg font-semibold mb-2">Project Tools</h2>
+                </div>
+                <div className="flex-grow overflow-hidden">
+                  <h2 className="text-lg font-semibold my-2">Project List</h2>
+                  <ScrollArea className="h-full">
+                    <ProjectList 
+                      onEditProject={(project: DomainProject) => handleSetSelectedProject(project)} 
+                      viewMode="simple" 
+                    />
+                  </ScrollArea>
+                </div>
+              </>
+            )}
+            {activeTab !== 'projects' && (
+              <>
+                <h2 className="text-lg font-semibold mb-4">Context List</h2>
+                <p className="text-sm text-gray-500">Content for {activeTab} list...</p>
+              </>
+            )}
+          </div>
+
+          {/* Column 3: Main Content Area */}
+          <div className="flex-1 flex flex-col overflow-hidden">
+            <div className="border-b">
+              <div className="flex items-center px-4 h-10 overflow-x-auto">
+                {openTabs.map((tab) => (
+                  <div
+                    key={tab.id}
+                    className={cn(
+                      "flex items-center gap-2 px-3 py-1.5 text-sm border-r whitespace-nowrap",
+                      activeTab === tab.id ? "bg-muted" : "hover:bg-muted/50"
+                    )}
+                  >
+                    <button
+                      className="flex items-center gap-2"
+                      onClick={() => setActiveTab(tab.id)}
+                    >
+                      {tab.icon}
+                      <span>{tab.title}</span>
+                    </button>
+                    {openTabs.length > 1 && (
+                      <button
+                        className="p-1 hover:bg-muted rounded-sm"
+                        onClick={() => closeTab(tab.id)}
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex-1 overflow-auto p-6">
+              {openTabs.find((tab) => tab.id === activeTab)?.content || null}
+            </div>
+          </div>
+
+          {/* Column 4: Right Sidebar (Copilot) */}
+          {isRightSidebarOpen && (
+            <div className="w-80 border-l bg-muted/40 flex flex-col">
+              <div className="flex items-center justify-between p-4 border-b">
+                <div className="flex items-center gap-2">
+                  <MessageSquare className="w-4 h-4" />
+                  <span className="font-medium">Copilot</span>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsRightSidebarOpen(false)}
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+              <CopilotChat context={copilotContext} />
+            </div>
+          )}
+        </div>
+      </AdminContext.Provider>
+    </TabContext.Provider>
+  );
+}

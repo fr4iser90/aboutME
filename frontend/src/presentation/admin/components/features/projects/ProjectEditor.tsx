@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { Card } from '@/presentation/shared/ui/card';
+import { Input } from '@/presentation/shared/ui/input';
+import { Textarea } from '@/presentation/shared/ui/textarea';
+import { Button } from '@/presentation/shared/ui/button';
+import { ScrollArea } from '@/presentation/shared/ui/scroll-area';
 import { Plus, Trash2, ExternalLink } from 'lucide-react';
 
 interface Project {

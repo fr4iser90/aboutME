@@ -3,7 +3,7 @@ import * as React from 'react';
 import type {
   ToastActionElement,
   ToastProps,
-} from '@/components/ui/toast';
+} from '@/presentation/shared/ui/toast';
 
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1000000;
@@ -155,7 +155,7 @@ function toast({ ...props }: Toast) {
       ...props,
       id,
       open: true,
-      onOpenChange: (open) => {
+      onOpenChange: (open: boolean) => { // Added boolean type for open
         if (!open) dismiss();
       },
     },
@@ -188,4 +188,4 @@ function useToast() {
   };
 }
 
-export { useToast, toast }; 
+export { useToast, toast };

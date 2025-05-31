@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { ProjectCard } from '@/presentation/public/components/sections/ProjectCard';
 import type { Project } from '@/domain/entities/Project';
-import { apiClient } from '@/shared/utils/api';
+import { apiClient } from '@/domain/shared/utils/api';
 import { ProjectImportPanel } from './ProjectImportPanel';
-import { useTabContext } from '@/app/admin/layout';
+import { useTabContext } from '@/presentation/admin/contexts/TabContext';
 import { ProjectEditor } from './ProjectEditor';
 
 interface ProjectListProps {

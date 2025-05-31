@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Navbar } from '@/presentation/public/components/layout/Navbar';
-import { apiRequest } from '@/shared/utils/api';
+import { apiRequest } from '@/domain/shared/utils/api'; // Corrected path
 
 export function LoginView() {
   const [email, setEmail] = useState('');

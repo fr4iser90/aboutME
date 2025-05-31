@@ -1,8 +1,12 @@
-// frontend/src/app/projects/page.tsx
-"use client";
+'use client';
 
-import { ProjectsView } from "@/presentation/public/pages/ProjectsPage";
+import ProjectsPageContent from '@/presentation/public/pages/projects/ProjectsPage';
+// import type { Metadata } from 'next';
+
+// export const metadata: Metadata = {
+//   title: 'Projects',
+// };
 
 export default function ProjectsPage() {
-  return <ProjectsView />;
+  return <ProjectsPageContent />;
 }

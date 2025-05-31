@@ -1,7 +1,7 @@
 import { Project } from '@/domain/entities/Project';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/presentation/shared/ui/button';
+import { Input } from '@/presentation/shared/ui/input';
+import { Textarea } from '@/presentation/shared/ui/textarea';
 import { useState } from 'react';
 
 interface ProjectFormProps {

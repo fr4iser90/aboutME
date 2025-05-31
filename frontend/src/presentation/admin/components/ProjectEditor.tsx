@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ProjectCard } from '@/presentation/public/components/sections/ProjectCard';
 import type { Project as DomainProject, ProjectDetails } from '@/domain/entities/Project';
-import { apiClient } from '@/shared/utils/api';
+import { apiClient } from '@/domain/shared/utils/api';
 
 // Form data uses camelCase, consistent with DomainProject and frontend standards
 interface ProjectFormData {

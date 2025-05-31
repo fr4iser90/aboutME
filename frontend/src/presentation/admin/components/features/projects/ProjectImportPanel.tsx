@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ProjectCard } from '@/presentation/public/components/sections/ProjectCard';
 import { useRouter } from 'next/navigation';
-import { apiClient } from '@/shared/utils/api';
+import { apiClient } from '@/domain/shared/utils/api';
 
 const SOURCES = [
   { label: 'GitHub', value: 'github' },

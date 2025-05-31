@@ -1,24 +1,17 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import '@/shared/constants/globals.css'
+import RootLayoutContent from '@/presentation/public/pages/layout';
+import type { Metadata } from 'next';
 
-const inter = Inter({ subsets: ['latin'] })
-
+// Metadata should ideally stay in the src/app layout or page file.
+// If RootLayoutContent also exports metadata, ensure it's handled correctly.
 export const metadata: Metadata = {
-  title: 'About Me - Galaxy Portfolio',
+  title: 'About Me - Galaxy Portfolio', // Assuming this is the root metadata
   description: 'Personal portfolio in a cosmic style',
-}
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  return (
-    <html lang="en" className="dark">
-      <body className={`${inter.className} bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 min-h-screen text-slate-100`}>
-        {children}
-      </body>
-    </html>
-  )
+  return <RootLayoutContent>{children}</RootLayoutContent>;
 }

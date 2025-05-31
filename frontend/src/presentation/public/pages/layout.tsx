@@ -1,15 +1,13 @@
-import type { Metadata } from 'next'
+'use client'; // Added 'use client'
+
 import { Inter } from 'next/font/google'
-import '@/styles/globals.css'
+import '@/domain/shared/styles/globals.css'; // Corrected path
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata: Metadata = {
-  title: 'About Me - Galaxy Portfolio',
-  description: 'Personal portfolio in a cosmic style',
-}
+// Metadata removed from here, should be in src/app/layout.tsx
 
-export default function RootLayout({
+export default function RootLayoutContent({ // Renamed function
   children,
 }: {
   children: React.ReactNode
@@ -21,4 +19,4 @@ export default function RootLayout({
       </body>
     </html>
   )
-} 
+}

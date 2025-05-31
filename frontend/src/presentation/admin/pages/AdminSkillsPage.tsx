@@ -1,15 +1,15 @@
-import { useAdminSkills } from '@/application/admin/useSkills';
-import { SkillForm } from '@/presentation/admin/components/SkillForm';
+import { useAdminSkills } from '@/application/admin/skills/useSkills';
+import { SkillForm } from '@/presentation/admin/components/features/skills/SkillForm';
 import { useEffect, useState } from 'react';
 import { Skill } from '@/domain/entities/Skill';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/presentation/shared/ui/button';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from '@/presentation/shared/ui/dialog';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,7 +19,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+} from '@/presentation/shared/ui/alert-dialog';
 
 export const AdminSkillsView = () => {
   const { getAllSkills, createSkill, updateSkill, deleteSkill } = useAdminSkills();

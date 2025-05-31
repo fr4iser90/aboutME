@@ -1,7 +1,7 @@
 import { Project } from '@/domain/entities/Project';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/presentation/shared/ui/button';
 import { ExternalLink, Github, Star, GitFork, Eye, AlertCircle, Home, Clock } from 'lucide-react';
 import Image from 'next/image';
 

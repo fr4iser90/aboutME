@@ -1,8 +1,8 @@
 import { Skill } from '@/domain/entities/Skill';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Button } from '@/presentation/shared/ui/button';
+import { Input } from '@/presentation/shared/ui/input';
+import { Textarea } from '@/presentation/shared/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/presentation/shared/ui/select';
 import { useState } from 'react';
 
 interface SkillFormProps {

@@ -1,8 +1,12 @@
-// frontend/src/app/login/page.tsx
-"use client";
+'use client';
 
-import { LoginView } from '@/presentation/public/pages/login/page';
+import { LoginView } from '@/presentation/public/pages/login/page'; // Use named import
+// import type { Metadata } from 'next';
+
+// export const metadata: Metadata = {
+//   title: 'Login',
+// };
 
 export default function LoginPage() {
-  return <LoginView />;
+  return <LoginView />; // Render LoginView
 }

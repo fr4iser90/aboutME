@@ -1,15 +1,12 @@
-// frontend/src/app/admin/page.tsx
-"use client";
+'use client';
 
-// Removed: import { AdminDashboardView } from "@/presentation/public/pages/admin/page";
+import AdminPageContent from '@/presentation/admin/pages/page';
+// import type { Metadata } from 'next';
 
-export default function AdminPage() {
-  // Replaced: return <AdminDashboardView />;
-  return (
-    <div>
-      <h1>Admin Dashboard</h1>
-      <p>Content for the admin dashboard page.</p>
-      {/* The main admin functionality is likely driven by the AdminLayout and its specific child routes/components */}
-    </div>
-  );
+// export const metadata: Metadata = {
+//   title: 'Admin Home',
+// };
+
+export default function AdminPage() { // Removed children from props
+  return <AdminPageContent />; // Removed children from being passed
 }

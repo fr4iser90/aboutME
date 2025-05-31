@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, FC } from 'react'; // Added FC
 import { Navbar } from '@/presentation/public/components/layout/Navbar';
-import { apiRequest } from '@/shared/utils/api';
+import { apiRequest } from '@/domain/shared/utils/api'; // Corrected path
 // Import existing section components - they will be refactored later
 import About from '@/presentation/public/components/sections/About';
 import Projects from '@/presentation/public/components/sections/Projects';
@@ -33,9 +33,9 @@ export const HomeView: FC = () => { // Used FC type
 
     async function fetchSections() {
       try {
-        const data = await apiRequest<ApiSection[]>('/api/public/sections');
+        const response = await apiRequest<ApiSection[]>('/api/public/sections'); // Renamed to response
         if (isMounted) {
-          setSections(data);
+          setSections(response.data); // Use response.data
           setError(null);
         }
       } catch (e: any) {

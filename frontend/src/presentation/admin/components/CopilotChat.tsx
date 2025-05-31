@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { Card } from '@/presentation/shared/ui/card';
+import { Input } from '@/presentation/shared/ui/input';
+import { Button } from '@/presentation/shared/ui/button';
+import { ScrollArea } from '@/presentation/shared/ui/scroll-area';
 import { Send, Bot, User, Sparkles, Wand2 } from 'lucide-react';
 import { llmService, type LLMContext } from '@/lib/llm-service';
 
