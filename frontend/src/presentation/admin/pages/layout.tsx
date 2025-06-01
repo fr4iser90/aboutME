@@ -19,8 +19,11 @@ import {
 import AdminContext from '@/presentation/admin/components/AdminContext';
 import CopilotChat from '@/presentation/admin/components/CopilotChat';
 import { ProjectList } from '@/presentation/admin/components/features/projects/ProjectList';
+import { SectionList } from '@/presentation/admin/components/features/sections/SectionList';
 import type { Project as DomainProject } from '@/domain/entities/Project';
 import { TabContext, type Tab } from '@/presentation/admin/contexts/TabContext';
+import { Section } from '@/domain/entities/Section';
+import { SectionEditor } from '@/presentation/admin/components/features/sections/SectionEditor';
 
 export default function AdminLayoutContent({
   children,
@@ -37,6 +40,7 @@ export default function AdminLayoutContent({
 
   const [activeTab, setActiveTab] = useState(initialActiveTab); 
   const [selectedProject, setSelectedProjectInternal] = useState<DomainProject | null>(null);
+  const [selectedSection, setSelectedSection] = useState<Section | null>(null);
 
   const handleSetSelectedProject = (project: DomainProject | null) => {
     console.log('AdminLayout: handleSetSelectedProject called with project:', project);
@@ -238,7 +242,20 @@ export default function AdminLayoutContent({
                 </div>
               </>
             )}
-            {activeTab !== 'projects' && (
+            {activeTab === 'sections' && (
+              <>
+                <div>
+                  <h2 className="text-lg font-semibold mb-2">Section Tools</h2>
+                </div>
+                <div className="flex-grow overflow-hidden">
+                  <h2 className="text-lg font-semibold my-2">Section List</h2>
+                  <ScrollArea className="h-full">
+                    <SectionList onEditSection={setSelectedSection} />
+                  </ScrollArea>
+                </div>
+              </>
+            )}
+            {activeTab !== 'projects' && activeTab !== 'sections' && (
               <>
                 <h2 className="text-lg font-semibold mb-4">Context List</h2>
                 <p className="text-sm text-gray-500">Content for {activeTab} list...</p>
@@ -279,7 +296,11 @@ export default function AdminLayoutContent({
             </div>
 
             <div className="flex-1 overflow-auto p-6">
-              {openTabs.find((tab) => tab.id === activeTab)?.content || null}
+              {activeTab === 'sections' && selectedSection ? (
+                <SectionEditor section={selectedSection} onSave={() => setSelectedSection(null)} onCancel={() => setSelectedSection(null)} />
+              ) : (
+                openTabs.find((tab) => tab.id === activeTab)?.content || null
+              )}
             </div>
           </div>
 
