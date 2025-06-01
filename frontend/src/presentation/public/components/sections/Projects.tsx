@@ -14,19 +14,35 @@ interface Project {
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const username = 'fr4iser90';
-    fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=6`)
-      .then(res => res.json())
-      .then(data => {
-        setProjects(data);
-        setLoading(false);
-      })
-      .catch(error => {
+    const fetchProjects = async () => {
+      try {
+        const username = 'fr4iser90';
+        const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=6`);
+        
+        if (!response.ok) {
+          throw new Error(`GitHub API error: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // Ensure data is an array before setting it
+        if (Array.isArray(data)) {
+          setProjects(data);
+        } else {
+          throw new Error('Invalid response format from GitHub API');
+        }
+      } catch (error) {
         console.error('Error fetching projects:', error);
+        setError(error instanceof Error ? error.message : 'Failed to fetch projects');
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchProjects();
   }, []);
 
   if (loading) {
@@ -34,6 +50,32 @@ export default function Projects() {
       <div className="flex justify-center items-center min-h-[400px]">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
       </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <section id="projects" className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold mb-12 galaxy-text text-center">Featured Projects</h2>
+          <div className="text-center text-red-500">
+            <p>Error loading projects: {error}</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!projects.length) {
+    return (
+      <section id="projects" className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold mb-12 galaxy-text text-center">Featured Projects</h2>
+          <div className="text-center text-gray-500">
+            <p>No projects found</p>
+          </div>
+        </div>
+      </section>
     );
   }
 

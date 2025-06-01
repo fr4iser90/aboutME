@@ -24,11 +24,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY ./app ./app
 COPY ./scripts ./scripts
-COPY ./static ./app/static
 COPY ./entrypoint.sh /app/entrypoint.sh
 
 # Create logs directory
 RUN mkdir -p /app/logs
+
+# Create static/uploads directory with proper permissions
+RUN mkdir -p /static/uploads && chmod 775 /static/uploads
 
 # Create tmp directory for builds with secure permissions
 RUN mkdir -p /app/tmp && chmod 755 /app/tmp

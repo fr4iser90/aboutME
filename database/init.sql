@@ -283,3 +283,19 @@ CREATE TABLE IF NOT EXISTS ai_generated_content (
 -- For example, any data for the old 'users' table should now target 'site_owner' with id 'me'.
 -- Data for 'user_profiles' should target 'owner_profile' with owner_id 'me'.
 -- Data for 'user_page_layouts' should target 'owner_page_layouts' with owner_id 'me'.
+
+CREATE TABLE IF NOT EXISTS files (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(255) NOT NULL,
+    path VARCHAR(1024) NOT NULL, -- z.B. "2024/06/01/xyz.jpg"
+    parent_id UUID REFERENCES files(id) ON DELETE CASCADE, -- für Ordnerstruktur
+    is_folder BOOLEAN DEFAULT FALSE,
+    size BIGINT,
+    mime_type VARCHAR(100),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    tags TEXT[],
+    used_in JSONB, -- z.B. Referenzen auf Projekte, Posts etc.
+    -- weitere Metadaten nach Bedarf
+    UNIQUE (parent_id, name)
+);

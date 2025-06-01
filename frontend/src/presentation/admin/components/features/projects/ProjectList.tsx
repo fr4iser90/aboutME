@@ -4,7 +4,7 @@ import type { Project } from '@/domain/entities/Project';
 import { apiClient } from '@/domain/shared/utils/api';
 import { ProjectImportPanel } from './ProjectImportPanel';
 import { useTabContext } from '@/presentation/admin/contexts/TabContext';
-import { ProjectEditor } from './ProjectEditor';
+import ProjectEditor from '@/presentation/admin/components/features/projects/ProjectEditor';
 
 interface ProjectListProps {
   viewMode?: 'card' | 'simple'; // Add viewMode prop

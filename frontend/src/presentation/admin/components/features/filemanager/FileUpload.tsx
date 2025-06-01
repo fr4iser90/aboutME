@@ -1,48 +1,51 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useContext } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Button } from '@/presentation/shared/ui/button';
-import { apiClient } from '@/domain/shared/utils/api';
+import { useAdminFileManager } from '@/application/admin/filemanager/useAdminFileManager';
+import type { File as ApiFile } from '@/infrastructure/api/admin/filemanager';
+import { FileManagerContext } from '@/presentation/admin/pages/layout';
 
 interface FileUploadProps {
-  onUploadComplete: (fileData: any) => void;
+  onUploadComplete: () => void;
+  parentId?: string;
   acceptedFileTypes?: string[];
   maxSize?: number;
 }
 
-export function FileUpload({ onUploadComplete, acceptedFileTypes, maxSize = 10 * 1024 * 1024 }: FileUploadProps) {
+export function FileUpload({ 
+  onUploadComplete, 
+  parentId,
+  acceptedFileTypes, 
+  maxSize = 10 * 1024 * 1024 
+}: FileUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const fileManager = useAdminFileManager();
+  const { refreshFiles } = useContext(FileManagerContext);
 
-  const onDrop = useCallback(async (acceptedFiles: File[]) => {
+  const onDrop = useCallback(async (acceptedFiles: globalThis.File[]) => {
     if (acceptedFiles.length === 0) return;
 
     setUploading(true);
     setError(null);
 
     try {
+      const file = acceptedFiles[0];
       const formData = new FormData();
-      formData.append('file', acceptedFiles[0]);
-
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Upload failed');
+      formData.append('file', file);
+      if (parentId) {
+        formData.append('parent_id', parentId);
       }
-
-      const data = await response.json();
-      onUploadComplete(data);
+      
+      await fileManager.createFile(formData as any, parentId);
+      refreshFiles();
+      onUploadComplete();
     } catch (err: any) {
       setError(err.message || 'Upload failed');
     } finally {
       setUploading(false);
     }
-  }, [onUploadComplete]);
+  }, [fileManager, parentId, onUploadComplete, refreshFiles]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,

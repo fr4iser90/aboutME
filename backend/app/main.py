@@ -37,11 +37,16 @@ async def log_requests(request: Request, call_next):
 # Include API router
 app.include_router(api_router, prefix="/api")
 
-# Create uploads directory if it doesn't exist
-os.makedirs("uploads", exist_ok=True)
+# Get the absolute path to the static directory
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+static_dir = os.path.join(base_dir, "static")
+static_uploads_dir = os.path.join(static_dir, "uploads")
 
-# Mount the uploads directory
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+# Create static/uploads directory if it doesn't exist
+os.makedirs(static_uploads_dir, exist_ok=True)
+
+# Mount the static directory
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 @app.get("/")
 async def root():

@@ -11,6 +11,6 @@ ENV LANG en_US.utf8
 USER postgres
 
 # Add HEALTHCHECK using environment variables
-HEALTHCHECK --interval=5s --timeout=5s --start-period=10s --retries=5 \
+HEALTHCHECK --interval=5s --timeout=5s --start-period=20s --retries=15 \
   CMD pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} || exit 1
 
