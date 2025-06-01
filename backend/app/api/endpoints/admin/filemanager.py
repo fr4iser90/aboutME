@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, status
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, status, File
 from sqlalchemy.orm import Session
 from typing import List, Optional
 import logging
@@ -201,4 +201,31 @@ def move_file(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=str(e)
-        ) 
+        )
+
+@router.post("/files/multi", response_model=List[FileRead])
+async def create_files(
+    files: List[UploadFile] = File(...),
+    parent_id: Optional[str] = None,
+    service: FileManagerService = Depends(get_filemanager_service)
+):
+    results = []
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+    static_uploads_dir = os.path.join(base_dir, "static", "uploads")
+    os.makedirs(static_uploads_dir, exist_ok=True)
+    for file in files:
+        contents = await file.read()
+        file_extension = os.path.splitext(file.filename)[1]
+        unique_filename = f"{uuid.uuid4()}{file_extension}"
+        file_path = os.path.join(static_uploads_dir, unique_filename)
+        with open(file_path, "wb") as f:
+            f.write(contents)
+        result = await service.create_file(
+            name=file.filename,
+            content_type=file.content_type,
+            size=len(contents),
+            parent_id=parent_id,
+            path=f"/static/uploads/{unique_filename}"
+        )
+        results.append(result)
+    return results 

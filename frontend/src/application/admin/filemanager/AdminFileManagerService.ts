@@ -11,6 +11,10 @@ export class AdminFileManagerService {
     return this.api.createFile(formData, parent_id);
   }
 
+  createFiles(formData: FormData, parent_id?: string) {
+    return this.api.createFiles(formData, parent_id);
+  }
+
   createFolder(name: string, parent_id?: string) {
     return this.api.createFolder(name, parent_id);
   }

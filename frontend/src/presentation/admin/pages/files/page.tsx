@@ -33,20 +33,11 @@ export default function AdminFilesPageContent() {
   if (!isMounted) return null;
 
   return (
-    <div className="flex gap-4">
-      <div className="w-1/3">
-        <FileTree 
-          onSelectFile={handleFileSelect}
-          parentId={currentFolder}
-          autoLoad={true}
-        />
-      </div>
-      <div className="w-2/3">
-        <FileUpload 
-          onUploadComplete={handleUploadComplete}
-          parentId={currentFolder}
-        />
-      </div>
+    <div className="w-full">
+      <FileUpload 
+        onUploadComplete={handleUploadComplete}
+        parentId={currentFolder}
+      />
     </div>
   );
 } 

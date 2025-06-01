@@ -44,6 +44,20 @@ export class AdminFileManagerApi {
     return res.json();
   }
 
+  async createFiles(formData: FormData, parent_id?: string): Promise<File[]> {
+    if (parent_id) {
+      formData.append('parent_id', parent_id);
+    }
+    
+    const res = await fetch(`${this.baseUrl}/files/multi`, {
+      method: 'POST',
+      credentials: 'include',
+      body: formData
+    });
+    if (!res.ok) throw new Error('Failed to create files');
+    return res.json();
+  }
+
   async createFolder(name: string, parent_id?: string): Promise<File> {
     const res = await fetch(`${this.baseUrl}/folders`, {
       method: 'POST',

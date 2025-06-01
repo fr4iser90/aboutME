@@ -33,6 +33,19 @@ export function useAdminFileManager() {
     }
   }, []);
 
+  const createFiles = useCallback(async (formData: FormData, parent_id?: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      return await api.createFiles(formData, parent_id);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to create files');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const createFolder = useCallback(async (name: string, parent_id?: string) => {
     setLoading(true);
     setError(null);
@@ -77,6 +90,7 @@ export function useAdminFileManager() {
     error,
     listFiles,
     createFile,
+    createFiles,
     createFolder,
     deleteFile,
     moveFile

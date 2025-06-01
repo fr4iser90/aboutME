@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback, useContext, useRef } from 'react';
 import { useAdminFileManager } from '@/application/admin/filemanager/useAdminFileManager';
 import type { File } from '@/infrastructure/api/admin/filemanager';
 import { Button } from '@/presentation/shared/ui/button';
-import { FolderPlus, FilePlus, ChevronRight, ChevronDown } from 'lucide-react';
+import { FolderPlus, ChevronRight, ChevronDown } from 'lucide-react';
 import { Input } from '@/presentation/shared/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/presentation/shared/ui/dialog';
 import { FileManagerContext } from '@/presentation/admin/pages/layout';
@@ -217,23 +217,6 @@ export function FileTree({ onSelectFile, parentId = null, autoLoad = true }: Fil
     }
   };
 
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file || !isMounted.current) return;
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      await fileManager.createFile(formData, parentId || undefined);
-      if (isMounted.current) {
-        fetchFiles();
-      }
-    } catch (err) {
-      if (isMounted.current) {
-        setError('Failed to upload file');
-      }
-    }
-  };
-
   const toggleFolder = (id: string) => {
     setExpandedFolders(prev => {
       const newSet = new Set(prev);
@@ -341,24 +324,6 @@ export function FileTree({ onSelectFile, parentId = null, autoLoad = true }: Fil
             </div>
           </DialogContent>
         </Dialog>
-
-        <div className="relative">
-          <input
-            type="file"
-            className="hidden"
-            id="file-upload"
-            onChange={handleFileUpload}
-          />
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex items-center gap-2"
-            onClick={() => document.getElementById('file-upload')?.click()}
-          >
-            <FilePlus className="w-4 h-4" />
-            Upload File
-          </Button>
-        </div>
       </div>
 
       {files.length === 0 ? (
