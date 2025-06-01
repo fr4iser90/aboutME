@@ -30,5 +30,8 @@ export const config = {
       embedContent: (model: string) => `/models/${model}:embedContent`,
       generateAnswer: (model: string) => `/models/${model}:generateAnswer`,
     },
+    upload: {
+      base: '/api/admin/upload',
+    },
   },
 } as const; 
