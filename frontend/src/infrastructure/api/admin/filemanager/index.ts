@@ -65,7 +65,7 @@ export class AdminFileManagerApi {
 
   async moveFile(file_id: string, new_parent_id?: string): Promise<File> {
     let url = `${this.baseUrl}/files/${file_id}/move`;
-    if (new_parent_id) {
+    if (typeof new_parent_id === 'string' && new_parent_id.length > 0) {
       url += `?new_parent_id=${encodeURIComponent(new_parent_id)}`;
     }
     const res = await fetch(url, {

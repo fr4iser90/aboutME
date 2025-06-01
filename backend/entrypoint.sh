@@ -10,7 +10,10 @@ set -e
 echo "Attempting to ensure admin user exists..."
 python /app/scripts/create_admin.py
 
-echo "Admin user creation complete. Starting Uvicorn server..."
+echo "Attempting to ensure default upload folders exist..."
+python /app/scripts/create_default_folders.py
+
+echo "Admin user creation and default upload folders creation complete. Starting Uvicorn server..."
 
 # Execute the original CMD (Uvicorn)
 # The CMD from the Dockerfile will be passed as arguments to this script ("$@")

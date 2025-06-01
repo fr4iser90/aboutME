@@ -182,7 +182,7 @@ def delete_file(
 @router.post("/files/{file_id}/move", response_model=FileRead)
 def move_file(
     file_id: str,
-    new_parent_id: Optional[str],
+    new_parent_id: Optional[str] = None,
     service: FileManagerService = Depends(get_filemanager_service)
 ):
     try:

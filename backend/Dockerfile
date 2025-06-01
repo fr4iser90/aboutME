@@ -32,6 +32,9 @@ RUN mkdir -p /app/logs
 # Create static/uploads directory with proper permissions
 RUN mkdir -p /static/uploads && chmod 775 /static/uploads
 
+# Create default subfolders in uploads
+RUN mkdir -p /static/uploads/docs /static/uploads/images /static/uploads/videos /static/uploads/pdfs /static/uploads/audio /static/uploads/other /static/uploads/trash
+
 # Create tmp directory for builds with secure permissions
 RUN mkdir -p /app/tmp && chmod 755 /app/tmp
 

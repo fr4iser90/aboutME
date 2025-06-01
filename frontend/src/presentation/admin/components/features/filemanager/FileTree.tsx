@@ -273,11 +273,43 @@ export function FileTree({ onSelectFile, parentId = null, autoLoad = true }: Fil
     }
   };
 
+  // Root drop handler
+  const handleDropRoot = async () => {
+    if (!draggingFile) return;
+    try {
+      await fileManager.moveFile(draggingFile.id, undefined);
+      setDraggingFile(null);
+      setDropTargetId(undefined);
+      fetchFiles();
+    } catch {
+      // Fehlerbehandlung
+    }
+  };
+
   if (loading) return <div>Loading files...</div>;
   if (error) return <div className="text-red-500">{error}</div>;
 
   return (
     <div className="space-y-4">
+      {/* Root Drop Area */}
+      <div
+        className={`p-2 mb-2 rounded border border-dashed border-purple-700 text-purple-300 text-center cursor-pointer ${dropTargetId === 'root' ? 'bg-purple-700/30' : ''}`}
+        onDragOver={e => {
+          e.preventDefault();
+          setDropTargetId('root');
+        }}
+        onDrop={e => {
+          e.preventDefault();
+          if (draggingFile) {
+            handleDropRoot();
+          }
+        }}
+        onDragLeave={e => {
+          if (dropTargetId === 'root') setDropTargetId(undefined);
+        }}
+      >
+        Nach ganz oben (Root) verschieben
+      </div>
       <div className="flex gap-2">
         <Dialog open={isFolderDialogOpen} onOpenChange={setIsFolderDialogOpen}>
           <DialogTrigger asChild>
