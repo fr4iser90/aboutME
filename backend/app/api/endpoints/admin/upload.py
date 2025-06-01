@@ -1,7 +1,7 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException, Depends
 from fastapi.responses import JSONResponse
-from app.services.upload_service import UploadService
-from app.dependencies import get_upload_service
+from app.domain.services.upload_service import IUploadService
+from app.api.deps import get_upload_service
 from app.core.auth import get_current_user
 from app.domain.models.user import SiteOwner
 
@@ -10,7 +10,7 @@ router = APIRouter()
 @router.post("/upload")
 async def upload_file(
     file: UploadFile = File(...),
-    upload_service: UploadService = Depends(get_upload_service),
+    upload_service: IUploadService = Depends(get_upload_service),
     current_site_owner: SiteOwner = Depends(get_current_user)
 ):
     """Lädt eine Datei hoch (nur für Admin)"""
@@ -25,7 +25,7 @@ async def upload_file(
 @router.delete("/upload/{filename}")
 async def delete_file(
     filename: str,
-    upload_service: UploadService = Depends(get_upload_service),
+    upload_service: IUploadService = Depends(get_upload_service),
     current_site_owner: SiteOwner = Depends(get_current_user)
 ):
     """Löscht eine Datei (nur für Admin)"""
@@ -37,11 +37,19 @@ async def delete_file(
 @router.get("/upload/{filename}")
 async def get_file_url(
     filename: str,
-    upload_service: UploadService = Depends(get_upload_service),
+    upload_service: IUploadService = Depends(get_upload_service),
     current_site_owner: SiteOwner = Depends(get_current_user)
 ):
     """Gibt die URL für eine Datei zurück (nur für Admin)"""
     url = upload_service.get_file_url(filename)
     if not url:
         raise HTTPException(status_code=404, detail="File not found")
-    return {"url": url} 
+    return {"url": url}
+
+@router.get("/upload")
+async def list_files(
+    upload_service: IUploadService = Depends(get_upload_service),
+    current_site_owner: SiteOwner = Depends(get_current_user)
+):
+    """Listet alle hochgeladenen Dateien auf (nur für Admin)"""
+    return upload_service.list_files() 

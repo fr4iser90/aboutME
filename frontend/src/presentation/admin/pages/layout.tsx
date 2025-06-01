@@ -14,7 +14,8 @@ import {
   User, 
   MessageSquare,
   SplitSquareHorizontal,
-  X
+  X,
+  Upload
 } from 'lucide-react';
 import AdminContext from '@/presentation/admin/components/AdminContext';
 import CopilotChat from '@/presentation/admin/components/CopilotChat';
@@ -55,6 +56,7 @@ export default function AdminLayoutContent({
     { id: 'projects', title: 'Projects', icon: <FolderGit2 className="w-5 h-5" />, path: '/admin/projects' },
     { id: 'sections', title: 'Sections', icon: <SplitSquareHorizontal className="w-5 h-5" />, path: '/admin/sections' },
     { id: 'skills', title: 'Skills', icon: <Palette className="w-5 h-5" />, path: '/admin/skills' },
+    { id: 'upload', title: 'Upload', icon: <Upload className="w-5 h-5" />, path: '/admin/upload' },
     { id: 'about', title: 'About Me', icon: <User className="w-5 h-5" />, path: '/admin/about' },
     { id: 'settings', title: 'Settings', icon: <Settings className="w-5 h-5" />, path: '/admin/settings' },
   ];
@@ -175,7 +177,11 @@ export default function AdminLayoutContent({
 
   const copilotContext = {
     currentTab: activeTab,
-    selectedProject,
+    selectedProject: selectedProject ? {
+      title: selectedProject.title,
+      description: selectedProject.description,
+      technologies: selectedProject.technologies
+    } : undefined
   };
   
   let activeContent = <div>Loading content...</div>;

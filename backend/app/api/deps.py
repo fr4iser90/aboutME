@@ -4,6 +4,11 @@ from sqlalchemy.orm import Session
 from app.infrastructure.database.session import SessionLocal
 from app.domain.services.project_service import ProjectService
 from app.infrastructure.database.repositories.project_repository_impl import SQLAlchemyProjectRepository
+from app.domain.services.upload_service import IUploadService
+from app.infrastructure.services.upload_service_local import LocalUploadService
+
+def get_upload_service() -> IUploadService:
+    return LocalUploadService()
 
 def get_db() -> Generator[Session, None, None]:
     db = SessionLocal()
