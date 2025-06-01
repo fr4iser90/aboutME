@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import logging
 from .api.api import api_router
 from app.infrastructure.scheduler.scheduler import start_scheduler
+from fastapi.staticfiles import StaticFiles
+import os
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
@@ -34,6 +36,12 @@ async def log_requests(request: Request, call_next):
 
 # Include API router
 app.include_router(api_router, prefix="/api")
+
+# Create uploads directory if it doesn't exist
+os.makedirs("uploads", exist_ok=True)
+
+# Mount the uploads directory
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 @app.get("/")
 async def root():
