@@ -64,11 +64,13 @@ export class AdminFileManagerApi {
   }
 
   async moveFile(file_id: string, new_parent_id?: string): Promise<File> {
-    const res = await fetch(`${this.baseUrl}/files/${file_id}/move`, {
+    let url = `${this.baseUrl}/files/${file_id}/move`;
+    if (new_parent_id) {
+      url += `?new_parent_id=${encodeURIComponent(new_parent_id)}`;
+    }
+    const res = await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify({ new_parent_id })
     });
     if (!res.ok) throw new Error('Failed to move file');
     return res.json();

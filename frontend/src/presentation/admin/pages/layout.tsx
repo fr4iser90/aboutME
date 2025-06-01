@@ -306,11 +306,7 @@ export default function AdminLayoutContent({
                   <div className="flex-grow overflow-hidden">
                     <h2 className="text-lg font-semibold my-2">Files & Folders</h2>
                     <ScrollArea className="h-full">
-                      <div className="space-y-1">
-                        <div className="p-2 text-sm text-gray-400">
-                          Select a file or folder to view details
-                        </div>
-                      </div>
+                      <FileTree autoLoad={true} />
                     </ScrollArea>
                   </div>
                 </>
