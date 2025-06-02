@@ -2,6 +2,7 @@ services:
   about-me-db:
     build:
       context: ./database
+      
       dockerfile: Dockerfile
     image: fr4iser/about-me:db
     container_name: about-me-db
