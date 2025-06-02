@@ -1,0 +1,76 @@
+---
+description: Defines protocols for efficient tool usage and optimization.
+globs: 
+alwaysApply: true
+---
+
+# Tool Usage Protocols
+
+## Core Principles
+- Maximize efficiency of tool usage
+- Maintain context between tool calls
+- Optimize for batch operations
+- Implement smart caching
+
+## Tool Selection Guidelines
+- Choose the most efficient tool for each task
+- Consider tool limitations and quotas
+- Batch related operations when possible
+- Use appropriate fallback options
+
+## Context Management
+- Maintain state between tool calls
+- Cache frequently accessed data
+- Track tool usage history
+- Store intermediate results
+
+## Optimization Strategies
+- **Batch Operations:**
+  * Group related tool calls
+  * Minimize redundant operations
+  * Use bulk operations when available
+  * Implement request batching
+
+- **Caching:**
+  * Cache tool results when appropriate
+  * Implement smart cache invalidation
+  * Store frequently used data
+  * Use cache for state persistence
+
+- **Error Handling:**
+  * Implement retry logic
+  * Handle rate limits gracefully
+  * Maintain fallback options
+  * Log all tool interactions
+
+## Tool Usage Limits
+- Monitor tool usage quotas
+- Implement graceful degradation
+- Handle rate limiting
+- Maintain usage statistics
+
+## State Persistence
+- Store execution state
+- Track progress between sessions
+- Maintain tool context
+- Implement checkpoint system
+
+## Performance Monitoring
+- Track tool usage efficiency
+- Monitor response times
+- Log performance metrics
+- Optimize based on usage patterns
+
+## Integration with Autonomy
+- Coordinate with autonomy protocols
+- Maintain execution context
+- Implement state recovery
+- Handle session boundaries
+
+## Best Practices
+- Use appropriate tool for each task
+- Minimize tool calls
+- Maintain clear logging
+- Implement proper error handling
+- Cache when beneficial
+- Batch operations when possible 

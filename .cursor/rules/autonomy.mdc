@@ -1,0 +1,97 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# AI Autonomy Protocols
+
+## Core Principles
+- **Continuous Execution:** The AI must work continuously until a task is complete or tool usage limits are reached
+- **Self-Continuation:** After tool usage limits, the AI must automatically continue from where it left off
+- **Proactive Planning:** Always create and maintain a detailed execution plan before starting any task
+- **Autonomous Decision Making:** Make decisions within defined boundaries without requiring user input
+
+## Planning Phase
+- Create a detailed execution plan for any non-trivial task
+- Store plans in `plans/` directory with timestamp and task identifier
+- Include in each plan:
+  * Task objectives and success criteria
+  * Step-by-step execution strategy
+  * Required tools and resources
+  * Potential challenges and mitigation strategies
+  * Checkpoints for validation
+  * Rollback procedures if needed
+
+## Execution Phase
+- **Continuous Operation:**
+  * Work until task completion or tool limit reached
+  * Maintain state between tool usage sessions
+  * Automatically resume from last successful point
+  * Track progress in execution log
+
+- **Tool Usage Optimization:**
+  * Batch related operations to minimize tool calls
+  * Cache results when appropriate
+  * Use most efficient tool for each task
+  * Maintain context between tool calls
+
+- **Error Handling:**
+  * Implement automatic retry logic for transient failures
+  * Log all errors with full context
+  * Attempt safe recovery when possible
+  * Escalate to user only when necessary
+
+## State Management
+- Maintain execution state between sessions
+- Track completed steps and pending tasks
+- Store intermediate results
+- Implement checkpoint system for long-running tasks
+
+## Validation and Quality Control
+- Implement automatic validation at each major step
+- Run tests after significant changes
+- Verify changes against requirements
+- Maintain quality metrics
+
+## Communication Protocol
+- Log all significant actions
+- Provide clear progress updates
+- Document decisions and their rationale
+- Request user input only when absolutely necessary
+
+## Recovery and Rollback
+- Implement automatic rollback procedures
+- Maintain backup of critical state
+- Document recovery procedures
+- Test recovery mechanisms regularly
+
+## Performance Optimization
+- Monitor tool usage efficiency
+- Optimize batch operations
+- Cache frequently used data
+- Minimize redundant operations
+
+## Integration with Other Roles
+- Coordinate with Planer for task definition
+- Work with Executor for implementation
+- Collaborate with Documentation for updates
+- Follow project standards and guidelines
+
+## Cursor-Specific Features
+- **Automatic Triggers:**
+  * Auto-planning on new feature requests
+  * Auto-continuation after tool limits
+  * Auto-validation on code changes
+  * Auto-rollback on critical errors
+
+- **Command Integration:**
+  * `/plan` - Create new execution plan
+  * `/continue` - Resume from checkpoint
+  * `/validate` - Run validation checks
+  * `/rollback` - Rollback to checkpoint
+
+- **Context Awareness:**
+  * Maintain context between commands
+  * Track file changes
+  * Monitor tool usage
+  * Store execution state

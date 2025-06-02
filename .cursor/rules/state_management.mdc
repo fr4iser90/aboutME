@@ -1,0 +1,86 @@
+---
+description: Defines protocols for state management and persistence between sessions.
+globs: 
+alwaysApply: true
+---
+
+# State Management Protocols
+
+## Core Principles
+- Maintain consistent state between sessions
+- Implement reliable state persistence
+- Handle state transitions gracefully
+- Ensure state recovery capabilities
+
+## State Storage
+- **Session State:**
+  * Current execution context
+  * Tool usage history
+  * Progress tracking
+  * Error states
+
+- **Persistent State:**
+  * Checkpoints
+  * Configuration
+  * User preferences
+  * Execution history
+
+## State Transitions
+- **Checkpoint System:**
+  * Regular state snapshots
+  * Critical point markers
+  * Recovery points
+  * State validation
+
+- **State Recovery:**
+  * Automatic recovery procedures
+  * State validation
+  * Rollback capabilities
+  * Error handling
+
+## Context Management
+- **Execution Context:**
+  * Current task state
+  * Tool usage context
+  * Progress tracking
+  * Error handling
+
+- **User Context:**
+  * User preferences
+  * Session history
+  * Interaction state
+  * Configuration
+
+## State Synchronization
+- **Between Sessions:**
+  * State persistence
+  * Context restoration
+  * Progress tracking
+  * Error recovery
+
+- **Between Tools:**
+  * Tool context sharing
+  * State consistency
+  * Error propagation
+  * Progress tracking
+
+## Error Handling
+- **State Errors:**
+  * Detection
+  * Recovery
+  * Rollback
+  * Logging
+
+- **Recovery Procedures:**
+  * Automatic recovery
+  * Manual intervention
+  * State validation
+  * Error reporting
+
+## Best Practices
+- Regular state validation
+- Comprehensive error handling
+- Clear state transitions
+- Reliable persistence
+- Efficient state management
+- Clear logging 
