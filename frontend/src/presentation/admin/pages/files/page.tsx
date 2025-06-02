@@ -1,14 +1,14 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
-import { useAdminFileManager } from '@/application/admin/filemanager/useAdminFileManager';
+import { useState, useContext, useCallback, useEffect } from 'react';
 import { FileUpload } from '@/presentation/admin/components/features/filemanager/FileUpload';
-import { FileTree } from '@/presentation/admin/components/features/filemanager/FileTree';
+import { FilePreview } from '@/presentation/admin/components/features/filemanager/FilePreview';
+import { FileInformation } from '@/presentation/admin/components/features/filemanager/FileInformation';
+import { FileManagerContext } from '@/presentation/admin/pages/layout';
 import type { File } from '@/infrastructure/api/admin/filemanager';
 
 export default function AdminFilesPageContent() {
-  const fileManager = useAdminFileManager();
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const { selectedFile, setSelectedFile } = useContext(FileManagerContext);
   const [currentFolder, setCurrentFolder] = useState<string | undefined>(undefined);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -23,21 +23,33 @@ export default function AdminFilesPageContent() {
     if (file.is_folder) {
       setCurrentFolder(file.id);
     }
-  }, [isMounted]);
+  }, [isMounted, setSelectedFile]);
 
   const handleUploadComplete = useCallback(() => {
     if (!isMounted) return;
     setSelectedFile(null);
-  }, [isMounted]);
+  }, [isMounted, setSelectedFile]);
 
   if (!isMounted) return null;
 
   return (
-    <div className="w-full">
-      <FileUpload 
-        onUploadComplete={handleUploadComplete}
-        parentId={currentFolder}
-      />
+    <div className="w-full h-full">
+      <div className="flex-1 p-6 overflow-auto flex flex-col gap-8">
+        <FileUpload 
+          onUploadComplete={handleUploadComplete}
+          parentId={currentFolder}
+        />
+        {selectedFile && (
+          <div className="flex flex-col md:flex-row gap-6">
+            <div className="flex-1">
+              <FilePreview file={selectedFile} />
+            </div>
+            <div className="w-full md:w-96">
+              <FileInformation file={selectedFile} />
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 } 

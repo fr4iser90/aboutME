@@ -37,13 +37,18 @@ import React, { createContext } from 'react';
 export const FileManagerContext = createContext<{
   refreshFiles: () => void;
   refreshTrigger: number;
+  selectedFile: any;
+  setSelectedFile: (file: any) => void;
 }>({
   refreshFiles: () => {},
-  refreshTrigger: 0
+  refreshTrigger: 0,
+  selectedFile: null,
+  setSelectedFile: () => {},
 });
 
 export function FileManagerProvider({ children }: { children: React.ReactNode }) {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [selectedFile, setSelectedFile] = useState<any>(null);
   const isRefreshing = useRef(false);
 
   const refreshFiles = useCallback(() => {
@@ -56,7 +61,7 @@ export function FileManagerProvider({ children }: { children: React.ReactNode })
   }, []);
 
   return (
-    <FileManagerContext.Provider value={{ refreshFiles, refreshTrigger }}>
+    <FileManagerContext.Provider value={{ refreshFiles, refreshTrigger, selectedFile, setSelectedFile }}>
       {children}
     </FileManagerContext.Provider>
   );

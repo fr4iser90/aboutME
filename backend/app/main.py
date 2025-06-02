@@ -38,7 +38,7 @@ async def log_requests(request: Request, call_next):
 app.include_router(api_router, prefix="/api")
 
 # Get the absolute path to the static directory
-base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+base_dir = os.path.dirname(os.path.abspath(__file__))
 static_dir = os.path.join(base_dir, "static")
 static_uploads_dir = os.path.join(static_dir, "uploads")
 

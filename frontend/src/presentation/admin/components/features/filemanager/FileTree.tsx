@@ -124,6 +124,7 @@ function FileTreeNode({
 
 export function FileTree({ onSelectFile, parentId = null, autoLoad = true }: FileTreeProps) {
   const { listFiles, createFile, createFiles, createFolder, deleteFile, moveFile } = useAdminFileManager();
+  const { setSelectedFile } = useContext(FileManagerContext);
   const [files, setFiles] = useState<File[]>([]);
   const [childrenMap, setChildrenMap] = useState<Record<string, File[]>>({});
   const [loading, setLoading] = useState(false);
@@ -231,6 +232,7 @@ export function FileTree({ onSelectFile, parentId = null, autoLoad = true }: Fil
 
   const handleSelectFile = (file: File) => {
     setSelectedId(file.id);
+    setSelectedFile?.(file);
     onSelectFile?.(file);
   };
 
