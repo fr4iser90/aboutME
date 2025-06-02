@@ -123,7 +123,7 @@ function FileTreeNode({
 }
 
 export function FileTree({ onSelectFile, parentId = null, autoLoad = true }: FileTreeProps) {
-  const fileManager = useAdminFileManager();
+  const { listFiles, createFile, createFiles, createFolder, deleteFile, moveFile } = useAdminFileManager();
   const [files, setFiles] = useState<File[]>([]);
   const [childrenMap, setChildrenMap] = useState<Record<string, File[]>>({});
   const [loading, setLoading] = useState(false);
@@ -147,7 +147,7 @@ export function FileTree({ onSelectFile, parentId = null, autoLoad = true }: Fil
     try {
       setLoading(true);
       setError(null);
-      const data = await fileManager.listFiles(parentId || undefined);
+      const data = await listFiles(parentId || undefined);
       if (isMounted.current) {
         if (Array.isArray(data)) {
           setFiles(data);
@@ -167,17 +167,17 @@ export function FileTree({ onSelectFile, parentId = null, autoLoad = true }: Fil
         setLoading(false);
       }
     }
-  }, [parentId, fileManager]);
+  }, [parentId, listFiles]);
 
   // Fetch children for a folder
   const fetchChildren = useCallback(async (folderId: string) => {
     try {
-      const data = await fileManager.listFiles(folderId);
+      const data = await listFiles(folderId);
       setChildrenMap(prev => ({ ...prev, [folderId]: data }));
     } catch {
       setChildrenMap(prev => ({ ...prev, [folderId]: [] }));
     }
-  }, [fileManager]);
+  }, [listFiles]);
 
   useEffect(() => {
     isMounted.current = true;
@@ -200,7 +200,7 @@ export function FileTree({ onSelectFile, parentId = null, autoLoad = true }: Fil
     if (!newFolderName.trim() || !isMounted.current) return;
     try {
       setIsCreatingFolder(true);
-      await fileManager.createFolder(newFolderName, parentId || undefined);
+      await createFolder(newFolderName, parentId || undefined);
       if (isMounted.current) {
         setNewFolderName('');
         setIsFolderDialogOpen(false);
@@ -244,7 +244,7 @@ export function FileTree({ onSelectFile, parentId = null, autoLoad = true }: Fil
   const handleDrop = async (target: File) => {
     if (!draggingFile || !target.is_folder || draggingFile.id === target.id) return;
     try {
-      await fileManager.moveFile(draggingFile.id, target.id);
+      await moveFile(draggingFile.id, target.id);
       setDraggingFile(null);
       setDropTargetId(undefined);
       fetchFiles();
@@ -260,7 +260,7 @@ export function FileTree({ onSelectFile, parentId = null, autoLoad = true }: Fil
   const handleDropRoot = async () => {
     if (!draggingFile) return;
     try {
-      await fileManager.moveFile(draggingFile.id, undefined);
+      await moveFile(draggingFile.id, undefined);
       setDraggingFile(null);
       setDropTargetId(undefined);
       fetchFiles();

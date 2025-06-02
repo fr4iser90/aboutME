@@ -30,14 +30,19 @@ export function FileUpload({
     setError(null);
 
     try {
-      const file = acceptedFiles[0];
-      const formData = new FormData();
-      formData.append('file', file);
-      if (parentId) {
-        formData.append('parent_id', parentId);
+      if (acceptedFiles.length === 1) {
+        // Einzel-Upload
+        const formData = new FormData();
+        formData.append('file', acceptedFiles[0]);
+        if (parentId) formData.append('parent_id', parentId);
+        await fileManager.createFile(formData as any, parentId);
+      } else {
+        // Multi-Upload
+        const formData = new FormData();
+        acceptedFiles.forEach(file => formData.append('files', file));
+        if (parentId) formData.append('parent_id', parentId);
+        await fileManager.createFiles(formData as any, parentId);
       }
-      
-      await fileManager.createFile(formData as any, parentId);
       refreshFiles();
       onUploadComplete();
     } catch (err: any) {
