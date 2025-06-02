@@ -601,6 +601,106 @@ pkgs.mkShell {
       bash ./scripts/check_backend.sh "$@"
     }
 
+    count-loc() {
+      local dir="''${1:-.}"  # Default to current directory if none specified
+      local exclude_dirs="node_modules|.next|__pycache__|.pytest_cache|.git|.swc|dist|build|.venv"
+      local exclude_files="package-lock.json|yarn.lock|.DS_Store"
+      local exclude_extensions="jpg|jpeg|png|gif|svg|ico|webp|woff|woff2|ttf|eot|mp4|webm|mp3|wav|pdf|zip|tar|gz|rar|7z|bin|exe|dll|so|dylib|db|sqlite|sqlite3"
+      
+      echo "📊 Lines of Code Analysis for $dir"
+      echo "----------------------------------------"
+      
+      # Count by directory first
+      echo "📂 By Directory:"
+      find "$dir" -type f \
+        -not -path "*/\.*" \
+        -not -path "*/node_modules/*" \
+        -not -path "*/.next/*" \
+        -not -path "*/__pycache__/*" \
+        -not -path "*/.pytest_cache/*" \
+        -not -path "*/dist/*" \
+        -not -path "*/build/*" \
+        -not -path "*/.venv/*" \
+        -not -name "package-lock.json" \
+        -not -name "yarn.lock" \
+        -not -name ".DS_Store" \
+        -not -regex ".*\.($exclude_extensions)$" \
+        -not -path "*/public/*" \
+        -exec sh -c '
+          file="$1"
+          dir=$(dirname "$file" | sed "s|^$2/||")
+          wc -l < "$file" | tr -d " " | xargs -I {} echo "{} $dir"
+        ' sh {} "$dir" \; | \
+        awk '
+          {
+            count[$2] += $1
+            total += $1
+          }
+          END {
+            # Sort by line count in descending order
+            for (dir in count) {
+              lines[count[dir]] = dir
+            }
+            n = asorti(lines, sorted, "@ind_num_desc")
+            for (i = 1; i <= n; i++) {
+              dir = lines[sorted[i]]
+              printf "%-40s %8d lines (%5.1f%%)\n", dir, count[dir], (count[dir]/total)*100
+            }
+            printf "\n%-40s %8d lines\n", "TOTAL", total
+          }
+        '
+      
+      echo "----------------------------------------"
+      
+      # Count by file type second
+      echo "📁 By File Type:"
+      find "$dir" -type f \
+        -not -path "*/\.*" \
+        -not -path "*/node_modules/*" \
+        -not -path "*/.next/*" \
+        -not -path "*/__pycache__/*" \
+        -not -path "*/.pytest_cache/*" \
+        -not -path "*/dist/*" \
+        -not -path "*/build/*" \
+        -not -path "*/.venv/*" \
+        -not -name "package-lock.json" \
+        -not -name "yarn.lock" \
+        -not -name ".DS_Store" \
+        -not -regex ".*\.($exclude_extensions)$" \
+        -not -path "*/public/*" \
+        -exec sh -c '
+          file="$1"
+          ext="''${file##*.}"
+          if [ "$ext" = "$file" ]; then
+            ext="no-extension"
+          fi
+          wc -l < "$file" | tr -d " " | xargs -I {} echo "{} $ext"
+        ' sh {} \; | \
+        awk '
+          {
+            count[$2] += $1
+            total += $1
+          }
+          END {
+            # Sort by line count in descending order
+            for (ext in count) {
+              lines[count[ext]] = ext
+            }
+            n = asorti(lines, sorted, "@ind_num_desc")
+            for (i = 1; i <= n; i++) {
+              ext = lines[sorted[i]]
+              printf "%-15s %8d lines (%5.1f%%)\n", ext, count[ext], (count[ext]/total)*100
+            }
+            printf "\n%-15s %8d lines\n", "TOTAL", total
+          }
+        '
+      
+      echo "----------------------------------------"
+      echo "ℹ️  Excluded directories: $exclude_dirs"
+      echo "ℹ️  Excluded file types: $exclude_extensions"
+      echo "ℹ️  Excluded public directory: /public/*"
+    }
+
     echo "Python development environment activated"
     echo "PYTHONPATH set to: $PYTHONPATH"
     echo "Available commands:"
@@ -630,5 +730,6 @@ pkgs.mkShell {
     echo "  update-backend-deps - Check and update backend dependencies"
     echo "  update-all          - Check and update all dependencies (frontend and backend)"
     echo "  check-backend       - Run type checking and compilation checks on backend code"
+    echo "  count-loc           - Count lines of code in the project"
   '';
 }
