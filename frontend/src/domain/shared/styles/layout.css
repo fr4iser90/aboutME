@@ -1,0 +1,49 @@
+:root {
+  /* Layout Variables - will be overridden by themeApi.ts if defined in the theme's layout object */
+
+  /* Example: Navbar specific layout variables */
+  --layout-navbar-height: 4rem; /* Fallback, matches h-16 */
+  --layout-navbar-container-max-width: 80rem; /* Fallback, matches max-w-7xl */
+  --layout-navbar-container-padding-x-base: 1rem; /* Fallback, matches px-4 */
+  --layout-navbar-container-padding-x-sm: 1.5rem; /* Fallback, matches sm:px-6 */
+  --layout-navbar-container-padding-x-lg: 2rem; /* Fallback, matches lg:px-8 */
+  
+  /* Example: General spacing variables that might be part of a layout system */
+  --layout-spacing-base-unit: 0.25rem; /* Fallback, 4px */
+  --layout-spacing-xs: calc(var(--layout-spacing-base-unit) * 2); /* 0.5rem */
+  --layout-spacing-sm: calc(var(--layout-spacing-base-unit) * 4); /* 1rem */
+  --layout-spacing-md: calc(var(--layout-spacing-base-unit) * 6); /* 1.5rem */
+  --layout-spacing-lg: calc(var(--layout-spacing-base-unit) * 8); /* 2rem */
+  --layout-spacing-xl: calc(var(--layout-spacing-base-unit) * 12); /* 3rem */
+
+  /* Example: Container widths */
+  --layout-container-max-width-default: 80rem; /* Fallback for a generic container */
+}
+
+/* You might define some utility classes here that use these layout variables,
+   or apply them directly in components. */
+
+/* Example of how a container class might use these variables */
+.layout-container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: var(--layout-container-max-width-default);
+  padding-left: var(--layout-navbar-container-padding-x-base); /* Example, could be a more generic var */
+  padding-right: var(--layout-navbar-container-padding-x-base); /* Example, could be a more generic var */
+}
+
+/* Responsive padding for the container example */
+@media (min-width: 640px) { /* sm breakpoint */
+  .layout-container {
+    padding-left: var(--layout-navbar-container-padding-x-sm);
+    padding-right: var(--layout-navbar-container-padding-x-sm);
+  }
+}
+
+@media (min-width: 1024px) { /* lg breakpoint */
+  .layout-container {
+    padding-left: var(--layout-navbar-container-padding-x-lg);
+    padding-right: var(--layout-navbar-container-padding-x-lg);
+  }
+}

@@ -1,4 +1,5 @@
 import RootLayoutContent from '@/presentation/public/pages/layout';
+import { ThemeProvider } from '@/presentation/shared/ui/theme-context';
 import type { Metadata } from 'next';
 
 // Metadata should ideally stay in the src/app layout or page file.
@@ -13,5 +14,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <RootLayoutContent>{children}</RootLayoutContent>;
+  return (
+    <ThemeProvider>
+      <RootLayoutContent>{children}</RootLayoutContent>
+    </ThemeProvider>
+  );
 }

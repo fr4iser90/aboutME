@@ -2,50 +2,45 @@ Implement a Theme Editor for the admin interface with the following structure:
 
 Backend (Python/FastAPI):
 1. Domain Layer (backend/app/domain/):
-[ ] models/Theme.py: Theme Model with:
-[ ] id: int | None
-[ ] name: str
-[ ] description: str | None
-[ ] variables: Dict[str, Any] {
-[ ] colors: { primary, secondary, accent, background, text },
-[ ] typography: { fontFamily, fontSize, lineHeight },
-[ ] spacing: { small, medium, large },
-[ ] borderRadius: { small, medium, large }
-[ ] }
-[ ] is_active: bool
-[ ] created_at: datetime
-[ ] updated_at: datetime
-[ ] model_config = ConfigDict(from_attributes=True)
-[ ] repositories/ThemeRepository.py: Interface for database operations
-[ ] services/ThemeService.py: Business logic with Redis caching
-[ ] metrics/ThemeMetrics.py: Prometheus metrics for theme operations
+[x] models/Theme.py: Theme Model with:
+[x] id: int | None
+[x] name: str
+[x] description: str | None
+[x] variables: Dict[str, Any] {
+[x] colors: { primary, secondary, accent, background, text },
+[x] typography: { fontFamily, fontSize, lineHeight },
+[x] spacing: { small, medium, large },
+[x] borderRadius: { small, medium, large }
+[x] }
+[x] is_active: bool
+[x] created_at: datetime
+[x] updated_at: datetime
+[x] model_config = ConfigDict(from_attributes=True)
+[x] repositories/ThemeRepository.py: Interface for database operations
+[x] services/ThemeService.py: Business logic
 
 2. Infrastructure Layer (backend/app/infrastructure/):
-[ ] repositories/ThemeRepositoryImpl.py: PostgreSQL implementation with JSONB
-[ ] api/admin/themes/ThemeController.py: FastAPI Router with endpoints
-[ ] schemas/ThemeSchema.py: Pydantic models with validation
-[ ] cache/ThemeCache.py: Redis cache implementation
-[ ] logging/ThemeLogger.py: Structured logging with structlog
+[x] repositories/ThemeRepositoryImpl.py: PostgreSQL implementation with JSONB
+[x] api/admin/themes/ThemeController.py: FastAPI Router with endpoints
+[x] schemas/ThemeSchema.py: Pydantic models with validation
 
 3. API Layer (backend/app/api/):
-[ ] endpoints/admin/themes.py: FastAPI router with these endpoints:
-[ ] GET /api/admin/themes - List all themes
-[ ] GET /api/admin/themes/{theme_id} - Get theme by ID
-[ ] POST /api/admin/themes - Create new theme
-[ ] PUT /api/admin/themes/{theme_id} - Update theme
-[ ] DELETE /api/admin/themes/{theme_id} - Delete theme
-[ ] PATCH /api/admin/themes/{theme_id}/activate - Activate theme
-[ ] PATCH /api/admin/themes/{theme_id}/duplicate - Duplicate theme
-[ ] POST /api/admin/themes/import - Import theme from JSON
-[ ] GET /api/admin/themes/{theme_id}/export - Export theme to JSON
-[ ] GET /api/admin/themes/active - Get currently active theme
-[ ] dependencies.py: FastAPI dependencies for auth and validation
+[x] endpoints/admin/themes.py: FastAPI router with these endpoints:
+[x] GET /api/admin/themes - List all themes
+[x] GET /api/admin/themes/{theme_id} - Get theme by ID
+[x] POST /api/admin/themes - Create new theme
+[x] PUT /api/admin/themes/{theme_id} - Update theme
+[x] DELETE /api/admin/themes/{theme_id} - Delete theme
+[x] PATCH /api/admin/themes/{theme_id}/activate - Activate theme
+[x] PATCH /api/admin/themes/{theme_id}/duplicate - Duplicate theme
+[x] POST /api/admin/themes/import - Import theme from JSON
+[x] GET /api/admin/themes/{theme_id}/export - Export theme to JSON
+[x] GET /api/admin/themes/active - Get currently active theme
+[x] dependencies.py: FastAPI dependencies for auth and validation
 
 4. Database:
-[ ] New migration for themes table with JSONB column
-[ ] Indices for is_active and created_at
-[ ] Redis cache configuration
-[ ] Prometheus metrics setup
+[x] New migration for themes table with JSONB column
+[x] Indices for is_active and created_at
 
 Frontend (Next.js/React/TypeScript):
 1. Features (frontend/src/presentation/admin/components/features/themes/):
@@ -54,14 +49,21 @@ Frontend (Next.js/React/TypeScript):
 [ ] ThemePreview.tsx: Live preview with example components
 [ ] ThemeForm.tsx: Form with React Hook Form + Zod
 [ ] ThemeContext.tsx: Context for theme state
-[ ] ThemeMetrics.tsx: Prometheus metrics display
 
 2. API Integration:
 [ ] infrastructure/api/admin/themes/ThemeApi.ts: Axios client
 [ ] application/admin/themes/useThemes.ts: TanStack Query hooks
 [ ] domain/entities/Theme.ts: TypeScript interfaces
-[ ] cache/ThemeCache.ts: Client-side caching
 
+3. UI Components (with Radix UI and Headless UI):
+[ ] ThemeCard.tsx: Card layout like ProjectCard
+[ ] ThemeVariables.tsx: CSS variables editor
+[ ] ThemePreview.tsx: Responsive preview
+[ ] ThemeSelector.tsx: Radix Select for theme switching
+[ ] Dialog.tsx: Radix Dialog for import/export
+[ ] ScrollArea.tsx: Radix ScrollArea for long lists
+[ ] AlertDialog.tsx: Radix Alert Dialog for confirmations
+[ ] Icons.tsx: Heroicons and Lucide icons integration
 3. UI Components (with Radix UI and Headless UI):
 [ ] ThemeCard.tsx: Card layout like ProjectCard
 [ ] ThemeVariables.tsx: CSS variables editor
@@ -79,6 +81,12 @@ Frontend (Next.js/React/TypeScript):
 [ ] Dark mode support
 [ ] Theme switching animations
 [ ] Custom Tailwind plugins for theme variables
+[ ] Tailwind CSS with clsx and tailwind-merge
+[ ] class-variance-authority for variants
+[ ] Responsive design
+[ ] Dark mode support
+[ ] Theme switching animations
+[ ] Custom Tailwind plugins for theme variables
 
 5. Features:
 [ ] Drag & Drop with react-dropzone
@@ -88,9 +96,6 @@ Frontend (Next.js/React/TypeScript):
 [ ] Responsive preview
 [ ] CSS variables editor
 [ ] Theme activation/deactivation
-[ ] Redis cache management
-[ ] Prometheus metrics display
-[ ] Structured logging viewer
 
 6. Integration:
 [ ] Next.js App Router integration
@@ -100,8 +105,6 @@ Frontend (Next.js/React/TypeScript):
 [ ] Loading states
 [ ] Toast notifications
 [ ] NextAuth.js authentication
-[ ] Redis cache synchronization
-[ ] Prometheus metrics collection
 
 The implementation should:
 [ ] Follow existing code style
@@ -113,9 +116,6 @@ The implementation should:
 [ ] Be responsive
 [ ] Meet accessibility standards
 [ ] Be performance optimized
-[ ] Include structured logging
-[ ] Implement Redis caching
-[ ] Add Prometheus metrics
 [ ] Follow security best practices
 
 Frontend Routes (frontend/src/app/admin/themes/):
@@ -124,4 +124,3 @@ Frontend Routes (frontend/src/app/admin/themes/):
 [ ] layout.tsx: Theme section layout
 [ ] loading.tsx: Loading state
 [ ] error.tsx: Error handling
-[ ] metrics/page.tsx: Theme metrics page
