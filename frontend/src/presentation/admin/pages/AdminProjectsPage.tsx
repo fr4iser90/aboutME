@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Project } from '@/domain/entities/Project';
-import { apiClient } from '@/domain/shared/utils/api';
+import { projectApi } from '@/domain/shared/utils/api';
 import { ProjectEditor } from '@/presentation/admin/components/ProjectEditor';
 
 export default function AdminProjectsPage() {
@@ -16,7 +16,7 @@ export default function AdminProjectsPage() {
   const fetchProjects = async () => {
     try {
       setLoading(true);
-      const response = await apiClient.getProjects();
+      const response = await projectApi.getProjects();
       setProjects(response.data);
       setError(null);
     } catch (err) {

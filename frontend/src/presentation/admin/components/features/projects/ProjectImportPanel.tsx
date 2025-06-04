@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ProjectCard } from '@/presentation/public/components/sections/ProjectCard';
 import { useRouter } from 'next/navigation';
-import { apiClient } from '@/domain/shared/utils/api';
+import { projectApi } from '@/domain/shared/utils/api';
 
 const SOURCES = [
   { label: 'GitHub', value: 'github' },
@@ -98,7 +98,7 @@ export function ProjectImportPanel() {
   const handleImport = async () => {
     const toImport = Array.from(selected).map(idx => projects[idx]);
     try {
-      await apiClient.importProjects(source, toImport);
+      await projectApi.importProjects(source, toImport);
       alert('Import erfolgreich!');
       router.refresh();
     } catch (e: any) {

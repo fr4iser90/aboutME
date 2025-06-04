@@ -25,6 +25,7 @@ class SectionBase(BaseModel):
     content: Optional[Dict[str, Any]] = None
     display_order: int = 0
     is_visible: bool = True
+    is_public: bool = True
     theme_id: Optional[int] = None
     section_metadata: Optional[Dict[str, Any]] = None
 

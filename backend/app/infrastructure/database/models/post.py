@@ -29,6 +29,8 @@ class PostModel(Base):
     type: Mapped[str] = mapped_column(String(50), nullable=False, default='general')
     project_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey('projects.id', ondelete='SET NULL'), nullable=True)
     section_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey('sections.id', ondelete='SET NULL'), nullable=True)
+    is_visible: Mapped[bool] = mapped_column(Boolean, default=True)
+    is_public: Mapped[bool] = mapped_column(Boolean, default=True)
     
     # Basic Content
     slug: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)

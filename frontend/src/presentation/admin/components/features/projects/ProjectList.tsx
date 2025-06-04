@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ProjectCard } from '@/presentation/public/components/sections/ProjectCard';
 import type { Project } from '@/domain/entities/Project';
-import { apiClient } from '@/domain/shared/utils/api';
+import { projectApi } from '@/domain/shared/utils/api';
 import { ProjectImportPanel } from './ProjectImportPanel';
 import { useTabContext } from '@/presentation/admin/contexts/TabContext';
 import ProjectEditor from '@/presentation/admin/components/features/projects/ProjectEditor';
@@ -29,8 +29,8 @@ export function ProjectList({ viewMode = 'card', onEditProject }: ProjectListPro
     console.log("fetchProjects called"); // Log 3
     try {
       setLoading(true);
-      console.log("Attempting to call apiClient.getProjects()"); // Log 4
-      const response = await apiClient.getProjects();
+      console.log("Attempting to call projectApi.getProjects()"); // Log 4
+      const response = await projectApi.getProjects();
       setProjects(response.data);
       setError(null);
     } catch (err) {
@@ -45,7 +45,7 @@ export function ProjectList({ viewMode = 'card', onEditProject }: ProjectListPro
     if (!confirm('Are you sure you want to delete this project?')) return;
 
     try {
-      await apiClient.deleteProject(id);
+      await projectApi.deleteProject(id);
       setProjects(projects.filter(p => p.id !== id));
     } catch (err) {
       console.error('Error deleting project:', err);

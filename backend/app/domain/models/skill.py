@@ -13,4 +13,5 @@ class Skill(BaseModel):
     color: str | None = None
     display_order: int = 0
     is_visible: bool = True
+    is_public: bool = True
     tags: List[str] | None = None 

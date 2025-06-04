@@ -13,7 +13,11 @@ python /app/scripts/create_admin.py
 echo "Attempting to ensure default upload folders exist..."
 python /app/scripts/create_default_folders.py
 
-echo "Admin user creation and default upload folders creation complete. Starting Uvicorn server..."
+echo "Attempting to create themes..."
+python /app/scripts/create_themes.py
+
+
+echo "Starting Uvicorn server..."
 
 # Execute the original CMD (Uvicorn)
 # The CMD from the Dockerfile will be passed as arguments to this script ("$@")

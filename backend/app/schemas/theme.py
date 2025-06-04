@@ -9,7 +9,6 @@ class ThemeBase(BaseModel):
     custom_css: Optional[str] = None
     custom_js: Optional[str] = None
     is_active: bool = True
-    is_default: bool = False
 
 
 class ThemeCreate(ThemeBase):
@@ -23,7 +22,8 @@ class ThemeUpdate(BaseModel):
     custom_css: Optional[str] = None
     custom_js: Optional[str] = None
     is_active: Optional[bool] = None
-    is_default: Optional[bool] = None
+    is_visible: bool = True
+    is_public: bool = True 
 
     class Config:
         from_attributes = True

@@ -19,7 +19,7 @@ class ProjectBase(CamelCaseModel):
     homepage_url: Optional[str] = None
     display_order: int = 0
     is_visible: bool = True
-    show_on_portfolio: bool = True
+    is_public: bool = True
     
     # 📄 Beschreibungen
     own_description: Optional[str] = None
@@ -118,7 +118,7 @@ class ProjectUpdate(CamelCaseModel):
     homepage_url: Optional[str] = None
     display_order: Optional[int] = None
     is_visible: Optional[bool] = None
-    show_on_portfolio: Optional[bool] = None
+    is_public: Optional[bool] = None
     
     # 📄 Beschreibungen
     own_description: Optional[str] = None

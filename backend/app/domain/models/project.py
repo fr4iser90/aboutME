@@ -32,7 +32,7 @@ class Project(BaseModel):
     thumbnail_url: str | None = None
     display_order: int = 0
     is_visible: bool = True
-    show_on_portfolio: bool = True
+    is_public: bool = True
     
     # GitHub/GitLab Stats
     stars_count: int = 0

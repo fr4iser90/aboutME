@@ -12,6 +12,7 @@ class SkillBase(CamelCaseModel): # Inherit from CamelCaseModel
     items: List[Dict[str, Any]] = []
     order: int = 0
     is_visible: bool = True
+    is_public: bool = True
 
 
 class SkillCreate(SkillBase):

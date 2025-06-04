@@ -9,4 +9,5 @@ class LayoutModel(Base):
     layout_type = Column(String, nullable=False)
     show_sidebar = Column(Boolean, default=True)
     sidebar_position = Column(String, nullable=False)
-    content = Column(JSON, nullable=True) 
+    content = Column(JSON, nullable=True)
+    grid_config = Column(JSON, nullable=True) 

@@ -20,22 +20,9 @@ INSERT INTO skills (category, description, items, display_order) VALUES
   ('Angeln', 'In meiner Freizeit bin ich gerne am Wasser – am liebsten an der Pleiße oder Lauer in Leipzig.', '["Ansitz auf Friedfisch", "Aktivangeln im Sommer", "Pleiße, Lauer & Umgebung (Leipzig)"]', 4);
 
 -- Beispiel-Initialdaten für Themes
-INSERT INTO themes (name, description, style_properties, is_default) VALUES
-  ('Default Dark', 'A clean and simple dark theme.', '{"backgroundColor": "#1a202c", "textColor": "#e2e8f0", "primaryColor": "#805ad5", "secondaryColor": "#a0aec0", "fontFamily": "Inter, sans-serif"}', TRUE),
-  ('Light Mode', 'A standard light theme.', '{"backgroundColor": "#ffffff", "textColor": "#2d3748", "primaryColor": "#5a67d8", "secondaryColor": "#4a5568", "fontFamily": "Inter, sans-serif"}', FALSE);
-
--- Seeding for owner_profile and owner_page_layouts.
--- This assumes a site_owner with ID 'me' exists (which is enforced by the schema)
--- and a default theme ID (e.g., 1 from above).
-
--- Example for owner_profile:
--- INSERT INTO owner_profile (owner_id, display_name, bio, selected_theme_id) VALUES
---   ('me', 'Your Name', 'Your bio goes here.', (SELECT id from themes WHERE is_default=TRUE LIMIT 1));
-
--- Example for owner_page_layouts:
--- INSERT INTO owner_page_layouts (owner_id, section_id, custom_title, custom_content, section_order, is_visible) VALUES
---   ('me', (SELECT id from sections WHERE name='about'), 'Über Mich (Angepasst)', '{"text": "Meine angepasste Über-Mich-Sektion."}', 1, TRUE),
---   ('me', (SELECT id from sections WHERE name='projects'), 'Meine Projekte (Angepasst)', '{}', 2, TRUE);
+INSERT INTO themes (name, description, style_properties) VALUES
+  ('Default Dark', 'A clean and simple dark theme.', '{"backgroundColor": "#1a202c", "textColor": "#e2e8f0", "primaryColor": "#805ad5", "secondaryColor": "#a0aec0", "fontFamily": "Inter, sans-serif"}'),
+  ('Light Mode', 'A standard light theme.', '{"backgroundColor": "#ffffff", "textColor": "#2d3748", "primaryColor": "#5a67d8", "secondaryColor": "#4a5568", "fontFamily": "Inter, sans-serif"}');
 
 -- Initialdaten für site_owner (Beispiel, Passwort muss gehasht werden!)
 -- WICHTIG: Das Passwort 'yoursecurepassword' MUSS vor dem Einfügen sicher gehasht werden.

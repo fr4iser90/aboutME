@@ -7,8 +7,11 @@ class Theme(BaseModel):
     id: int | None = None
     name: str
     description: str | None = None
-    colors: Dict[str, str] | None = None
-    fonts: Dict[str, str] | None = None
-    spacing: Dict[str, int] | None = None
-    is_default: bool = False
-    is_visible: bool = True 
+    style_properties: dict = {}
+    custom_css: str | None = None
+    custom_js: str | None = None
+    is_active: bool = True
+    is_visible: bool = True
+    is_public: bool = True 
+    created_at: str | None = None
+    updated_at: str | None = None

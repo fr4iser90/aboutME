@@ -15,4 +15,5 @@ class SkillModel(Base):
     color: Mapped[str | None] = mapped_column(String(50), nullable=True)
     display_order: Mapped[int] = mapped_column(Integer, default=0)
     is_visible: Mapped[bool] = mapped_column(Boolean, default=True)
+    is_public: Mapped[bool] = mapped_column(Boolean, default=True)
     tags: Mapped[List[str] | None] = mapped_column(JSON, nullable=True) 

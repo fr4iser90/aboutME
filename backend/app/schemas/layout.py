@@ -6,6 +6,7 @@ class LayoutBase(BaseModel):
     layout_type: str
     show_sidebar: bool
     sidebar_position: str
+    grid_config: Optional[dict] = None
 
 class LayoutCreate(LayoutBase):
     pass

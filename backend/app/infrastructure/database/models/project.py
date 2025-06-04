@@ -38,7 +38,7 @@ class ProjectModel(Base):
     thumbnail_url: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
     display_order: Mapped[int] = mapped_column(Integer, default=0)
     is_visible: Mapped[bool] = mapped_column(Boolean, default=True)
-    show_on_portfolio: Mapped[bool] = mapped_column(Boolean, default=True)
+    is_public: Mapped[bool] = mapped_column(Boolean, default=True)
     
     # GitHub/GitLab Stats
     stars_count: Mapped[int] = mapped_column(Integer, default=0)

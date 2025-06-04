@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
-import { apiRequest } from '@/shared/utils/api';
+import { projectApi } from '@/domain/shared/utils/api';
 
 export function GitHubSyncButton() {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,8 +18,8 @@ export function GitHubSyncButton() {
         username = username.replace('https://github.com/', '').replace(/\/$/, '');
       }
       
-      await apiRequest(`/api/admin/projects/github/sync?username=${encodeURIComponent(username)}`, {
-        method: 'GET',
+      await projectApi.request(`/api/admin/projects/github/sync?username=${encodeURIComponent(username)}`, {
+        method: 'POST',
       });
       
       router.refresh();

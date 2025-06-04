@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { config } from '@/domain/shared/utils/config';
 
 interface Project {
   id: number;
@@ -19,20 +20,15 @@ export default function Projects() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const username = 'fr4iser90';
-        const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=6`);
-        
-        if (!response.ok) {
-          throw new Error(`GitHub API error: ${response.status}`);
+        const res = await fetch(`${config.backendUrl}/api/public/projects`);
+        if (!res.ok) {
+          throw new Error(`API error: ${res.status}`);
         }
-        
-        const data = await response.json();
-        
-        // Ensure data is an array before setting it
+        const data = await res.json();
         if (Array.isArray(data)) {
           setProjects(data);
         } else {
-          throw new Error('Invalid response format from GitHub API');
+          throw new Error('Invalid response format from API');
         }
       } catch (error) {
         console.error('Error fetching projects:', error);
@@ -41,7 +37,6 @@ export default function Projects() {
         setLoading(false);
       }
     };
-
     fetchProjects();
   }, []);
 

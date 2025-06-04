@@ -28,7 +28,7 @@ export interface Project {
   challenges?: string;
   role?: string;
   custom_tags?: string[];
-  show_on_portfolio?: boolean;
+  is_public?: boolean;
   team?: string[];
   screenshots?: string[];
   links?: { [key: string]: string };

@@ -12,6 +12,7 @@ class Section(BaseModel):
     content: Dict[str, Any] | None = None
     display_order: int = 0
     is_visible: bool = True
+    is_public: bool = True
     theme_id: int | None = None
     section_metadata: Dict[str, Any] | None = None
     created_at: datetime

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { apiClient } from '@/domain/shared/utils/api';
+import { authApi } from '@/domain/shared/utils/api';
 import { usePathname } from 'next/navigation';
 
 export function Navbar() {
@@ -9,7 +9,7 @@ export function Navbar() {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const isValid = await apiClient.validateAuth();
+      const isValid = await authApi.validateAuth();
       setIsLoggedIn(isValid);
     };
     checkAuth();

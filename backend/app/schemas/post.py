@@ -8,6 +8,8 @@ class PostBase(BaseModel):
     type: PostType = PostType.GENERAL
     project_id: Optional[int] = None
     section_id: Optional[int] = None
+    is_visible: bool = True
+    is_public: bool = True
     slug: str
     title: str
     subtitle: Optional[str] = None

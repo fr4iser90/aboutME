@@ -31,6 +31,8 @@ class Post(BaseModel):
     type: PostType = PostType.GENERAL
     project_id: int | None = None
     section_id: int | None = None
+    is_visible: bool = True
+    is_public: bool = True
     
     # Basic Content
     slug: str

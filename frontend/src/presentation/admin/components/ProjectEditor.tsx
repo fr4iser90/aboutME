@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ProjectCard } from '@/presentation/public/components/sections/ProjectCard';
 import type { Project as DomainProject, ProjectDetails } from '@/domain/entities/Project';
-import { apiClient } from '@/domain/shared/utils/api';
+import { projectApi } from '@/domain/shared/utils/api';
 
 // Form data uses camelCase, consistent with DomainProject and frontend standards
 interface ProjectFormData {
@@ -30,7 +30,7 @@ interface ProjectFormData {
   challenges?: string;
   role?: string;
   custom_tags?: string[];
-  show_on_portfolio?: boolean;
+  is_public?: boolean;
   team?: string[];
   screenshots?: string[];
   links?: { [key: string]: string };
@@ -102,7 +102,7 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
     challenges: '',
     role: '',
     custom_tags: [],
-    show_on_portfolio: true,
+    is_public: true,
     team: [],
     screenshots: [],
     links: {},
@@ -151,7 +151,7 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
         challenges: project.challenges || '',
         role: project.role || '',
         custom_tags: project.custom_tags || [],
-        show_on_portfolio: typeof project.show_on_portfolio === 'boolean' ? project.show_on_portfolio : true,
+        is_public: typeof project.is_public === 'boolean' ? project.is_public : true,
         team: project.team || [],
         screenshots: project.screenshots || [],
         links: project.links || {},
@@ -186,7 +186,7 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
         challenges: '',
         role: '',
         custom_tags: [],
-        show_on_portfolio: true,
+        is_public: true,
         team: [],
         screenshots: [],
         links: {},
@@ -213,11 +213,9 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
       };
       
       if (project?.id) {
-        // Ensure status is part of the payload if it's optional in formData but required in Project
-        await apiClient.updateProject(project.id, payload as DomainProject);
+        await projectApi.updateProject(project.id, payload as DomainProject);
       } else {
-        // Ensure status is part of the payload
-        await apiClient.createProject(payload as Omit<DomainProject, 'id'>);
+        await projectApi.createProject(payload as Omit<DomainProject, 'id'>);
       }
 
       onSave();
@@ -253,17 +251,17 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
       {/* Editor (links) */}
       <form onSubmit={handleSubmit} className="space-y-4 flex-1">
         <div>
-          <label htmlFor="show_on_portfolio" className="block text-sm font-medium galaxy-text">Auf Portfolio anzeigen</label>
+          <label htmlFor="is_public" className="block text-sm font-medium galaxy-text">Auf Portfolio anzeigen</label>
           <input
             type="checkbox"
-            id="show_on_portfolio"
-            checked={formData.show_on_portfolio}
-            onChange={e => setFormData({ ...formData, show_on_portfolio: e.target.checked })}
+            id="is_public"
+            checked={formData.is_public}
+            onChange={e => setFormData({ ...formData, is_public: e.target.checked })}
             className="form-checkbox text-purple-500 ml-2"
           />
         </div>
 
-        {formData.show_on_portfolio && (
+        {formData.is_public && (
           <div className="space-y-4 border-b border-purple-900 pb-4 mb-4">
             <div className="mb-2">
               <label className="block text-sm font-medium galaxy-text">Beschreibung (aus GitHub, nicht editierbar)</label>

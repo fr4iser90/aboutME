@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Navbar } from '@/presentation/public/components/layout/Navbar';
-import { apiRequest } from '@/domain/shared/utils/api'; // Corrected path
+import { authApi } from '@/domain/shared/utils/api';
 
 export function LoginView() {
   const [email, setEmail] = useState('');
@@ -20,10 +20,7 @@ export function LoginView() {
     setIsLoading(true);
 
     try {
-      await apiRequest('/api/auth/login', {
-        method: 'POST',
-        body: JSON.stringify({ email, password }),
-      });
+      await authApi.login(email, password);
 
       // After successful login API call (cookie should be set by backend),
       // redirect to the main page.
