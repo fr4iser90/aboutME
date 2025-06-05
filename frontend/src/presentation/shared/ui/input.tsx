@@ -4,15 +4,27 @@ import { cn } from '@/lib/utils';
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
 
+const inputStyle: React.CSSProperties = {
+  display: 'flex',
+  height: '2.25rem',
+  width: '100%',
+  borderRadius: 'var(--radius-base)',
+  border: '1px solid var(--color-border, #a78bfa)',
+  background: 'var(--color-background)',
+  color: 'var(--color-text)',
+  padding: '0.25rem 0.75rem',
+  fontSize: 'var(--font-size-base)',
+  boxShadow: 'var(--theme-shadow-sm)',
+  transition: 'background 0.2s, color 0.2s',
+};
+
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
+  ({ className, style, type, ...props }, ref) => {
     return (
       <input
         type={type}
-        className={cn(
-          'flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
-          className
-        )}
+        className={cn(className)}
+        style={{ ...inputStyle, ...style }}
         ref={ref}
         {...props}
       />

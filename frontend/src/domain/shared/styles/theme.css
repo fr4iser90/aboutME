@@ -82,6 +82,48 @@
   --radius-base: 0.25rem;
   --radius-large: 0.5rem;
   --radius-small: 0.125rem;
+
+  --galaxy-text-gradient: linear-gradient(to right, #a78bfa, #f472b6, #60a5fa);
+  --galaxy-card-bg: rgba(30,41,59,0.5);
+  --galaxy-card-blur: 4px;
+  --galaxy-card-border: #a78bfa33;
+  --galaxy-card-shadow: 0 4px 24px rgba(167,139,250,0.1);
+  --galaxy-card-radius: 1rem;
+  --galaxy-card-shadow-hover: 0 4px 24px rgba(167,139,250,0.2);
+  --galaxy-card-border-hover: #a78bfa55;
+  --section-heading-font-size: 2.5rem;
+  --section-heading-font-weight: bold;
+  --section-heading-margin-bottom: 2rem;
+  --section-heading-color: #fff;
+  --section-heading-align: center;
+  --section-paragraph-color: #b0b0b0;
+  --section-paragraph-margin-bottom: 1.5rem;
+  --section-paragraph-font-size: 1.15rem;
+  --section-paragraph-align: center;
+  --section-link-color: #a78bfa;
+  --card-list-gap: 16px;
+  --card-list-item-gap: 12px;
+  --card-list-item-color: #b0b0b0;
+  --card-list-icon-color: #a78bfa;
+  --card-list-icon-font-size: 22px;
+
+  --navbar-link-color: #b0b0b0;
+  --navbar-link-hover-color: #fff;
+  --navbar-link-hover-bg: #7c3aed33;
+  --navbar-link-active-color: #fff;
+  --navbar-link-active-bg: #7c3aed;
+  --navbar-link-padding: 0.5rem 1rem;
+  --navbar-link-radius: 0.5rem;
+  --navbar-link-font-size: 1rem;
+  --navbar-link-font-weight: 500;
+  --navbar-button-color: #fff;
+  --navbar-button-bg: #7c3aed;
+  --navbar-button-radius: 0.5rem;
+  --navbar-button-font-weight: 500;
+  --navbar-button-padding: 0.5rem 1.25rem;
+  --navbar-button-shadow: 0 2px 8px rgba(124,58,237,0.08);
+  --navbar-button-hover-bg: #a78bfa;
+  --navbar-button-hover-color: #fff;
 }
 
 body {

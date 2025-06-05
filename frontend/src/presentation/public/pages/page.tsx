@@ -11,6 +11,9 @@ import Skills from '@/presentation/public/components/sections/Skills';
 import NixOS from '@/presentation/public/components/sections/NixOS';
 import Homelab from '@/presentation/public/components/sections/Homelab';
 import Angeln from '@/presentation/public/components/sections/Angeln';
+import { Container } from '@/presentation/shared/ui/Container';
+import { Grid } from '@/presentation/shared/ui/Grid';
+import { Section } from '@/presentation/shared/ui/Section';
 
 // Define a type for the section data we expect from the API
 interface ApiSection {
@@ -86,119 +89,118 @@ export const HomeView: FC = () => { // Used FC type
   return (
     <>
       <Navbar />
-      <main className="min-h-screen">
-        {/* Hero Section (static for now) */}
-        <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
-          <div className="stars absolute inset-0"></div>
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <h1 className="galaxy-text text-6xl md:text-7xl font-bold mb-6">
+      <main style={{ minHeight: '100vh' }}>
+        {/* Hero Section */}
+        <Section style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
+          <div className="stars" style={{ position: 'absolute', inset: 0 }}></div>
+          <Container style={{ textAlign: 'center', position: 'relative', zIndex: 10 }}>
+            <h1 style={{ fontSize: '4rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>
               Welcome to My Galaxy
             </h1>
-            <p className="text-xl md:text-2xl text-slate-300 mb-8">
+            <p style={{ fontSize: '1.5rem', color: 'var(--color-text-secondary, #b0b0b0)', marginBottom: '2rem' }}>
               Exploring the cosmos of code and creativity
             </p>
-            <div className="flex justify-center space-x-4">
+            <Grid columns={2} gap="1.5rem" style={{ justifyContent: 'center', width: 'fit-content', margin: '0 auto' }}>
               <a
                 href="#projects"
-                className="px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-lg text-white font-medium transition-colors"
+                style={{ padding: '1rem 2rem', background: 'var(--color-primary, #7c3aed)', color: '#fff', borderRadius: '0.5rem', fontWeight: 500, textDecoration: 'none', transition: 'background 0.2s' }}
               >
                 View Projects
               </a>
               <a
                 href="#contact"
-                className="px-6 py-3 border border-purple-600 hover:bg-purple-600/10 rounded-lg text-white font-medium transition-colors"
+                style={{ padding: '1rem 2rem', border: '2px solid var(--color-primary, #7c3aed)', color: '#fff', borderRadius: '0.5rem', fontWeight: 500, textDecoration: 'none', background: 'transparent', transition: 'background 0.2s' }}
               >
                 Contact Me
               </a>
-            </div>
-          </div>
-        </section>
+            </Grid>
+          </Container>
+        </Section>
 
         {/* Dynamic Sections Area */}
-        <section id="dynamic-content" className="py-10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Section id="dynamic-content">
+          <Container>
             {loading ? (
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto"></div>
-                <p className="mt-4 text-slate-300">Loading sections...</p>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ width: 48, height: 48, borderRadius: '50%', borderBottom: '2px solid var(--color-primary, #7c3aed)', margin: '0 auto', animation: 'spin 1s linear infinite' }}></div>
+                <p style={{ marginTop: '1rem', color: 'var(--color-text-secondary, #b0b0b0)' }}>Loading sections...</p>
               </div>
             ) : error ? (
-              <div className="text-center text-red-500">
+              <div style={{ textAlign: 'center', color: 'red' }}>
                 <p>Error loading sections: {error}</p>
-                <p className="text-sm text-slate-400 mt-2">Showing static content instead</p>
+                <p style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary, #b0b0b0)', marginTop: '0.5rem' }}>Showing static content instead</p>
               </div>
             ) : sections.length > 0 ? (
-              <div className="space-y-8">
+              <Grid columns={1} gap="2rem">
                 {sections.map((section) => (
-                  <div key={section.id} className="bg-slate-800 p-6 rounded-lg">
-                    <h3 className="text-xl font-semibold mb-4 text-slate-200">{section.title}</h3>
-                    <div className="text-slate-300">
+                  <div key={section.id} style={{ background: 'var(--color-surface, #232946)', padding: '2rem', borderRadius: '1rem' }}>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '1rem', color: 'var(--color-text, #fff)' }}>{section.title}</h3>
+                    <div style={{ color: 'var(--color-text-secondary, #b0b0b0)' }}>
                       {renderSectionContent(section.content)}
                     </div>
                   </div>
                 ))}
-              </div>
+              </Grid>
             ) : (
-              <p className="text-center text-slate-400">No sections data found from API.</p>
+              <p style={{ textAlign: 'center', color: 'var(--color-text-secondary, #b0b0b0)' }}>No sections data found from API.</p>
             )}
-          </div>
-        </section>
-        
-        {/* Placeholder for where dynamically rendered components will go. */}
-        {/* For now, rendering the old static ones below the fetched data for comparison/layout continuity */}
-        {/* This will be replaced by a dynamic renderer based on `sections` data */}
-        <div className="my-10">
-            <h2 className="text-3xl font-bold mb-8 galaxy-text text-center">Old Static Sections (for reference)</h2>
+          </Container>
+        </Section>
+
+        {/* Old Static Sections (for reference) */}
+        <Section>
+          <Container>
+            <h2 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '2rem', textAlign: 'center' }}>Old Static Sections (for reference)</h2>
             {renderOldStaticSections()}
-        </div>
+          </Container>
+        </Section>
 
-
-        {/* Contact Section (static for now) */}
-        <section id="contact" className="py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-4xl font-bold mb-12 galaxy-text text-center">Get in Touch</h2>
-            <div className="max-w-2xl mx-auto">
-              <form className="space-y-6">
+        {/* Contact Section */}
+        <Section id="contact">
+          <Container>
+            <h2 style={{ fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '3rem', textAlign: 'center' }}>Get in Touch</h2>
+            <Container style={{ maxWidth: 600, margin: '0 auto' }}>
+              <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-slate-300">
+                  <label htmlFor="name" style={{ display: 'block', fontSize: '1rem', fontWeight: 500, color: 'var(--color-text-secondary, #b0b0b0)' }}>
                     Name
                   </label>
                   <input
                     type="text"
                     id="name"
-                    className="mt-1 block w-full rounded-md bg-slate-900 border-slate-700 text-white shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                    style={{ marginTop: '0.5rem', width: '100%', borderRadius: '0.5rem', background: 'var(--color-surface, #232946)', border: '1px solid var(--color-border, #444)', color: '#fff', padding: '0.75rem', fontSize: '1rem' }}
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-slate-300">
+                  <label htmlFor="email" style={{ display: 'block', fontSize: '1rem', fontWeight: 500, color: 'var(--color-text-secondary, #b0b0b0)' }}>
                     Email
                   </label>
                   <input
                     type="email"
                     id="email"
-                    className="mt-1 block w-full rounded-md bg-slate-900 border-slate-700 text-white shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                    style={{ marginTop: '0.5rem', width: '100%', borderRadius: '0.5rem', background: 'var(--color-surface, #232946)', border: '1px solid var(--color-border, #444)', color: '#fff', padding: '0.75rem', fontSize: '1rem' }}
                   />
                 </div>
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-slate-300">
+                  <label htmlFor="message" style={{ display: 'block', fontSize: '1rem', fontWeight: 500, color: 'var(--color-text-secondary, #b0b0b0)' }}>
                     Message
                   </label>
                   <textarea
                     id="message"
                     rows={4}
-                    className="mt-1 block w-full rounded-md bg-slate-900 border-slate-700 text-white shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                    style={{ marginTop: '0.5rem', width: '100%', borderRadius: '0.5rem', background: 'var(--color-surface, #232946)', border: '1px solid var(--color-border, #444)', color: '#fff', padding: '0.75rem', fontSize: '1rem' }}
                   ></textarea>
                 </div>
                 <button
                   type="submit"
-                  className="w-full px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-lg text-white font-medium transition-colors"
+                  style={{ width: '100%', padding: '1rem 2rem', background: 'var(--color-primary, #7c3aed)', color: '#fff', borderRadius: '0.5rem', fontWeight: 500, fontSize: '1.1rem', border: 'none', transition: 'background 0.2s' }}
                 >
                   Send Message
                 </button>
               </form>
-            </div>
-          </div>
-        </section>
+            </Container>
+          </Container>
+        </Section>
       </main>
     </>
   );

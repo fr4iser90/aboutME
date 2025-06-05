@@ -8,17 +8,27 @@ const Tooltip = TooltipPrimitive.Root;
 
 const TooltipTrigger = TooltipPrimitive.Trigger;
 
+const tooltipContentStyle: React.CSSProperties = {
+  zIndex: 50,
+  overflow: 'hidden',
+  borderRadius: 'var(--radius-base)',
+  border: '1px solid var(--color-border)',
+  background: 'var(--color-popover, var(--color-background))',
+  color: 'var(--color-popover-foreground, var(--color-text))',
+  padding: '0.375rem 1rem',
+  fontSize: '0.875rem',
+  boxShadow: 'var(--theme-shadow-md)',
+};
+
 const TooltipContent = React.forwardRef<
   React.ElementRef<typeof TooltipPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
->(({ className, sideOffset = 4, ...props }, ref) => (
+>(({ className, sideOffset = 4, style, ...props }, ref) => (
   <TooltipPrimitive.Content
     ref={ref}
     sideOffset={sideOffset}
-    className={cn(
-      'z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
-      className
-    )}
+    className={cn(className)}
+    style={{ ...tooltipContentStyle, ...style }}
     {...props}
   />
 ));

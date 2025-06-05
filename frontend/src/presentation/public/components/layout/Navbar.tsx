@@ -16,46 +16,44 @@ export function Navbar() {
   }, []);
 
   return (
-    <nav className="fixed top-0 w-full bg-slate-950/80 backdrop-blur-sm z-50 border-b border-purple-900/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+    <nav
+      style={{
+        position: 'fixed',
+        top: 0,
+        width: '100%',
+        background: 'var(--navbar-bg, rgba(15,23,42,0.8))',
+        backdropFilter: 'blur(var(--navbar-blur, 8px))',
+        zIndex: 50,
+        borderBottom: '1px solid var(--navbar-border, #a78bfa33)',
+        height: 'var(--navbar-height, 4rem)'
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 'var(--navbar-container-max-width, 80rem)',
+          margin: '0 auto',
+          paddingLeft: 'var(--navbar-container-padding-x, 1rem)',
+          paddingRight: 'var(--navbar-container-padding-x, 1rem)'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '100%' }}>
           <Link href="/" className="text-xl font-bold galaxy-text">
             My Galaxy
           </Link>
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
-              <Link href="/#about" className="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                About
-              </Link>
-              <Link href="/#skills" className="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                Skills
-              </Link>
-              <Link href="/#nixos" className="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                NixOS
-              </Link>
-              <Link href="/#homelab" className="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                Homelab
-              </Link>
-              <Link href="/#angeln" className="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                Angeln
-              </Link>
-              <Link href="/#projects" className="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                Projects
-              </Link>
-              <Link href="/blog" className="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                Blog
-              </Link>
-              <Link href="/#contact" className="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                Contact
-              </Link>
+          <div style={{ display: 'flex' }}>
+            <div style={{ marginLeft: '2.5rem', display: 'flex', alignItems: 'baseline', gap: '1rem' }}>
+              <Link href="/#about" className="navbar-link">About</Link>
+              <Link href="/#skills" className="navbar-link">Skills</Link>
+              <Link href="/#nixos" className="navbar-link">NixOS</Link>
+              <Link href="/#homelab" className="navbar-link">Homelab</Link>
+              <Link href="/#angeln" className="navbar-link">Angeln</Link>
+              <Link href="/#projects" className="navbar-link">Projects</Link>
+              <Link href="/blog" className="navbar-link">Blog</Link>
+              <Link href="/#contact" className="navbar-link">Contact</Link>
               {isLoggedIn && (
-                <Link href="/admin" className="text-white bg-purple-600 hover:bg-purple-700 px-3 py-2 rounded-md text-sm font-medium transition-colors">
-                  Admin
-                </Link>
+                <Link href="/admin" className="navbar-link navbar-link-admin">Admin</Link>
               )}
-              <Link href="/login" className="text-white bg-purple-600 hover:bg-purple-700 px-3 py-2 rounded-md text-sm font-medium transition-colors">
-                Login
-              </Link>
+              <Link href="/login" className="navbar-link navbar-link-login">Login</Link>
             </div>
           </div>
         </div>

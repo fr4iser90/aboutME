@@ -1,35 +1,48 @@
 import * as React from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
-const badgeVariants = cva(
-  'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
-  {
-    variants: {
-      variant: {
-        default:
-          'border-transparent bg-primary text-primary-foreground hover:bg-primary/80',
-        secondary:
-          'border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        destructive:
-          'border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80',
-        outline: 'text-foreground',
-      },
-    },
-    defaultVariants: {
-      variant: 'default',
-    },
-  }
-);
+export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
+  variant?: 'default' | 'secondary' | 'destructive' | 'outline';
+}
 
-export interface BadgeProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {}
+const variantStyles: Record<string, React.CSSProperties> = {
+  default: {
+    background: 'var(--color-primary)',
+    color: 'var(--color-text)',
+    border: '1px solid transparent',
+  },
+  secondary: {
+    background: 'var(--color-secondary)',
+    color: 'var(--color-text)',
+    border: '1px solid transparent',
+  },
+  destructive: {
+    background: 'var(--color-danger, #ef4444)',
+    color: 'var(--color-text, #fff)',
+    border: '1px solid transparent',
+  },
+  outline: {
+    background: 'transparent',
+    color: 'var(--color-text)',
+    border: '1px solid var(--color-border, #a78bfa)',
+  },
+};
 
-function Badge({ className, variant, ...props }: BadgeProps) {
+function Badge({ className, variant = 'default', style, ...props }: BadgeProps) {
+  const mergedStyle = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    borderRadius: '9999px',
+    padding: '0.125rem 0.625rem',
+    fontSize: '0.75rem',
+    fontWeight: 600,
+    transition: 'background 0.2s, color 0.2s',
+    ...variantStyles[variant],
+    ...style,
+  };
   return (
-    <div className={cn(badgeVariants({ variant }), className)} {...props} />
+    <div className={cn(className)} style={mergedStyle} {...props} />
   );
 }
 
-export { Badge, badgeVariants }; 
+export { Badge }; 

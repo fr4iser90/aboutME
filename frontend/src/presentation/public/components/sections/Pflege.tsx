@@ -1,12 +1,12 @@
 export default function Pflege() {
   return (
-    <section id="pflege" className="py-20">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-4xl font-bold mb-8 galaxy-text text-center">Pflege</h2>
-        <p className="text-slate-300 mb-6 text-center">
+    <section id="pflege" style={{ padding: 'var(--section-padding, 60px 0)' }}>
+      <div style={{ maxWidth: 'var(--container-max-width, 900px)', margin: '0 auto', padding: 'var(--container-padding, 0 24px)' }}>
+        <h2 className="section-heading galaxy-text">Pflege</h2>
+        <p className="section-paragraph">
           Hier teile ich bald ein paar Gedanken, Tipps und vielleicht auch Blogposts aus meinem Berufsalltag als Gesundheits- und Krankenpfleger.
         </p>
-        <div className="galaxy-card p-6 rounded-lg text-center">[Platzhalter für Blogpost oder Tipps]</div>
+        <div className="galaxy-card" style={{ textAlign: 'center', padding: 'var(--card-padding, 1.5rem)', borderRadius: 'var(--galaxy-card-radius, 1rem)' }}>[Platzhalter für Blogpost oder Tipps]</div>
       </div>
     </section>
   );

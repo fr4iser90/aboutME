@@ -5,48 +5,72 @@ import { cn } from '@/lib/utils';
 
 const Accordion = AccordionPrimitive.Root;
 
+const itemStyle: React.CSSProperties = {
+  borderBottom: '1px solid var(--color-border)',
+};
+
 const AccordionItem = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
->(({ className, ...props }, ref) => (
+>(({ className, style, ...props }, ref) => (
   <AccordionPrimitive.Item
     ref={ref}
-    className={cn('border-b', className)}
+    className={cn(className)}
+    style={{ ...itemStyle, ...style }}
     {...props}
   />
 ));
 AccordionItem.displayName = 'AccordionItem';
 
+const triggerStyle: React.CSSProperties = {
+  display: 'flex',
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: '1rem 0',
+  fontWeight: 500,
+  transition: 'all 0.2s',
+  cursor: 'pointer',
+  background: 'transparent',
+  border: 'none',
+  outline: 'none',
+};
+
 const AccordionTrigger = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Header className="flex">
+>(({ className, children, style, ...props }, ref) => (
+  <AccordionPrimitive.Header style={{ display: 'flex' }}>
     <AccordionPrimitive.Trigger
       ref={ref}
-      className={cn(
-        'flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180',
-        className
-      )}
+      className={cn(className)}
+      style={{ ...triggerStyle, ...style }}
       {...props}
     >
       {children}
-      <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
+      <ChevronDown style={{ height: '1rem', width: '1rem', transition: 'transform 0.2s' }} />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
 ));
 AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName;
 
+const contentStyle: React.CSSProperties = {
+  overflow: 'hidden',
+  fontSize: '0.875rem',
+  transition: 'all 0.2s',
+};
+
 const AccordionContent = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
->(({ className, children, ...props }, ref) => (
+>(({ className, children, style, ...props }, ref) => (
   <AccordionPrimitive.Content
     ref={ref}
-    className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+    className={cn(className)}
+    style={{ ...contentStyle, ...style }}
     {...props}
   >
-    <div className={cn('pb-4 pt-0', className)}>{children}</div>
+    <div style={{ paddingBottom: '1rem', paddingTop: 0 }} className={cn(className)}>{children}</div>
   </AccordionPrimitive.Content>
 ));
 AccordionContent.displayName = AccordionPrimitive.Content.displayName;
