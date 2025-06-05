@@ -7,10 +7,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from app.infrastructure.database.session import SessionLocal
 from app.infrastructure.database.models.theme import ThemeModel  # Adjust import if needed
-from backend.scripts.themes.galaxy import galaxy_theme  # Import Galaxy theme
-from backend.scripts.themes.ocean_breeze import ocean_breeze_theme
-from backend.scripts.themes.forest_mist import forest_mist_theme
-from backend.scripts.themes.solar_flare import solar_flare_theme
+from scripts.themes.galaxy import galaxy_theme  # Import Galaxy theme
+from scripts.themes.ocean_breeze import ocean_breeze_theme
+from scripts.themes.forest_mist import forest_mist_theme
+from scripts.themes.solar_flare import solar_flare_theme
 
 logger = logging.getLogger("create_themese")
 

@@ -32,6 +32,7 @@ import { TabContext, type Tab } from '@/presentation/admin/contexts/TabContext';
 import { Section } from '@/domain/entities/Section';
 import { SectionEditor } from '@/presentation/admin/components/features/sections/SectionEditor';
 import React, { createContext } from 'react';
+import '@/domain/shared/styles/admin-layout.css';
 
 // Create a context for file manager state
 export const FileManagerContext = createContext<{
@@ -248,126 +249,119 @@ export default function AdminLayoutContent({
   }), [selectedProject]);
 
   return (
-    <FileManagerProvider>
+    <AdminContext.Provider value={{ selectedProject, setSelectedProject: handleSetSelectedProject }}>
       <TabContext.Provider value={{ openTab, closeTab, setActiveTab, activeTab, openTabs }}>
-        <AdminContext.Provider value={adminContextValue}>
-          <div className="flex h-screen bg-background">
-            {/* Column 1: Icon Sidebar */}
-            <div className="w-16 border-r bg-muted/40">
-              <ScrollArea className="h-full py-4">
-                <div className="flex flex-col items-center gap-4">
-                  {navigation.map((item) => (
-                    <Link key={item.id} href={item.path} passHref>
-                      <Button
-                        variant={activeTab === item.id ? "secondary" : "ghost"}
-                        size="icon"
-                        className="w-10 h-10"
-                        aria-label={item.title}
-                      >
-                        {item.icon}
-                      </Button>
-                    </Link>
-                  ))}
-                </div>
-              </ScrollArea>
-            </div>
-
-            {/* Column 2: List Sidebar */}
-            <div className="w-72 border-r bg-muted/50 p-4 hidden md:flex md:flex-col space-y-4 overflow-y-auto">
-              {activeTab === 'projects' && (
-                <>
-                  <div>
-                    <h2 className="text-lg font-semibold mb-2">Project Tools</h2>
-                  </div>
-                  <div className="flex-grow overflow-hidden">
-                    <h2 className="text-lg font-semibold my-2">Project List</h2>
-                    <ScrollArea className="h-full">
-                      <ProjectList 
-                        onEditProject={(project: DomainProject) => handleSetSelectedProject(project)} 
-                        viewMode="simple" 
-                      />
-                    </ScrollArea>
-                  </div>
-                </>
-              )}
-              {activeTab === 'sections' && (
-                <>
-                  <div>
-                    <h2 className="text-lg font-semibold mb-2">Section Tools</h2>
-                  </div>
-                  <div className="flex-grow overflow-hidden">
-                    <h2 className="text-lg font-semibold my-2">Section List</h2>
-                    <ScrollArea className="h-full">
-                      <SectionList onEditSection={setSelectedSection} />
-                    </ScrollArea>
-                  </div>
-                </>
-              )}
-              {activeTab === 'files' && (
-                <>
-                  <div>
-                    <h2 className="text-lg font-semibold mb-2">File Manager</h2>
-                  </div>
-                  <div className="flex-grow overflow-hidden">
-                    <h2 className="text-lg font-semibold my-2">Files & Folders</h2>
-                    <ScrollArea className="h-full">
-                      <FileTree autoLoad={true} />
-                    </ScrollArea>
-                  </div>
-                </>
-              )}
-              {activeTab !== 'projects' && activeTab !== 'sections' && activeTab !== 'files' && (
-                <>
-                  <h2 className="text-lg font-semibold mb-4">Context List</h2>
-                  <p className="text-sm text-gray-500">Content for {activeTab} list...</p>
-                </>
-              )}
-            </div>
-
-            {/* Column 3: Main Content Area */}
-            <div className="flex-1 flex flex-col overflow-hidden">
-              <div className="border-b">
-                <div className="flex items-center px-4 h-10 overflow-x-auto">
-                  {openTabs.map((tab) => (
-                    <div
-                      key={tab.id}
-                      className={cn(
-                        "flex items-center gap-2 px-3 py-1.5 text-sm border-r whitespace-nowrap",
-                        activeTab === tab.id ? "bg-muted" : "hover:bg-muted/50"
-                      )}
+        <div className="admin-grid-layout">
+          <aside className="admin-sidebar">
+            <ScrollArea className="h-full py-4">
+              <div className="flex flex-col items-center gap-4">
+                {navigation.map((item) => (
+                  <Link key={item.id} href={item.path} passHref>
+                    <Button
+                      variant={activeTab === item.id ? "secondary" : "ghost"}
+                      size="icon"
+                      className="w-10 h-10"
+                      aria-label={item.title}
                     >
-                      <button
-                        className="flex items-center gap-2"
-                        onClick={() => setActiveTab(tab.id)}
-                      >
-                        {tab.icon}
-                        <span>{tab.title}</span>
-                      </button>
-                      {openTabs.length > 1 && (
-                        <button
-                          className="p-1 hover:bg-muted rounded-sm"
-                          onClick={() => closeTab(tab.id)}
-                        >
-                          <X className="w-3 h-3" />
-                        </button>
-                      )}
-                    </div>
-                  ))}
-                </div>
+                      {item.icon}
+                    </Button>
+                  </Link>
+                ))}
               </div>
-
-              <div className="flex-1 overflow-auto p-6">
-                {activeTab === 'sections' && selectedSection ? (
-                  <SectionEditor section={selectedSection} onSave={() => setSelectedSection(null)} onCancel={() => setSelectedSection(null)} />
-                ) : (
-                  openTabs.find((tab) => tab.id === activeTab)?.content || null
-                )}
+            </ScrollArea>
+          </aside>
+          <aside className="admin-contextbar">
+            {activeTab === 'projects' && (
+              <>
+                <div>
+                  <h2 className="text-lg font-semibold mb-2">Project Tools</h2>
+                </div>
+                <div className="flex-grow overflow-hidden">
+                  <h2 className="text-lg font-semibold my-2">Project List</h2>
+                  <ScrollArea className="h-full">
+                    <ProjectList 
+                      onEditProject={(project: DomainProject) => handleSetSelectedProject(project)} 
+                      viewMode="simple" 
+                    />
+                  </ScrollArea>
+                </div>
+              </>
+            )}
+            {activeTab === 'sections' && (
+              <>
+                <div>
+                  <h2 className="text-lg font-semibold mb-2">Section Tools</h2>
+                </div>
+                <div className="flex-grow overflow-hidden">
+                  <h2 className="text-lg font-semibold my-2">Section List</h2>
+                  <ScrollArea className="h-full">
+                    <SectionList onEditSection={setSelectedSection} />
+                  </ScrollArea>
+                </div>
+              </>
+            )}
+            {activeTab === 'files' && (
+              <>
+                <div>
+                  <h2 className="text-lg font-semibold mb-2">File Manager</h2>
+                </div>
+                <div className="flex-grow overflow-hidden">
+                  <h2 className="text-lg font-semibold my-2">Files & Folders</h2>
+                  <ScrollArea className="h-full">
+                    <FileTree autoLoad={true} />
+                  </ScrollArea>
+                </div>
+              </>
+            )}
+            {activeTab !== 'projects' && activeTab !== 'sections' && activeTab !== 'files' && (
+              <>
+                <h2 className="text-lg font-semibold mb-4">Context List</h2>
+                <p className="text-sm text-gray-500">Content for {activeTab} list...</p>
+              </>
+            )}
+          </aside>
+          <main className="admin-main">
+            <div className="border-b">
+              <div className="flex items-center px-4 h-10 overflow-x-auto">
+                {openTabs.map((tab) => (
+                  <div
+                    key={tab.id}
+                    className={cn(
+                      "flex items-center gap-2 px-3 py-1.5 text-sm border-r whitespace-nowrap",
+                      activeTab === tab.id ? "bg-muted" : "hover:bg-muted/50"
+                    )}
+                  >
+                    <button
+                      className="flex items-center gap-2"
+                      onClick={() => setActiveTab(tab.id)}
+                    >
+                      {tab.icon}
+                      <span>{tab.title}</span>
+                    </button>
+                    {openTabs.length > 1 && (
+                      <button
+                        className="p-1 hover:bg-muted rounded-sm"
+                        onClick={() => closeTab(tab.id)}
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Column 4: Right Sidebar (Copilot) */}
+            <div className="flex-1 overflow-auto p-6">
+              {activeTab === 'sections' && selectedSection ? (
+                <SectionEditor section={selectedSection} onSave={() => setSelectedSection(null)} onCancel={() => setSelectedSection(null)} />
+              ) : (
+                openTabs.find((tab) => tab.id === activeTab)?.content || null
+              )}
+            </div>
+          </main>
+          <aside className="admin-copilotbar">
             {isRightSidebarOpen && (
-              <div className="w-80 border-l bg-muted/40 flex flex-col">
+              <div className="flex flex-col">
                 <div className="flex items-center justify-between p-4 border-b">
                   <div className="flex items-center gap-2">
                     <MessageSquare className="w-4 h-4" />
@@ -384,9 +378,9 @@ export default function AdminLayoutContent({
                 <CopilotChat context={copilotContext} />
               </div>
             )}
-          </div>
-        </AdminContext.Provider>
+          </aside>
+        </div>
       </TabContext.Provider>
-    </FileManagerProvider>
+    </AdminContext.Provider>
   );
 }
