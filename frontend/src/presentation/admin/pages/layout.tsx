@@ -94,13 +94,13 @@ export default function AdminLayoutContent({
   };
 
   const navigation = [
-    { id: 'dashboard', title: 'Dashboard', icon: <LayoutDashboard className="w-5 h-5" />, path: '/admin' },
-    { id: 'projects', title: 'Projects', icon: <FolderGit2 className="w-5 h-5" />, path: '/admin/projects' },
-    { id: 'sections', title: 'Sections', icon: <SplitSquareHorizontal className="w-5 h-5" />, path: '/admin/sections' },
-    { id: 'files', title: 'Files', icon: <Folder className="w-5 h-5" />, path: '/admin/files' },
-    { id: 'themes', title: 'Themes', icon: <Palette className="w-5 h-5" />, path: '/admin/themes' },
-    { id: 'about', title: 'About Me', icon: <User className="w-5 h-5" />, path: '/admin/about' },
-    { id: 'settings', title: 'Settings', icon: <Settings className="w-5 h-5" />, path: '/admin/settings' },
+    { id: 'dashboard', title: 'Dashboard', icon: <LayoutDashboard className="admin-layout__nav-icon" />, path: '/admin' },
+    { id: 'projects', title: 'Projects', icon: <FolderGit2 className="admin-layout__nav-icon" />, path: '/admin/projects' },
+    { id: 'sections', title: 'Sections', icon: <SplitSquareHorizontal className="admin-layout__nav-icon" />, path: '/admin/sections' },
+    { id: 'files', title: 'Files', icon: <Folder className="admin-layout__nav-icon" />, path: '/admin/files' },
+    { id: 'themes', title: 'Themes', icon: <Palette className="admin-layout__nav-icon" />, path: '/admin/themes' },
+    { id: 'about', title: 'About Me', icon: <User className="admin-layout__nav-icon" />, path: '/admin/about' },
+    { id: 'settings', title: 'Settings', icon: <Settings className="admin-layout__nav-icon" />, path: '/admin/settings' },
   ];
 
   const getInitialOpenTabs = () => {
@@ -109,21 +109,21 @@ export default function AdminLayoutContent({
       tabs.push({
         id: 'projects', 
         title: 'Projects',
-        icon: <FolderGit2 className="w-4 h-4" />,
+        icon: <FolderGit2 className="admin-layout__tab-icon" />,
         content: <>{children}</>
       });
     } else if (pathname.startsWith('/admin/dashboard')) {
       tabs.push({
         id: 'dashboard',
         title: 'Dashboard',
-        icon: <LayoutDashboard className="w-4 h-4" />,
+        icon: <LayoutDashboard className="admin-layout__tab-icon" />,
         content: <>{children}</>
       });
     } else if (pathname.startsWith('/admin/skills')) {
       tabs.push({
         id: 'skills',
         title: 'Skills',
-        icon: <Palette className="w-4 h-4" />,
+        icon: <Palette className="admin-layout__tab-icon" />,
         content: <>{children}</>
       });
     }
@@ -134,7 +134,7 @@ export default function AdminLayoutContent({
         tabs.push({
           id: 'projects', 
           title: 'Projects',
-          icon: <FolderGit2 className="w-4 h-4" />,
+          icon: <FolderGit2 className="admin-layout__tab-icon" />,
           content: <>{children}</>
         });
       }
@@ -251,16 +251,16 @@ export default function AdminLayoutContent({
   return (
     <AdminContext.Provider value={{ selectedProject, setSelectedProject: handleSetSelectedProject }}>
       <TabContext.Provider value={{ openTab, closeTab, setActiveTab, activeTab, openTabs }}>
-        <div className="admin-grid-layout">
-          <aside className="admin-sidebar">
-            <ScrollArea className="h-full py-4">
-              <div className="flex flex-col items-center gap-4">
+        <div className="admin-layout">
+          <aside className="admin-layout__sidebar">
+            <ScrollArea className="admin-layout__scroll-area">
+              <div className="admin-layout__sidebar-content">
                 {navigation.map((item) => (
                   <Link key={item.id} href={item.path} passHref>
                     <Button
                       variant={activeTab === item.id ? "secondary" : "ghost"}
                       size="icon"
-                      className="w-10 h-10"
+                      className="admin-layout__nav-button"
                       aria-label={item.title}
                     >
                       {item.icon}
@@ -270,15 +270,15 @@ export default function AdminLayoutContent({
               </div>
             </ScrollArea>
           </aside>
-          <aside className="admin-contextbar">
+          <aside className="admin-layout__contextbar">
             {activeTab === 'projects' && (
               <>
-                <div>
-                  <h2 className="text-lg font-semibold mb-2">Project Tools</h2>
+                <div className="admin-layout__context-header">
+                  <h2 className="admin-layout__context-title">Project Tools</h2>
                 </div>
-                <div className="flex-grow overflow-hidden">
-                  <h2 className="text-lg font-semibold my-2">Project List</h2>
-                  <ScrollArea className="h-full">
+                <div className="admin-layout__context-body">
+                  <h2 className="admin-layout__context-subtitle">Project List</h2>
+                  <ScrollArea className="admin-layout__context-scroll-area">
                     <ProjectList 
                       onEditProject={(project: DomainProject) => handleSetSelectedProject(project)} 
                       viewMode="simple" 
@@ -289,12 +289,12 @@ export default function AdminLayoutContent({
             )}
             {activeTab === 'sections' && (
               <>
-                <div>
-                  <h2 className="text-lg font-semibold mb-2">Section Tools</h2>
+                <div className="admin-layout__context-header">
+                  <h2 className="admin-layout__context-title">Section Tools</h2>
                 </div>
-                <div className="flex-grow overflow-hidden">
-                  <h2 className="text-lg font-semibold my-2">Section List</h2>
-                  <ScrollArea className="h-full">
+                <div className="admin-layout__context-body">
+                  <h2 className="admin-layout__context-subtitle">Section List</h2>
+                  <ScrollArea className="admin-layout__context-scroll-area">
                     <SectionList onEditSection={setSelectedSection} />
                   </ScrollArea>
                 </div>
@@ -302,12 +302,12 @@ export default function AdminLayoutContent({
             )}
             {activeTab === 'files' && (
               <>
-                <div>
-                  <h2 className="text-lg font-semibold mb-2">File Manager</h2>
+                <div className="admin-layout__context-header">
+                  <h2 className="admin-layout__context-title">File Manager</h2>
                 </div>
-                <div className="flex-grow overflow-hidden">
-                  <h2 className="text-lg font-semibold my-2">Files & Folders</h2>
-                  <ScrollArea className="h-full">
+                <div className="admin-layout__context-body">
+                  <h2 className="admin-layout__context-subtitle">Files & Folders</h2>
+                  <ScrollArea className="admin-layout__context-scroll-area">
                     <FileTree autoLoad={true} />
                   </ScrollArea>
                 </div>
@@ -315,24 +315,24 @@ export default function AdminLayoutContent({
             )}
             {activeTab !== 'projects' && activeTab !== 'sections' && activeTab !== 'files' && (
               <>
-                <h2 className="text-lg font-semibold mb-4">Context List</h2>
-                <p className="text-sm text-gray-500">Content for {activeTab} list...</p>
+                <h2 className="admin-layout__context-title">Context List</h2>
+                <p className="admin-layout__context-text">Content for {activeTab} list...</p>
               </>
             )}
           </aside>
-          <main className="admin-main">
-            <div className="border-b">
-              <div className="flex items-center px-4 h-10 overflow-x-auto">
+          <main className="admin-layout__main">
+            <div className="admin-layout__tabs-container">
+              <div className="admin-layout__tabs-header">
                 {openTabs.map((tab) => (
                   <div
                     key={tab.id}
                     className={cn(
-                      "flex items-center gap-2 px-3 py-1.5 text-sm border-r whitespace-nowrap",
-                      activeTab === tab.id ? "bg-muted" : "hover:bg-muted/50"
+                      "admin-layout__tab-item",
+                      activeTab === tab.id ? "admin-layout__tab-item--active" : ""
                     )}
                   >
                     <button
-                      className="flex items-center gap-2"
+                      className="admin-layout__tab-button"
                       onClick={() => setActiveTab(tab.id)}
                     >
                       {tab.icon}
@@ -340,10 +340,10 @@ export default function AdminLayoutContent({
                     </button>
                     {openTabs.length > 1 && (
                       <button
-                        className="p-1 hover:bg-muted rounded-sm"
+                        className="admin-layout__tab-close-button"
                         onClick={() => closeTab(tab.id)}
                       >
-                        <X className="w-3 h-3" />
+                        <X className="admin-layout__tab-close-icon" />
                       </button>
                     )}
                   </div>
@@ -351,7 +351,7 @@ export default function AdminLayoutContent({
               </div>
             </div>
 
-            <div className="flex-1 overflow-auto p-6">
+            <div className="admin-layout__content-area">
               {activeTab === 'sections' && selectedSection ? (
                 <SectionEditor section={selectedSection} onSave={() => setSelectedSection(null)} onCancel={() => setSelectedSection(null)} />
               ) : (
@@ -359,20 +359,20 @@ export default function AdminLayoutContent({
               )}
             </div>
           </main>
-          <aside className="admin-copilotbar">
+          <aside className="admin-layout__copilotbar">
             {isRightSidebarOpen && (
-              <div className="flex flex-col">
-                <div className="flex items-center justify-between p-4 border-b">
-                  <div className="flex items-center gap-2">
-                    <MessageSquare className="w-4 h-4" />
-                    <span className="font-medium">Copilot</span>
+              <div className="admin-layout__copilot-content">
+                <div className="admin-layout__copilot-header">
+                  <div className="admin-layout__copilot-title-group">
+                    <MessageSquare className="admin-layout__copilot-icon" />
+                    <span className="admin-layout__copilot-title">Copilot</span>
                   </div>
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => setIsRightSidebarOpen(false)}
                   >
-                    <X className="w-4 h-4" />
+                    <X className="admin-layout__copilot-icon" />
                   </Button>
                 </div>
                 <CopilotChat context={copilotContext} />

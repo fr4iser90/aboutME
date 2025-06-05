@@ -29,7 +29,7 @@ export function SectionList({ onEditSection }: SectionListProps) {
   }, []);
 
   if (loading) return <div>Loading sections...</div>;
-  if (error) return <div className="text-red-500">{error}</div>;
+  if (error) return <div className="error-message">{error}</div>;
 
   return (
     <div className="section-list">
@@ -49,4 +49,4 @@ export function SectionList({ onEditSection }: SectionListProps) {
       <Button className="section-list-add-btn">Add Section</Button>
     </div>
   );
-} 
+}

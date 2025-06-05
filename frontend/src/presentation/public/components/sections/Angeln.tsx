@@ -2,7 +2,7 @@ export default function Angeln() {
   return (
     <section id="angeln" style={{ padding: 'var(--section-padding, 60px 0)' }}>
       <div style={{ maxWidth: 'var(--container-max-width, 900px)', margin: '0 auto', padding: 'var(--container-padding, 0 24px)' }}>
-        <h2 className="section-heading text">Angeln</h2>
+        <h2 className="section-heading">Angeln</h2>
         <p className="section-paragraph">
           Hier findest du bald Fotos, Lieblingsplätze, Fangberichte und Ausrüstung rund ums Angeln.
         </p>
@@ -15,4 +15,4 @@ export default function Angeln() {
       </div>
     </section>
   );
-} 
+}

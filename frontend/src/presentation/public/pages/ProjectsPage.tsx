@@ -1,7 +1,8 @@
-import { useProjects } from '@/application/public/useProjects';
-import { ProjectCard } from '@/presentation/public/components/ProjectCard';
+import { useProjects } from '@/application/public/projects/useProjects';
+import { ProjectCard } from '@/presentation/public/components/sections/ProjectCard';
 import { useEffect, useState } from 'react';
 import { Project } from '@/domain/entities/Project';
+import './ProjectsPage.css';
 
 export const ProjectsView = () => {
   const { getAllProjects } = useProjects();
@@ -34,7 +35,7 @@ export const ProjectsView = () => {
   }
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="projects-page-container">
       <h1 className="projects-page-title">My Projects</h1>
       <div className="projects-page-grid">
         {projects.map((project) => (

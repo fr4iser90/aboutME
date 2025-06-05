@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ProjectCard } from '@/presentation/public/components/sections/ProjectCard';
 import type { Project as DomainProject, ProjectDetails } from '@/domain/entities/Project';
 import { projectApi } from '@/domain/shared/utils/api';
+import './ProjectEditor.css';
 
 // Form data uses camelCase, consistent with DomainProject and frontend standards
 interface ProjectFormData {
@@ -247,36 +248,36 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-8">
+    <div className="project-editor">
       {/* Editor (links) */}
-      <form onSubmit={handleSubmit} className="space-y-4 flex-1">
+      <form onSubmit={handleSubmit} className="project-editor__form">
         <div>
-          <label htmlFor="is_public" className="block text-sm font-medium text">Auf Portfolio anzeigen</label>
+          <label htmlFor="is_public" className="project-editor__label text">Auf Portfolio anzeigen</label>
           <input
             type="checkbox"
             id="is_public"
             checked={formData.is_public}
             onChange={e => setFormData({ ...formData, is_public: e.target.checked })}
-            className="form-checkbox text-purple-500 ml-2"
+            className="project-editor__checkbox"
           />
         </div>
 
         {formData.is_public && (
-          <div className="space-y-4 border-b border-purple-900 pb-4 mb-4">
+          <div className="project-editor__section">
             <div className="mb-2">
-              <label className="block text-sm font-medium text">Beschreibung (aus GitHub, nicht editierbar)</label>
-              <div className="text-gray-400 italic mt-1 bg-slate-900/40 rounded p-2">
+              <label className="project-editor__label text">Beschreibung (aus GitHub, nicht editierbar)</label>
+              <div className="project-editor__description-preview">
                 {project?.description || 'Keine GitHub-Beschreibung vorhanden.'}
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-2 mb-4">
+            <div className="project-editor__visibility-grid">
               {Object.entries(fieldsVisibility).map(([field, visible]) => (
-                <label key={field} className="flex items-center space-x-2 text-sm text">
+                <label key={field} className="project-editor__checkbox-label text">
                   <input
                     type="checkbox"
                     checked={visible}
                     onChange={() => handleVisibilityChange(field)}
-                    className="form-checkbox text-purple-500"
+                    className="project-editor__checkbox"
                   />
                   <span>{field.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())} sichtbar</span>
                 </label>
@@ -284,19 +285,19 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
             </div>
             {overrideFields.map((field) => (
               <div key={field} className="mb-2">
-                <label className="flex items-center space-x-2 text-sm text">
+                <label className="project-editor__checkbox-label text">
                   <input
                     type="checkbox"
                     checked={override[field]}
                     onChange={() => setOverride((prev) => ({ ...prev, [field]: !prev[field] }))}
-                    className="form-checkbox text-purple-500"
+                    className="project-editor__checkbox"
                   />
                   <span>Eigenen {field.replace(/_/g, ' ')} verwenden</span>
                 </label>
                 {override[field] ? (
                   field === 'description' || field === 'own_description' || field === 'learnings' || field === 'challenges' ? (
                     <textarea
-                      className="mt-1 block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                      className="project-editor__textarea card"
                       value={formData[field as keyof ProjectFormData] as string || ''}
                       onChange={e => setFormData({ ...formData, [field]: e.target.value })}
                       rows={2}
@@ -304,51 +305,51 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
                     />
                   ) : (
                     <input
-                      className="mt-1 block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                      className="project-editor__input card"
                       value={formData[field as keyof ProjectFormData] as string || ''}
                       onChange={e => setFormData({ ...formData, [field]: e.target.value })}
                       placeholder={`Eigener ${field.replace(/_/g, ' ')}`}
                     />
                   )
                 ) : (
-                  <div className="text-gray-400 italic mt-1">
+                  <div className="project-editor__override-value">
                     {project && (project as any)[field] ? (project as any)[field] : `Kein Wert aus GitHub/DB für ${field}`}
                   </div>
                 )}
               </div>
             ))}
             <div>
-              <label htmlFor="custom_tags" className="block text-sm font-medium text">Eigene Tags (kommagetrennt)</label>
+              <label htmlFor="custom_tags" className="project-editor__label text">Eigene Tags (kommagetrennt)</label>
               <input
                 type="text"
                 id="custom_tags"
                 value={formData.custom_tags?.join(', ') || ''}
                 onChange={e => setFormData({ ...formData, custom_tags: e.target.value.split(',').map(t => t.trim()).filter(Boolean) })}
-                className="mt-1 block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                className="project-editor__input card"
               />
             </div>
             <div>
-              <label htmlFor="team" className="block text-sm font-medium text">Team (kommagetrennt)</label>
+              <label htmlFor="team" className="project-editor__label text">Team (kommagetrennt)</label>
               <input
                 type="text"
                 id="team"
                 value={formData.team?.join(', ') || ''}
                 onChange={e => setFormData({ ...formData, team: e.target.value.split(',').map(t => t.trim()).filter(Boolean) })}
-                className="mt-1 block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                className="project-editor__input card"
               />
             </div>
             <div>
-              <label htmlFor="screenshots" className="block text-sm font-medium text">Screenshots (Bild-URLs, kommagetrennt)</label>
+              <label htmlFor="screenshots" className="project-editor__label text">Screenshots (Bild-URLs, kommagetrennt)</label>
               <input
                 type="text"
                 id="screenshots"
                 value={formData.screenshots?.join(', ') || ''}
                 onChange={e => setFormData({ ...formData, screenshots: e.target.value.split(',').map(t => t.trim()).filter(Boolean) })}
-                className="mt-1 block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                className="project-editor__input card"
               />
             </div>
             <div>
-              <label htmlFor="links" className="block text-sm font-medium text">Links (Format: label|url, kommagetrennt)</label>
+              <label htmlFor="links" className="project-editor__label text">Links (Format: label|url, kommagetrennt)</label>
               <input
                 type="text"
                 id="links"
@@ -359,127 +360,127 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
                   entries.forEach(([label, url]) => { if(label && url) linksObj[label] = url; });
                   setFormData({ ...formData, links: linksObj });
                 }}
-                className="mt-1 block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                className="project-editor__input card"
                 placeholder="z.B. Demo|https://demo.com, Blog|https://blog.com"
               />
             </div>
           </div>
         )}
 
-        <div className="space-y-4 bg-slate-900/40 rounded-lg p-4 mb-4">
+        <div className="project-editor__readonly-section">
           <div>
-            <label className="block text-sm font-medium text">Stars</label>
-            <input type="number" value={formData.starsCount} readOnly className="mt-1 block w-full rounded-md card text-white appearance-none" style={{ MozAppearance: 'textfield' }} />
+            <label className="project-editor__label text">Stars</label>
+            <input type="number" value={formData.starsCount} readOnly className="project-editor__readonly-input card" style={{ MozAppearance: 'textfield' }} />
           </div>
           <div>
-            <label className="block text-sm font-medium text">Forks</label>
-            <input type="number" value={formData.forksCount} readOnly className="mt-1 block w-full rounded-md card text-white appearance-none" style={{ MozAppearance: 'textfield' }} />
+            <label className="project-editor__label text">Forks</label>
+            <input type="number" value={formData.forksCount} readOnly className="project-editor__readonly-input card" style={{ MozAppearance: 'textfield' }} />
           </div>
           <div>
-            <label className="block text-sm font-medium text">Watchers</label>
-            <input type="number" value={formData.watchersCount} readOnly className="mt-1 block w-full rounded-md card text-white appearance-none" style={{ MozAppearance: 'textfield' }} />
+            <label className="project-editor__label text">Watchers</label>
+            <input type="number" value={formData.watchersCount} readOnly className="project-editor__readonly-input card" style={{ MozAppearance: 'textfield' }} />
           </div>
           <div>
-            <label className="block text-sm font-medium text">Status</label>
-            <input type="text" value={formData.status} readOnly className="mt-1 block w-full rounded-md card text-white" />
+            <label className="project-editor__label text">Status</label>
+            <input type="text" value={formData.status} readOnly className="project-editor__readonly-input card" />
           </div>
           <div>
-            <label className="block text-sm font-medium text">Sprache</label>
-            <input type="text" value={formData.language || ''} readOnly className="mt-1 block w-full rounded-md card text-white" />
+            <label className="project-editor__label text">Sprache</label>
+            <input type="text" value={formData.language || ''} readOnly className="project-editor__readonly-input card" />
           </div>
           <div>
-            <label className="block text-sm font-medium text">Topics</label>
-            <input type="text" value={formData.topics?.join(', ') || ''} readOnly className="mt-1 block w-full rounded-md card text-white" />
+            <label className="project-editor__label text">Topics</label>
+            <input type="text" value={formData.topics?.join(', ') || ''} readOnly className="project-editor__readonly-input card" />
           </div>
           <div>
-            <label className="block text-sm font-medium text">Homepage URL</label>
-            <input type="text" value={formData.homepageUrl || ''} readOnly className="mt-1 block w-full rounded-md card text-white" />
+            <label className="project-editor__label text">Homepage URL</label>
+            <input type="text" value={formData.homepageUrl || ''} readOnly className="project-editor__readonly-input card" />
           </div>
         </div>
 
         {project?.sourceType !== 'github' && (
           <>
             <div>
-              <label htmlFor="title" className="block text-sm font-medium text">Title</label>
+              <label htmlFor="title" className="project-editor__label text">Title</label>
               <input
                 type="text"
                 id="title"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="mt-1 block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                className="project-editor__input card"
                 required
               />
             </div>
             <div>
-              <label htmlFor="description" className="block text-sm font-medium text">Description</label>
+              <label htmlFor="description" className="project-editor__label text">Description</label>
               <textarea
                 id="description"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 rows={3}
-                className="mt-1 block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                className="project-editor__textarea card"
                 required
               />
             </div>
             <div>
-              <label htmlFor="imageUrl" className="block text-sm font-medium text">Image URL</label>
+              <label htmlFor="imageUrl" className="project-editor__label text">Image URL</label>
               <input
                 type="url"
                 id="imageUrl"
                 value={formData.imageUrl}
                 onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                className="mt-1 block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                className="project-editor__input card"
               />
             </div>
             <div>
-              <label htmlFor="githubUrl" className="block text-sm font-medium text">GitHub URL</label>
+              <label htmlFor="githubUrl" className="project-editor__label text">GitHub URL</label>
               <input
                 type="url"
                 id="githubUrl"
                 value={formData.githubUrl}
                 onChange={(e) => setFormData({ ...formData, githubUrl: e.target.value })}
-                className="mt-1 block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                className="project-editor__input card"
               />
             </div>
             <div>
-              <label htmlFor="liveUrl" className="block text-sm font-medium text">Demo URL</label>
+              <label htmlFor="liveUrl" className="project-editor__label text">Demo URL</label>
               <input
                 type="url"
                 id="liveUrl"
                 value={formData.liveUrl}
                 onChange={(e) => setFormData({ ...formData, liveUrl: e.target.value })}
-                className="mt-1 block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                className="project-editor__input card"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text">Technologies</label>
-              <div className="mt-1 flex gap-2">
+              <label className="project-editor__label text">Technologies</label>
+              <div className="project-editor__tech-input-group">
                 <input
                   type="text"
                   value={newTech}
                   onChange={(e) => setNewTech(e.target.value)}
-                  className="block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                  className="project-editor__input card"
                   placeholder="Add technology"
                 />
                 <button
                   type="button"
                   onClick={handleAddTech}
-                  className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+                  className="project-editor__add-button"
                 >
                   Add
                 </button>
               </div>
-              <div className="mt-2 flex flex-wrap gap-2">
+              <div className="project-editor__tech-tags">
                 {formData.technologies.map((tech) => (
                   <span
                     key={tech}
-                    className="inline-flex items-center px-2 py-1 rounded-full text-sm bg-gray-100"
+                    className="project-editor__tech-tag"
                   >
                     {tech}
                     <button
                       type="button"
                       onClick={() => handleRemoveTech(tech)}
-                      className="ml-1 text-gray-500 hover:text-gray-700"
+                      className="project-editor__remove-tag-button"
                     >
                       ×
                     </button>
@@ -490,25 +491,25 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
           </>
         )}
 
-        <div className="flex justify-end space-x-4">
+        <div className="project-editor__actions">
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 text-gray-700 bg-gray-100 rounded hover:bg-gray-200"
+            className="project-editor__cancel-button"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-4 py-2 text-white bg-indigo-600 rounded hover:bg-indigo-700"
+            className="project-editor__save-button"
           >
             Save
           </button>
         </div>
       </form>
       {/* Live Preview (rechts) */}
-      <div className="flex-1 bg-white rounded-lg shadow-md p-6">
-        <h3 className="text-lg font-semibold mb-4 text-gray-800">Live Vorschau</h3>
+      <div className="project-editor__preview">
+        <h3 className="project-editor__preview-title">Live Vorschau</h3>
         <ProjectCard project={{
           id: formData.id || '', 
           title: fieldsVisibility.title ? formData.title : '', 

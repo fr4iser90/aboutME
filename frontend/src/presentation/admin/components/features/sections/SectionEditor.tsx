@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Section } from '@/domain/entities/Section';
 import { Button } from '@/presentation/shared/ui/button';
+import './SectionEditor.css';
 
 function SectionPreview({ section }: { section: Partial<Section> }) {
   let content = section.content;
@@ -17,30 +18,30 @@ function SectionPreview({ section }: { section: Partial<Section> }) {
     links = section.content.links || [];
   }
   return (
-    <div className="p-4 border rounded bg-white/10">
-      <h3 className="text-lg font-bold mb-2">Live Preview</h3>
-      <div className="mb-2 text-xl font-semibold">{section.title || <span className="italic text-gray-400">No title</span>}</div>
-      <div className="mb-2 text-sm text-gray-500">{section.name} ({section.type})</div>
-      {imageUrl && <img src={imageUrl} alt="Section" className="mb-2 max-h-32 rounded" />}
+    <div className="section-preview">
+      <h3 className="section-preview__title">Live Preview</h3>
+      <div className="section-preview__section-title">{section.title || <span className="section-preview__placeholder">No title</span>}</div>
+      <div className="section-preview__meta">{section.name} ({section.type})</div>
+      {imageUrl && <img src={imageUrl} alt="Section" className="section-preview__image" />}
       {gallery && gallery.length > 0 && (
-        <div className="flex gap-2 mb-2">
+        <div className="section-preview__gallery">
           {gallery.map((url, i) => (
-            <img key={i} src={url} alt={`Gallery ${i}`} className="max-h-16 rounded" />
+            <img key={i} src={url} alt={`Gallery ${i}`} className="section-preview__gallery-image" />
           ))}
         </div>
       )}
-      <div className="mb-2 whitespace-pre-line">{content || <span className="italic text-gray-400">No content</span>}</div>
+      <div className="section-preview__content">{content || <span className="section-preview__placeholder">No content</span>}</div>
       {links && links.length > 0 && (
-        <div className="mb-2">
-          <span className="font-semibold">Links:</span>
-          <ul className="list-disc ml-6">
+        <div className="section-preview__links-container">
+          <span className="section-preview__links-label">Links:</span>
+          <ul className="section-preview__links-list">
             {links.map((l, i) => (
-              <li key={i}><a href={l.url} className="text-blue-400 underline" target="_blank" rel="noopener noreferrer">{l.label}</a></li>
+              <li key={i}><a href={l.url} className="section-editor__link" target="_blank" rel="noopener noreferrer">{l.label}</a></li>
             ))}
           </ul>
         </div>
       )}
-      <div className="text-xs text-gray-400">Visible: {section.is_visible ? 'Yes' : 'No'}</div>
+      <div className="section-preview__visibility">Visible: {section.is_visible ? 'Yes' : 'No'}</div>
     </div>
   );
 }
@@ -118,75 +119,75 @@ export function SectionEditor({ section, onSave, onCancel }: SectionEditorProps)
   };
 
   return (
-    <div className="flex gap-8">
-      <form onSubmit={handleSubmit} className="space-y-4 p-4 border rounded w-1/2 bg-white/5">
-        <h2 className="text-xl font-bold mb-2">{section ? 'Edit Section' : 'Add Section'}</h2>
+    <div className="section-editor">
+      <form onSubmit={handleSubmit} className="section-editor__form">
+        <h2 className="section-editor__title">{section ? 'Edit Section' : 'Add Section'}</h2>
         <div>
-          <label className="block text-sm font-medium mb-1">Title</label>
-          <input className="w-full border rounded p-2" value={title} onChange={e => setTitle(e.target.value)} required />
+          <label className="section-editor__label">Title</label>
+          <input className="section-editor__input" value={title} onChange={e => setTitle(e.target.value)} required />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Name (unique)</label>
-          <input className="w-full border rounded p-2" value={name} onChange={e => setName(e.target.value)} required />
+          <label className="section-editor__label">Name (unique)</label>
+          <input className="section-editor__input" value={name} onChange={e => setName(e.target.value)} required />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Type</label>
-          <input className="w-full border rounded p-2" value={type} onChange={e => setType(e.target.value)} required />
+          <label className="section-editor__label">Type</label>
+          <input className="section-editor__input" value={type} onChange={e => setType(e.target.value)} required />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Text</label>
-          <textarea className="w-full border rounded p-2" value={text} onChange={e => setText(e.target.value)} rows={3} />
+          <label className="section-editor__label">Text</label>
+          <textarea className="section-editor__textarea" value={text} onChange={e => setText(e.target.value)} rows={3} />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Image URL</label>
-          <input className="w-full border rounded p-2" value={imageUrl} onChange={e => setImageUrl(e.target.value)} />
+          <label className="section-editor__label">Image URL</label>
+          <input className="section-editor__input" value={imageUrl} onChange={e => setImageUrl(e.target.value)} />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Gallery (Bild-URLs, Komma getrennt)</label>
-          <div className="flex gap-2 mb-2">
-            <input className="flex-1 border rounded p-2" value={galleryInput} onChange={e => setGalleryInput(e.target.value)} placeholder="Bild-URL hinzufügen" />
+          <label className="section-editor__label">Gallery (Bild-URLs, Komma getrennt)</label>
+          <div className="section-editor__input-group">
+            <input className="section-editor__input" value={galleryInput} onChange={e => setGalleryInput(e.target.value)} placeholder="Bild-URL hinzufügen" />
             <Button type="button" onClick={handleAddGallery}>Add</Button>
           </div>
-          <div className="flex gap-2 flex-wrap">
+          <div className="section-editor__tag-container">
             {gallery.map((url, idx) => (
-              <div key={idx} className="flex items-center gap-1 bg-white/10 px-2 py-1 rounded">
-                <img src={url} alt="Gallery" className="h-8 w-8 object-cover rounded" />
+              <div key={idx} className="section-editor__tag">
+                <img src={url} alt="Gallery" className="section-editor__tag-image" />
                 <Button type="button" size="sm" variant="destructive" onClick={() => handleRemoveGallery(idx)}>x</Button>
               </div>
             ))}
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Links</label>
-          <div className="flex gap-2 mb-2">
-            <input className="flex-1 border rounded p-2" value={linkLabel} onChange={e => setLinkLabel(e.target.value)} placeholder="Label" />
-            <input className="flex-1 border rounded p-2" value={linkUrl} onChange={e => setLinkUrl(e.target.value)} placeholder="URL" />
+          <label className="section-editor__label">Links</label>
+          <div className="section-editor__input-group">
+            <input className="section-editor__input" value={linkLabel} onChange={e => setLinkLabel(e.target.value)} placeholder="Label" />
+            <input className="section-editor__input" value={linkUrl} onChange={e => setLinkUrl(e.target.value)} placeholder="URL" />
             <Button type="button" onClick={handleAddLink}>Add</Button>
           </div>
-          <div className="flex flex-col gap-1">
+          <div className="section-editor__link-list">
             {links.map((l, idx) => (
-              <div key={idx} className="flex items-center gap-2 bg-white/10 px-2 py-1 rounded">
+              <div key={idx} className="section-editor__link-item">
                 <span>{l.label}:</span>
-                <a href={l.url} className="text-blue-400 underline" target="_blank" rel="noopener noreferrer">{l.url}</a>
+                <a href={l.url} className="section-editor__link" target="_blank" rel="noopener noreferrer">{l.url}</a>
                 <Button type="button" size="sm" variant="destructive" onClick={() => handleRemoveLink(idx)}>x</Button>
               </div>
             ))}
           </div>
         </div>
         <div>
-          <label className="inline-flex items-center">
+          <label className="section-editor__checkbox-label">
             <input type="checkbox" checked={isVisible} onChange={e => setIsVisible(e.target.checked)} />
-            <span className="ml-2">Visible</span>
+            <span>Visible</span>
           </label>
         </div>
-        <div className="flex gap-2">
+        <div className="section-editor__actions">
           <Button type="submit">Save</Button>
           <Button type="button" variant="outline" onClick={onCancel}>Cancel</Button>
         </div>
       </form>
-      <div className="w-1/2">
+      <div className="section-editor__preview-container">
         <SectionPreview section={previewSection} />
       </div>
     </div>
   );
-} 
+}

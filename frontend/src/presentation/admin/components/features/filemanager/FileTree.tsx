@@ -4,6 +4,7 @@ import type { File } from '@/infrastructure/api/admin/filemanager';
 import { Button } from '@/presentation/shared/ui/button';
 import { FolderPlus, ChevronRight, ChevronDown } from 'lucide-react';
 import { Input } from '@/presentation/shared/ui/input';
+import './FileTree.css';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/presentation/shared/ui/dialog';
 import { FileManagerContext } from '@/presentation/admin/pages/layout';
 
@@ -72,10 +73,10 @@ function FileTreeNode({
         e.stopPropagation();
         onDragOver({} as File); // Clear drop target
       }}
-      className={`relative ${isDropTarget ? 'bg-purple-700/30' : ''}`}
+      className={`file-tree__node ${isDropTarget ? 'file-tree__node--drop-target' : ''}`}
     >
       <div
-        className={`flex items-center cursor-pointer rounded px-1 py-0.5 hover:bg-purple-900/30 ${file.id === selectedId ? 'bg-purple-900/40' : ''}`}
+        className={`file-tree__node-content ${file.id === selectedId ? 'file-tree__node-content--selected' : ''}`}
         onClick={() => {
           if (file.is_folder) {
             toggleFolder(file.id);
@@ -87,14 +88,14 @@ function FileTreeNode({
         title={file.name}
       >
         {file.is_folder ? (
-          <span className="mr-1">
-            {isExpanded ? <ChevronDown className="inline w-4 h-4" /> : <ChevronRight className="inline w-4 h-4" />}
+          <span className="file-tree__icon-container">
+            {isExpanded ? <ChevronDown className="file-tree__icon" /> : <ChevronRight className="file-tree__icon" />}
           </span>
         ) : (
-          <span className="inline-block w-5" />
+          <span className="file-tree__spacer" />
         )}
-        <span className="mr-1">{file.is_folder ? (isExpanded ? '📂' : '📁') : '📄'}</span>
-        <span className={file.is_folder ? 'font-semibold' : ''}>{file.name}</span>
+        <span className="file-tree__icon-container">{file.is_folder ? (isExpanded ? '📂' : '📁') : '📄'}</span>
+        <span className={file.is_folder ? 'file-tree__name--folder' : ''}>{file.name}</span>
       </div>
       {isExpanded && file.is_folder && children.length > 0 && (
         <div>
@@ -272,13 +273,13 @@ export function FileTree({ onSelectFile, parentId = null, autoLoad = true }: Fil
   };
 
   if (loading) return <div>Loading files...</div>;
-  if (error) return <div className="text-red-500">{error}</div>;
+  if (error) return <div className="error-message">{error}</div>;
 
   return (
-    <div className="space-y-4">
+    <div className="file-tree__container">
       {/* Root Drop Area */}
       <div
-        className={`p-2 mb-2 rounded border border-dashed border-purple-700 text-purple-300 text-center cursor-pointer ${dropTargetId === 'root' ? 'bg-purple-700/30' : ''}`}
+        className={`file-tree__drop-root ${dropTargetId === 'root' ? 'file-tree__drop-root--active' : ''}`}
         onDragOver={e => {
           e.preventDefault();
           setDropTargetId('root');
@@ -295,15 +296,15 @@ export function FileTree({ onSelectFile, parentId = null, autoLoad = true }: Fil
       >
         Nach ganz oben (Root) verschieben
       </div>
-      <div className="flex gap-2">
+      <div className="file-tree__actions">
         <Dialog open={isFolderDialogOpen} onOpenChange={setIsFolderDialogOpen}>
           <DialogTrigger asChild>
             <Button
               variant="outline"
               size="sm"
-              className="flex items-center gap-2"
+              className="file-tree__button"
             >
-              <FolderPlus className="w-4 h-4" />
+              <FolderPlus className="file-tree__button-icon" />
               New Folder
             </Button>
           </DialogTrigger>
@@ -311,7 +312,7 @@ export function FileTree({ onSelectFile, parentId = null, autoLoad = true }: Fil
             <DialogHeader>
               <DialogTitle>Create New Folder</DialogTitle>
             </DialogHeader>
-            <div className="space-y-4 py-4">
+            <div className="file-tree__dialog-content">
               <Input
                 placeholder="Folder name"
                 value={newFolderName}
@@ -329,7 +330,7 @@ export function FileTree({ onSelectFile, parentId = null, autoLoad = true }: Fil
       </div>
 
       {files.length === 0 ? (
-        <div className="text-slate-400">No files found.</div>
+        <div className="file-tree__no-files">No files found.</div>
       ) : (
         <div>
           {files.map(file => (
@@ -354,4 +355,4 @@ export function FileTree({ onSelectFile, parentId = null, autoLoad = true }: Fil
       )}
     </div>
   );
-} 
+}

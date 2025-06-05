@@ -36,9 +36,9 @@ export default function AdminProjectsPage() {
 
   // If no project is selected for editing, show the Projects Overview (card view)
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Projects Overview</h1>
+    <div className="projects-overview">
+      <div className="projects-overview__header">
+        <h1 className="projects-overview__title">Projects Overview</h1>
         {/* Add New Project button could go here, or rely on Import Panel in Column 2 */}
       </div>
       {/* This ProjectList shows cards. Clicking edit on a card will call handleSelectProjectForEditing,

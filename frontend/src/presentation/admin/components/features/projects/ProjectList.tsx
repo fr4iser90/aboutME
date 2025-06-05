@@ -5,6 +5,7 @@ import { projectApi } from '@/domain/shared/utils/api';
 import { ProjectImportPanel } from './ProjectImportPanel';
 import { useTabContext } from '@/presentation/admin/contexts/TabContext';
 import ProjectEditor from '@/presentation/admin/components/features/projects/ProjectEditor';
+import './ProjectList.css';
 
 interface ProjectListProps {
   viewMode?: 'card' | 'simple'; // Add viewMode prop
@@ -67,11 +68,11 @@ export function ProjectList({ viewMode = 'card', onEditProject }: ProjectListPro
   };
 
   if (loading) {
-    return <div className="text-center py-8">Loading projects...</div>;
+    return <div className="project-list__message">Loading projects...</div>;
   }
 
   if (error) {
-    return <div className="text-center py-8 text-red-600">{error}</div>;
+    return <div className="project-list__message project-list__message--error">{error}</div>;
   }
 
   const groupProjectsBySource = (projectsToGroup: Project[]) => {

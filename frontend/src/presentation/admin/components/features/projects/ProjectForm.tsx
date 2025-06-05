@@ -3,6 +3,7 @@ import { Button } from '@/presentation/shared/ui/button';
 import { Input } from '@/presentation/shared/ui/input';
 import { Textarea } from '@/presentation/shared/ui/textarea';
 import { useState } from 'react';
+import './ProjectForm.css';
 
 interface ProjectFormProps {
   project?: Project;
@@ -17,6 +18,7 @@ export const ProjectForm = ({ project, onSubmit, onCancel }: ProjectFormProps) =
   const [githubUrl, setGithubUrl] = useState(project?.githubUrl ?? '');
   const [liveUrl, setLiveUrl] = useState(project?.liveUrl ?? '');
   const [technologies, setTechnologies] = useState(project?.technologies.join(', ') ?? '');
+  const [status, setStatus] = useState(project?.status ?? 'WIP');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -27,6 +29,7 @@ export const ProjectForm = ({ project, onSubmit, onCancel }: ProjectFormProps) =
       await onSubmit({
         title,
         description,
+        status,
         imageUrl: imageUrl || undefined,
         githubUrl: githubUrl || undefined,
         liveUrl: liveUrl || undefined,
@@ -38,9 +41,9 @@ export const ProjectForm = ({ project, onSubmit, onCancel }: ProjectFormProps) =
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="project-form">
       <div>
-        <label htmlFor="title" className="block text-sm font-medium mb-1">
+        <label htmlFor="title" className="project-form__label">
           Title
         </label>
         <Input
@@ -52,7 +55,7 @@ export const ProjectForm = ({ project, onSubmit, onCancel }: ProjectFormProps) =
       </div>
 
       <div>
-        <label htmlFor="description" className="block text-sm font-medium mb-1">
+        <label htmlFor="description" className="project-form__label">
           Description
         </label>
         <Textarea
@@ -64,7 +67,7 @@ export const ProjectForm = ({ project, onSubmit, onCancel }: ProjectFormProps) =
       </div>
 
       <div>
-        <label htmlFor="imageUrl" className="block text-sm font-medium mb-1">
+        <label htmlFor="imageUrl" className="project-form__label">
           Image URL
         </label>
         <Input
@@ -75,7 +78,7 @@ export const ProjectForm = ({ project, onSubmit, onCancel }: ProjectFormProps) =
       </div>
 
       <div>
-        <label htmlFor="githubUrl" className="block text-sm font-medium mb-1">
+        <label htmlFor="githubUrl" className="project-form__label">
           GitHub URL
         </label>
         <Input
@@ -86,7 +89,7 @@ export const ProjectForm = ({ project, onSubmit, onCancel }: ProjectFormProps) =
       </div>
 
       <div>
-        <label htmlFor="liveUrl" className="block text-sm font-medium mb-1">
+        <label htmlFor="liveUrl" className="project-form__label">
           Live URL
         </label>
         <Input
@@ -97,7 +100,7 @@ export const ProjectForm = ({ project, onSubmit, onCancel }: ProjectFormProps) =
       </div>
 
       <div>
-        <label htmlFor="technologies" className="block text-sm font-medium mb-1">
+        <label htmlFor="technologies" className="project-form__label">
           Technologies (comma-separated)
         </label>
         <Input
@@ -108,7 +111,19 @@ export const ProjectForm = ({ project, onSubmit, onCancel }: ProjectFormProps) =
         />
       </div>
 
-      <div className="flex gap-2">
+      <div>
+        <label htmlFor="status" className="project-form__label">
+          Status
+        </label>
+        <Input
+          id="status"
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+          required
+        />
+      </div>
+
+      <div className="project-form__actions">
         <Button type="submit" disabled={loading}>
           {loading ? 'Saving...' : project ? 'Update Project' : 'Create Project'}
         </Button>

@@ -33,18 +33,18 @@ export default function AdminFilesPageContent() {
   if (!isMounted) return null;
 
   return (
-    <div className="w-full h-full">
-      <div className="flex-1 p-6 overflow-auto flex flex-col gap-8">
+    <div className="admin-files-page">
+      <div className="admin-files-page__content">
         <FileUpload 
           onUploadComplete={handleUploadComplete}
           parentId={currentFolder}
         />
         {selectedFile && (
-          <div className="flex flex-col md:flex-row gap-6">
-            <div className="flex-1">
+          <div className="admin-files-page__details-grid">
+            <div className="admin-files-page__preview">
               <FilePreview file={selectedFile} />
             </div>
-            <div className="w-full md:w-96">
+            <div className="admin-files-page__info">
               <FileInformation file={selectedFile} />
             </div>
           </div>
@@ -52,4 +52,4 @@ export default function AdminFilesPageContent() {
       </div>
     </div>
   );
-} 
+}

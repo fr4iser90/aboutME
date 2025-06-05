@@ -14,6 +14,7 @@ body {
     rgb(var(--background-start-rgb)),
     rgb(var(--background-end-rgb))
   );
+  min-height: 100vh;
 }
 
 /* Galaxy effect for text */
@@ -209,6 +210,16 @@ body {
 .navbar-link-admin:hover {
   background: var(--navbar-button-hover-bg, #a78bfa);
   color: var(--navbar-button-hover-color, #fff);
+}
+
+.navbar-brand {
+  font-size: 1.25rem; /* text-xl */
+  font-weight: 700; /* font-bold */
+  background: var(--text-gradient, linear-gradient(to right, #a78bfa, #f472b6, #60a5fa));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
 }
 
 .projects-grid {
@@ -524,3 +535,8 @@ body {
 .file-upload-hint {}
 .file-upload-supported {}
 .file-upload-error {}
+
+/* General Purpose Classes */
+.error-message {
+  color: #ef4444; /* text-red-500 */
+}

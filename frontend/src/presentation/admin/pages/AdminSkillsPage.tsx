@@ -1,6 +1,7 @@
 import { useAdminSkills } from '@/application/admin/skills/useSkills';
 import { SkillForm } from '@/presentation/admin/components/features/skills/SkillForm';
 import { useEffect, useState } from 'react';
+import './AdminSkillsPage.css';
 import { Skill } from '@/domain/entities/Skill';
 import { Button } from '@/presentation/shared/ui/button';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
@@ -88,7 +89,7 @@ export const AdminSkillsView = () => {
   }
 
   if (error) {
-    return <div className="text-red-500">{error}</div>;
+    return <div className="error-message">{error}</div>;
   }
 
   // Group skills by category
@@ -101,34 +102,34 @@ export const AdminSkillsView = () => {
   }, {} as Record<string, Skill[]>);
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Manage Skills</h1>
+    <div className="admin-skills-page__container">
+      <div className="admin-skills-page__header">
+        <h1 className="admin-skills-page__title">Manage Skills</h1>
         <Button onClick={() => {
           setSelectedSkill(null);
           setIsFormOpen(true);
         }}>
-          <Plus className="w-4 h-4 mr-2" />
+          <Plus className="admin-skills-page__add-icon" />
           Add Skill
         </Button>
       </div>
 
       {Object.entries(skillsByCategory).map(([category, categorySkills]) => (
-        <div key={category} className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">{category}</h2>
-          <div className="grid gap-4">
+        <div key={category} className="admin-skills-page__category-group">
+          <h2 className="admin-skills-page__category-title">{category}</h2>
+          <div className="admin-skills-page__skills-grid">
             {categorySkills.map((skill) => (
               <div
                 key={skill.id}
-                className="flex items-center justify-between p-4 border rounded-lg"
+                className="admin-skills-page__skill-item"
               >
                 <div>
-                  <h3 className="text-lg font-semibold">{skill.name}</h3>
-                  <p className="text-gray-600 dark:text-gray-300">
+                  <h3 className="admin-skills-page__skill-name">{skill.name}</h3>
+                  <p className="admin-skills-page__skill-description">
                     {skill.description}
                   </p>
                 </div>
-                <div className="flex gap-2">
+                <div className="admin-skills-page__actions">
                   <Button
                     variant="outline"
                     size="sm"
@@ -137,7 +138,7 @@ export const AdminSkillsView = () => {
                       setIsFormOpen(true);
                     }}
                   >
-                    <Pencil className="w-4 h-4" />
+                    <Pencil className="admin-skills-page__action-icon" />
                   </Button>
                   <Button
                     variant="outline"
@@ -147,7 +148,7 @@ export const AdminSkillsView = () => {
                       setIsDeleteDialogOpen(true);
                     }}
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="admin-skills-page__action-icon" />
                   </Button>
                 </div>
               </div>

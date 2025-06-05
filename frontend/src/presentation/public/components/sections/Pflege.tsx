@@ -2,7 +2,7 @@ export default function Pflege() {
   return (
     <section id="pflege" style={{ padding: 'var(--section-padding, 60px 0)' }}>
       <div style={{ maxWidth: 'var(--container-max-width, 900px)', margin: '0 auto', padding: 'var(--container-padding, 0 24px)' }}>
-        <h2 className="section-heading text">Pflege</h2>
+        <h2 className="section-heading">Pflege</h2>
         <p className="section-paragraph">
           Hier teile ich bald ein paar Gedanken, Tipps und vielleicht auch Blogposts aus meinem Berufsalltag als Gesundheits- und Krankenpfleger.
         </p>
@@ -10,4 +10,4 @@ export default function Pflege() {
       </div>
     </section>
   );
-} 
+}

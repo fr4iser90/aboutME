@@ -1,9 +1,10 @@
 import { Project } from '@/domain/entities/Project';
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardFooter, CardHeader } from '@/presentation/shared/ui/card';
+import { Badge } from '@/presentation/shared/ui/badge';
 import { Button } from '@/presentation/shared/ui/button';
 import { ExternalLink, Github, Star, GitFork, Eye, AlertCircle, Home, Clock } from 'lucide-react';
 import Image from 'next/image';
+import './ProjectCard.css';
 
 interface ProjectCardProps {
   project: Project;
@@ -12,22 +13,22 @@ interface ProjectCardProps {
 export const ProjectCard = ({ project }: ProjectCardProps) => {
   const cardDesc = project.short_description || project.own_description || project.description;
   return (
-    <Card className="flex flex-col h-full" style={{ background: 'var(--card-bg)', color: 'var(--card-text-color)', border: '1px solid var(--card-border)', boxShadow: 'var(--card-shadow)', borderRadius: 'var(--card-radius, 1rem)', maxWidth: '400px', minHeight: '320px', margin: '0 auto' }}>
+    <Card className="project-card" style={{ background: 'var(--card-bg)', color: 'var(--card-text-color)', border: '1px solid var(--card-border)', boxShadow: 'var(--card-shadow)', borderRadius: 'var(--card-radius, 1rem)', maxWidth: '400px', minHeight: '320px', margin: '0 auto' }}>
       {project.imageUrl && (
-        <div className="relative w-full h-48" style={{ maxHeight: '200px', overflow: 'hidden', borderTopLeftRadius: 'var(--card-radius, 1rem)', borderTopRightRadius: 'var(--card-radius, 1rem)' }}>
+        <div className="project-card__image-wrapper" style={{ maxHeight: '200px', overflow: 'hidden', borderTopLeftRadius: 'var(--card-radius, 1rem)', borderTopRightRadius: 'var(--card-radius, 1rem)' }}>
           <Image
             src={project.imageUrl}
             alt={project.title}
             fill
-            className="object-cover rounded-t-lg"
+            className="project-card__image"
             style={{ objectFit: 'cover', width: '100%', height: '100%', maxHeight: '200px' }}
           />
         </div>
       )}
       <CardHeader>
-        <h3 className="text-xl font-semibold" style={{ color: 'var(--card-title-color)' }}>{project.title}</h3>
+        <h3 className="project-card__title" style={{ color: 'var(--card-title-color)' }}>{project.title}</h3>
       </CardHeader>
-      <CardContent className="flex-grow">
+      <CardContent className="project-card__content">
         <p style={{ color: 'var(--card-text-color)' }}>{cardDesc}</p>
         <div className="project-card-badges">
           {project.technologies?.map((tech) => (
@@ -92,12 +93,12 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
           )}
         </div>
       </CardContent>
-      <CardFooter className="flex flex-col items-start gap-2 pt-4">
-        <div className="flex flex-wrap gap-2">
+      <CardFooter className="project-card__footer">
+        <div className="project-card__links">
           {project.githubUrl && (
             <Button variant="outline" size="sm" asChild style={{ background: 'var(--button-bg)', color: 'var(--button-text)', border: '1px solid var(--button-border)', boxShadow: 'var(--button-shadow)' }}>
               <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                <Github className="w-4 h-4 mr-2" />
+                <Github className="project-card__link-icon" />
                 GitHub
               </a>
             </Button>
@@ -105,7 +106,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
           {project.liveUrl && (
             <Button variant="outline" size="sm" asChild style={{ background: 'var(--button-bg)', color: 'var(--button-text)', border: '1px solid var(--button-border)', boxShadow: 'var(--button-shadow)' }}>
               <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="w-4 h-4 mr-2" />
+                <ExternalLink className="project-card__link-icon" />
                 Live Demo
               </a>
             </Button>
@@ -113,7 +114,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
           {project.homepageUrl && (
             <Button variant="outline" size="sm" asChild style={{ background: 'var(--button-bg)', color: 'var(--button-text)', border: '1px solid var(--button-border)', boxShadow: 'var(--button-shadow)' }}>
               <a href={project.homepageUrl} target="_blank" rel="noopener noreferrer">
-                <Home className="w-4 h-4 mr-2" />
+                <Home className="project-card__link-icon" />
                 Homepage
               </a>
             </Button>
@@ -121,7 +122,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
         </div>
         {project.updatedAt && (
           <div className="project-card-updated" style={{ color: 'var(--card-list-item-color)' }}>
-            <Clock className="w-3 h-3 mr-1" />
+            <Clock className="project-card__updated-icon" />
             Last updated: {new Date(project.updatedAt).toLocaleDateString()}
           </div>
         )}

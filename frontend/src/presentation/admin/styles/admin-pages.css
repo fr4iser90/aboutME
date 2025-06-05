@@ -1,0 +1,43 @@
+.projects-overview {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.projects-overview__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.projects-overview__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.admin-files-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.admin-files-page__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.admin-files-page__details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.admin-files-page__preview {
+  /* Styles for the file preview container */
+}
+
+.admin-files-page__info {
+  /* Styles for the file information container */
+}

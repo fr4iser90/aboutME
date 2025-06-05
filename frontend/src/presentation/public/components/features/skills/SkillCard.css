@@ -1,0 +1,43 @@
+.skill-card__header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem; /* gap-4 */
+}
+
+.skill-card__icon-wrapper {
+  position: relative;
+  width: 3rem; /* w-12 */
+  height: 3rem; /* h-12 */
+}
+
+.skill-card__icon {
+  object-fit: contain;
+}
+
+.skill-card__title {
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 600; /* font-semibold */
+}
+
+.skill-card__category {
+  font-size: 0.875rem; /* text-sm */
+  color: #6b7280; /* text-gray-500 */
+}
+
+.dark .skill-card__category {
+  color: #9ca3af; /* dark:text-gray-400 */
+}
+
+.skill-card__progress {
+  margin-bottom: 0.5rem; /* mb-2 */
+}
+
+.skill-card__description {
+  font-size: 0.875rem; /* text-sm */
+  color: #4b5563; /* text-gray-600 */
+}
+
+.dark .skill-card__description {
+  color: #d1d5db; /* dark:text-gray-300 */
+}

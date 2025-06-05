@@ -117,13 +117,13 @@ export function ProjectImportPanel() {
   };
 
   return (
-    <div className="card mb-8">
-      <h2 className="text-2xl font-bold mb-4 text">Projekte importieren</h2>
-      <div className="flex flex-col md:flex-row gap-4 mb-4">
+    <div className="project-import-panel">
+      <h2 className="project-import-panel__title">Projekte importieren</h2>
+      <div className="project-import-panel__form">
         <select
           value={source}
           onChange={e => setSource(e.target.value)}
-          className="card px-2 py-1"
+          className="project-import-panel__select"
         >
           {SOURCES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
         </select>
@@ -134,142 +134,142 @@ export function ProjectImportPanel() {
               value={input}
               onChange={e => setInput(e.target.value)}
               placeholder="Username oder URL"
-              className="card px-2 py-1 flex-1"
+              className="project-import-panel__input"
             />
             <input
               type="text"
               value={token}
               onChange={e => setToken(e.target.value)}
               placeholder="Token (optional)"
-              className="card px-2 py-1 flex-1"
+              className="project-import-panel__input"
             />
           </>
         )}
         <button
           onClick={fetchProjects}
           disabled={loading || (source !== 'manual' && !input.trim())}
-          className="card text px-4 py-2 hover:brightness-110 disabled:opacity-50"
+          className="project-import-panel__button"
         >
           {loading ? 'Lade...' : source === 'manual' ? 'Neues Projekt' : 'Projekte laden'}
         </button>
       </div>
       {source !== 'manual' && (
-        <div className="text-xs text-slate-400 mb-4">
+        <div className="project-import-panel__token-hint">
           Ohne Token werden nur öffentliche Projekte importiert und ggf. weniger Informationen angezeigt. Mit Token bekommst du alle Projekte und mehr Details (z.B. private Repos, Commit-Infos, höhere Rate-Limits).
         </div>
       )}
-      {error && <div className="text-red-600 mb-4">{error}</div>}
+      {error && <div className="project-import-panel__error">{error}</div>}
       {projects.length > 0 && (
         <>
-          <div className="mb-4 flex justify-between items-center">
-            <span className="font-semibold">Gefundene Projekte: {projects.length}</span>
-            <div className="flex items-center gap-2">
+          <div className="project-import-panel__results-header">
+            <span className="project-import-panel__results-count">Gefundene Projekte: {projects.length}</span>
+            <div className="project-import-panel__select-all">
               <input
                 type="checkbox"
                 checked={selectAll}
                 onChange={handleSelectAll}
                 id="selectAllCheckbox"
               />
-              <label htmlFor="selectAllCheckbox" className="text-sm">Alle auswählen</label>
+              <label htmlFor="selectAllCheckbox" className="project-import-panel__select-all-label">Alle auswählen</label>
             </div>
             <button
               onClick={handleImport}
-              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+              className="project-import-panel__import-button"
               disabled={selected.size === 0}
             >
               Ausgewählte Projekte ins Backend übernehmen
             </button>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="project-import-panel__grid">
             {projects.map((project, idx) => (
-              <div key={project.id || idx} className="relative">
-                <div className="absolute top-2 left-2 z-20">
-                  <label className="flex items-center cursor-pointer">
+              <div key={project.id || idx} className="project-import-panel__grid-item">
+                <div className="project-import-panel__grid-item-select">
+                  <label className="project-import-panel__grid-item-select-label">
                     <input
                       type="checkbox"
                       checked={selected.has(idx)}
                       onChange={() => handleSelect(idx)}
-                      className="scale-125 accent-purple-400 mr-1"
+                      className="project-import-panel__grid-item-checkbox"
                     />
                   </label>
                 </div>
-                <div className="absolute top-2 right-2">
+                <div className="project-import-panel__grid-item-edit">
                   <button
                     onClick={() => handleEdit(idx)}
-                    className="text-xs px-2 py-1 bg-yellow-200 rounded hover:bg-yellow-300"
+                    className="project-import-panel__grid-item-edit-button"
                   >
                     Bearbeiten
                   </button>
                 </div>
                 <ProjectCard project={project} />
-                <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 w-11/12 flex justify-between items-center pointer-events-none">
-                  <span className="font-bold text-base text truncate max-w-[70%]">
+                <div className="project-import-panel__grid-item-overlay">
+                  <span className="project-import-panel__grid-item-title">
                     {project.name || project.title}
                   </span>
                   {project.archived && (
-                    <span className="ml-2 px-2 py-0.5 rounded bg-yellow-400 text-xs font-semibold text-slate-900 shadow">Archiviert</span>
+                    <span className="project-import-panel__grid-item-archived">Archiviert</span>
                   )}
                 </div>
                 {editIndex === idx && (
-                  <div className="absolute inset-0 bg-white bg-opacity-95 flex flex-col p-4 z-10 rounded-lg shadow-lg">
-                    <h3 className="text-lg font-bold mb-2">Projekt bearbeiten</h3>
+                  <div className="project-import-panel__edit-modal">
+                    <h3 className="project-import-panel__edit-modal-title">Projekt bearbeiten</h3>
                     <input
                       type="text"
                       value={editData.title || editData.name || ''}
                       onChange={e => setEditData({ ...editData, title: e.target.value, name: e.target.value })}
-                      className="border rounded px-2 py-1 mb-2"
+                      className="project-import-panel__edit-modal-input"
                       placeholder="Titel"
                     />
                     <textarea
                       value={editData.description || ''}
                       onChange={e => setEditData({ ...editData, description: e.target.value })}
-                      className="border rounded px-2 py-1 mb-2"
+                      className="project-import-panel__edit-modal-textarea"
                       placeholder="Beschreibung"
                     />
                     <input
                       type="text"
                       value={editData.thumbnail_url || ''}
                       onChange={e => setEditData({ ...editData, thumbnail_url: e.target.value })}
-                      className="border rounded px-2 py-1 mb-2"
+                      className="project-import-panel__edit-modal-input"
                       placeholder="Thumbnail URL"
                     />
                     <input
                       type="text"
                       value={editData.github_url || editData.web_url || editData.source_url || ''}
                       onChange={e => setEditData({ ...editData, github_url: e.target.value, web_url: e.target.value, source_url: e.target.value })}
-                      className="border rounded px-2 py-1 mb-2"
+                      className="project-import-panel__edit-modal-input"
                       placeholder="GitHub/GitLab URL"
                     />
                     <input
                       type="text"
                       value={editData.live_url || editData.homepage || ''}
                       onChange={e => setEditData({ ...editData, live_url: e.target.value, homepage: e.target.value })}
-                      className="border rounded px-2 py-1 mb-2"
+                      className="project-import-panel__edit-modal-input"
                       placeholder="Live URL"
                     />
                     <input
                       type="text"
                       value={editData.language || ''}
                       onChange={e => setEditData({ ...editData, language: e.target.value })}
-                      className="border rounded px-2 py-1 mb-2"
+                      className="project-import-panel__edit-modal-input"
                       placeholder="Sprache"
                     />
                     <input
                       type="text"
                       value={editData.topics?.join(', ') || ''}
                       onChange={e => setEditData({ ...editData, topics: e.target.value.split(',').map(t => t.trim()) })}
-                      className="border rounded px-2 py-1 mb-2"
+                      className="project-import-panel__edit-modal-input"
                       placeholder="Topics (kommagetrennt)"
                     />
                     <button
                       onClick={handleEditSave}
-                      className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 mb-2"
+                      className="project-import-panel__edit-modal-save-button"
                     >
                       Speichern
                     </button>
                     <button
                       onClick={() => { setEditIndex(null); setEditData(null); }}
-                      className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
+                      className="project-import-panel__edit-modal-cancel-button"
                     >
                       Abbrechen
                     </button>

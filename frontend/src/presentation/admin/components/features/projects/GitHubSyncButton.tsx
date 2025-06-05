@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import { projectApi } from '@/domain/shared/utils/api';
+import './GitHubSyncButton.css';
 
 export function GitHubSyncButton() {
   const [isLoading, setIsLoading] = useState(false);
@@ -32,21 +33,21 @@ export function GitHubSyncButton() {
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="github-sync">
       <input
         type="text"
         value={input}
         onChange={e => setInput(e.target.value)}
         placeholder="GitHub Username oder URL"
-        className="px-2 py-1 border rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 card"
+        className="github-sync__input card"
         style={{ minWidth: 180 }}
       />
       <button
         onClick={handleSync}
         disabled={isLoading || !input.trim()}
-        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md card text hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50"
+        className="github-sync__button card text"
       >
-        <ArrowPathIcon className={`h-5 w-5 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+        <ArrowPathIcon className={`github-sync__icon ${isLoading ? 'github-sync__icon--loading' : ''}`} />
         {isLoading ? 'Syncing...' : 'Sync GitHub Projects'}
       </button>
     </div>

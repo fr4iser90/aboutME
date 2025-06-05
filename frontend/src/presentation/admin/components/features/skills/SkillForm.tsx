@@ -4,6 +4,7 @@ import { Input } from '@/presentation/shared/ui/input';
 import { Textarea } from '@/presentation/shared/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/presentation/shared/ui/select';
 import { useState } from 'react';
+import './SkillForm.css';
 
 interface SkillFormProps {
   skill?: Skill;
@@ -38,9 +39,9 @@ export const SkillForm = ({ skill, onSubmit, onCancel }: SkillFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="skill-form">
       <div>
-        <label htmlFor="name" className="block text-sm font-medium mb-1">
+        <label htmlFor="name" className="skill-form__label">
           Name
         </label>
         <Input
@@ -52,7 +53,7 @@ export const SkillForm = ({ skill, onSubmit, onCancel }: SkillFormProps) => {
       </div>
 
       <div>
-        <label htmlFor="category" className="block text-sm font-medium mb-1">
+        <label htmlFor="category" className="skill-form__label">
           Category
         </label>
         <Select value={category} onValueChange={setCategory}>
@@ -70,7 +71,7 @@ export const SkillForm = ({ skill, onSubmit, onCancel }: SkillFormProps) => {
       </div>
 
       <div>
-        <label htmlFor="level" className="block text-sm font-medium mb-1">
+        <label htmlFor="level" className="skill-form__label">
           Level (0-100)
         </label>
         <Input
@@ -85,7 +86,7 @@ export const SkillForm = ({ skill, onSubmit, onCancel }: SkillFormProps) => {
       </div>
 
       <div>
-        <label htmlFor="description" className="block text-sm font-medium mb-1">
+        <label htmlFor="description" className="skill-form__label">
           Description
         </label>
         <Textarea
@@ -96,7 +97,7 @@ export const SkillForm = ({ skill, onSubmit, onCancel }: SkillFormProps) => {
       </div>
 
       <div>
-        <label htmlFor="icon" className="block text-sm font-medium mb-1">
+        <label htmlFor="icon" className="skill-form__label">
           Icon URL
         </label>
         <Input
@@ -106,7 +107,7 @@ export const SkillForm = ({ skill, onSubmit, onCancel }: SkillFormProps) => {
         />
       </div>
 
-      <div className="flex gap-2">
+      <div className="skill-form__actions">
         <Button type="submit" disabled={loading}>
           {loading ? 'Saving...' : skill ? 'Update Skill' : 'Create Skill'}
         </Button>
