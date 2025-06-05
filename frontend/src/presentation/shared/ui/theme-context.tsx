@@ -1,8 +1,7 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { Theme } from '@/domain/entities/Theme';
-import { themeApi } from '@/domain/shared/utils/themeApi';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { Theme, themeApi } from '@/domain/shared/utils/themeApi';
 
 interface ThemeContextType {
   theme: Theme | null;
@@ -13,22 +12,12 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-interface ThemeProviderProps {
-  children: ReactNode;
-  initialTheme?: Theme | null;
-}
-
-export function ThemeProvider({ children, initialTheme = null }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme | null>(initialTheme);
-  const [isLoading, setIsLoading] = useState(!initialTheme);
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [theme, setTheme] = useState<Theme | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   const applyThemeToCssVariables = (theme: import('@/domain/shared/utils/themeApi').Theme) => {
-    // CRITICAL FIX: Only proceed if a valid theme with style_properties exists.
-    if (!theme || !theme.style_properties) {
-      return;
-    }
-    
     if (typeof window === 'undefined') return;
     const root = document.documentElement;
     const sp = theme.style_properties;
@@ -155,30 +144,25 @@ export function ThemeProvider({ children, initialTheme = null }: ThemeProviderPr
       setIsLoading(true);
       setError(null);
       const response = await themeApi.getCurrentTheme();
+      console.log('[ThemeContext] API Response:', response);
       if (response.data) {
+        console.log('[ThemeContext] Aktives Theme:', response.data);
         setTheme(response.data);
         applyThemeToCssVariables(response.data);
       } else {
-        console.warn('[ThemeContext] No theme data received from API!');
+        console.warn('[ThemeContext] Keine Theme-Daten erhalten!');
       }
     } catch (err) {
-      const fetchError = err instanceof Error ? err : new Error('Failed to load theme');
-      setError(fetchError);
-      console.error('[ThemeContext] Error loading theme:', fetchError);
+      setError(err instanceof Error ? err : new Error('Failed to load theme'));
+      console.error('[ThemeContext] Fehler beim Laden des Themes:', err);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    // Only run the effect if there was no initial theme from the server.
-    if (!initialTheme) {
-      loadTheme();
-    } else {
-      // If there was an initial theme, just apply it.
-      applyThemeToCssVariables(initialTheme);
-    }
-  }, [initialTheme]);
+    loadTheme();
+  }, []);
 
   const value = {
     theme,
