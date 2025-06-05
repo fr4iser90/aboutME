@@ -1,12 +1,11 @@
 :root {
-  /* Core Colors - will be overridden by themeApi.ts */
+  /* Core Defaults - will be overridden by themeApi.ts */
   --theme-primary: #3B82F6; /* Fallback Blue */
   --theme-secondary: #10B981; /* Fallback Green */
   --theme-body-foreground: rgb(255, 255, 255); /* Fallback White */
   --theme-body-background-start: rgb(2, 6, 23); /* Fallback Dark Blue */
   --theme-body-background-end: rgb(15, 23, 42); /* Fallback Dark Slate Blue */
 
-  /* Semantic Colors - will be overridden by themeApi.ts */
   --theme-semantic-primary-foreground: #ffffff;
   --theme-semantic-primary-hover-background: rgba(59, 130, 246, 0.9); /* Fallback */
   --theme-semantic-secondary-foreground: #ffffff;
@@ -27,15 +26,12 @@
   --theme-semantic-background: #ffffff; /* General component background */
   --theme-semantic-ring: var(--theme-primary); /* Default to primary */
   
-  /* Component Specific Colors (examples) - will be overridden by themeApi.ts */
   --theme-navbar-background: var(--theme-semantic-card-foreground); /* Fallback */
 
-  /* Typography (examples) - will be overridden by themeApi.ts */
   --theme-font-size-default: 0.875rem;
   --theme-font-weight-default: 500;
   --theme-line-height-default: 1.25rem;
 
-  /* Spacing (examples) - will be overridden by themeApi.ts */
   --theme-spacing-base-unit: 0.25rem;
   --theme-spacing-card-default-padding: 1.5rem; /* Fallback for p-6 */
   --theme-spacing-scale-1_5: 0.375rem; /* Fallback for space-y-1.5 */
@@ -43,37 +39,31 @@
   --theme-spacing-scale-8: 2rem; /* Fallback for px-8 */
 
 
-  /* Sizing (examples) - will be overridden by themeApi.ts */
   --theme-sizing-button-default-height: 2.25rem;
   --theme-sizing-button-small-height: 2rem;
   --theme-sizing-button-large-height: 2.5rem;
   --theme-sizing-button-icon-height: 2.25rem;
   --theme-sizing-button-icon-width: 2.25rem;
   
-  /* Border Radius (examples) - will be overridden by themeApi.ts */
   --theme-border-radius-default: 0.25rem;
   --theme-border-radius-md: 0.375rem;
   --theme-border-radius-lg: 0.5rem;
 
 
-  /* Shadows (examples) - will be overridden by themeApi.ts */
   --theme-shadow-default: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --theme-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 
-  /* Colors */
   --color-primary: #007bff;
   --color-secondary: #6c757d;
   --color-accent: #007bff;
   --color-background: #ffffff;
   --color-text: #212529;
 
-  /* Typography */
   --font-family: system-ui, -apple-system, sans-serif;
   --font-size-base: 1rem;
   --font-size-large: 1.25rem;
   --font-size-small: 0.875rem;
 
-  /* Spacing */
   --spacing-base: 1rem;
   --spacing-large: 2rem;
   --spacing-small: 0.5rem;
@@ -84,6 +74,7 @@
   --radius-small: 0.125rem;
 
   --text-gradient: linear-gradient(to right, #a78bfa, #f472b6, #60a5fa);
+
   --card-bg: rgba(30,41,59,0.5);
   --card-blur: 4px;
   --card-border: #a78bfa33;

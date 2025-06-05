@@ -1,7 +1,8 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Theme, themeApi } from '@/domain/shared/utils/themeApi';
+import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { Theme } from '@/domain/entities/Theme';
+import { themeApi } from '@/domain/shared/utils/themeApi';
 
 interface ThemeContextType {
   theme: Theme | null;
@@ -12,66 +13,140 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+interface ThemeProviderProps {
+  children: ReactNode;
+  initialTheme?: Theme | null;
+}
+
+export function ThemeProvider({ children, initialTheme = null }: ThemeProviderProps) {
+  const [theme, setTheme] = useState<Theme | null>(initialTheme);
+  const [isLoading, setIsLoading] = useState(!initialTheme);
   const [error, setError] = useState<Error | null>(null);
 
-  const applyThemeToCssVariables = (theme: Theme) => {
+  const applyThemeToCssVariables = (theme: import('@/domain/shared/utils/themeApi').Theme) => {
+    // CRITICAL FIX: Only proceed if a valid theme with style_properties exists.
+    if (!theme || !theme.style_properties) {
+      return;
+    }
+    
     if (typeof window === 'undefined') return;
-
     const root = document.documentElement;
     const sp = theme.style_properties;
-    
-    // Colors
-    Object.entries(sp.colors).forEach(([key, value]) => {
-      root.style.setProperty(`--theme-${key}`, value);
-      root.style.setProperty(`--color-${key}`, value);
-    });
+
+    // Farben (ALLE relevanten Felder aus dem Theme-Objekt)
+    const c = sp.colors;
+    root.style.setProperty('--theme-primary', c.primary);
+    root.style.setProperty('--theme-secondary', c.secondary);
+    root.style.setProperty('--theme-accent', c.accent);
+    root.style.setProperty('--theme-body-background-start', c.backgroundStart || c.background);
+    root.style.setProperty('--theme-body-background-end', c.backgroundEnd || c.background);
+    root.style.setProperty('--theme-body-foreground', c.text);
+    root.style.setProperty('--background', c.background);
+    root.style.setProperty('--card-bg', c.cardBg);
+    root.style.setProperty('--card-border', c.cardBorder);
+    root.style.setProperty('--card-shadow', c.cardShadow);
+    root.style.setProperty('--card-title-color', c.cardTitle);
+    root.style.setProperty('--card-text-color', c.cardText);
+    root.style.setProperty('--card-list-item-color', c.cardListItem);
+    root.style.setProperty('--card-list-icon-color', c.cardListIcon);
+    root.style.setProperty('--navbar-background', c.navbarBg);
+    root.style.setProperty('--navbar-link-color', c.navbarText);
+    root.style.setProperty('--navbar-border', c.navbarBorder);
+    root.style.setProperty('--navbar-button-bg', c.navbarButtonBg);
+    root.style.setProperty('--navbar-button-color', c.navbarButtonText);
+    root.style.setProperty('--navbar-button-hover-bg', c.navbarButtonHoverBg);
+    root.style.setProperty('--navbar-button-hover-color', c.navbarButtonHoverText);
+    root.style.setProperty('--navbar-link-hover-bg', c.navbarLinkHoverBg);
+    root.style.setProperty('--navbar-link-active-bg', c.navbarLinkActiveBg);
+    root.style.setProperty('--navbar-link-active-color', c.navbarLinkActiveText);
+    root.style.setProperty('--section-link-color', c.sectionLink || c.link);
+    root.style.setProperty('--section-heading-color', c.sectionHeading);
+    root.style.setProperty('--section-paragraph-color', c.sectionParagraph);
+    root.style.setProperty('--button-bg', c.buttonBg);
+    root.style.setProperty('--button-text', c.buttonText);
+    root.style.setProperty('--button-border', c.buttonBorder);
+    root.style.setProperty('--button-shadow', c.buttonShadow);
+    root.style.setProperty('--button-hover-bg', c.buttonHoverBg);
+    root.style.setProperty('--button-hover-text', c.buttonHoverText);
+    root.style.setProperty('--about-image-border', c.aboutImageBorder);
+    root.style.setProperty('--about-title-color', c.aboutTitle);
+    root.style.setProperty('--about-text-color', c.aboutText);
+    root.style.setProperty('--about-list-icon-color', c.aboutListIcon);
+    root.style.setProperty('--about-list-link-color', c.aboutListLink);
+    root.style.setProperty('--about-content-min-width', c.aboutContentMinWidth);
+    root.style.setProperty('--about-image-box-shadow', c.aboutImageBoxShadow);
 
     // Typography
-    root.style.setProperty('--theme-font-family', sp.typography.fontFamily);
-    root.style.setProperty('--font-family', sp.typography.fontFamily);
-    root.style.setProperty('--theme-font-size', sp.typography.fontSize);
-    root.style.setProperty('--font-size-base', sp.typography.fontSize);
-    root.style.setProperty('--theme-line-height', sp.typography.lineHeight);
-    if (sp.typography.fontWeight) {
-      root.style.setProperty('--theme-font-weight', sp.typography.fontWeight);
-      root.style.setProperty('--font-weight', sp.typography.fontWeight);
-    }
-    if (sp.typography.fontWeightBold) {
-      root.style.setProperty('--theme-font-weight-bold', sp.typography.fontWeightBold);
-    }
+    const t = sp.typography;
+    root.style.setProperty('--font-family', t.fontFamily);
+    root.style.setProperty('--font-size-base', t.fontSize);
+    root.style.setProperty('--theme-line-height', t.lineHeight);
+    root.style.setProperty('--about-title-font-weight', t.aboutTitleFontWeight);
+    root.style.setProperty('--about-title-font-size', t.aboutTitleFontSize);
+    root.style.setProperty('--about-text-font-size', t.aboutTextFontSize);
+    root.style.setProperty('--about-list-icon-font-size', t.aboutListIconFontSize);
 
     // Spacing
-    Object.entries(sp.spacing).forEach(([key, value]) => {
-      root.style.setProperty(`--theme-spacing-${key}`, value);
-      root.style.setProperty(`--spacing-${key}`, value);
-    });
+    const s = sp.spacing;
+    root.style.setProperty('--about-section-padding', s.sectionPadding);
+    root.style.setProperty('--about-container-gap', s.containerGap);
+    root.style.setProperty('--about-container-max-width', s.containerMaxWidth);
+    root.style.setProperty('--about-container-padding', s.containerPadding);
+    root.style.setProperty('--about-title-margin-bottom', s.aboutTitleMarginBottom);
+    root.style.setProperty('--about-text-margin-bottom', s.aboutTextMarginBottom);
+    root.style.setProperty('--about-list-gap', s.aboutListGap);
+    root.style.setProperty('--about-list-item-gap', s.aboutListItemGap);
 
     // Border Radius
-    Object.entries(sp.borderRadius).forEach(([key, value]) => {
-      root.style.setProperty(`--theme-border-radius-${key}`, value);
-      root.style.setProperty(`--radius-${key}`, value);
-    });
+    const br = sp.borderRadius;
+    root.style.setProperty('--about-image-border-radius', br.aboutImage);
 
-    // Shadows
-    if (sp.shadow) {
-      Object.entries(sp.shadow).forEach(([key, value]) => {
-        root.style.setProperty(`--theme-shadow-${key}`, value);
-      });
+    // Box Shadow
+    const sh = sp.shadows;
+    root.style.setProperty('--about-image-box-shadow', sh.card);
+
+    // Hintergrund (RGB für Gradient, falls nötig)
+    if (c.backgroundStart) {
+      const rgbStart = hexToRgb(c.backgroundStart);
+      if (rgbStart) root.style.setProperty('--background-start-rgb', rgbStart);
+      root.style.setProperty('--theme-body-background-start', c.backgroundStart);
     }
-
-    // Galaxy specific
-    if (sp.galaxy) {
-      Object.entries(sp.galaxy).forEach(([key, value]) => {
-        root.style.setProperty(`--theme-galaxy-${key}`, value);
-      });
+    if (c.backgroundEnd) {
+      const rgbEnd = hexToRgb(c.backgroundEnd);
+      if (rgbEnd) root.style.setProperty('--background-end-rgb', rgbEnd);
+      root.style.setProperty('--theme-body-background-end', c.backgroundEnd);
     }
+    if (c.text) root.style.setProperty('--theme-body-foreground', c.text);
 
-    // Set background gradient if available
-    if (sp.galaxy?.backgroundGradient) {
-      root.style.setProperty('--theme-background-gradient', sp.galaxy.backgroundGradient);
+    // Buttons (alle Varianten)
+    root.style.setProperty('--button-bg', c.buttonBg);
+    root.style.setProperty('--button-text', c.buttonText);
+    root.style.setProperty('--button-border', c.buttonBorder);
+    root.style.setProperty('--button-shadow', c.buttonShadow);
+    root.style.setProperty('--button-hover-bg', c.buttonHoverBg);
+    root.style.setProperty('--button-hover-text', c.buttonHoverText);
+
+    // Cards & Skills-Section
+    root.style.setProperty('--card-blur', sp.cardBlur || '4px');
+    root.style.setProperty('--card-radius', sp.cardRadius || '1rem');
+    root.style.setProperty('--card-shadow-hover', c.cardShadowHover || '0 4px 24px rgba(167,139,250,0.2)');
+    root.style.setProperty('--card-border-hover', c.cardBorderHover || '#a78bfa55');
+    root.style.setProperty('--card-list-gap', sp.cardListGap || '16px');
+    root.style.setProperty('--card-list-item-gap', sp.cardListItemGap || '12px');
+    root.style.setProperty('--card-list-item-color', c.cardListItem || '#b0b0b0');
+    root.style.setProperty('--card-list-icon-color', c.cardListIcon || '#a78bfa');
+    root.style.setProperty('--card-list-icon-font-size', sp.cardListIconFontSize || '22px');
+
+    // Hilfsfunktion für Hex zu RGB
+    function hexToRgb(hex: string): string | null {
+      // Entferne # falls vorhanden
+      hex = hex.replace('#', '');
+      if (hex.length === 3) {
+        hex = hex.split('').map(x => x + x).join('');
+      }
+      if (hex.length !== 6) return null;
+      const num = parseInt(hex, 16);
+      return `${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}`;
     }
   };
 
@@ -80,25 +155,30 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(true);
       setError(null);
       const response = await themeApi.getCurrentTheme();
-      console.log('[ThemeContext] API Response:', response);
       if (response.data) {
-        console.log('[ThemeContext] Aktives Theme:', response.data);
         setTheme(response.data);
         applyThemeToCssVariables(response.data);
       } else {
-        console.warn('[ThemeContext] Keine Theme-Daten erhalten!');
+        console.warn('[ThemeContext] No theme data received from API!');
       }
     } catch (err) {
-      setError(err instanceof Error ? err : new Error('Failed to load theme'));
-      console.error('[ThemeContext] Fehler beim Laden des Themes:', err);
+      const fetchError = err instanceof Error ? err : new Error('Failed to load theme');
+      setError(fetchError);
+      console.error('[ThemeContext] Error loading theme:', fetchError);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    loadTheme();
-  }, []);
+    // Only run the effect if there was no initial theme from the server.
+    if (!initialTheme) {
+      loadTheme();
+    } else {
+      // If there was an initial theme, just apply it.
+      applyThemeToCssVariables(initialTheme);
+    }
+  }, [initialTheme]);
 
   const value = {
     theme,
@@ -116,4 +196,4 @@ export function useTheme() {
     throw new Error('useTheme must be used within a ThemeProvider');
   }
   return context;
-} 
+}

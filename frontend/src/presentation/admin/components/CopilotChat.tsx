@@ -119,18 +119,18 @@ export default function CopilotChat({ context }: CopilotChatProps) {
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="copilot-chat-root">
       {/* Quick Actions */}
       {context?.selectedProject && (
-        <div className="p-4 border-b">
-          <div className="flex gap-2">
+        <div className="copilot-chat-quickactions">
+          <div className="copilot-chat-quickactions-row">
             <Button
               variant="outline"
               size="sm"
               onClick={() => handleQuickAction('improve')}
               disabled={isLoading}
             >
-              <Wand2 className="w-4 h-4 mr-2" />
+              <Wand2 className="copilot-chat-icon" />
               Improve Content
             </Button>
             <Button
@@ -139,7 +139,7 @@ export default function CopilotChat({ context }: CopilotChatProps) {
               onClick={() => handleQuickAction('suggest')}
               disabled={isLoading}
             >
-              <Sparkles className="w-4 h-4 mr-2" />
+              <Sparkles className="copilot-chat-icon" />
               Suggest Tech
             </Button>
             <Button
@@ -148,7 +148,7 @@ export default function CopilotChat({ context }: CopilotChatProps) {
               onClick={() => handleQuickAction('generate')}
               disabled={isLoading}
             >
-              <Bot className="w-4 h-4 mr-2" />
+              <Bot className="copilot-chat-icon" />
               Generate
             </Button>
           </div>
@@ -156,36 +156,28 @@ export default function CopilotChat({ context }: CopilotChatProps) {
       )}
 
       {/* Chat Messages */}
-      <ScrollArea className="flex-1 p-4" ref={scrollRef}>
-        <div className="space-y-4">
+      <ScrollArea className="copilot-chat-messages" ref={scrollRef}>
+        <div className="copilot-chat-messages-list">
           {messages.map(message => (
             <div
               key={message.id}
-              className={`flex ${
-                message.role === 'user' ? 'justify-end' : 'justify-start'
-              }`}
+              className={`copilot-chat-message-row copilot-chat-message-row-${message.role}`}
             >
               <Card
-                className={`max-w-[80%] p-3 ${
-                  message.role === 'user'
-                    ? 'bg-primary text-primary-foreground'
-                    : message.error
-                    ? 'bg-destructive/10 text-destructive'
-                    : 'bg-muted'
-                }`}
+                className={`copilot-chat-message-card${message.role === 'user' ? ' copilot-chat-message-user' : message.error ? ' copilot-chat-message-error' : ' copilot-chat-message-assistant'}`}
               >
-                <div className="flex items-start gap-2">
+                <div className="copilot-chat-message-content">
                   {message.role === 'assistant' && (
-                    <Bot className="w-5 h-5 mt-1" />
+                    <Bot className="copilot-chat-message-boticon" />
                   )}
                   <div>
-                    <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                    <span className="text-xs opacity-70">
+                    <p className="copilot-chat-message-text">{message.content}</p>
+                    <span className="copilot-chat-message-time">
                       {message.timestamp.toLocaleTimeString()}
                     </span>
                   </div>
                   {message.role === 'user' && (
-                    <User className="w-5 h-5 mt-1" />
+                    <User className="copilot-chat-message-usericon" />
                   )}
                 </div>
               </Card>
@@ -195,8 +187,8 @@ export default function CopilotChat({ context }: CopilotChatProps) {
       </ScrollArea>
 
       {/* Input */}
-      <div className="p-4 border-t">
-        <div className="flex gap-2">
+      <div className="copilot-chat-inputbar">
+        <div className="copilot-chat-inputrow">
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -214,7 +206,7 @@ export default function CopilotChat({ context }: CopilotChatProps) {
             disabled={isLoading || !input.trim()}
             size="icon"
           >
-            <Send className="w-4 h-4" />
+            <Send className="copilot-chat-sendicon" />
           </Button>
         </div>
       </div>

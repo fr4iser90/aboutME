@@ -7,24 +7,24 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const variantStyles: Record<string, React.CSSProperties> = {
   default: {
-    background: 'var(--color-primary)',
-    color: 'var(--color-text)',
+    background: 'var(--theme-primary)',
+    color: 'var(--theme-body-foreground)',
     border: '1px solid transparent',
   },
   secondary: {
-    background: 'var(--color-secondary)',
-    color: 'var(--color-text)',
+    background: 'var(--theme-secondary)',
+    color: 'var(--theme-body-foreground)',
     border: '1px solid transparent',
   },
   destructive: {
     background: 'var(--color-danger, #ef4444)',
-    color: 'var(--color-text, #fff)',
+    color: 'var(--theme-body-foreground, #fff)',
     border: '1px solid transparent',
   },
   outline: {
     background: 'transparent',
-    color: 'var(--color-text)',
-    border: '1px solid var(--color-border, #a78bfa)',
+    color: 'var(--theme-body-foreground)',
+    border: '1px solid var(--card-border, #a78bfa)',
   },
 };
 

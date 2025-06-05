@@ -210,3 +210,317 @@ body {
   background: var(--navbar-button-hover-bg, #a78bfa);
   color: var(--navbar-button-hover-color, #fff);
 }
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+.project-card {
+  max-width: 400px;
+  min-height: 320px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  background: var(--card-bg, #fff);
+  border-radius: var(--card-radius, 1rem);
+  box-shadow: var(--card-shadow, 0 4px 24px rgba(167,139,250,0.1));
+  border: 1px solid var(--card-border, #a78bfa33);
+  padding: 1.5rem;
+}
+.project-card-image {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-top-left-radius: var(--card-radius, 1rem);
+  border-top-right-radius: var(--card-radius, 1rem);
+  margin-bottom: 1rem;
+}
+
+.project-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 0.5rem;
+  font-size: 0.95rem;
+  margin-top: 1rem;
+}
+
+.project-card-tags,
+.project-card-languages,
+.project-card-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.project-card-languages-label,
+.project-card-topics-label {
+  font-weight: 500;
+  margin-right: 0.5rem;
+}
+.project-card-status {
+  margin-top: 0.5rem;
+}
+
+.projects-section {
+  padding: 3rem 0;
+}
+.projects-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+.projects-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.project-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.project-card-desc {
+  color: var(--card-text-color, #b0b0b0);
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+.project-card-topic {
+  background: var(--card-list-icon-color, #a78bfa);
+  color: var(--card-text-color, #fff);
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.project-card-stars {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--card-list-item-color, #b0b0b0);
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+.project-card-star-icon {
+  width: 1.1em;
+  height: 1.1em;
+  margin-right: 0.25em;
+}
+
+.section-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem 0;
+}
+.section-list-header {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+.section-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid var(--card-border, #a78bfa33);
+  border-radius: var(--card-radius, 1rem);
+  background: var(--card-bg, #fff);
+}
+.section-list-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+.section-list-meta {
+  color: var(--card-list-item-color, #b0b0b0);
+  font-size: 0.95rem;
+}
+.section-list-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.section-list-btn {
+  min-width: 80px;
+}
+.section-list-add-btn {
+  margin-top: 1rem;
+  align-self: flex-start;
+}
+
+.project-card-updated {
+  display: flex;
+  align-items: center;
+  font-size: 0.92rem;
+  margin-top: 0.7rem;
+  align-self: flex-start;
+  gap: 0.4em;
+}
+
+.project-card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.project-card-badge {
+  background: var(--card-list-icon-color, #a78bfa);
+  color: var(--card-text-color, #fff);
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.project-card-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 0.5rem;
+  font-size: 0.95rem;
+  margin-top: 1rem;
+  color: var(--card-list-item-color, #b0b0b0);
+}
+.project-card-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+}
+.project-card-icon {
+  width: 1.1em;
+  height: 1.1em;
+  margin-right: 0.25em;
+}
+
+/* === Übertragene Klassen aus .module.css === */
+.copilot-chat-root {}
+.copilot-chat-quickactions {}
+.copilot-chat-quickactions-row {}
+.copilot-chat-icon {}
+.copilot-chat-messages {}
+.copilot-chat-messages-list {}
+.copilot-chat-message-row {}
+.copilot-chat-message-row-user {}
+.copilot-chat-message-row-assistant {}
+.copilot-chat-message-row-error {}
+.copilot-chat-message-card {}
+.copilot-chat-message-user {}
+.copilot-chat-message-error {}
+.copilot-chat-message-assistant {}
+.copilot-chat-message-content {}
+.copilot-chat-message-boticon {}
+.copilot-chat-message-usericon {}
+.copilot-chat-message-text {}
+.copilot-chat-message-time {}
+.copilot-chat-inputbar {}
+.copilot-chat-inputrow {}
+.copilot-chat-sendicon {}
+
+.project-list-root {}
+.project-list-header {}
+.project-list-title {}
+.project-list-header-actions {}
+.project-list-add-btn {}
+.project-list-modal-overlay {}
+.project-list-modal {}
+.project-list-modal-title {}
+.project-list-modal-actions {}
+.project-list-modal-btn-import {}
+.project-list-modal-btn-manual {}
+.project-list-modal-btn-cancel {}
+.project-list-modal-close-row {}
+.project-list-group {}
+.project-list-group-title {}
+.project-list-cards {}
+.project-list-card-wrapper {}
+.project-list-card-actions {}
+.project-list-card-edit {}
+.project-list-card-edit-icon {}
+.project-list-card-delete {}
+.project-list-card-delete-icon {}
+.project-list-simple {}
+.project-list-simple-btn {}
+.project-list-simple-title {}
+
+.project-editor-root {}
+.project-editor-list {}
+.project-editor-list-header {}
+.project-editor-list-title {}
+.project-editor-list-addicon {}
+.project-editor-list-scroll {}
+.project-editor-list-items {}
+.project-editor-list-item {}
+.project-editor-list-item-active {}
+.project-editor-list-item-content {}
+.project-editor-list-item-title {}
+.project-editor-list-item-desc {}
+.project-editor-list-item-deleteicon {}
+.project-editor-main {}
+.project-editor-main-content {}
+.project-editor-main-header {}
+.project-editor-main-title {}
+.project-editor-main-links {}
+.project-editor-main-linkicon {}
+.project-editor-main-form {}
+.project-editor-main-form-group {}
+.project-editor-main-label {}
+.project-editor-main-empty {}
+
+.project-card-root {}
+.project-card-image {}
+.project-card-title {}
+.project-card-desc {}
+.project-card-badges-row {}
+.project-card-badge {}
+.project-card-badge-muted {}
+.project-card-meta-row {}
+.project-card-meta-item {}
+.project-card-meta-icon {}
+.project-card-links-row {}
+.project-card-link {}
+.project-card-updated {}
+
+.skills-section {}
+.skills-container {}
+.skills-title {}
+.skills-grid {}
+.skills-card {}
+.skills-card-title {}
+.skills-card-desc {}
+.skills-list {}
+.skills-footer {}
+
+.navigation-menu-root {}
+.navigation-menu-list {}
+.navigation-menu-trigger {}
+.navigation-menu-viewport-container {}
+.navigation-menu-viewport {}
+.navigation-menu-indicator {}
+.navigation-menu-indicator-shape {}
+
+.tabs-list {}
+.tabs-trigger {}
+.tabs-content {}
+
+.page-section-pre {}
+.page-section-stars {}
+
+.projects-page-error {}
+.projects-page-title {}
+.projects-page-grid {}
+
+.skills-page-error {}
+.skills-page-title {}
+.skills-page-category {}
+.skills-page-grid {}
+
+.file-upload-root {}
+.file-upload-dropzone {}
+.file-upload-dropzone-active {}
+.file-upload-uploading {}
+.file-upload-drop-hint {}
+.file-upload-hint {}
+.file-upload-supported {}
+.file-upload-error {}

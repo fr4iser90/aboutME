@@ -90,11 +90,5 @@ galaxy_theme = {
             "imageBoxShadow": "0 4px 24px rgba(0,0,0,0.15)",
             "contentMinWidth": "280px"
         },
-        "galaxy": {
-            "textGradient": "linear-gradient(to right, #a78bfa, #f472b6, #60a5fa)",
-            "cardGlow": "0 0 20px 5px #a78bfa55",
-            "backgroundGradient": "linear-gradient(135deg, #0f172a 0%, #2d1a4a 100%)",
-            "starColor": "#fff"
-        }
     }
 }

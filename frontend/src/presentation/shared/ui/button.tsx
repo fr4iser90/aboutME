@@ -10,33 +10,36 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 const variantStyles: Record<string, React.CSSProperties> = {
   default: {
-    background: 'var(--color-primary)',
-    color: 'var(--color-text)',
-    boxShadow: 'var(--theme-shadow-default)',
+    background: 'var(--button-bg, var(--color-primary))',
+    color: 'var(--button-text, var(--theme-body-foreground))',
+    boxShadow: 'var(--button-shadow, var(--theme-shadow-default))',
+    border: '1px solid var(--button-border, transparent)',
   },
   destructive: {
     background: 'var(--color-danger, #ef4444)',
-    color: 'var(--color-text, #fff)',
+    color: 'var(--button-text, #fff)',
     boxShadow: 'var(--theme-shadow-sm)',
+    border: '1px solid var(--color-danger, #ef4444)',
   },
   outline: {
-    background: 'var(--color-background)',
-    color: 'var(--color-text)',
-    border: '1px solid var(--color-border, #a78bfa)',
+    background: 'var(--button-bg, var(--color-background))',
+    color: 'var(--button-text, var(--theme-body-foreground))',
+    border: '1px solid var(--button-border, var(--color-border, #a78bfa))',
     boxShadow: 'var(--theme-shadow-sm)',
   },
   secondary: {
-    background: 'var(--color-secondary)',
-    color: 'var(--color-text)',
+    background: 'var(--button-bg, var(--color-secondary))',
+    color: 'var(--button-text, var(--theme-body-foreground))',
     boxShadow: 'var(--theme-shadow-sm)',
+    border: '1px solid var(--button-border, transparent)',
   },
   ghost: {
     background: 'transparent',
-    color: 'var(--color-accent)',
+    color: 'var(--button-text, var(--color-accent))',
   },
   link: {
     background: 'transparent',
-    color: 'var(--color-primary)',
+    color: 'var(--button-text, var(--color-primary))',
     textDecoration: 'underline',
   },
 };

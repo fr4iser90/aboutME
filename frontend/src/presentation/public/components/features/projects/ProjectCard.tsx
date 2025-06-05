@@ -12,51 +12,52 @@ interface ProjectCardProps {
 export const ProjectCard = ({ project }: ProjectCardProps) => {
   const cardDesc = project.short_description || project.own_description || project.description;
   return (
-    <Card className="flex flex-col h-full">
+    <Card className="flex flex-col h-full" style={{ background: 'var(--card-bg)', color: 'var(--card-text-color)', border: '1px solid var(--card-border)', boxShadow: 'var(--card-shadow)', borderRadius: 'var(--card-radius, 1rem)', maxWidth: '400px', minHeight: '320px', margin: '0 auto' }}>
       {project.imageUrl && (
-        <div className="relative w-full h-48">
+        <div className="relative w-full h-48" style={{ maxHeight: '200px', overflow: 'hidden', borderTopLeftRadius: 'var(--card-radius, 1rem)', borderTopRightRadius: 'var(--card-radius, 1rem)' }}>
           <Image
             src={project.imageUrl}
             alt={project.title}
             fill
             className="object-cover rounded-t-lg"
+            style={{ objectFit: 'cover', width: '100%', height: '100%', maxHeight: '200px' }}
           />
         </div>
       )}
       <CardHeader>
-        <h3 className="text-xl font-semibold">{project.title}</h3>
+        <h3 className="text-xl font-semibold" style={{ color: 'var(--card-title-color)' }}>{project.title}</h3>
       </CardHeader>
       <CardContent className="flex-grow">
-        <p className="text-gray-600 dark:text-gray-300">{cardDesc}</p>
-        <div className="mt-4 flex flex-wrap gap-2">
+        <p style={{ color: 'var(--card-text-color)' }}>{cardDesc}</p>
+        <div className="project-card-badges">
           {project.technologies?.map((tech) => (
-            <Badge key={tech} variant="secondary">
+            <Badge key={tech} variant="secondary" className="project-card-badge">
               {tech}
             </Badge>
           ))}
         </div>
         {project.details?.languages_map && Object.keys(project.details.languages_map).length > 0 && (
-          <div className="mt-2 flex flex-wrap gap-2">
-            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Languages:</span>
+          <div className="project-card-languages">
+            <span className="project-card-languages-label">Languages:</span>
             {Object.keys(project.details.languages_map).map((lang) => (
-              <Badge key={lang} variant="outline" className="bg-blue-900/30 text-blue-300">
+              <Badge key={lang} variant="outline" className="project-card-badge">
                 {lang}
               </Badge>
             ))}
           </div>
         )}
         {project.topics && project.topics.length > 0 && (
-          <div className="mt-2 flex flex-wrap gap-2">
-            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Topics:</span>
+          <div className="project-card-topics">
+            <span className="project-card-topics-label">Topics:</span>
             {project.topics.map((topic) => (
-              <Badge key={topic} variant="outline" className="bg-purple-900/30 text-purple-300">
+              <Badge key={topic} variant="outline" className="project-card-badge">
                 {topic}
               </Badge>
             ))}
           </div>
         )}
         {project.status && (
-          <div className="mt-2">
+          <div className="project-card-status">
             <Badge variant={project.status === 'ACTIVE' ? 'default' : 'destructive'}>
               Status: {project.status}
             </Badge>
@@ -64,28 +65,28 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
         )}
 
         {/* GitHub Stats */}
-        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-500 dark:text-gray-400">
+        <div className="project-card-meta-row">
           {typeof project.starsCount === 'number' && (
-            <div className="flex items-center">
-              <Star className="w-4 h-4 mr-1" />
+            <div className="project-card-meta-item">
+              <Star className="project-card-icon" />
               <span>{project.starsCount} Stars</span>
             </div>
           )}
           {typeof project.forksCount === 'number' && (
-            <div className="flex items-center">
-              <GitFork className="w-4 h-4 mr-1" />
+            <div className="project-card-meta-item">
+              <GitFork className="project-card-icon" />
               <span>{project.forksCount} Forks</span>
             </div>
           )}
           {typeof project.watchersCount === 'number' && (
-            <div className="flex items-center">
-              <Eye className="w-4 h-4 mr-1" />
+            <div className="project-card-meta-item">
+              <Eye className="project-card-icon" />
               <span>{project.watchersCount} Watchers</span>
             </div>
           )}
           {typeof project.openIssuesCount === 'number' && (
-            <div className="flex items-center">
-              <AlertCircle className="w-4 h-4 mr-1" />
+            <div className="project-card-meta-item">
+              <AlertCircle className="project-card-icon" />
               <span>{project.openIssuesCount} Open Issues</span>
             </div>
           )}
@@ -94,7 +95,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
       <CardFooter className="flex flex-col items-start gap-2 pt-4">
         <div className="flex flex-wrap gap-2">
           {project.githubUrl && (
-            <Button variant="outline" size="sm" asChild>
+            <Button variant="outline" size="sm" asChild style={{ background: 'var(--button-bg)', color: 'var(--button-text)', border: '1px solid var(--button-border)', boxShadow: 'var(--button-shadow)' }}>
               <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
                 <Github className="w-4 h-4 mr-2" />
                 GitHub
@@ -102,7 +103,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
             </Button>
           )}
           {project.liveUrl && (
-            <Button variant="outline" size="sm" asChild>
+            <Button variant="outline" size="sm" asChild style={{ background: 'var(--button-bg)', color: 'var(--button-text)', border: '1px solid var(--button-border)', boxShadow: 'var(--button-shadow)' }}>
               <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="w-4 h-4 mr-2" />
                 Live Demo
@@ -110,7 +111,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
             </Button>
           )}
           {project.homepageUrl && (
-            <Button variant="outline" size="sm" asChild>
+            <Button variant="outline" size="sm" asChild style={{ background: 'var(--button-bg)', color: 'var(--button-text)', border: '1px solid var(--button-border)', boxShadow: 'var(--button-shadow)' }}>
               <a href={project.homepageUrl} target="_blank" rel="noopener noreferrer">
                 <Home className="w-4 h-4 mr-2" />
                 Homepage
@@ -119,7 +120,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
           )}
         </div>
         {project.updatedAt && (
-          <div className="text-xs text-gray-500 dark:text-gray-400 mt-2 self-start flex items-center">
+          <div className="project-card-updated" style={{ color: 'var(--card-list-item-color)' }}>
             <Clock className="w-3 h-3 mr-1" />
             Last updated: {new Date(project.updatedAt).toLocaleDateString()}
           </div>

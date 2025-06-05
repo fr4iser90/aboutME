@@ -81,7 +81,7 @@ export const HomeView: FC = () => { // Used FC type
       return <div dangerouslySetInnerHTML={{ __html: content }} />;
     }
     if (typeof content === 'object' && content !== null) {
-      return <pre className="whitespace-pre-wrap">{JSON.stringify(content, null, 2)}</pre>;
+      return <pre className="page-section-pre">{JSON.stringify(content, null, 2)}</pre>;
     }
     return <div>No content available</div>;
   };
@@ -92,7 +92,7 @@ export const HomeView: FC = () => { // Used FC type
       <main style={{ minHeight: '100vh' }}>
         {/* Hero Section */}
         <Section style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
-          <div className="stars" style={{ position: 'absolute', inset: 0 }}></div>
+          <div className="page-section-stars" style={{ position: 'absolute', inset: 0 }}></div>
           <Container style={{ textAlign: 'center', position: 'relative', zIndex: 10 }}>
             <h1 style={{ fontSize: '4rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>
               Welcome to my website

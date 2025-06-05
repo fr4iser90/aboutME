@@ -39,15 +39,15 @@ export default function Skills() {
   ];
 
   return (
-    <section id="skills" className="py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-4xl font-bold mb-12 text text-center">Skills & Stuff</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <section id="skills" className="skills-section">
+      <div className="skills-container">
+        <h2 className="skills-title">Skills & Stuff</h2>
+        <div className="skills-grid">
           {skills.map((skillGroup) => (
-            <div key={skillGroup.category} className="card p-6 rounded-lg">
-              <h3 className="text-2xl font-semibold mb-4 text">{skillGroup.category}</h3>
-              <p className="text-slate-400 mb-4">{skillGroup.description}</p>
-              <ul className="list-disc list-inside text-slate-300 space-y-1">
+            <div key={skillGroup.category} className="skills-card">
+              <h3 className="skills-card-title">{skillGroup.category}</h3>
+              <p className="skills-card-desc">{skillGroup.description}</p>
+              <ul className="skills-list">
                 {skillGroup.items.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
@@ -55,7 +55,7 @@ export default function Skills() {
             </div>
           ))}
         </div>
-        <p className="text-center text-slate-400 mt-8">Ich mag es, Probleme zu lösen, Dinge zu verbinden und Neues auszuprobieren – immer mit einer Prise Humor und viel KI-Unterstützung ;)</p>
+        <p className="skills-footer">Ich mag es, Probleme zu lösen, Dinge zu verbinden und Neues auszuprobieren – immer mit einer Prise Humor und viel KI-Unterstützung ;)</p>
       </div>
     </section>
   );

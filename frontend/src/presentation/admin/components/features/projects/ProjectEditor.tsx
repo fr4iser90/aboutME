@@ -67,29 +67,27 @@ export default function ProjectEditor({ onProjectSelect }: ProjectEditorProps) {
   };
 
   return (
-    <div className="flex h-full">
+    <div className="project-editor-root">
       {/* Project List */}
-      <div className="w-64 border-r p-4">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">Projects</h2>
+      <div className="project-editor-list">
+        <div className="project-editor-list-header">
+          <h2 className="project-editor-list-title">Projects</h2>
           <Button onClick={handleAddProject} size="icon" variant="ghost">
-            <Plus className="w-4 h-4" />
+            <Plus className="project-editor-list-addicon" />
           </Button>
         </div>
-        <ScrollArea className="h-[calc(100vh-8rem)]">
-          <div className="space-y-2">
+        <ScrollArea className="project-editor-list-scroll">
+          <div className="project-editor-list-items">
             {projects.map(project => (
               <Card
                 key={project.id}
-                className={`p-3 cursor-pointer hover:bg-muted/50 ${
-                  selectedProject?.id === project.id ? 'bg-muted' : ''
-                }`}
+                className={`project-editor-list-item${selectedProject?.id === project.id ? ' project-editor-list-item-active' : ''}`}
                 onClick={() => handleSelectProject(project)}
               >
-                <div className="flex justify-between items-start">
+                <div className="project-editor-list-item-content">
                   <div>
-                    <h3 className="font-medium">{project.title}</h3>
-                    <p className="text-sm text-muted-foreground line-clamp-1">
+                    <h3 className="project-editor-list-item-title">{project.title}</h3>
+                    <p className="project-editor-list-item-desc">
                       {project.shortDescription || project.description}
                     </p>
                   </div>
@@ -101,7 +99,7 @@ export default function ProjectEditor({ onProjectSelect }: ProjectEditorProps) {
                       handleDeleteProject(project.id);
                     }}
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="project-editor-list-item-deleteicon" />
                   </Button>
                 </div>
               </Card>
@@ -109,18 +107,17 @@ export default function ProjectEditor({ onProjectSelect }: ProjectEditorProps) {
           </div>
         </ScrollArea>
       </div>
-
       {/* Project Editor */}
-      <div className="flex-1 p-6">
+      <div className="project-editor-main">
         {selectedProject ? (
-          <div className="space-y-6">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold">Edit Project</h2>
-              <div className="space-x-2">
+          <div className="project-editor-main-content">
+            <div className="project-editor-main-header">
+              <h2 className="project-editor-main-title">Edit Project</h2>
+              <div className="project-editor-main-links">
                 {selectedProject.githubUrl && (
                   <Button variant="outline" size="sm" asChild>
                     <a href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="w-4 h-4 mr-2" />
+                      <ExternalLink className="project-editor-main-linkicon" />
                       GitHub
                     </a>
                   </Button>
@@ -128,26 +125,24 @@ export default function ProjectEditor({ onProjectSelect }: ProjectEditorProps) {
                 {selectedProject.liveUrl && (
                   <Button variant="outline" size="sm" asChild>
                     <a href={selectedProject.liveUrl} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="w-4 h-4 mr-2" />
+                      <ExternalLink className="project-editor-main-linkicon" />
                       Live Demo
                     </a>
                   </Button>
                 )}
               </div>
             </div>
-
-            <div className="grid gap-6">
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Title</label>
+            <div className="project-editor-main-form">
+              <div className="project-editor-main-form-group">
+                <label className="project-editor-main-label">Title</label>
                 <Input
                   value={selectedProject.title}
                   onChange={(e) => handleUpdateProject({ title: e.target.value })}
                   placeholder="Project title"
                 />
               </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Short Description</label>
+              <div className="project-editor-main-form-group">
+                <label className="project-editor-main-label">Short Description</label>
                 <Textarea
                   value={selectedProject.shortDescription}
                   onChange={(e) => handleUpdateProject({ shortDescription: e.target.value })}
@@ -155,9 +150,8 @@ export default function ProjectEditor({ onProjectSelect }: ProjectEditorProps) {
                   rows={2}
                 />
               </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Full Description</label>
+              <div className="project-editor-main-form-group">
+                <label className="project-editor-main-label">Full Description</label>
                 <Textarea
                   value={selectedProject.description}
                   onChange={(e) => handleUpdateProject({ description: e.target.value })}
@@ -165,27 +159,24 @@ export default function ProjectEditor({ onProjectSelect }: ProjectEditorProps) {
                   rows={4}
                 />
               </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-medium">GitHub URL</label>
+              <div className="project-editor-main-form-group">
+                <label className="project-editor-main-label">GitHub URL</label>
                 <Input
                   value={selectedProject.githubUrl}
                   onChange={(e) => handleUpdateProject({ githubUrl: e.target.value })}
                   placeholder="https://github.com/username/repo"
                 />
               </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Live Demo URL</label>
+              <div className="project-editor-main-form-group">
+                <label className="project-editor-main-label">Live Demo URL</label>
                 <Input
                   value={selectedProject.liveUrl}
                   onChange={(e) => handleUpdateProject({ liveUrl: e.target.value })}
                   placeholder="https://demo-url.com"
                 />
               </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Technologies</label>
+              <div className="project-editor-main-form-group">
+                <label className="project-editor-main-label">Technologies</label>
                 <Input
                   value={selectedProject.technologies.join(', ')}
                   onChange={(e) => handleUpdateProject({
@@ -197,7 +188,7 @@ export default function ProjectEditor({ onProjectSelect }: ProjectEditorProps) {
             </div>
           </div>
         ) : (
-          <div className="h-full flex items-center justify-center text-muted-foreground">
+          <div className="project-editor-main-empty">
             Select a project to edit or create a new one
           </div>
         )}

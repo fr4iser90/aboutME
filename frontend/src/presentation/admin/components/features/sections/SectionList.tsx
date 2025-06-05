@@ -32,21 +32,21 @@ export function SectionList({ onEditSection }: SectionListProps) {
   if (error) return <div className="text-red-500">{error}</div>;
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-bold mb-4">Sections</h1>
+    <div className="section-list">
+      <h1 className="section-list-header">Sections</h1>
       {sections.map(section => (
-        <div key={section.id} className="p-4 border rounded flex justify-between items-center">
+        <div key={section.id} className="section-list-item">
           <div>
-            <div className="font-semibold">{section.title}</div>
-            <div className="text-sm text-gray-500">{section.name} ({section.type})</div>
+            <div className="section-list-title">{section.title}</div>
+            <div className="section-list-meta">{section.name} ({section.type})</div>
           </div>
-          <div className="flex gap-2">
-            <Button size="sm" variant="outline" onClick={() => onEditSection?.(section)}>Edit</Button>
-            <Button size="sm" variant="destructive">Delete</Button>
+          <div className="section-list-actions">
+            <Button size="sm" variant="outline" className="section-list-btn" onClick={() => onEditSection?.(section)}>Edit</Button>
+            <Button size="sm" variant="destructive" className="section-list-btn">Delete</Button>
           </div>
         </div>
       ))}
-      <Button className="mt-4">Add Section</Button>
+      <Button className="section-list-add-btn">Add Section</Button>
     </div>
   );
 } 

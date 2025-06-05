@@ -7,7 +7,7 @@ forest_mist_theme = {
             "secondary": "#16a34a",
             "accent": "#a3e635",
             "background": "#f0fdf4",
-            "text": "#14532d",
+            "text": "#212529",
             "cardBg": "#e6f9ec",
             "cardBorder": "#22c55e33",
             "cardShadow": "0 4px 24px rgba(34, 197, 94, 0.10)",
@@ -26,7 +26,24 @@ forest_mist_theme = {
             "aboutTitle": "#14532d",
             "aboutText": "#166534",
             "aboutListIcon": "#22c55e",
-            "aboutListLink": "#166534"
+            "aboutListLink": "#166534",
+            "backgroundStart": "#14532d",
+            "backgroundEnd": "#166534",
+            "cardTitle": "#14532d",
+            "cardText": "#166534",
+            "cardListItem": "#166534",
+            "cardListIcon": "#22c55e",
+            "buttonBg": "#16a34a",
+            "buttonText": "#fff",
+            "buttonBorder": "#22c55e",
+            "buttonShadow": "0 2px 8px rgba(22,163,74,0.08)",
+            "buttonHoverBg": "#a3e635",
+            "buttonHoverText": "#14532d",
+            "sectionHeading": "#14532d",
+            "sectionParagraph": "#166534",
+            "sectionLink": "#22c55e",
+            "aboutContentMinWidth": "280px",
+            "aboutImageBoxShadow": "0 4px 24px rgba(34,197,94,0.15)"
         },
         "typography": {
             "fontFamily": "Lato, sans-serif",
@@ -90,15 +107,5 @@ forest_mist_theme = {
             "imageBoxShadow": "0 4px 24px rgba(34,197,94,0.15)",
             "contentMinWidth": "280px"
         },
-        "forest": {
-            "mistGradient": "linear-gradient(120deg, #bbf7d0 0%, #22c55e 100%)",
-            "leafColor": "#4ade80"
-        },
-        "galaxy": {
-            "textGradient": "linear-gradient(120deg, #bbf7d0 0%, #22c55e 100%)",
-            "cardGlow": "0 0 20px 5px #22c55e55",
-            "backgroundGradient": "linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 100%)",
-            "starColor": "#fff"
-        }
     }
 }

@@ -65,30 +65,27 @@ export function FileUpload({
   });
 
   return (
-    <div className="w-full">
+    <div className="file-upload-root">
       <div
         {...getRootProps()}
-        className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
-          ${isDragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'}`}
+        className={`file-upload-dropzone${isDragActive ? ' file-upload-dropzone-active' : ''}`}
       >
         <input {...getInputProps()} />
         {uploading ? (
-          <div className="text-gray-600">Uploading...</div>
+          <div className="file-upload-uploading">Uploading...</div>
         ) : isDragActive ? (
-          <div className="text-blue-500">Drop the file here...</div>
+          <div className="file-upload-drop-hint">Drop the file here...</div>
         ) : (
           <div>
-            <div className="text-gray-600 mb-2">
+            <div className="file-upload-hint">
               Drag & drop a file here, or click to select
             </div>
-            <div className="text-sm text-gray-500">
-              Supported formats: Images, Videos, PDF, Word
-            </div>
+            <div className="file-upload-supported">Supported formats: Images, Videos, PDF, Word</div>
           </div>
         )}
       </div>
       {error && (
-        <div className="mt-2 text-red-500 text-sm">{error}</div>
+        <div className="file-upload-error">{error}</div>
       )}
     </div>
   );
