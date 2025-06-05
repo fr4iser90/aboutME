@@ -2,7 +2,6 @@ import { Skill } from '@/domain/entities/Skill';
 import { Card, CardContent, CardHeader } from '@/presentation/shared/ui/card';
 import { Progress } from '@/presentation/shared/ui/progress';
 import Image from 'next/image';
-import './SkillCard.css';
 
 interface SkillCardProps {
   skill: Skill;

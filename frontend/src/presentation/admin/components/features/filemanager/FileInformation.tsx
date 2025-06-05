@@ -1,5 +1,4 @@
 import type { File } from '@/infrastructure/api/admin/filemanager';
-import './FileInformation.css';
 
 export function FileInformation({ file }: { file: File }) {
   return (

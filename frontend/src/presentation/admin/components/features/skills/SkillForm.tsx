@@ -4,7 +4,6 @@ import { Input } from '@/presentation/shared/ui/input';
 import { Textarea } from '@/presentation/shared/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/presentation/shared/ui/select';
 import { useState } from 'react';
-import './SkillForm.css';
 
 interface SkillFormProps {
   skill?: Skill;

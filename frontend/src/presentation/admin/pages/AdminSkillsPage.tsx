@@ -1,7 +1,6 @@
 import { useAdminSkills } from '@/application/admin/skills/useSkills';
 import { SkillForm } from '@/presentation/admin/components/features/skills/SkillForm';
 import { useEffect, useState } from 'react';
-import './AdminSkillsPage.css';
 import { Skill } from '@/domain/entities/Skill';
 import { Button } from '@/presentation/shared/ui/button';
 import { Plus, Pencil, Trash2 } from 'lucide-react';

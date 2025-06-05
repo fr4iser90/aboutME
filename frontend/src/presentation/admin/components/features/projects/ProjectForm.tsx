@@ -3,7 +3,6 @@ import { Button } from '@/presentation/shared/ui/button';
 import { Input } from '@/presentation/shared/ui/input';
 import { Textarea } from '@/presentation/shared/ui/textarea';
 import { useState } from 'react';
-import './ProjectForm.css';
 
 interface ProjectFormProps {
   project?: Project;

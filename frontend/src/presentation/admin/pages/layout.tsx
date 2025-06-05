@@ -32,7 +32,6 @@ import { TabContext, type Tab } from '@/presentation/admin/contexts/TabContext';
 import { Section } from '@/domain/entities/Section';
 import { SectionEditor } from '@/presentation/admin/components/features/sections/SectionEditor';
 import React, { createContext } from 'react';
-import '@/domain/shared/styles/admin-layout.css';
 
 // Create a context for file manager state
 export const FileManagerContext = createContext<{

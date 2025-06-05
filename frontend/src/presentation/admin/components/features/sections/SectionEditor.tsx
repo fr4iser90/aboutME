@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Section } from '@/domain/entities/Section';
 import { Button } from '@/presentation/shared/ui/button';
-import './SectionEditor.css';
 
 function SectionPreview({ section }: { section: Partial<Section> }) {
   let content = section.content;

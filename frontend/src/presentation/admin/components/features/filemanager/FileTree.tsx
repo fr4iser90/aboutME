@@ -4,7 +4,6 @@ import type { File } from '@/infrastructure/api/admin/filemanager';
 import { Button } from '@/presentation/shared/ui/button';
 import { FolderPlus, ChevronRight, ChevronDown } from 'lucide-react';
 import { Input } from '@/presentation/shared/ui/input';
-import './FileTree.css';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/presentation/shared/ui/dialog';
 import { FileManagerContext } from '@/presentation/admin/pages/layout';
 

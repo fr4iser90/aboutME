@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Project } from '@/domain/entities/Project';
 import { projectApi } from '@/domain/shared/utils/api';
 import { ProjectEditor } from '@/presentation/admin/components/ProjectEditor';
-import './AdminProjectsPage.css';
 export default function AdminProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);

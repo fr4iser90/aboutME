@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import { projectApi } from '@/domain/shared/utils/api';
-import './GitHubSyncButton.css';
 
 export function GitHubSyncButton() {
   const [isLoading, setIsLoading] = useState(false);

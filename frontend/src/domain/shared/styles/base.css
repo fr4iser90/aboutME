@@ -1,0 +1,131 @@
+:root {
+  /* Core Defaults - will be overridden by themeApi.ts */
+  --theme-primary: #3B82F6; /* Fallback Blue */
+  --theme-secondary: #10B981; /* Fallback Green */
+  --theme-body-foreground: rgb(255, 255, 255); /* Fallback White */
+  --theme-body-background-start: rgb(2, 6, 23); /* Fallback Dark Blue */
+  --theme-body-background-end: rgb(15, 23, 42); /* Fallback Dark Slate Blue */
+
+  --theme-semantic-primary-foreground: #ffffff;
+  --theme-semantic-primary-hover-background: rgba(59, 130, 246, 0.9); /* Fallback */
+  --theme-semantic-secondary-foreground: #ffffff;
+  --theme-semantic-secondary-hover-background: rgba(16, 185, 129, 0.8); /* Fallback */
+  --theme-semantic-destructive: #ef4444; /* Fallback Red */
+  --theme-semantic-destructive-foreground: #ffffff;
+  --theme-semantic-destructive-hover-background: rgba(239, 68, 68, 0.9); /* Fallback */
+  --theme-semantic-card: #ffffff;
+  --theme-semantic-card-foreground: #020617; /* Fallback Almost Black */
+  --theme-semantic-popover: #ffffff;
+  --theme-semantic-popover-foreground: #020617;
+  --theme-semantic-accent: var(--theme-primary); /* Default to primary */
+  --theme-semantic-accent-foreground: var(--theme-semantic-primary-foreground); /* Default to primary foreground */
+  --theme-semantic-accent-hover-background: rgba(59, 130, 246, 0.9); /* Fallback */
+  --theme-semantic-muted: #64748b; /* Fallback Slate 500 */
+  --theme-semantic-muted-foreground: #94a3b8; /* Fallback Slate 400 */
+  --theme-semantic-input-border: #cbd5e1; /* Fallback Slate 300 */
+  --theme-semantic-background: #ffffff; /* General component background */
+  --theme-semantic-ring: var(--theme-primary); /* Default to primary */
+  
+  --theme-navbar-background: var(--theme-semantic-card-foreground); /* Fallback */
+
+  --theme-font-size-default: 0.875rem;
+  --theme-font-weight-default: 500;
+  --theme-line-height-default: 1.25rem;
+
+  --theme-spacing-base-unit: 0.25rem;
+  --theme-spacing-card-default-padding: 1.5rem; /* Fallback for p-6 */
+  --theme-spacing-scale-1_5: 0.375rem; /* Fallback for space-y-1.5 */
+  --theme-spacing-scale-3: 0.75rem; /* Fallback for px-3 */
+  --theme-spacing-scale-8: 2rem; /* Fallback for px-8 */
+
+
+  --theme-sizing-button-default-height: 2.25rem;
+  --theme-sizing-button-small-height: 2rem;
+  --theme-sizing-button-large-height: 2.5rem;
+  --theme-sizing-button-icon-height: 2.25rem;
+  --theme-sizing-button-icon-width: 2.25rem;
+  
+  --theme-border-radius-default: 0.25rem;
+  --theme-border-radius-md: 0.375rem;
+  --theme-border-radius-lg: 0.5rem;
+
+
+  --theme-shadow-default: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --theme-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+
+  --color-primary: #007bff;
+  --color-secondary: #6c757d;
+  --color-accent: #007bff;
+  --color-background: #ffffff;
+  --color-text: #212529;
+
+  --font-family: system-ui, -apple-system, sans-serif;
+  --font-size-base: 1rem;
+  --font-size-large: 1.25rem;
+  --font-size-small: 0.875rem;
+
+  --spacing-base: 1rem;
+  --spacing-large: 2rem;
+  --spacing-small: 0.5rem;
+
+  /* Border Radius */
+  --radius-base: 0.25rem;
+  --radius-large: 0.5rem;
+  --radius-small: 0.125rem;
+
+  --text-gradient: linear-gradient(to right, #a78bfa, #f472b6, #60a5fa);
+
+  --card-bg: rgba(30,41,59,0.5);
+  --card-blur: 4px;
+  --card-border: #a78bfa33;
+  --card-shadow: 0 4px 24px rgba(167,139,250,0.1);
+  --card-radius: 1rem;
+  --card-shadow-hover: 0 4px 24px rgba(167,139,250,0.2);
+  --card-border-hover: #a78bfa55;
+  --card-list-gap: 16px;
+  --card-list-item-gap: 12px;
+  --card-list-item-color: #b0b0b0;
+  --card-list-icon-color: #a78bfa;
+  --card-list-icon-font-size: 22px;
+
+  --section-heading-font-size: 2.5rem;
+  --section-heading-font-weight: bold;
+  --section-heading-margin-bottom: 2rem;
+  --section-heading-color: #fff;
+  --section-heading-align: center;
+  --section-paragraph-color: #b0b0b0;
+  --section-paragraph-margin-bottom: 1.5rem;
+  --section-paragraph-font-size: 1.15rem;
+  --section-paragraph-align: center;
+  --section-link-color: #a78bfa;
+
+  --navbar-link-color: #b0b0b0;
+  --navbar-link-hover-color: #fff;
+  --navbar-link-hover-bg: #7c3aed33;
+  --navbar-link-active-color: #fff;
+  --navbar-link-active-bg: #7c3aed;
+  --navbar-link-padding: 0.5rem 1rem;
+  --navbar-link-radius: 0.5rem;
+  --navbar-link-font-size: 1rem;
+  --navbar-link-font-weight: 500;
+  --navbar-button-color: #fff;
+  --navbar-button-bg: #010971;
+  --navbar-button-radius: 0.5rem;
+  --navbar-button-font-weight: 500;
+  --navbar-button-padding: 0.5rem 1.25rem;
+  --navbar-button-shadow: 0 2px 8px rgba(124,58,237,0.08);
+  --navbar-button-hover-bg: #a78bfa;
+  --navbar-button-hover-color: #fff;
+}
+
+body {
+  /* Applied by themeApi.ts, but good to have a fallback */
+  background: linear-gradient(to bottom right, 
+    var(--theme-body-background-start, rgb(2, 6, 23)), 
+    var(--theme-body-background-end, rgb(15, 23, 42))
+  );
+  color: var(--theme-body-foreground, rgb(255, 255, 255));
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* Default sans-serif stack */
+}
+
+/* Add other global styles or utility classes that depend on these CSS variables if needed */

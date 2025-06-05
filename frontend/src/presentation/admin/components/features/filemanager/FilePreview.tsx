@@ -1,6 +1,5 @@
 import type { File } from '@/infrastructure/api/admin/filemanager';
 import { config } from '@/domain/shared/utils/config';
-import './FilePreview.css';
 
 export function FilePreview({ file }: { file: File }) {
   const fileUrl = config.backendUrl + file.path;

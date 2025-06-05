@@ -2,7 +2,6 @@ import { useProjects } from '@/application/public/projects/useProjects';
 import { ProjectCard } from '@/presentation/public/components/sections/ProjectCard';
 import { useEffect, useState } from 'react';
 import { Project } from '@/domain/entities/Project';
-import './ProjectsPage.css';
 
 export const ProjectsView = () => {
   const { getAllProjects } = useProjects();

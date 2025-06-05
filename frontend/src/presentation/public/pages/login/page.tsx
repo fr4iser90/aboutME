@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Navbar } from '@/presentation/public/components/layout/Navbar';
 import { authApi } from '@/domain/shared/utils/api';
-import './page.css';
 
 export function LoginView() {
   const [email, setEmail] = useState('');

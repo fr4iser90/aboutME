@@ -4,7 +4,6 @@ import { Badge } from '@/presentation/shared/ui/badge';
 import { Button } from '@/presentation/shared/ui/button';
 import { ExternalLink, Github, Star, GitFork, Eye, AlertCircle, Home, Clock } from 'lucide-react';
 import Image from 'next/image';
-import './ProjectCard.css';
 
 interface ProjectCardProps {
   project: Project;
