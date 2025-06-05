@@ -52,7 +52,7 @@ export default function Projects() {
     return (
       <section id="projects" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold mb-12 galaxy-text text-center">Featured Projects</h2>
+          <h2 className="text-4xl font-bold mb-12 text text-center">Featured Projects</h2>
           <div className="text-center text-red-500">
             <p>Error loading projects: {error}</p>
           </div>
@@ -65,7 +65,7 @@ export default function Projects() {
     return (
       <section id="projects" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold mb-12 galaxy-text text-center">Featured Projects</h2>
+          <h2 className="text-4xl font-bold mb-12 text text-center">Featured Projects</h2>
           <div className="text-center text-gray-500">
             <p>No projects found</p>
           </div>
@@ -77,7 +77,7 @@ export default function Projects() {
   return (
     <section id="projects" className="py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-4xl font-bold mb-12 galaxy-text text-center">Featured Projects</h2>
+        <h2 className="text-4xl font-bold mb-12 text text-center">Featured Projects</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project) => (
             <a
@@ -85,9 +85,9 @@ export default function Projects() {
               href={project.html_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="galaxy-card p-6 rounded-lg hover:transform hover:scale-105 transition-all duration-300"
+              className="card p-6 rounded-lg hover:transform hover:scale-105 transition-all duration-300"
             >
-              <h3 className="text-xl font-semibold mb-2 galaxy-text">{project.name}</h3>
+              <h3 className="text-xl font-semibold mb-2 text">{project.name}</h3>
               <p className="text-slate-300 mb-4">{project.description || 'No description available'}</p>
               <div className="flex flex-wrap gap-2">
                 {project.topics?.map((topic) => (

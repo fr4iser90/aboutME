@@ -117,13 +117,13 @@ export function ProjectImportPanel() {
   };
 
   return (
-    <div className="galaxy-card mb-8">
-      <h2 className="text-2xl font-bold mb-4 galaxy-text">Projekte importieren</h2>
+    <div className="card mb-8">
+      <h2 className="text-2xl font-bold mb-4 text">Projekte importieren</h2>
       <div className="flex flex-col md:flex-row gap-4 mb-4">
         <select
           value={source}
           onChange={e => setSource(e.target.value)}
-          className="galaxy-card px-2 py-1"
+          className="card px-2 py-1"
         >
           {SOURCES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
         </select>
@@ -134,21 +134,21 @@ export function ProjectImportPanel() {
               value={input}
               onChange={e => setInput(e.target.value)}
               placeholder="Username oder URL"
-              className="galaxy-card px-2 py-1 flex-1"
+              className="card px-2 py-1 flex-1"
             />
             <input
               type="text"
               value={token}
               onChange={e => setToken(e.target.value)}
               placeholder="Token (optional)"
-              className="galaxy-card px-2 py-1 flex-1"
+              className="card px-2 py-1 flex-1"
             />
           </>
         )}
         <button
           onClick={fetchProjects}
           disabled={loading || (source !== 'manual' && !input.trim())}
-          className="galaxy-card galaxy-text px-4 py-2 hover:brightness-110 disabled:opacity-50"
+          className="card text px-4 py-2 hover:brightness-110 disabled:opacity-50"
         >
           {loading ? 'Lade...' : source === 'manual' ? 'Neues Projekt' : 'Projekte laden'}
         </button>
@@ -203,7 +203,7 @@ export function ProjectImportPanel() {
                 </div>
                 <ProjectCard project={project} />
                 <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 w-11/12 flex justify-between items-center pointer-events-none">
-                  <span className="font-bold text-base galaxy-text truncate max-w-[70%]">
+                  <span className="font-bold text-base text truncate max-w-[70%]">
                     {project.name || project.title}
                   </span>
                   {project.archived && (

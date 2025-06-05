@@ -7,25 +7,27 @@ export interface ProjectCardProps {
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   return (
-    <div className="galaxy-card p-6 rounded-lg hover:transform hover:scale-105 transition-all duration-300 bg-white shadow-md">
+    <div className="card p-4 rounded-lg max-w-sm mb-6 hover:transform hover:scale-105 transition-all duration-300" style={{ background: 'var(--theme-semantic-card)', color: 'var(--theme-semantic-card-foreground)', boxShadow: 'var(--theme-shadow-default)', borderRadius: 'var(--theme-border-radius-lg)' }}>
       {project.imageUrl && (
         <img
           src={project.imageUrl}
           alt={project.title}
-          className="w-full h-40 object-cover rounded mb-4"
+          className="w-full h-28 object-cover rounded mb-3"
+          style={{ borderRadius: 'var(--theme-border-radius-lg)' }}
         />
       )}
-      <h3 className="text-xl font-semibold mb-2 galaxy-text">{project.title}</h3>
-      <p className="text-slate-600 mb-4">{project.description || 'No description available'}</p>
+      <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--theme-primary)' }}>{project.title}</h3>
+      <p className="mb-3" style={{ color: 'var(--theme-semantic-muted-foreground)' }}>{project.description || 'No description available'}</p>
       
       {/* Languages and Topics */}
-      <div className="flex flex-wrap gap-2 mb-4">
+      <div className="flex flex-wrap gap-2 mb-3">
         {project.details?.languages_map && Object.keys(project.details.languages_map).length > 0 && (
           <>
             {Object.entries(project.details.languages_map).map(([lang, bytes]) => (
               <span
                 key={lang}
-                className="px-2 py-1 text-xs rounded-full bg-blue-900/30 text-blue-700"
+                className="px-2 py-1 text-xs rounded-full"
+                style={{ background: 'var(--theme-semantic-accent-hover-background)', color: 'var(--theme-semantic-accent-foreground)' }}
                 title={`${lang}: ${bytes} bytes`}
               >
                 {lang}
@@ -36,7 +38,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         {project.topics?.map((topic) => (
           <span
             key={topic}
-            className="px-2 py-1 text-xs rounded-full bg-purple-900/30 text-purple-700"
+            className="px-2 py-1 text-xs rounded-full"
+            style={{ background: 'var(--theme-semantic-muted)', color: 'var(--theme-semantic-muted-foreground)' }}
           >
             {topic}
           </span>
@@ -44,7 +47,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
       </div>
 
       {/* GitHub Stats */}
-      <div className="flex items-center gap-4 mb-4 text-sm text-slate-500">
+      <div className="flex items-center gap-4 mb-4 text-sm" style={{ color: 'var(--theme-semantic-muted-foreground)' }}>
         {typeof project.starsCount === 'number' && (
           <div className="flex items-center">
             <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
@@ -86,7 +89,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
             href={project.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+            className="text-sm font-medium"
+            style={{ color: 'var(--theme-primary)' }}
           >
             GitHub
           </a>
@@ -96,7 +100,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
             href={project.liveUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-green-600 hover:text-green-800 text-sm font-medium"
+            className="text-sm font-medium"
+            style={{ color: 'var(--theme-secondary)' }}
           >
             Demo
           </a>
@@ -106,7 +111,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
             href={project.homepageUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-purple-600 hover:text-purple-800 text-sm font-medium"
+            className="text-sm font-medium"
+            style={{ color: 'var(--theme-accent)' }}
           >
             Homepage
           </a>
@@ -115,7 +121,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
 
       {/* Last Updated */}
       {project.updatedAt && (
-        <div className="text-xs text-slate-400 mt-2">
+        <div className="text-xs mt-2" style={{ color: 'var(--theme-semantic-muted-foreground)' }}>
           Last updated: {new Date(project.updatedAt).toLocaleDateString()}
         </div>
       )}

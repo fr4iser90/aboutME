@@ -21,15 +21,15 @@ export function ProjectList({ viewMode = 'card', onEditProject }: ProjectListPro
   const tabContext = useTabContext();
 
   useEffect(() => {
-    console.log("ProjectList useEffect running"); // Log 2
+    console.log("ProjectList useEffect running"); 
     fetchProjects();
   }, []);
 
   const fetchProjects = async () => {
-    console.log("fetchProjects called"); // Log 3
+    console.log("fetchProjects called"); 
     try {
       setLoading(true);
-      console.log("Attempting to call projectApi.getProjects()"); // Log 4
+      console.log("Attempting to call projectApi.getProjects()"); 
       const response = await projectApi.getProjects();
       setProjects(response.data);
       setError(null);
@@ -103,7 +103,7 @@ export function ProjectList({ viewMode = 'card', onEditProject }: ProjectListPro
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold galaxy-text">Projects Overview</h2>
+        <h2 className="text-2xl font-bold text">Projects Overview</h2>
         <div className="space-x-2 flex items-center">
           <button
             onClick={() => { setShowAddModal(true); setAddMode('none'); }}
@@ -118,7 +118,7 @@ export function ProjectList({ viewMode = 'card', onEditProject }: ProjectListPro
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-slate-900 p-6 rounded-lg shadow-lg w-full max-w-md">
-            <h3 className="text-lg font-bold mb-4 galaxy-text">Projekt hinzufügen</h3>
+            <h3 className="text-lg font-bold mb-4 text">Projekt hinzufügen</h3>
             {addMode === 'none' && (
               <div className="flex flex-col gap-4">
                 <button
@@ -178,7 +178,7 @@ export function ProjectList({ viewMode = 'card', onEditProject }: ProjectListPro
         
         return (
           <div key={sourceKey} className="mb-12">
-            <h3 className="text-xl font-semibold mb-4 pb-2 border-b border-gray-700 galaxy-text">
+            <h3 className="text-xl font-semibold mb-4 pb-2 border-b border-gray-700 text">
               {groupTitle} ({projectsInGroup.length})
             </h3>
             {viewMode === 'card' ? (

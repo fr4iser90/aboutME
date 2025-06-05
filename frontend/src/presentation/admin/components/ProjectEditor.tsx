@@ -251,7 +251,7 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
       {/* Editor (links) */}
       <form onSubmit={handleSubmit} className="space-y-4 flex-1">
         <div>
-          <label htmlFor="is_public" className="block text-sm font-medium galaxy-text">Auf Portfolio anzeigen</label>
+          <label htmlFor="is_public" className="block text-sm font-medium text">Auf Portfolio anzeigen</label>
           <input
             type="checkbox"
             id="is_public"
@@ -264,14 +264,14 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
         {formData.is_public && (
           <div className="space-y-4 border-b border-purple-900 pb-4 mb-4">
             <div className="mb-2">
-              <label className="block text-sm font-medium galaxy-text">Beschreibung (aus GitHub, nicht editierbar)</label>
+              <label className="block text-sm font-medium text">Beschreibung (aus GitHub, nicht editierbar)</label>
               <div className="text-gray-400 italic mt-1 bg-slate-900/40 rounded p-2">
                 {project?.description || 'Keine GitHub-Beschreibung vorhanden.'}
               </div>
             </div>
             <div className="grid grid-cols-2 gap-2 mb-4">
               {Object.entries(fieldsVisibility).map(([field, visible]) => (
-                <label key={field} className="flex items-center space-x-2 text-sm galaxy-text">
+                <label key={field} className="flex items-center space-x-2 text-sm text">
                   <input
                     type="checkbox"
                     checked={visible}
@@ -284,7 +284,7 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
             </div>
             {overrideFields.map((field) => (
               <div key={field} className="mb-2">
-                <label className="flex items-center space-x-2 text-sm galaxy-text">
+                <label className="flex items-center space-x-2 text-sm text">
                   <input
                     type="checkbox"
                     checked={override[field]}
@@ -296,7 +296,7 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
                 {override[field] ? (
                   field === 'description' || field === 'own_description' || field === 'learnings' || field === 'challenges' ? (
                     <textarea
-                      className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                      className="mt-1 block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
                       value={formData[field as keyof ProjectFormData] as string || ''}
                       onChange={e => setFormData({ ...formData, [field]: e.target.value })}
                       rows={2}
@@ -304,7 +304,7 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
                     />
                   ) : (
                     <input
-                      className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                      className="mt-1 block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
                       value={formData[field as keyof ProjectFormData] as string || ''}
                       onChange={e => setFormData({ ...formData, [field]: e.target.value })}
                       placeholder={`Eigener ${field.replace(/_/g, ' ')}`}
@@ -318,37 +318,37 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
               </div>
             ))}
             <div>
-              <label htmlFor="custom_tags" className="block text-sm font-medium galaxy-text">Eigene Tags (kommagetrennt)</label>
+              <label htmlFor="custom_tags" className="block text-sm font-medium text">Eigene Tags (kommagetrennt)</label>
               <input
                 type="text"
                 id="custom_tags"
                 value={formData.custom_tags?.join(', ') || ''}
                 onChange={e => setFormData({ ...formData, custom_tags: e.target.value.split(',').map(t => t.trim()).filter(Boolean) })}
-                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                className="mt-1 block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
               />
             </div>
             <div>
-              <label htmlFor="team" className="block text-sm font-medium galaxy-text">Team (kommagetrennt)</label>
+              <label htmlFor="team" className="block text-sm font-medium text">Team (kommagetrennt)</label>
               <input
                 type="text"
                 id="team"
                 value={formData.team?.join(', ') || ''}
                 onChange={e => setFormData({ ...formData, team: e.target.value.split(',').map(t => t.trim()).filter(Boolean) })}
-                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                className="mt-1 block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
               />
             </div>
             <div>
-              <label htmlFor="screenshots" className="block text-sm font-medium galaxy-text">Screenshots (Bild-URLs, kommagetrennt)</label>
+              <label htmlFor="screenshots" className="block text-sm font-medium text">Screenshots (Bild-URLs, kommagetrennt)</label>
               <input
                 type="text"
                 id="screenshots"
                 value={formData.screenshots?.join(', ') || ''}
                 onChange={e => setFormData({ ...formData, screenshots: e.target.value.split(',').map(t => t.trim()).filter(Boolean) })}
-                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                className="mt-1 block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
               />
             </div>
             <div>
-              <label htmlFor="links" className="block text-sm font-medium galaxy-text">Links (Format: label|url, kommagetrennt)</label>
+              <label htmlFor="links" className="block text-sm font-medium text">Links (Format: label|url, kommagetrennt)</label>
               <input
                 type="text"
                 id="links"
@@ -359,7 +359,7 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
                   entries.forEach(([label, url]) => { if(label && url) linksObj[label] = url; });
                   setFormData({ ...formData, links: linksObj });
                 }}
-                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                className="mt-1 block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
                 placeholder="z.B. Demo|https://demo.com, Blog|https://blog.com"
               />
             </div>
@@ -368,97 +368,97 @@ export function ProjectEditor({ project, onSave, onCancel }: ProjectEditorProps)
 
         <div className="space-y-4 bg-slate-900/40 rounded-lg p-4 mb-4">
           <div>
-            <label className="block text-sm font-medium galaxy-text">Stars</label>
-            <input type="number" value={formData.starsCount} readOnly className="mt-1 block w-full rounded-md galaxy-card text-white appearance-none" style={{ MozAppearance: 'textfield' }} />
+            <label className="block text-sm font-medium text">Stars</label>
+            <input type="number" value={formData.starsCount} readOnly className="mt-1 block w-full rounded-md card text-white appearance-none" style={{ MozAppearance: 'textfield' }} />
           </div>
           <div>
-            <label className="block text-sm font-medium galaxy-text">Forks</label>
-            <input type="number" value={formData.forksCount} readOnly className="mt-1 block w-full rounded-md galaxy-card text-white appearance-none" style={{ MozAppearance: 'textfield' }} />
+            <label className="block text-sm font-medium text">Forks</label>
+            <input type="number" value={formData.forksCount} readOnly className="mt-1 block w-full rounded-md card text-white appearance-none" style={{ MozAppearance: 'textfield' }} />
           </div>
           <div>
-            <label className="block text-sm font-medium galaxy-text">Watchers</label>
-            <input type="number" value={formData.watchersCount} readOnly className="mt-1 block w-full rounded-md galaxy-card text-white appearance-none" style={{ MozAppearance: 'textfield' }} />
+            <label className="block text-sm font-medium text">Watchers</label>
+            <input type="number" value={formData.watchersCount} readOnly className="mt-1 block w-full rounded-md card text-white appearance-none" style={{ MozAppearance: 'textfield' }} />
           </div>
           <div>
-            <label className="block text-sm font-medium galaxy-text">Status</label>
-            <input type="text" value={formData.status} readOnly className="mt-1 block w-full rounded-md galaxy-card text-white" />
+            <label className="block text-sm font-medium text">Status</label>
+            <input type="text" value={formData.status} readOnly className="mt-1 block w-full rounded-md card text-white" />
           </div>
           <div>
-            <label className="block text-sm font-medium galaxy-text">Sprache</label>
-            <input type="text" value={formData.language || ''} readOnly className="mt-1 block w-full rounded-md galaxy-card text-white" />
+            <label className="block text-sm font-medium text">Sprache</label>
+            <input type="text" value={formData.language || ''} readOnly className="mt-1 block w-full rounded-md card text-white" />
           </div>
           <div>
-            <label className="block text-sm font-medium galaxy-text">Topics</label>
-            <input type="text" value={formData.topics?.join(', ') || ''} readOnly className="mt-1 block w-full rounded-md galaxy-card text-white" />
+            <label className="block text-sm font-medium text">Topics</label>
+            <input type="text" value={formData.topics?.join(', ') || ''} readOnly className="mt-1 block w-full rounded-md card text-white" />
           </div>
           <div>
-            <label className="block text-sm font-medium galaxy-text">Homepage URL</label>
-            <input type="text" value={formData.homepageUrl || ''} readOnly className="mt-1 block w-full rounded-md galaxy-card text-white" />
+            <label className="block text-sm font-medium text">Homepage URL</label>
+            <input type="text" value={formData.homepageUrl || ''} readOnly className="mt-1 block w-full rounded-md card text-white" />
           </div>
         </div>
 
         {project?.sourceType !== 'github' && (
           <>
             <div>
-              <label htmlFor="title" className="block text-sm font-medium galaxy-text">Title</label>
+              <label htmlFor="title" className="block text-sm font-medium text">Title</label>
               <input
                 type="text"
                 id="title"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                className="mt-1 block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
                 required
               />
             </div>
             <div>
-              <label htmlFor="description" className="block text-sm font-medium galaxy-text">Description</label>
+              <label htmlFor="description" className="block text-sm font-medium text">Description</label>
               <textarea
                 id="description"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 rows={3}
-                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                className="mt-1 block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
                 required
               />
             </div>
             <div>
-              <label htmlFor="imageUrl" className="block text-sm font-medium galaxy-text">Image URL</label>
+              <label htmlFor="imageUrl" className="block text-sm font-medium text">Image URL</label>
               <input
                 type="url"
                 id="imageUrl"
                 value={formData.imageUrl}
                 onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                className="mt-1 block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
               />
             </div>
             <div>
-              <label htmlFor="githubUrl" className="block text-sm font-medium galaxy-text">GitHub URL</label>
+              <label htmlFor="githubUrl" className="block text-sm font-medium text">GitHub URL</label>
               <input
                 type="url"
                 id="githubUrl"
                 value={formData.githubUrl}
                 onChange={(e) => setFormData({ ...formData, githubUrl: e.target.value })}
-                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                className="mt-1 block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
               />
             </div>
             <div>
-              <label htmlFor="liveUrl" className="block text-sm font-medium galaxy-text">Demo URL</label>
+              <label htmlFor="liveUrl" className="block text-sm font-medium text">Demo URL</label>
               <input
                 type="url"
                 id="liveUrl"
                 value={formData.liveUrl}
                 onChange={(e) => setFormData({ ...formData, liveUrl: e.target.value })}
-                className="mt-1 block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                className="mt-1 block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium galaxy-text">Technologies</label>
+              <label className="block text-sm font-medium text">Technologies</label>
               <div className="mt-1 flex gap-2">
                 <input
                   type="text"
                   value={newTech}
                   onChange={(e) => setNewTech(e.target.value)}
-                  className="block w-full rounded-md galaxy-card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
+                  className="block w-full rounded-md card shadow-sm focus:border-purple-500 focus:ring-purple-500 text-white"
                   placeholder="Add technology"
                 />
                 <button

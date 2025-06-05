@@ -41,11 +41,11 @@ export default function Skills() {
   return (
     <section id="skills" className="py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-4xl font-bold mb-12 galaxy-text text-center">Skills & Stuff</h2>
+        <h2 className="text-4xl font-bold mb-12 text text-center">Skills & Stuff</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {skills.map((skillGroup) => (
-            <div key={skillGroup.category} className="galaxy-card p-6 rounded-lg">
-              <h3 className="text-2xl font-semibold mb-4 galaxy-text">{skillGroup.category}</h3>
+            <div key={skillGroup.category} className="card p-6 rounded-lg">
+              <h3 className="text-2xl font-semibold mb-4 text">{skillGroup.category}</h3>
               <p className="text-slate-400 mb-4">{skillGroup.description}</p>
               <ul className="list-disc list-inside text-slate-300 space-y-1">
                 {skillGroup.items.map((item) => (

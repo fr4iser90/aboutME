@@ -2,7 +2,7 @@ export default function NixOS() {
   return (
     <section id="nixos" style={{ padding: 'var(--section-padding, 60px 0)' }}>
       <div style={{ maxWidth: 'var(--container-max-width, 900px)', margin: '0 auto', padding: 'var(--container-padding, 0 24px)' }}>
-        <h2 className="section-heading galaxy-text">NixOS</h2>
+        <h2 className="section-heading text">NixOS</h2>
         <div style={{ marginBottom: 'var(--nixos-section-gap, 2rem)' }}>
           <h3 style={{ fontSize: 'var(--nixos-subheading-font-size, 2rem)', fontWeight: 'var(--nixos-subheading-font-weight, 600)', marginBottom: 'var(--nixos-subheading-margin-bottom, 0.5rem)' }}>Wie ich zu NixOS kam</h3>
           <p className="section-paragraph" style={{ marginBottom: 'var(--nixos-paragraph-margin-bottom, 1rem)' }}>

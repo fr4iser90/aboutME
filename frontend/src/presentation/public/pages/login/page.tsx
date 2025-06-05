@@ -39,7 +39,7 @@ export function LoginView() {
       <main className="min-h-screen flex items-center justify-center">
         <div className="max-w-md w-full space-y-8 p-8 bg-slate-800/50 backdrop-blur-sm rounded-xl border border-purple-900/30">
           <div>
-            <h2 className="mt-6 text-center text-3xl font-bold galaxy-text">
+            <h2 className="mt-6 text-center text-3xl font-bold text">
               Admin Login
             </h2>
           </div>

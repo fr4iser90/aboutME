@@ -95,7 +95,7 @@ export const HomeView: FC = () => { // Used FC type
           <div className="stars" style={{ position: 'absolute', inset: 0 }}></div>
           <Container style={{ textAlign: 'center', position: 'relative', zIndex: 10 }}>
             <h1 style={{ fontSize: '4rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>
-              Welcome to My Galaxy
+              Welcome to my website
             </h1>
             <p style={{ fontSize: '1.5rem', color: 'var(--color-text-secondary, #b0b0b0)', marginBottom: '2rem' }}>
               Exploring the cosmos of code and creativity

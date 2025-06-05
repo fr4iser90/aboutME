@@ -38,13 +38,13 @@ export function GitHubSyncButton() {
         value={input}
         onChange={e => setInput(e.target.value)}
         placeholder="GitHub Username oder URL"
-        className="px-2 py-1 border rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 galaxy-card"
+        className="px-2 py-1 border rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 card"
         style={{ minWidth: 180 }}
       />
       <button
         onClick={handleSync}
         disabled={isLoading || !input.trim()}
-        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md galaxy-card galaxy-text hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50"
+        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md card text hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50"
       >
         <ArrowPathIcon className={`h-5 w-5 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
         {isLoading ? 'Syncing...' : 'Sync GitHub Projects'}

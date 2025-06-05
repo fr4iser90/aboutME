@@ -37,8 +37,8 @@ export function Navbar() {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '100%' }}>
-          <Link href="/" className="text-xl font-bold galaxy-text">
-            My Galaxy
+          <Link href="/" className="text-xl font-bold text">
+            About
           </Link>
           <div style={{ display: 'flex' }}>
             <div style={{ marginLeft: '2.5rem', display: 'flex', alignItems: 'baseline', gap: '1rem' }}>
