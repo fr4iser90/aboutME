@@ -1,0 +1,91 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: var(--navbar-bg, rgba(2, 6, 23, 0.8));
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--navbar-border, rgba(167, 139, 250, 0.2));
+}
+
+.navbar-container {
+  max-width: var(--container-max-width, 1200px);
+  margin: 0 auto;
+  padding: var(--navbar-padding, 0 1rem);
+}
+
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--navbar-height, 4rem);
+}
+
+.navbar-links-outer {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .navbar-links {
+    display: none;
+  }
+}
+
+.navbar-link {
+    color: var(--navbar-link-color, #b0b0b0);
+    background: transparent;
+    padding: var(--navbar-link-padding, 0.5rem 1rem);
+    border-radius: var(--navbar-link-radius, 0.5rem);
+    font-size: var(--navbar-link-font-size, 1rem);
+    font-weight: var(--navbar-link-font-weight, 500);
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    display: inline-block;
+  }
+  
+  .navbar-link:hover {
+    color: var(--navbar-link-hover-color, #fff);
+    background: var(--navbar-link-hover-bg, #7c3aed33);
+  }
+  
+  .navbar-link-active {
+    color: var(--navbar-link-active-color, #fff);
+    background: var(--navbar-link-active-bg, #7c3aed);
+  }
+  
+  .navbar-link-button,
+  .navbar-link-login,
+  .navbar-link-admin {
+    color: var(--navbar-button-color, #fff);
+    background: var(--navbar-button-bg, #03afee);
+    border-radius: var(--navbar-button-radius, 0.5rem);
+    font-weight: var(--navbar-button-font-weight, 500);
+    padding: var(--navbar-button-padding, 0.5rem 1.25rem);
+    box-shadow: var(--navbar-button-shadow, 0 2px 8px rgba(124,58,237,0.08));
+    transition: background 0.2s, color 0.2s;
+  }
+  
+  .navbar-link-login:hover,
+  .navbar-link-admin:hover {
+    background: var(--navbar-button-hover-bg, #a78bfa);
+    color: var(--navbar-button-hover-color, #fff);
+  }
+  
+  .navbar-brand {
+    font-size: 1.25rem; /* text-xl */
+    font-weight: 700; /* font-bold */
+    background: var(--text-gradient, linear-gradient(to right, #a78bfa, #f472b6, #60a5fa));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+  }
+  

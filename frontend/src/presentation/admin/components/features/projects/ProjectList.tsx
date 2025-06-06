@@ -101,13 +101,13 @@ export function ProjectList({ viewMode = 'card', onEditProject }: ProjectListPro
   const sourceOrder: (keyof typeof groupedProjects)[] = ['github', 'gitlab', 'manual', 'other'];
 
   return (
-    <div className="project-list-root">
-      <div className="project-list-header">
-        <h2 className="project-list-title">Projects Overview</h2>
-        <div className="project-list-header-actions">
+    <div className="project-list">
+      <div className="project-list__header">
+        <h2 className="project-list__title">Projects Overview</h2>
+        <div className="project-list__header-actions">
           <button
             onClick={() => { setShowAddModal(true); setAddMode('none'); }}
-            className="project-list-add-btn"
+            className="project-list__add-btn"
             title="Projekt hinzufügen oder importieren"
           >
             +
@@ -115,25 +115,25 @@ export function ProjectList({ viewMode = 'card', onEditProject }: ProjectListPro
         </div>
       </div>
       {showAddModal && (
-        <div className="project-list-modal-overlay">
-          <div className="project-list-modal">
-            <h3 className="project-list-modal-title">Projekt hinzufügen</h3>
+        <div className="project-list__modal-overlay">
+          <div className="project-list__modal">
+            <h3 className="project-list__modal-title">Projekt hinzufügen</h3>
             {addMode === 'none' && (
-              <div className="project-list-modal-actions">
+              <div className="project-list__modal-actions">
                 <button
-                  className="project-list-modal-btn-import"
+                  className="project-list__modal-btn--import"
                   onClick={() => { setAddMode('import'); }}
                 >
                   Projekte importieren
                 </button>
                 <button
-                  className="project-list-modal-btn-manual"
+                  className="project-list__modal-btn--manual"
                   onClick={() => { setAddMode('manual'); setShowAddModal(false); }}
                 >
                   Manuell anlegen
                 </button>
                 <button
-                  className="project-list-modal-btn-cancel"
+                  className="project-list__modal-btn--cancel"
                   onClick={() => setShowAddModal(false)}
                 >
                   Abbrechen
@@ -143,7 +143,7 @@ export function ProjectList({ viewMode = 'card', onEditProject }: ProjectListPro
             {addMode === 'import' && (
               <>
                 <ProjectImportPanel />
-                <div className="project-list-modal-close-row">
+                <div className="project-list__modal-close-row">
                   <button
                     onClick={() => setShowAddModal(false)}
                     className="project-list-modal-btn-cancel"
@@ -166,31 +166,31 @@ export function ProjectList({ viewMode = 'card', onEditProject }: ProjectListPro
         else if (sourceKey === 'gitlab') groupTitle = 'GitLab Projects';
         else if (sourceKey === 'manual') groupTitle = 'Manual Projects';
         return (
-          <div key={sourceKey} className="project-list-group">
-            <h3 className="project-list-group-title">
+          <div key={sourceKey} className="project-list__group">
+            <h3 className="project-list__group-title">
               {groupTitle} ({projectsInGroup.length})
             </h3>
             {viewMode === 'card' ? (
-              <div className="project-list-cards">
+              <div className="project-list__cards">
                 {projectsInGroup.map((project) => (
-                  <div key={project.id} className="project-list-card-wrapper">
+                  <div key={project.id} className="project-list__card-wrapper">
                     <ProjectCard project={project} />
-                    <div className="project-list-card-actions">
+                    <div className="project-list__card-actions">
                       <button
                         onClick={() => handleEditClick(project)}
-                        className="project-list-card-edit"
+                        className="project-list__card-edit"
                         aria-label={`Edit ${project.title}`}
                       >
-                        <svg className="project-list-card-edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="project-list__card-edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                         </svg>
                       </button>
                       <button
                         onClick={() => handleDelete(project.id)}
-                        className="project-list-card-delete"
+                        className="project-list__card-delete"
                         aria-label={`Delete ${project.title}`}
                       >
-                        <svg className="project-list-card-delete-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="project-list__card-delete-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
                       </button>
@@ -199,15 +199,15 @@ export function ProjectList({ viewMode = 'card', onEditProject }: ProjectListPro
                 ))}
               </div>
             ) : (
-              <div className="project-list-simple">
+              <div className="project-list__simple">
                 {projectsInGroup.map((project) => (
                   <button
                     key={project.id}
                     onClick={() => handleEditClick(project)}
-                    className="project-list-simple-btn"
+                    className="project-list__simple-btn"
                     title={project.description || project.title}
                   >
-                    <span className="project-list-simple-title">{project.title}</span>
+                    <span className="project-list__simple-title">{project.title}</span>
                   </button>
                 ))}
               </div>

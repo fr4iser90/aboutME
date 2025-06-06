@@ -52,14 +52,14 @@ export default function ProjectEditor({ project: initialProject, onSave, onCance
   };
 
   return (
-    <div className="project-editor-main-content">
-      <div className="project-editor-main-header">
-        <h2 className="project-editor-main-title">{project.id ? 'Edit Project' : 'Create New Project'}</h2>
-        <div className="project-editor-main-links">
+    <div className="project-editor__main-content">
+      <div className="project-editor__main-header">
+        <h2 className="project-editor__main-title">{project.id ? 'Edit Project' : 'Create New Project'}</h2>
+        <div className="project-editor__main-links">
           {project.githubUrl && (
             <Button variant="outline" size="sm" asChild>
               <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="project-editor-main-linkicon" />
+                <ExternalLink className="project-editor__main-linkicon" />
                 GitHub
               </a>
             </Button>
@@ -67,25 +67,25 @@ export default function ProjectEditor({ project: initialProject, onSave, onCance
           {project.liveUrl && (
             <Button variant="outline" size="sm" asChild>
               <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="project-editor-main-linkicon" />
+                <ExternalLink className="project-editor__main-linkicon" />
                 Live Demo
               </a>
             </Button>
           )}
         </div>
       </div>
-      <ScrollArea className="project-editor-list-scroll">
-        <div className="project-editor-main-form">
-          <div className="project-editor-main-form-group">
-            <label className="project-editor-main-label">Title</label>
+      <ScrollArea className="project-editor__list-scroll">
+        <div className="project-editor__main-form">
+          <div className="project-editor__main-form-group">
+            <label className="project-editor__main-label">Title</label>
             <Input
               value={project.title}
               onChange={(e) => handleInputChange('title', e.target.value)}
               placeholder="Project title"
             />
           </div>
-          <div className="project-editor-main-form-group">
-            <label className="project-editor-main-label">Short Description</label>
+          <div className="project-editor__main-form-group">
+            <label className="project-editor__main-label">Short Description</label>
             <Textarea
               value={project.short_description || ''}
               onChange={(e) => handleInputChange('short_description', e.target.value)}
@@ -93,8 +93,8 @@ export default function ProjectEditor({ project: initialProject, onSave, onCance
               rows={2}
             />
           </div>
-          <div className="project-editor-main-form-group">
-            <label className="project-editor-main-label">Full Description</label>
+          <div className="project-editor__main-form-group">
+            <label className="project-editor__main-label">Full Description</label>
             <Textarea
               value={project.description}
               onChange={(e) => handleInputChange('description', e.target.value)}
@@ -102,24 +102,24 @@ export default function ProjectEditor({ project: initialProject, onSave, onCance
               rows={4}
             />
           </div>
-          <div className="project-editor-main-form-group">
-            <label className="project-editor-main-label">GitHub URL</label>
+          <div className="project-editor__main-form-group">
+            <label className="project-editor__main-label">GitHub URL</label>
             <Input
               value={project.githubUrl || ''}
               onChange={(e) => handleInputChange('githubUrl', e.target.value)}
               placeholder="https://github.com/username/repo"
             />
           </div>
-          <div className="project-editor-main-form-group">
-            <label className="project-editor-main-label">Live Demo URL</label>
+          <div className="project-editor__main-form-group">
+            <label className="project-editor__main-label">Live Demo URL</label>
             <Input
               value={project.liveUrl || ''}
               onChange={(e) => handleInputChange('liveUrl', e.target.value)}
               placeholder="https://demo-url.com"
             />
           </div>
-          <div className="project-editor-main-form-group">
-            <label className="project-editor-main-label">Technologies</label>
+          <div className="project-editor__main-form-group">
+            <label className="project-editor__main-label">Technologies</label>
             <Input
               value={project.technologies.join(', ')}
               onChange={handleTechChange}
@@ -128,7 +128,7 @@ export default function ProjectEditor({ project: initialProject, onSave, onCance
           </div>
         </div>
       </ScrollArea>
-      <div className="project-editor-main-actions">
+      <div className="project-editor__main-actions">
         <Button variant="outline" onClick={onCancel}>Cancel</Button>
         <Button onClick={handleSave} disabled={isSaving}>
           {isSaving ? 'Saving...' : 'Save Project'}

@@ -1,0 +1,14 @@
+.file-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* space-y-2 */
+}
+
+.file-info__label {
+  font-weight: 600; /* font-semibold */
+}
+
+.file-info__list {
+  list-style-type: disc;
+  margin-left: 1.5rem; /* ml-6 */
+}

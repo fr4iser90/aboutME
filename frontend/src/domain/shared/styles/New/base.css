@@ -119,13 +119,54 @@
 }
 
 body {
-  /* Applied by themeApi.ts, but good to have a fallback */
-  background: linear-gradient(to bottom right, 
-    var(--theme-body-background-start, rgb(2, 6, 23)), 
-    var(--theme-body-background-end, rgb(15, 23, 42))
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+    to bottom right,
+    rgb(var(--background-start-rgb)),
+    rgb(var(--background-end-rgb))
   );
-  color: var(--theme-body-foreground, rgb(255, 255, 255));
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* Default sans-serif stack */
+  min-height: 100vh;
 }
 
-/* Add other global styles or utility classes that depend on these CSS variables if needed */
+.text {
+  background: var(--text-gradient, linear-gradient(to right, #a78bfa, #f472b6, #60a5fa));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.card {
+  background: var(--card-bg, rgba(30,41,59,0.5));
+  backdrop-filter: blur(var(--card-blur, 4px));
+  border: 1px solid var(--card-border, #a78bfa33);
+  box-shadow: var(--card-shadow, 0 4px 24px rgba(167,139,250,0.1));
+  border-radius: var(--card-radius, 1rem);
+  transition: box-shadow 0.3s, border-color 0.3s;
+}
+.card:hover {
+  box-shadow: var(--card-shadow-hover, 0 4px 24px rgba(167,139,250,0.2));
+  border-color: var(--card-border-hover, #a78bfa55);
+}
+
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-list-gap, 16px);
+}
+
+.card-list-item {
+  display: flex;
+  align-items: center;
+  gap: var(--card-list-item-gap, 12px);
+  color: var(--card-list-item-color, #b0b0b0);
+}
+
+.card-list-icon {
+  color: var(--card-list-icon-color, #a78bfa);
+  font-size: var(--card-list-icon-font-size, 22px);
+}
+
+.error-message {
+  color: #ef4444;
+}

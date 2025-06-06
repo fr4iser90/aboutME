@@ -1,0 +1,9 @@
+.project-list__message {
+  text-align: center;
+  padding-top: 2rem; /* py-8 */
+  padding-bottom: 2rem; /* py-8 */
+}
+
+.project-list__message--error {
+  color: #dc2626; /* text-red-600 */
+}

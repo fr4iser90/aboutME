@@ -1,0 +1,7 @@
+.projects-page-container {
+  max-width: 80rem; /* container */
+  margin-left: auto; /* mx-auto */
+  margin-right: auto; /* mx-auto */
+  padding-top: 2rem; /* py-8 */
+  padding-bottom: 2rem; /* py-8 */
+}

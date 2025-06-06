@@ -1,0 +1,4 @@
+.toaster__content {
+  display: grid;
+  gap: 0.25rem; /* gap-1 */
+}

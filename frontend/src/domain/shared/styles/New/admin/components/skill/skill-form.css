@@ -1,0 +1,17 @@
+.skill-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* space-y-4 */
+}
+
+.skill-form__label {
+  display: block;
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500; /* font-medium */
+  margin-bottom: 0.25rem; /* mb-1 */
+}
+
+.skill-form__actions {
+  display: flex;
+  gap: 0.5rem; /* gap-2 */
+}
