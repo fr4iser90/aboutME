@@ -1,4 +1,4 @@
-.progress {
+.progress-bar {
   position: relative;
   height: 0.5rem; /* h-2 */
   width: 100%;
@@ -7,7 +7,7 @@
   background-color: hsl(var(--primary) / 0.2);
 }
 
-.progress__indicator {
+.progress-bar__indicator {
   height: 100%;
   width: 100%;
   flex: 1;

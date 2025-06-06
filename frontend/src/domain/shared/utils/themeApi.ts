@@ -44,6 +44,13 @@ export interface ThemeColors {
   aboutImageBoxShadow: string;
   cardShadowHover: string;
   cardBorderHover: string;
+  success: string;
+  successForeground: string;
+  successHoverBackground: string;
+  warning: string;
+  warningForeground: string;
+  warningHoverBackground: string;
+  mutedHoverBackground: string;
 }
 
 export interface ThemeTypography {
@@ -154,4 +161,4 @@ export const themeApi = {
       body: JSON.stringify(theme),
     });
   }
-}; 
+};

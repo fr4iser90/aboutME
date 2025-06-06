@@ -6,7 +6,7 @@ export default function Pflege() {
         <p className="section-paragraph">
           Hier teile ich bald ein paar Gedanken, Tipps und vielleicht auch Blogposts aus meinem Berufsalltag als Gesundheits- und Krankenpfleger.
         </p>
-        <div className="card" style={{ textAlign: 'center', padding: 'var(--card-padding, 1.5rem)', borderRadius: 'var(--card-radius, 1rem)' }}>[Platzhalter für Blogpost oder Tipps]</div>
+        <div className="card-glow" style={{ textAlign: 'center', padding: 'var(--card-padding, 1.5rem)', borderRadius: 'var(--card-radius, 1rem)' }}>[Platzhalter für Blogpost oder Tipps]</div>
       </div>
     </section>
   );

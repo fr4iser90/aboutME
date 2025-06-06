@@ -7,10 +7,10 @@ export default function Angeln() {
           Hier findest du bald Fotos, Lieblingsplätze, Fangberichte und Ausrüstung rund ums Angeln.
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(var(--angeln-grid-cols, 2), 1fr)', gap: 'var(--angeln-grid-gap, 2rem)' }}>
-          <div className="card" style={{ textAlign: 'center', padding: 'var(--card-padding, 1.5rem)', borderRadius: 'var(--card-radius, 1rem)' }}>[Platzhalter für Fotos]</div>
-          <div className="card" style={{ textAlign: 'center', padding: 'var(--card-padding, 1.5rem)', borderRadius: 'var(--card-radius, 1rem)' }}>[Platzhalter für Lieblingsplätze]</div>
-          <div className="card" style={{ textAlign: 'center', padding: 'var(--card-padding, 1.5rem)', borderRadius: 'var(--card-radius, 1rem)' }}>[Platzhalter für Fangberichte]</div>
-          <div className="card" style={{ textAlign: 'center', padding: 'var(--card-padding, 1.5rem)', borderRadius: 'var(--card-radius, 1rem)' }}>[Platzhalter für Ausrüstung]</div>
+          <div className="card-glow" style={{ textAlign: 'center', padding: 'var(--card-padding, 1.5rem)', borderRadius: 'var(--card-radius, 1rem)' }}>[Platzhalter für Fotos]</div>
+          <div className="card-glow" style={{ textAlign: 'center', padding: 'var(--card-padding, 1.5rem)', borderRadius: 'var(--card-radius, 1rem)' }}>[Platzhalter für Lieblingsplätze]</div>
+          <div className="card-glow" style={{ textAlign: 'center', padding: 'var(--card-padding, 1.5rem)', borderRadius: 'var(--card-radius, 1rem)' }}>[Platzhalter für Fangberichte]</div>
+          <div className="card-glow" style={{ textAlign: 'center', padding: 'var(--card-padding, 1.5rem)', borderRadius: 'var(--card-radius, 1rem)' }}>[Platzhalter für Ausrüstung]</div>
         </div>
       </div>
     </section>

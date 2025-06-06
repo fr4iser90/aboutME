@@ -43,7 +43,30 @@ forest_mist_theme = {
             "sectionParagraph": "#166534",
             "sectionLink": "#22c55e",
             "aboutContentMinWidth": "280px",
-            "aboutImageBoxShadow": "0 4px 24px rgba(34,197,94,0.15)"
+            "aboutImageBoxShadow": "0 4px 24px rgba(34,197,94,0.15)",
+            "cardShadowHover": "0 4px 24px rgba(34,197,94,0.18)",
+            "cardBorderHover": "#22c55e55",
+            "success": "#16a34a",
+            "successForeground": "#ffffff",
+            "successHoverBackground": "#15803d",
+            "warning": "#facc15",
+            "warningForeground": "#1e293b",
+            "warningHoverBackground": "#fbbf24",
+            "mutedHoverBackground": "#94a3b8",
+            "muted": "#94a3b8",
+            "mutedForeground": "#64748b",
+            "destructive": "#ef4444",
+            "destructiveForeground": "#fff",
+            "destructiveHoverBackground": "#dc2626",
+            "border": "#16a34a",
+            "borderHSL": "145 52% 18%",
+            "card": "#e6f9ec",
+            "cardForeground": "#14532d",
+            "popover": "#e6f9ec",
+            "popoverForeground": "#14532d",
+            "ring": "#22c55e",
+            "inputBorder": "#16a34a",
+            "foreground": "#212529"
         },
         "typography": {
             "fontFamily": "Lato, sans-serif",
@@ -93,19 +116,10 @@ forest_mist_theme = {
             "cardHover": "0 4px 24px rgba(34,197,94,0.18)",
             "button": "0 2px 8px rgba(22,163,74,0.08)"
         },
-        "navbar": {
-            "height": "4rem",
-            "containerMaxWidth": "80rem",
-            "containerPaddingX": "1rem"
-        },
-        "card": {
-            "padding": "1.5rem",
-            "radius": "1rem"
-        },
-        "about": {
-            "imageSize": "250px",
-            "imageBoxShadow": "0 4px 24px rgba(34,197,94,0.15)",
-            "contentMinWidth": "280px"
-        },
+        "cardBlur": "4px",
+        "cardRadius": "1rem",
+        "cardListGap": "16px",
+        "cardListItemGap": "12px",
+        "cardListIconFontSize": "22px"
     }
 }

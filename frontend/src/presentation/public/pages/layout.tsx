@@ -1,7 +1,8 @@
 'use client'; // Added 'use client'
 
 import { Inter } from 'next/font/google'
-import '@/domain/shared/styles/globals.css'; // Corrected path
+import '@/domain/shared/styles/base.css';
+import '@/domain/shared/styles/public/theme/public-theme.css';
 
 const inter = Inter({ subsets: ['latin'] })
 

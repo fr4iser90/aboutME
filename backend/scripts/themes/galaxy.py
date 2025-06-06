@@ -8,7 +8,7 @@ galaxy_theme = {
             "accent": "#f472b6",
             "background": "#0f172a",
             "text": "#f1f5f9",
-            "cardBg": "#232946",
+            "cardBg": "rgba(30,41,59,0.5)",
             "cardBorder": "#a78bfa33",
             "cardShadow": "0 4px 24px rgba(167,139,250,0.1)",
             "navbarBg": "rgba(15,23,42,0.8)",
@@ -26,7 +26,33 @@ galaxy_theme = {
             "aboutTitle": "#fff",
             "aboutText": "#b0b0b0",
             "aboutListIcon": "#a78bfa",
-            "aboutListLink": "#b0b0b0"
+            "aboutListLink": "#b0b0b0",
+            "backgroundStart": "rgb(2, 6, 23)",
+            "backgroundEnd": "rgb(15, 23, 42)",
+            "cardTitle": "#fff",
+            "cardText": "#b0b0b0",
+            "cardListItem": "#b0b0b0",
+            "cardListIcon": "#a78bfa",
+            "sectionLink": "#a78bfa",
+            "sectionHeading": "#fff",
+            "sectionParagraph": "#b0b0b0",
+            "buttonBg": "#03afee",
+            "buttonText": "#fff",
+            "buttonBorder": "transparent",
+            "buttonShadow": "0 2px 8px rgba(124,58,237,0.08)",
+            "buttonHoverBg": "#a78bfa",
+            "buttonHoverText": "#fff",
+            "aboutContentMinWidth": "280px",
+            "aboutImageBoxShadow": "0 4px 24px rgba(0,0,0,0.15)",
+            "cardShadowHover": "0 4px 24px rgba(167,139,250,0.2)",
+            "cardBorderHover": "#a78bfa55",
+            "success": "#16a34a",
+            "successForeground": "#ffffff",
+            "successHoverBackground": "#15803d",
+            "warning": "#fde047",
+            "warningForeground": "#1e293b",
+            "warningHoverBackground": "#facc15",
+            "mutedHoverBackground": "#9ca3af"
         },
         "typography": {
             "fontFamily": "Inter, sans-serif",
@@ -76,19 +102,10 @@ galaxy_theme = {
             "cardHover": "0 4px 24px rgba(167,139,250,0.2)",
             "button": "0 2px 8px rgba(124,58,237,0.08)"
         },
-        "navbar": {
-            "height": "4rem",
-            "containerMaxWidth": "80rem",
-            "containerPaddingX": "1rem"
-        },
-        "card": {
-            "padding": "1.5rem",
-            "radius": "1rem"
-        },
-        "about": {
-            "imageSize": "250px",
-            "imageBoxShadow": "0 4px 24px rgba(0,0,0,0.15)",
-            "contentMinWidth": "280px"
-        },
+        "cardBlur": "4px",
+        "cardRadius": "1rem",
+        "cardListGap": "16px",
+        "cardListItemGap": "12px",
+        "cardListIconFontSize": "22px"
     }
 }

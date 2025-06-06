@@ -1,0 +1,6 @@
+/* Admin Theme Entry Point */
+
+@import "../layout/admin-layout.css";
+@import "../components/admin-components.css";
+
+/* Add admin-specific theme variables and utility classes here as needed */
