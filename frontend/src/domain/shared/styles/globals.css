@@ -1,23 +1,20 @@
 @import "./base.css";
 @import "./layout.css";
 @import "./admin.css";
+@import "./admin-layout.css";
 @import "./components.css";
 @import "./pages.css";
+@import "./navbar.css";
 
-:root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 2, 6, 23;
-  --background-end-rgb: 15, 23, 42;
-}
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-    to bottom right,
-    rgb(var(--background-start-rgb)),
-    rgb(var(--background-end-rgb))
+  /* Applied by themeApi.ts, but good to have a fallback */
+  background: linear-gradient(to bottom right, 
+    var(--theme-body-background-start, rgb(2, 6, 23)), 
+    var(--theme-body-background-end, rgb(15, 23, 42))
   );
-  min-height: 100vh;
+  color: var(--theme-body-foreground, rgb(255, 255, 255));
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* Default sans-serif stack */
 }
 
 /* Galaxy effect for text */
@@ -187,43 +184,6 @@ body {
   display: inline-block;
 }
 
-.navbar-link:hover {
-  color: var(--navbar-link-hover-color, #fff);
-  background: var(--navbar-link-hover-bg, #7c3aed33);
-}
-
-.navbar-link-active {
-  color: var(--navbar-link-active-color, #fff);
-  background: var(--navbar-link-active-bg, #7c3aed);
-}
-
-.navbar-link-button,
-.navbar-link-login,
-.navbar-link-admin {
-  color: var(--navbar-button-color, #fff);
-  background: var(--navbar-button-bg, #03afee);
-  border-radius: var(--navbar-button-radius, 0.5rem);
-  font-weight: var(--navbar-button-font-weight, 500);
-  padding: var(--navbar-button-padding, 0.5rem 1.25rem);
-  box-shadow: var(--navbar-button-shadow, 0 2px 8px rgba(124,58,237,0.08));
-  transition: background 0.2s, color 0.2s;
-}
-
-.navbar-link-login:hover,
-.navbar-link-admin:hover {
-  background: var(--navbar-button-hover-bg, #a78bfa);
-  color: var(--navbar-button-hover-color, #fff);
-}
-
-.navbar-brand {
-  font-size: 1.25rem; /* text-xl */
-  font-weight: 700; /* font-bold */
-  background: var(--text-gradient, linear-gradient(to right, #a78bfa, #f472b6, #60a5fa));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
-}
 
 .projects-grid {
   display: grid;
@@ -407,137 +367,6 @@ body {
   height: 1.1em;
   margin-right: 0.25em;
 }
-
-/* === Übertragene Klassen aus .module.css === */
-.copilot-chat-root {}
-.copilot-chat-quickactions {}
-.copilot-chat-quickactions-row {}
-.copilot-chat-icon {}
-.copilot-chat-messages {}
-.copilot-chat-messages-list {}
-.copilot-chat-message-row {}
-.copilot-chat-message-row-user {}
-.copilot-chat-message-row-assistant {}
-.copilot-chat-message-row-error {}
-.copilot-chat-message-card {}
-.copilot-chat-message-user {}
-.copilot-chat-message-error {}
-.copilot-chat-message-assistant {}
-.copilot-chat-message-content {}
-.copilot-chat-message-boticon {}
-.copilot-chat-message-usericon {}
-.copilot-chat-message-text {}
-.copilot-chat-message-time {}
-.copilot-chat-inputbar {}
-.copilot-chat-inputrow {}
-.copilot-chat-sendicon {}
-
-.project-list-root {}
-.project-list-header {}
-.project-list-title {}
-.project-list-header-actions {}
-.project-list-add-btn {}
-.project-list-modal-overlay {}
-.project-list-modal {}
-.project-list-modal-title {}
-.project-list-modal-actions {}
-.project-list-modal-btn-import {}
-.project-list-modal-btn-manual {}
-.project-list-modal-btn-cancel {}
-.project-list-modal-close-row {}
-.project-list-group {}
-.project-list-group-title {}
-.project-list-cards {}
-.project-list-card-wrapper {}
-.project-list-card-actions {}
-.project-list-card-edit {}
-.project-list-card-edit-icon {}
-.project-list-card-delete {}
-.project-list-card-delete-icon {}
-.project-list-simple {}
-.project-list-simple-btn {}
-.project-list-simple-title {}
-
-.project-editor-root {}
-.project-editor-list {}
-.project-editor-list-header {}
-.project-editor-list-title {}
-.project-editor-list-addicon {}
-.project-editor-list-scroll {}
-.project-editor-list-items {}
-.project-editor-list-item {}
-.project-editor-list-item-active {}
-.project-editor-list-item-content {}
-.project-editor-list-item-title {}
-.project-editor-list-item-desc {}
-.project-editor-list-item-deleteicon {}
-.project-editor-main {}
-.project-editor-main-content {}
-.project-editor-main-header {}
-.project-editor-main-title {}
-.project-editor-main-links {}
-.project-editor-main-linkicon {}
-.project-editor-main-form {}
-.project-editor-main-form-group {}
-.project-editor-main-label {}
-.project-editor-main-empty {}
-
-.project-card-root {}
-.project-card-image {}
-.project-card-title {}
-.project-card-desc {}
-.project-card-badges-row {}
-.project-card-badge {}
-.project-card-badge-muted {}
-.project-card-meta-row {}
-.project-card-meta-item {}
-.project-card-meta-icon {}
-.project-card-links-row {}
-.project-card-link {}
-.project-card-updated {}
-
-.skills-section {}
-.skills-container {}
-.skills-title {}
-.skills-grid {}
-.skills-card {}
-.skills-card-title {}
-.skills-card-desc {}
-.skills-list {}
-.skills-footer {}
-
-.navigation-menu-root {}
-.navigation-menu-list {}
-.navigation-menu-trigger {}
-.navigation-menu-viewport-container {}
-.navigation-menu-viewport {}
-.navigation-menu-indicator {}
-.navigation-menu-indicator-shape {}
-
-.tabs-list {}
-.tabs-trigger {}
-.tabs-content {}
-
-.page-section-pre {}
-.page-section-stars {}
-
-.projects-page-error {}
-.projects-page-title {}
-.projects-page-grid {}
-
-.skills-page-error {}
-.skills-page-title {}
-.skills-page-category {}
-.skills-page-grid {}
-
-.file-upload-root {}
-.file-upload-dropzone {}
-.file-upload-dropzone-active {}
-.file-upload-uploading {}
-.file-upload-drop-hint {}
-.file-upload-hint {}
-.file-upload-supported {}
-.file-upload-error {}
 
 /* General Purpose Classes */
 .error-message {

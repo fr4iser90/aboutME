@@ -116,16 +116,107 @@
   --navbar-button-shadow: 0 2px 8px rgba(124,58,237,0.08);
   --navbar-button-hover-bg: #a78bfa;
   --navbar-button-hover-color: #fff;
+
+  /* Additional Semantic States */
+  --theme-semantic-success: #10B981;
+  --theme-semantic-success-foreground: #ffffff;
+  --theme-semantic-success-hover-background: rgba(16, 185, 129, 0.9);
+  --theme-semantic-warning: #F59E0B;
+  --theme-semantic-warning-foreground: #ffffff;
+  --theme-semantic-warning-hover-background: rgba(245, 158, 11, 0.9);
+  --theme-semantic-info: #3B82F6;
+  --theme-semantic-info-foreground: #ffffff;
+  --theme-semantic-info-hover-background: rgba(59, 130, 246, 0.9);
+
+  /* Additional Typography */
+  --theme-font-size-2xl: 2rem;
+  --theme-font-size-3xl: 2.5rem;
+  --theme-font-size-4xl: 3rem;
+  --theme-line-height-tight: 1.25;
+  --theme-line-height-relaxed: 1.75;
+
+  /* Additional Spacing */
+  --theme-spacing-12: 3rem;
+  --theme-spacing-16: 4rem;
+  --theme-spacing-20: 5rem;
+  --theme-spacing-24: 6rem;
+
+  /* Additional Border Radius */
+  --theme-border-radius-xl: 0.75rem;
+  --theme-border-radius-2xl: 1rem;
+  --theme-border-radius-3xl: 1.5rem;
+  --theme-border-radius-full: 9999px;
+
+  /* Additional Shadows */
+  --theme-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --theme-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --theme-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* Animation Durations */
+  --theme-transition-fast: 150ms;
+  --theme-transition-normal: 250ms;
+  --theme-transition-slow: 350ms;
+  --theme-transition-slower: 500ms;
+
+  /* Z-Index Layers */
+  --theme-z-index-dropdown: 1000;
+  --theme-z-index-sticky: 1020;
+  --theme-z-index-fixed: 1030;
+  --theme-z-index-modal-backdrop: 1040;
+  --theme-z-index-modal: 1050;
+  --theme-z-index-popover: 1060;
+  --theme-z-index-tooltip: 1070;
+
+  /* Container Sizes */
+  --theme-container-sm: 640px;
+  --theme-container-md: 768px;
+  --theme-container-lg: 1024px;
+  --theme-container-xl: 1280px;
+  --theme-container-2xl: 1536px;
+
+  /* Grid System */
+  --theme-grid-columns: 12;
+  --theme-grid-gap: 1.5rem;
+  --theme-grid-margin: 1rem;
+
+  /* Focus States */
+  --theme-focus-ring-color: var(--theme-primary);
+  --theme-focus-ring-width: 2px;
+  --theme-focus-ring-offset: 2px;
+  --theme-focus-ring-opacity: 0.5;
+
+  /* Scrollbar */
+  --theme-scrollbar-width: 8px;
+  --theme-scrollbar-track: #f1f1f1;
+  --theme-scrollbar-thumb: #888;
+  --theme-scrollbar-thumb-hover: #555;
 }
 
-body {
-  /* Applied by themeApi.ts, but good to have a fallback */
-  background: linear-gradient(to bottom right, 
-    var(--theme-body-background-start, rgb(2, 6, 23)), 
-    var(--theme-body-background-end, rgb(15, 23, 42))
-  );
-  color: var(--theme-body-foreground, rgb(255, 255, 255));
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* Default sans-serif stack */
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --theme-scrollbar-track: #2d3748;
+    --theme-scrollbar-thumb: #4a5568;
+    --theme-scrollbar-thumb-hover: #718096;
+  }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: var(--theme-scrollbar-width);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--theme-scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--theme-scrollbar-thumb);
+  border-radius: var(--theme-border-radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-scrollbar-thumb-hover);
 }
 
 /* Add other global styles or utility classes that depend on these CSS variables if needed */

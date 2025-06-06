@@ -126,6 +126,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     root.style.setProperty('--card-list-icon-color', c.cardListIcon || '#a78bfa');
     root.style.setProperty('--card-list-icon-font-size', sp.cardListIconFontSize || '22px');
 
+    // Text-Gradient für Brand/Logo (aus Theme-Farben)
+    root.style.setProperty('--text-gradient', `linear-gradient(to right, ${c.primary}, ${c.accent}, ${c.secondary})`);
+
     // Hilfsfunktion für Hex zu RGB
     function hexToRgb(hex: string): string | null {
       // Entferne # falls vorhanden
