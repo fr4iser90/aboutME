@@ -37,7 +37,7 @@
   }
   
   .navbar {
-    background: var(--theme-navbar-background, rgba(34,197,94,0.8));
+    background: var(--theme-navbar-background);
   }
   
   .navbar-link {

@@ -1,11 +1,24 @@
 @import "./base.css";
 @import "./layout.css";
-@import "./admin.css";
-@import "./admin-layout.css";
+@import "./login.css";
+@import "./admin/admin-layout.css";
+@import "./admin/admin-components.css";
+@import "./admin/admin-projects.css";
+@import "./admin/admin-skills.css";
+@import "./admin/admin-project-card.css";
+@import "./admin/admin-project-editor.css";
+@import "./admin/admin-project-form.css";
+@import "./admin/admin-project-list.css";
+@import "./admin/admin-projects-page.css";
+@import "./admin/admin-section-editor.css";
+@import "./admin/admin-skill-form.css";
+@import "./admin/admin-file-tree.css";
+@import "./admin/admin-file-information.css";
+@import "./admin/admin-file-preview.css";
 @import "./components.css";
 @import "./pages.css";
 @import "./navbar.css";
-
+@import "./landing-page.css";
 
 body {
   /* Applied by themeApi.ts, but good to have a fallback */
@@ -51,88 +64,6 @@ body {
   background-size: 200px 200px;
 }
 
-.about-section {
-  padding: var(--theme-about-section-padding, 60px 0);
-}
-
-.about-container {
-  display: flex;
-  flex-direction: row;
-  gap: var(--theme-about-container-gap, 48px);
-  align-items: center;
-  max-width: var(--theme-about-container-max-width, 1200px);
-  margin: 0 auto;
-  padding: var(--theme-about-container-padding, 0 24px);
-  flex-wrap: wrap;
-}
-
-.about-image-wrapper {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.about-image {
-  width: var(--theme-about-image-size, 250px);
-  height: var(--theme-about-image-size, 250px);
-  border-radius: var(--theme-about-image-border-radius, 24px);
-  border: 3px solid var(--theme-about-image-border, #7c3aed);
-  box-shadow: var(--theme-about-image-box-shadow, 0 4px 24px rgba(0,0,0,0.15));
-  object-fit: cover;
-}
-
-.about-content {
-  flex: 1;
-  min-width: var(--theme-about-content-min-width, 280px);
-}
-
-.about-title {
-  font-size: var(--theme-about-title-font-size, 2.5rem);
-  font-weight: var(--theme-about-title-font-weight, bold);
-  margin-bottom: var(--theme-about-title-margin-bottom, 24px);
-  color: var(--theme-about-title-color, #fff);
-}
-
-.about-text {
-  color: var(--theme-about-text-color, #b0b0b0);
-  margin-bottom: var(--theme-about-text-margin-bottom, 24px);
-  font-size: var(--theme-about-text-font-size, 1.15rem);
-}
-
-.about-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--theme-about-list-gap, 16px);
-}
-
-.about-list-item {
-  display: flex;
-  align-items: center;
-  gap: var(--theme-about-list-item-gap, 12px);
-  color: var(--theme-about-text-color, #b0b0b0);
-}
-
-.about-list-icon {
-  color: var(--theme-about-list-icon-color, #a78bfa);
-  font-size: var(--theme-about-list-icon-font-size, 22px);
-}
-
-.about-list-link {
-  color: var(--theme-about-list-link-color, #b0b0b0);
-  text-decoration: underline;
-}
-
-@media (max-width: 800px) {
-  .about-container {
-    flex-direction: column;
-    gap: 32px;
-    align-items: flex-start;
-  }
-  .about-image-wrapper {
-    justify-content: flex-start;
-  }
-}
 
 .section-heading {
   font-size: var(--theme-section-heading-font-size, 2.5rem);

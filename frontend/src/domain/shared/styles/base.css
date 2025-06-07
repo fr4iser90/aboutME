@@ -1,18 +1,18 @@
 :root {
   /* ===== CORE THEME COLORS ===== */
-  --theme-primary: #3B82F6; /* Fallback Blue */
-  --theme-secondary: #10B981; /* Fallback Green */
-  --theme-accent: #007bff; /* Fallback Blue */
-  --theme-background: rgb(2, 6, 23); /* Fallback Dark Blue */
-  --theme-foreground: rgb(255, 255, 255); /* Fallback White */
-  --theme-text: var(--theme-foreground); /* Default to foreground */
-  --theme-muted: #64748b; /* Fallback Slate 500 */
-  --theme-link: var(--theme-primary); /* Default to primary */
+  --theme-primary: #2563eb; /* Clean Blue */
+  --theme-secondary: #0ea5e9; /* Light Blue */
+  --theme-accent: #3b82f6; /* Accent Blue */
+  --theme-background: #ffffff; /* Clean White */
+  --theme-foreground: #1e293b; /* Dark Slate for text */
+  --theme-text: var(--theme-foreground);
+  --theme-muted: #64748b; /* Muted Gray */
+  --theme-link: var(--theme-primary);
 
   /* ===== BACKGROUND GRADIENTS ===== */
-  --theme-body-background-start: rgb(2, 6, 23); /* Fallback Dark Blue */
-  --theme-body-background-end: rgb(15, 23, 42); /* Fallback Dark Slate Blue */
-  --theme-text-gradient: linear-gradient(to right, #a78bfa, #f472b6, #60a5fa);
+  --theme-body-background-start: #ffffff;
+  --theme-body-background-end: #f8fafc;
+  --theme-text-gradient: linear-gradient(to right, #2563eb, #0ea5e9);
 
   /* ===== TYPOGRAPHY ===== */
   --theme-font-family: system-ui, -apple-system, sans-serif;
@@ -61,79 +61,80 @@
   --theme-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 
   /* ===== CARD STYLES ===== */
-  --theme-card-bg: rgba(30,41,59,0.5);
+  --theme-card-bg: #ffffff;
   --theme-card-blur: 4px;
-  --theme-card-border: #a78bfa33;
-  --theme-card-shadow: 0 4px 24px rgba(167,139,250,0.1);
-  --theme-card-radius: 1rem;
-  --theme-card-shadow-hover: 0 4px 24px rgba(167,139,250,0.2);
-  --theme-card-border-hover: #a78bfa55;
+  --theme-card-border: #e2e8f0;
+  --theme-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --theme-card-radius: 0.5rem;
+  --theme-card-shadow-hover: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --theme-card-border-hover: #cbd5e1;
   --theme-card-list-gap: 16px;
   --theme-card-list-item-gap: 12px;
-  --theme-card-list-item-color: #b0b0b0;
-  --theme-card-list-icon-color: #a78bfa;
+  --theme-card-list-item-color: #475569;
+  --theme-card-list-icon-color: #2563eb;
   --theme-card-list-icon-font-size: 22px;
 
   /* ===== SECTION STYLES ===== */
   --theme-section-heading-font-size: 2.5rem;
   --theme-section-heading-font-weight: bold;
   --theme-section-heading-margin-bottom: 2rem;
-  --theme-section-heading-color: #fff;
+  --theme-section-heading-color: #1e293b;
   --theme-section-heading-align: center;
-  --theme-section-paragraph-color: #b0b0b0;
+  --theme-section-paragraph-color: #475569;
   --theme-section-paragraph-margin-bottom: 1.5rem;
   --theme-section-paragraph-font-size: 1.15rem;
   --theme-section-paragraph-align: center;
-  --theme-section-link-color: #a78bfa;
+  --theme-section-link-color: #2563eb;
 
   /* ===== NAVBAR STYLES ===== */
-  --theme-navbar-link-color: #b0b0b0;
-  --theme-navbar-link-hover-color: #fff;
-  --theme-navbar-link-hover-bg: #7c3aed33;
-  --theme-navbar-link-active-color: #fff;
-  --theme-navbar-link-active-bg: #7c3aed;
+  --theme-navbar-link-color: #475569;
+  --theme-navbar-link-hover-color: #1e293b;
+  --theme-navbar-link-hover-bg: #f1f5f9;
+  --theme-navbar-link-active-color: #2563eb;
+  --theme-navbar-link-active-bg: #eff6ff;
   --theme-navbar-link-padding: 0.5rem 1rem;
   --theme-navbar-link-radius: 0.5rem;
   --theme-navbar-link-font-size: 1rem;
   --theme-navbar-link-font-weight: 500;
-  --theme-navbar-button-color: #fff;
-  --theme-navbar-button-bg: #010971;
+  --theme-navbar-button-color: #ffffff;
+  --theme-navbar-button-bg: #2563eb;
   --theme-navbar-button-radius: 0.5rem;
   --theme-navbar-button-font-weight: 500;
   --theme-navbar-button-padding: 0.5rem 1.25rem;
   --theme-navbar-button-shadow: 0 2px 8px rgba(124,58,237,0.08);
-  --theme-navbar-button-hover-bg: #a78bfa;
-  --theme-navbar-button-hover-color: #fff;
+  --theme-navbar-button-hover-bg: #1d4ed8;
+  --theme-navbar-button-hover-color: #ffffff;
+  --theme-navbar-background: var(--theme-accent);
 
   /* ===== SEMANTIC COLORS ===== */
   --theme-semantic-primary-foreground: #ffffff;
-  --theme-semantic-primary-hover-background: rgba(59, 130, 246, 0.9);
+  --theme-semantic-primary-hover-background: #1d4ed8;
   --theme-semantic-secondary-foreground: #ffffff;
-  --theme-semantic-secondary-hover-background: rgba(16, 185, 129, 0.8);
+  --theme-semantic-secondary-hover-background: #0284c7;
   --theme-semantic-destructive: #ef4444;
   --theme-semantic-destructive-foreground: #ffffff;
-  --theme-semantic-destructive-hover-background: rgba(239, 68, 68, 0.9);
+  --theme-semantic-destructive-hover-background: #dc2626;
   --theme-semantic-card: #ffffff;
-  --theme-semantic-card-foreground: #020617;
+  --theme-semantic-card-foreground: #1e293b;
   --theme-semantic-popover: #ffffff;
-  --theme-semantic-popover-foreground: #020617;
+  --theme-semantic-popover-foreground: #1e293b;
   --theme-semantic-accent: var(--theme-primary);
   --theme-semantic-accent-foreground: var(--theme-semantic-primary-foreground);
   --theme-semantic-accent-hover-background: rgba(59, 130, 246, 0.9);
   --theme-semantic-muted: #64748b;
   --theme-semantic-muted-foreground: #94a3b8;
-  --theme-semantic-input-border: #cbd5e1;
+  --theme-semantic-input-border: #e2e8f0;
   --theme-semantic-background: #ffffff;
-  --theme-semantic-ring: var(--theme-primary);
-  --theme-semantic-success: #10B981;
+  --theme-semantic-ring: #2563eb;
+  --theme-semantic-success: #10b981;
   --theme-semantic-success-foreground: #ffffff;
-  --theme-semantic-success-hover-background: rgba(16, 185, 129, 0.9);
-  --theme-semantic-warning: #F59E0B;
+  --theme-semantic-success-hover-background: #059669;
+  --theme-semantic-warning: #f59e0b;
   --theme-semantic-warning-foreground: #ffffff;
-  --theme-semantic-warning-hover-background: rgba(245, 158, 11, 0.9);
-  --theme-semantic-info: #3B82F6;
+  --theme-semantic-warning-hover-background: #d97706;
+  --theme-semantic-info: #3b82f6;
   --theme-semantic-info-foreground: #ffffff;
-  --theme-semantic-info-hover-background: rgba(59, 130, 246, 0.9);
+  --theme-semantic-info-hover-background: #2563eb;
 
   /* ===== ANIMATIONS ===== */
   --theme-transition-fast: 150ms;

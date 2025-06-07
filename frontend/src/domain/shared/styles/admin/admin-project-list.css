@@ -1,0 +1,10 @@
+/* Project List Component */
+.admin-project-list__message {
+  text-align: center;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.admin-project-list__message--error {
+  color: var(--theme-semantic-destructive);
+} 

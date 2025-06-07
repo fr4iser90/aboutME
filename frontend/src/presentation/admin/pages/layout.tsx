@@ -93,13 +93,13 @@ export default function AdminLayoutContent({
   };
 
   const navigation = [
-    { id: 'dashboard', title: 'Dashboard', icon: <LayoutDashboard className="admin-layout__nav-icon" />, path: '/admin' },
-    { id: 'projects', title: 'Projects', icon: <FolderGit2 className="admin-layout__nav-icon" />, path: '/admin/projects' },
-    { id: 'sections', title: 'Sections', icon: <SplitSquareHorizontal className="admin-layout__nav-icon" />, path: '/admin/sections' },
-    { id: 'files', title: 'Files', icon: <Folder className="admin-layout__nav-icon" />, path: '/admin/files' },
-    { id: 'themes', title: 'Themes', icon: <Palette className="admin-layout__nav-icon" />, path: '/admin/themes' },
-    { id: 'about', title: 'About Me', icon: <User className="admin-layout__nav-icon" />, path: '/admin/about' },
-    { id: 'settings', title: 'Settings', icon: <Settings className="admin-layout__nav-icon" />, path: '/admin/settings' },
+    { id: 'dashboard', title: 'Dashboard', icon: <LayoutDashboard className="admin-sidebar__nav-icon" />, path: '/admin' },
+    { id: 'projects', title: 'Projects', icon: <FolderGit2 className="admin-sidebar__nav-icon" />, path: '/admin/projects' },
+    { id: 'sections', title: 'Sections', icon: <SplitSquareHorizontal className="admin-sidebar__nav-icon" />, path: '/admin/sections' },
+    { id: 'files', title: 'Files', icon: <Folder className="admin-sidebar__nav-icon" />, path: '/admin/files' },
+    { id: 'themes', title: 'Themes', icon: <Palette className="admin-sidebar__nav-icon" />, path: '/admin/themes' },
+    { id: 'about', title: 'About Me', icon: <User className="admin-sidebar__nav-icon" />, path: '/admin/about' },
+    { id: 'settings', title: 'Settings', icon: <Settings className="admin-sidebar__nav-icon" />, path: '/admin/settings' },
   ];
 
   const getInitialOpenTabs = () => {
@@ -108,21 +108,21 @@ export default function AdminLayoutContent({
       tabs.push({
         id: 'projects', 
         title: 'Projects',
-        icon: <FolderGit2 className="admin-layout__tab-icon" />,
+        icon: <FolderGit2 className="admin-main__tab-icon" />,
         content: <>{children}</>
       });
     } else if (pathname.startsWith('/admin/dashboard')) {
       tabs.push({
         id: 'dashboard',
         title: 'Dashboard',
-        icon: <LayoutDashboard className="admin-layout__tab-icon" />,
+        icon: <LayoutDashboard className="admin-main__tab-icon" />,
         content: <>{children}</>
       });
     } else if (pathname.startsWith('/admin/skills')) {
       tabs.push({
         id: 'skills',
         title: 'Skills',
-        icon: <Palette className="admin-layout__tab-icon" />,
+        icon: <Palette className="admin-main__tab-icon" />,
         content: <>{children}</>
       });
     }
@@ -133,7 +133,7 @@ export default function AdminLayoutContent({
         tabs.push({
           id: 'projects', 
           title: 'Projects',
-          icon: <FolderGit2 className="admin-layout__tab-icon" />,
+          icon: <FolderGit2 className="admin-main__tab-icon" />,
           content: <>{children}</>
         });
       }
@@ -251,15 +251,15 @@ export default function AdminLayoutContent({
     <AdminContext.Provider value={{ selectedProject, setSelectedProject: handleSetSelectedProject }}>
       <TabContext.Provider value={{ openTab, closeTab, setActiveTab, activeTab, openTabs }}>
         <div className="admin-layout">
-          <aside className="admin-layout__sidebar">
-            <ScrollArea className="admin-layout__scroll-area">
-              <div className="admin-layout__sidebar-content">
+          <aside className="admin-sidebar">
+            <ScrollArea className="admin-sidebar__scroll-area">
+              <div className="admin-sidebar__content">
                 {navigation.map((item) => (
                   <Link key={item.id} href={item.path} passHref>
                     <Button
                       variant={activeTab === item.id ? "secondary" : "ghost"}
                       size="icon"
-                      className="admin-layout__nav-button"
+                      className="admin-sidebar__nav-button"
                       aria-label={item.title}
                     >
                       {item.icon}
@@ -269,15 +269,15 @@ export default function AdminLayoutContent({
               </div>
             </ScrollArea>
           </aside>
-          <aside className="admin-layout__contextbar">
+          <aside className="admin-contextbar">
             {activeTab === 'projects' && (
               <>
-                <div className="admin-layout__context-header">
-                  <h2 className="admin-layout__context-title">Project Tools</h2>
+                <div className="admin-contextbar__header">
+                  <h2 className="admin-contextbar__title">Project Tools</h2>
                 </div>
-                <div className="admin-layout__context-body">
-                  <h2 className="admin-layout__context-subtitle">Project List</h2>
-                  <ScrollArea className="admin-layout__context-scroll-area">
+                <div className="admin-contextbar__body">
+                  <h2 className="admin-contextbar__subtitle">Project List</h2>
+                  <ScrollArea className="admin-contextbar__scroll-area">
                     <ProjectList 
                       onEditProject={(project: DomainProject) => handleSetSelectedProject(project)} 
                       viewMode="simple" 
@@ -288,12 +288,12 @@ export default function AdminLayoutContent({
             )}
             {activeTab === 'sections' && (
               <>
-                <div className="admin-layout__context-header">
-                  <h2 className="admin-layout__context-title">Section Tools</h2>
+                <div className="admin-contextbar__header">
+                  <h2 className="admin-contextbar__title">Section Tools</h2>
                 </div>
-                <div className="admin-layout__context-body">
-                  <h2 className="admin-layout__context-subtitle">Section List</h2>
-                  <ScrollArea className="admin-layout__context-scroll-area">
+                <div className="admin-contextbar__body">
+                  <h2 className="admin-contextbar__subtitle">Section List</h2>
+                  <ScrollArea className="admin-contextbar__scroll-area">
                     <SectionList onEditSection={setSelectedSection} />
                   </ScrollArea>
                 </div>
@@ -301,12 +301,12 @@ export default function AdminLayoutContent({
             )}
             {activeTab === 'files' && (
               <>
-                <div className="admin-layout__context-header">
-                  <h2 className="admin-layout__context-title">File Manager</h2>
+                <div className="admin-contextbar__header">
+                  <h2 className="admin-contextbar__title">File Manager</h2>
                 </div>
-                <div className="admin-layout__context-body">
-                  <h2 className="admin-layout__context-subtitle">Files & Folders</h2>
-                  <ScrollArea className="admin-layout__context-scroll-area">
+                <div className="admin-contextbar__body">
+                  <h2 className="admin-contextbar__subtitle">Files & Folders</h2>
+                  <ScrollArea className="admin-contextbar__scroll-area">
                     <FileTree autoLoad={true} />
                   </ScrollArea>
                 </div>
@@ -314,24 +314,24 @@ export default function AdminLayoutContent({
             )}
             {activeTab !== 'projects' && activeTab !== 'sections' && activeTab !== 'files' && (
               <>
-                <h2 className="admin-layout__context-title">Context List</h2>
-                <p className="admin-layout__context-text">Content for {activeTab} list...</p>
+                <h2 className="admin-contextbar__title">Context List</h2>
+                <p className="admin-contextbar__text">Content for {activeTab} list...</p>
               </>
             )}
           </aside>
-          <main className="admin-layout__main">
-            <div className="admin-layout__tabs-container">
-              <div className="admin-layout__tabs-header">
+          <main className="admin-main">
+            <div className="admin-main__tabs-container">
+              <div className="admin-main__tabs-header">
                 {openTabs.map((tab) => (
                   <div
                     key={tab.id}
                     className={cn(
-                      "admin-layout__tab-item",
-                      activeTab === tab.id ? "admin-layout__tab-item--active" : ""
+                      "admin-main__tab-item",
+                      activeTab === tab.id ? "admin-main__tab-item--active" : ""
                     )}
                   >
                     <button
-                      className="admin-layout__tab-button"
+                      className="admin-main__tab-button"
                       onClick={() => setActiveTab(tab.id)}
                     >
                       {tab.icon}
@@ -339,10 +339,10 @@ export default function AdminLayoutContent({
                     </button>
                     {openTabs.length > 1 && (
                       <button
-                        className="admin-layout__tab-close-button"
+                        className="admin-main__tab-close-button"
                         onClick={() => closeTab(tab.id)}
                       >
-                        <X className="admin-layout__tab-close-icon" />
+                        <X className="admin-main__tab-close-icon" />
                       </button>
                     )}
                   </div>
@@ -350,7 +350,7 @@ export default function AdminLayoutContent({
               </div>
             </div>
 
-            <div className="admin-layout__content-area">
+            <div className="admin-main__content-area">
               {activeTab === 'sections' && selectedSection ? (
                 <SectionEditor section={selectedSection} onSave={() => setSelectedSection(null)} onCancel={() => setSelectedSection(null)} />
               ) : (
@@ -358,20 +358,20 @@ export default function AdminLayoutContent({
               )}
             </div>
           </main>
-          <aside className="admin-layout__copilotbar">
+          <aside className="admin-copilotbar">
             {isRightSidebarOpen && (
-              <div className="admin-layout__copilot-content">
-                <div className="admin-layout__copilot-header">
-                  <div className="admin-layout__copilot-title-group">
-                    <MessageSquare className="admin-layout__copilot-icon" />
-                    <span className="admin-layout__copilot-title">Copilot</span>
+              <div className="admin-copilotbar__content">
+                <div className="admin-copilotbar__header">
+                  <div className="admin-copilotbar__title-group">
+                    <MessageSquare className="admin-copilotbar__icon" />
+                    <span className="admin-copilotbar__title">Copilot</span>
                   </div>
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => setIsRightSidebarOpen(false)}
                   >
-                    <X className="admin-layout__copilot-icon" />
+                    <X className="admin-copilotbar__icon" />
                   </Button>
                 </div>
                 <CopilotChat context={copilotContext} />

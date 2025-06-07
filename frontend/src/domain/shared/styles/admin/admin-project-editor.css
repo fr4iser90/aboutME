@@ -1,0 +1,195 @@
+/* Project Editor Component */
+.admin-project-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .admin-project-editor {
+    flex-direction: row;
+  }
+}
+
+.admin-project-editor__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+}
+
+.admin-project-editor__label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.admin-project-editor__checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.admin-project-editor__checkbox {
+  color: var(--theme-semantic-accent);
+}
+
+.admin-project-editor__section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-bottom: 1px solid var(--theme-semantic-border);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.admin-project-editor__description-preview {
+  color: var(--theme-semantic-muted-foreground);
+  font-style: italic;
+  margin-top: 0.25rem;
+  background-color: var(--theme-semantic-card);
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+}
+
+.admin-project-editor__visibility-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.admin-project-editor__override-value {
+  color: var(--theme-semantic-muted-foreground);
+  font-style: italic;
+  margin-top: 0.25rem;
+}
+
+.admin-project-editor__input,
+.admin-project-editor__textarea {
+  margin-top: 0.25rem;
+  display: block;
+  width: 100%;
+  border-radius: 0.375rem;
+  box-shadow: var(--theme-shadow-sm);
+  color: var(--theme-semantic-card-foreground);
+  border: 1px solid var(--theme-semantic-input-border);
+  padding: 0.5rem;
+}
+
+.admin-project-editor__input:focus,
+.admin-project-editor__textarea:focus {
+  border-color: var(--theme-semantic-accent);
+  box-shadow: 0 0 0 2px var(--theme-semantic-accent);
+}
+
+.admin-project-editor__readonly-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: var(--theme-semantic-card);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.admin-project-editor__readonly-input {
+  margin-top: 0.25rem;
+  display: block;
+  width: 100%;
+  border-radius: 0.375rem;
+  color: var(--theme-semantic-card-foreground);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 1px solid var(--theme-semantic-input-border);
+  padding: 0.5rem;
+}
+
+.admin-project-editor__tech-input-group {
+  margin-top: 0.25rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.admin-project-editor__add-button {
+  padding: 0.5rem 1rem;
+  background-color: var(--theme-semantic-muted);
+  color: var(--theme-semantic-muted-foreground);
+  border-radius: 0.25rem;
+}
+
+.admin-project-editor__add-button:hover {
+  background-color: var(--theme-semantic-muted-hover-background);
+}
+
+.admin-project-editor__tech-tags {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.admin-project-editor__tech-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  background-color: var(--theme-semantic-muted);
+  color: var(--theme-semantic-muted-foreground);
+}
+
+.admin-project-editor__remove-tag-button {
+  margin-left: 0.25rem;
+  color: var(--theme-semantic-muted-foreground);
+}
+
+.admin-project-editor__remove-tag-button:hover {
+  color: var(--theme-semantic-card-foreground);
+}
+
+.admin-project-editor__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.admin-project-editor__cancel-button {
+  padding: 0.5rem 1rem;
+  color: var(--theme-semantic-muted-foreground);
+  background-color: var(--theme-semantic-muted);
+  border-radius: 0.25rem;
+}
+
+.admin-project-editor__cancel-button:hover {
+  background-color: var(--theme-semantic-muted-hover-background);
+}
+
+.admin-project-editor__save-button {
+  padding: 0.5rem 1rem;
+  color: var(--theme-semantic-accent-foreground);
+  background-color: var(--theme-semantic-accent);
+  border-radius: 0.25rem;
+}
+
+.admin-project-editor__save-button:hover {
+  background-color: var(--theme-semantic-accent-hover-background);
+}
+
+.admin-project-editor__preview {
+  flex: 1;
+  background-color: var(--theme-semantic-card);
+  border-radius: 0.5rem;
+  box-shadow: var(--theme-shadow-md);
+  padding: 1.5rem;
+}
+
+.admin-project-editor__preview-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--theme-semantic-card-foreground);
+} 

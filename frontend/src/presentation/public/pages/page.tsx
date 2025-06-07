@@ -89,60 +89,54 @@ export const HomeView: FC = () => { // Used FC type
   return (
     <>
       <Navbar />
-      <main style={{ minHeight: '100vh' }}>
+      <main className="main-page">
         {/* Hero Section */}
-        <Section style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
+        <Section className="hero-section">
           <div className="page-section-stars" style={{ position: 'absolute', inset: 0 }}></div>
-          <Container style={{ textAlign: 'center', position: 'relative', zIndex: 10 }}>
-            <h1 style={{ fontSize: '4rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>
+          <Container className="hero-container">
+            <h1 className="hero-title">
               Welcome to my website
             </h1>
-            <p style={{ fontSize: '1.5rem', color: 'var(--theme-text-secondary, #b0b0b0)', marginBottom: '2rem' }}>
+            <p className="hero-subtitle">
               Exploring the cosmos of code and creativity
             </p>
-            <Grid columns={2} gap="1.5rem" style={{ justifyContent: 'center', width: 'fit-content', margin: '0 auto' }}>
-              <a
-                href="#projects"
-                style={{ padding: '1rem 2rem', background: 'var(--theme-primary, #7c3aed)', color: '#fff', borderRadius: '0.5rem', fontWeight: 500, textDecoration: 'none', transition: 'background 0.2s' }}
-              >
+            <div className="hero-buttons">
+              <a href="#projects" className="hero-button-primary">
                 View Projects
               </a>
-              <a
-                href="#contact"
-                style={{ padding: '1rem 2rem', border: '2px solid var(--theme-primary, #7c3aed)', color: '#fff', borderRadius: '0.5rem', fontWeight: 500, textDecoration: 'none', background: 'transparent', transition: 'background 0.2s' }}
-              >
+              <a href="#contact" className="hero-button-secondary">
                 Contact Me
               </a>
-            </Grid>
+            </div>
           </Container>
         </Section>
 
         {/* Dynamic Sections Area */}
-        <Section id="dynamic-content">
-          <Container>
+        <Section id="dynamic-content" className="dynamic-content-section">
+          <Container className="dynamic-content-container">
             {loading ? (
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ width: 48, height: 48, borderRadius: '50%', borderBottom: '2px solid var(--theme-primary, #7c3aed)', margin: '0 auto', animation: 'spin 1s linear infinite' }}></div>
-                <p style={{ marginTop: '1rem', color: 'var(--theme-text-secondary, #b0b0b0)' }}>Loading sections...</p>
+              <div>
+                <div className="loading-spinner"></div>
+                <p className="loading-text">Loading sections...</p>
               </div>
             ) : error ? (
-              <div style={{ textAlign: 'center', color: 'red' }}>
-                <p>Error loading sections: {error}</p>
-                <p style={{ fontSize: '0.9rem', color: 'var(--theme-text-secondary, #b0b0b0)', marginTop: '0.5rem' }}>Showing static content instead</p>
+              <div>
+                <p className="error-message">Error loading sections: {error}</p>
+                <p className="error-subtext">Showing static content instead</p>
               </div>
             ) : sections.length > 0 ? (
-              <Grid columns={1} gap="2rem">
+              <div className="dynamic-content-grid">
                 {sections.map((section) => (
-                  <div key={section.id} style={{ background: 'var(--color-surface, #232946)', padding: '2rem', borderRadius: '1rem' }}>
-                    <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '1rem', color: 'var(--theme-text, #fff)' }}>{section.title}</h3>
-                    <div style={{ color: 'var(--theme-text-secondary, #b0b0b0)' }}>
+                  <div key={section.id} className="dynamic-content-card">
+                    <h3 className="dynamic-content-title">{section.title}</h3>
+                    <div className="dynamic-content-text">
                       {renderSectionContent(section.content)}
                     </div>
                   </div>
                 ))}
-              </Grid>
+              </div>
             ) : (
-              <p style={{ textAlign: 'center', color: 'var(--theme-text-secondary, #b0b0b0)' }}>No sections data found from API.</p>
+              <p className="loading-text">No sections data found from API.</p>
             )}
           </Container>
         </Section>

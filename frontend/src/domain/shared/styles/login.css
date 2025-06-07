@@ -1,0 +1,92 @@
+.login-page__main {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .login-form__container {
+    max-width: 28rem; /* max-w-md */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem; /* space-y-8 */
+    padding: 2rem; /* p-8 */
+    background-color: rgba(30, 41, 59, 0.5); /* bg-slate-800/50 */
+    backdrop-filter: blur(4px);
+    border-radius: 0.75rem; /* rounded-xl */
+    border: 1px solid rgba(126, 34, 206, 0.3); /* border-purple-900/30 */
+  }
+  
+  .login-form__title {
+    margin-top: 1.5rem; /* mt-6 */
+    text-align: center;
+    font-size: 1.875rem; /* text-3xl */
+    font-weight: 700; /* font-bold */
+  }
+  
+  .login-form {
+    margin-top: 2rem; /* mt-8 */
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* space-y-6 */
+  }
+  
+  .login-form__input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0.5rem; /* rounded-lg */
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0.75rem; /* px-3 py-2 */
+    border: 1px solid #334155; /* border-slate-700 */
+    background-color: #0f172a; /* bg-slate-900 */
+    color: white;
+    font-size: 0.875rem; /* sm:text-sm */
+  }
+  .login-form__input::placeholder {
+    color: #94a3b8; /* placeholder-slate-400 */
+  }
+  .login-form__input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #a855f7; /* focus:ring-purple-500 */
+    border-color: #a855f7; /* focus:border-purple-500 */
+    z-index: 10;
+  }
+  .login-form__input:disabled {
+    opacity: 0.5;
+  }
+  
+  .login-form__error {
+    color: #ef4444; /* text-red-500 */
+    font-size: 0.875rem; /* text-sm */
+    text-align: center;
+  }
+  
+  .login-form__button {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem 1rem; /* py-2 px-4 */
+    border: 1px solid transparent;
+    font-size: 0.875rem; /* text-sm */
+    font-weight: 500; /* font-medium */
+    border-radius: 0.5rem; /* rounded-lg */
+    color: white;
+    background-color: #9333ea; /* bg-purple-600 */
+    transition: background-color 0.2s;
+  }
+  .login-form__button:hover {
+    background-color: #7e22ce; /* hover:bg-purple-700 */
+  }
+  .login-form__button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #a855f7, 0 0 0 4px rgba(168, 85, 247, 0.5); /* focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 */
+  }
+  .login-form__button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }

@@ -1,0 +1,15 @@
+/* File Information Component */
+.admin-file-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.admin-file-info__label {
+  font-weight: 600;
+}
+
+.admin-file-info__list {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+} 

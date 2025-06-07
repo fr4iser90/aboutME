@@ -1,0 +1,18 @@
+/* Project Form Component */
+.admin-project-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.admin-project-form__label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.admin-project-form__actions {
+  display: flex;
+  gap: 0.5rem;
+} 
