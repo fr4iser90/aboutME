@@ -66,7 +66,11 @@ forest_mist_theme = {
             "popoverForeground": "#14532d",
             "ring": "#22c55e",
             "inputBorder": "#16a34a",
-            "foreground": "#212529"
+            "foreground": "#212529",
+            "semantic_card": "#e6f9ec",
+            "semantic_card_foreground": "#14532d",
+            "semantic_popover": "#e6f9ec",
+            "semantic_popover_foreground": "#14532d"
         },
         "typography": {
             "fontFamily": "Lato, sans-serif",

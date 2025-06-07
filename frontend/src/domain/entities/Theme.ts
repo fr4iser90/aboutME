@@ -42,6 +42,10 @@ export interface ThemeColors {
   aboutImageBoxShadow: string;
   cardShadowHover: string;
   cardBorderHover: string;
+  semantic_card: string;
+  semantic_card_foreground: string;
+  semantic_popover: string;
+  semantic_popover_foreground: string;
 }
 
 export interface ThemeTypography {

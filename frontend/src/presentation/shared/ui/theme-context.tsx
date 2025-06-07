@@ -64,6 +64,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     root.style.setProperty('--about-list-link-color', c.aboutListLink);
     root.style.setProperty('--about-content-min-width', c.aboutContentMinWidth);
     root.style.setProperty('--about-image-box-shadow', c.aboutImageBoxShadow);
+    root.style.setProperty('--theme-semantic-card', c.semantic_card || c.card);
+    root.style.setProperty('--theme-semantic-card-foreground', c.semantic_card_foreground || c.cardForeground);
+    root.style.setProperty('--theme-semantic-popover', c.semantic_popover || c.popover);
+    root.style.setProperty('--theme-semantic-popover-foreground', c.semantic_popover_foreground || c.popoverForeground);
 
     // Typography
     const t = sp.typography;
@@ -116,15 +120,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     root.style.setProperty('--button-hover-text', c.buttonHoverText);
 
     // Cards & Skills-Section
-    root.style.setProperty('--card-blur', sp.cardBlur || '4px');
-    root.style.setProperty('--card-radius', sp.cardRadius || '1rem');
-    root.style.setProperty('--card-shadow-hover', c.cardShadowHover || '0 4px 24px rgba(167,139,250,0.2)');
-    root.style.setProperty('--card-border-hover', c.cardBorderHover || '#a78bfa55');
-    root.style.setProperty('--card-list-gap', sp.cardListGap || '16px');
-    root.style.setProperty('--card-list-item-gap', sp.cardListItemGap || '12px');
-    root.style.setProperty('--card-list-item-color', c.cardListItem || '#b0b0b0');
-    root.style.setProperty('--card-list-icon-color', c.cardListIcon || '#a78bfa');
-    root.style.setProperty('--card-list-icon-font-size', sp.cardListIconFontSize || '22px');
+    root.style.setProperty('--card-blur', sp.cardBlur);
+    root.style.setProperty('--card-radius', sp.cardRadius);
+    root.style.setProperty('--card-shadow-hover', c.cardShadowHover);
+    root.style.setProperty('--card-border-hover', c.cardBorderHover);
+    root.style.setProperty('--card-list-gap', sp.cardListGap);
+    root.style.setProperty('--card-list-item-gap', sp.cardListItemGap);
+    root.style.setProperty('--card-list-item-color', c.cardListItem);
+    root.style.setProperty('--card-list-icon-color', c.cardListIcon);
+    root.style.setProperty('--card-list-icon-font-size', sp.cardListIconFontSize);
 
     // Text-Gradient für Brand/Logo (aus Theme-Farben)
     root.style.setProperty('--text-gradient', `linear-gradient(to right, ${c.primary}, ${c.accent}, ${c.secondary})`);
