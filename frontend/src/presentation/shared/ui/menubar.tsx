@@ -18,9 +18,9 @@ const menubarRootStyle: React.CSSProperties = {
   height: '2.5rem',
   alignItems: 'center',
   gap: '0.25rem',
-  borderRadius: 'var(--radius-base)',
+  borderRadius: 'var(--theme-radius-base)',
   border: '1px solid var(--color-border, #a78bfa)',
-  background: 'var(--color-background)',
+  background: 'var(--theme-background)',
   padding: '0.25rem',
 };
 
@@ -40,12 +40,12 @@ Menubar.displayName = MenubarPrimitive.Root.displayName;
 const menubarTriggerStyle: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
-  borderRadius: 'var(--radius-small)',
+  borderRadius: 'var(--theme-radius-small)',
   padding: '0.25rem 0.75rem',
-  fontSize: 'var(--font-size-base)',
+  fontSize: 'var(--theme-font-size-base)',
   fontWeight: 500,
   background: 'transparent',
-  color: 'var(--color-text)',
+  color: 'var(--theme-text)',
   cursor: 'pointer',
   transition: 'background 0.2s, color 0.2s',
 };
@@ -88,7 +88,7 @@ const MenubarSubContent = React.forwardRef<
   <MenubarPrimitive.SubContent
     ref={ref}
     className={cn(className)}
-    style={{ minWidth: '8rem', borderRadius: 'var(--radius-base)', background: 'var(--color-background)', color: 'var(--color-text)', boxShadow: 'var(--theme-shadow-lg)', padding: '0.25rem', ...style }}
+    style={{ minWidth: '8rem', borderRadius: 'var(--theme-radius-base)', background: 'var(--theme-background)', color: 'var(--theme-text)', boxShadow: 'var(--theme-shadow-lg)', padding: '0.25rem', ...style }}
     {...props}
   />
 ));
@@ -109,7 +109,7 @@ const MenubarContent = React.forwardRef<
         alignOffset={alignOffset}
         sideOffset={sideOffset}
         className={cn(className)}
-        style={{ minWidth: '12rem', borderRadius: 'var(--radius-base)', background: 'var(--color-background)', color: 'var(--color-text)', boxShadow: 'var(--theme-shadow-md)', padding: '0.25rem', ...style }}
+        style={{ minWidth: '12rem', borderRadius: 'var(--theme-radius-base)', background: 'var(--theme-background)', color: 'var(--theme-text)', boxShadow: 'var(--theme-shadow-md)', padding: '0.25rem', ...style }}
         {...props}
       />
     </MenubarPrimitive.Portal>
@@ -182,7 +182,7 @@ const MenubarLabel = React.forwardRef<
   <MenubarPrimitive.Label
     ref={ref}
     className={cn(className)}
-    style={{ fontSize: 'var(--font-size-base)', fontWeight: 600, padding: '0.25rem 0.75rem', ...(inset ? { paddingLeft: '2rem' } : {}), ...style }}
+    style={{ fontSize: 'var(--theme-font-size-base)', fontWeight: 600, padding: '0.25rem 0.75rem', ...(inset ? { paddingLeft: '2rem' } : {}), ...style }}
     {...props}
   />
 ));

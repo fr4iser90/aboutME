@@ -11,10 +11,10 @@ const TooltipTrigger = TooltipPrimitive.Trigger;
 const tooltipContentStyle: React.CSSProperties = {
   zIndex: 50,
   overflow: 'hidden',
-  borderRadius: 'var(--radius-base)',
+  borderRadius: 'var(--theme-radius-base)',
   border: '1px solid var(--color-border)',
-  background: 'var(--color-popover, var(--color-background))',
-  color: 'var(--color-popover-foreground, var(--color-text))',
+  background: 'var(--color-popover, var(--theme-background))',
+  color: 'var(--color-popover-foreground, var(--theme-text))',
   padding: '0.375rem 1rem',
   fontSize: '0.875rem',
   boxShadow: 'var(--theme-shadow-md)',

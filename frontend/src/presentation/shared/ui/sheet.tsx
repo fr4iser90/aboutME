@@ -38,7 +38,7 @@ const getSheetContentStyle = (side: 'top' | 'bottom' | 'left' | 'right' = 'right
     display: 'flex',
     flexDirection: 'column',
     gap: '1rem',
-    background: 'var(--color-background)',
+    background: 'var(--theme-background)',
     padding: '1.5rem',
     boxShadow: 'var(--theme-shadow-lg)',
     transition: 'all 0.3s ease-in-out',
@@ -98,7 +98,7 @@ const SheetContent = React.forwardRef<
       {...props}
     >
       {children}
-      <SheetPrimitive.Close style={{ position: 'absolute', right: '1rem', top: '1rem', borderRadius: 'var(--radius-small)', opacity: 0.7, transition: 'opacity 0.2s' }}>
+      <SheetPrimitive.Close style={{ position: 'absolute', right: '1rem', top: '1rem', borderRadius: 'var(--theme-radius-small)', opacity: 0.7, transition: 'opacity 0.2s' }}>
         <X style={{ height: '1rem', width: '1rem' }} />
         <span style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>Close</span>
       </SheetPrimitive.Close>
@@ -140,7 +140,7 @@ const SheetTitle = React.forwardRef<
   <SheetPrimitive.Title
     ref={ref}
     className={cn(className)}
-    style={{ fontSize: '1.125rem', fontWeight: 600, color: 'var(--color-text)', ...style }}
+    style={{ fontSize: '1.125rem', fontWeight: 600, color: 'var(--theme-text)', ...style }}
     {...props}
   />
 ));
@@ -153,7 +153,7 @@ const SheetDescription = React.forwardRef<
   <SheetPrimitive.Description
     ref={ref}
     className={cn(className)}
-    style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', ...style }}
+    style={{ fontSize: '0.875rem', color: 'var(--theme-text-muted)', ...style }}
     {...props}
   />
 ));

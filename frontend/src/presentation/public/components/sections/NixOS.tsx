@@ -1,6 +1,6 @@
 export default function NixOS() {
   return (
-    <section id="nixos" style={{ padding: 'var(--section-padding, 60px 0)' }}>
+    <section id="nixos" style={{ padding: 'var(--theme-section-padding, 60px 0)' }}>
       <div style={{ maxWidth: 'var(--container-max-width, 900px)', margin: '0 auto', padding: 'var(--container-padding, 0 24px)' }}>
         <h2 className="section-heading">NixOS</h2>
         <div style={{ marginBottom: 'var(--nixos-section-gap, 2rem)' }}>

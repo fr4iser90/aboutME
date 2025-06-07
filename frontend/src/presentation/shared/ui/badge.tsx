@@ -24,7 +24,7 @@ const variantStyles: Record<string, React.CSSProperties> = {
   outline: {
     background: 'transparent',
     color: 'var(--theme-body-foreground)',
-    border: '1px solid var(--card-border, #a78bfa)',
+    border: '1px solid var(--theme-card-border, #a78bfa)',
   },
 };
 

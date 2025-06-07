@@ -9,10 +9,10 @@ const PopoverTrigger = PopoverPrimitive.Trigger;
 const popoverContentStyle: React.CSSProperties = {
   zIndex: 50,
   width: '18rem',
-  borderRadius: 'var(--radius-base)',
+  borderRadius: 'var(--theme-radius-base)',
   border: '1px solid var(--color-border)',
-  background: 'var(--color-popover, var(--color-background))',
-  color: 'var(--color-popover-foreground, var(--color-text))',
+  background: 'var(--color-popover, var(--theme-background))',
+  color: 'var(--color-popover-foreground, var(--theme-text))',
   padding: '1rem',
   boxShadow: 'var(--theme-shadow-md)',
   outline: 'none',

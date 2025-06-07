@@ -97,19 +97,19 @@ export const HomeView: FC = () => { // Used FC type
             <h1 style={{ fontSize: '4rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>
               Welcome to my website
             </h1>
-            <p style={{ fontSize: '1.5rem', color: 'var(--color-text-secondary, #b0b0b0)', marginBottom: '2rem' }}>
+            <p style={{ fontSize: '1.5rem', color: 'var(--theme-text-secondary, #b0b0b0)', marginBottom: '2rem' }}>
               Exploring the cosmos of code and creativity
             </p>
             <Grid columns={2} gap="1.5rem" style={{ justifyContent: 'center', width: 'fit-content', margin: '0 auto' }}>
               <a
                 href="#projects"
-                style={{ padding: '1rem 2rem', background: 'var(--color-primary, #7c3aed)', color: '#fff', borderRadius: '0.5rem', fontWeight: 500, textDecoration: 'none', transition: 'background 0.2s' }}
+                style={{ padding: '1rem 2rem', background: 'var(--theme-primary, #7c3aed)', color: '#fff', borderRadius: '0.5rem', fontWeight: 500, textDecoration: 'none', transition: 'background 0.2s' }}
               >
                 View Projects
               </a>
               <a
                 href="#contact"
-                style={{ padding: '1rem 2rem', border: '2px solid var(--color-primary, #7c3aed)', color: '#fff', borderRadius: '0.5rem', fontWeight: 500, textDecoration: 'none', background: 'transparent', transition: 'background 0.2s' }}
+                style={{ padding: '1rem 2rem', border: '2px solid var(--theme-primary, #7c3aed)', color: '#fff', borderRadius: '0.5rem', fontWeight: 500, textDecoration: 'none', background: 'transparent', transition: 'background 0.2s' }}
               >
                 Contact Me
               </a>
@@ -122,27 +122,27 @@ export const HomeView: FC = () => { // Used FC type
           <Container>
             {loading ? (
               <div style={{ textAlign: 'center' }}>
-                <div style={{ width: 48, height: 48, borderRadius: '50%', borderBottom: '2px solid var(--color-primary, #7c3aed)', margin: '0 auto', animation: 'spin 1s linear infinite' }}></div>
-                <p style={{ marginTop: '1rem', color: 'var(--color-text-secondary, #b0b0b0)' }}>Loading sections...</p>
+                <div style={{ width: 48, height: 48, borderRadius: '50%', borderBottom: '2px solid var(--theme-primary, #7c3aed)', margin: '0 auto', animation: 'spin 1s linear infinite' }}></div>
+                <p style={{ marginTop: '1rem', color: 'var(--theme-text-secondary, #b0b0b0)' }}>Loading sections...</p>
               </div>
             ) : error ? (
               <div style={{ textAlign: 'center', color: 'red' }}>
                 <p>Error loading sections: {error}</p>
-                <p style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary, #b0b0b0)', marginTop: '0.5rem' }}>Showing static content instead</p>
+                <p style={{ fontSize: '0.9rem', color: 'var(--theme-text-secondary, #b0b0b0)', marginTop: '0.5rem' }}>Showing static content instead</p>
               </div>
             ) : sections.length > 0 ? (
               <Grid columns={1} gap="2rem">
                 {sections.map((section) => (
                   <div key={section.id} style={{ background: 'var(--color-surface, #232946)', padding: '2rem', borderRadius: '1rem' }}>
-                    <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '1rem', color: 'var(--color-text, #fff)' }}>{section.title}</h3>
-                    <div style={{ color: 'var(--color-text-secondary, #b0b0b0)' }}>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '1rem', color: 'var(--theme-text, #fff)' }}>{section.title}</h3>
+                    <div style={{ color: 'var(--theme-text-secondary, #b0b0b0)' }}>
                       {renderSectionContent(section.content)}
                     </div>
                   </div>
                 ))}
               </Grid>
             ) : (
-              <p style={{ textAlign: 'center', color: 'var(--color-text-secondary, #b0b0b0)' }}>No sections data found from API.</p>
+              <p style={{ textAlign: 'center', color: 'var(--theme-text-secondary, #b0b0b0)' }}>No sections data found from API.</p>
             )}
           </Container>
         </Section>
@@ -162,7 +162,7 @@ export const HomeView: FC = () => { // Used FC type
             <Container style={{ maxWidth: 600, margin: '0 auto' }}>
               <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                 <div>
-                  <label htmlFor="name" style={{ display: 'block', fontSize: '1rem', fontWeight: 500, color: 'var(--color-text-secondary, #b0b0b0)' }}>
+                  <label htmlFor="name" style={{ display: 'block', fontSize: '1rem', fontWeight: 500, color: 'var(--theme-text-secondary, #b0b0b0)' }}>
                     Name
                   </label>
                   <input
@@ -172,7 +172,7 @@ export const HomeView: FC = () => { // Used FC type
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" style={{ display: 'block', fontSize: '1rem', fontWeight: 500, color: 'var(--color-text-secondary, #b0b0b0)' }}>
+                  <label htmlFor="email" style={{ display: 'block', fontSize: '1rem', fontWeight: 500, color: 'var(--theme-text-secondary, #b0b0b0)' }}>
                     Email
                   </label>
                   <input
@@ -182,7 +182,7 @@ export const HomeView: FC = () => { // Used FC type
                   />
                 </div>
                 <div>
-                  <label htmlFor="message" style={{ display: 'block', fontSize: '1rem', fontWeight: 500, color: 'var(--color-text-secondary, #b0b0b0)' }}>
+                  <label htmlFor="message" style={{ display: 'block', fontSize: '1rem', fontWeight: 500, color: 'var(--theme-text-secondary, #b0b0b0)' }}>
                     Message
                   </label>
                   <textarea
@@ -193,7 +193,7 @@ export const HomeView: FC = () => { // Used FC type
                 </div>
                 <button
                   type="submit"
-                  style={{ width: '100%', padding: '1rem 2rem', background: 'var(--color-primary, #7c3aed)', color: '#fff', borderRadius: '0.5rem', fontWeight: 500, fontSize: '1.1rem', border: 'none', transition: 'background 0.2s' }}
+                  style={{ width: '100%', padding: '1rem 2rem', background: 'var(--theme-primary, #7c3aed)', color: '#fff', borderRadius: '0.5rem', fontWeight: 500, fontSize: '1.1rem', border: 'none', transition: 'background 0.2s' }}
                 >
                   Send Message
                 </button>

@@ -5,7 +5,7 @@ import { ImagePlaceholder } from '@/presentation/shared/ui/ImagePlaceholder';
 
 export default function Homelab() {
   return (
-    <Section id="homelab" style={{ padding: 'var(--section-padding, 60px 0)' }}>
+    <Section id="homelab" style={{ padding: 'var(--theme-section-padding, 60px 0)' }}>
       <Container style={{ maxWidth: 'var(--container-max-width, 1200px)', padding: 'var(--container-padding, 0 24px)' }}>
         <h2 className="section-heading">Homelab</h2>
         <p className="section-paragraph">

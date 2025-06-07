@@ -44,17 +44,17 @@ const DialogContent = React.forwardRef<
         transform: 'translate(-50%, -50%)',
         gap: '1rem',
         border: '1px solid var(--color-border)',
-        background: 'var(--color-background)',
+        background: 'var(--theme-background)',
         padding: '1.5rem',
         boxShadow: 'var(--theme-shadow-lg)',
-        borderRadius: 'var(--radius-large)',
+        borderRadius: 'var(--theme-radius-large)',
         transition: 'all 0.2s',
         ...style
       }}
       {...props}
     >
       {children}
-      <DialogPrimitive.Close style={{ position: 'absolute', right: '1rem', top: '1rem', borderRadius: 'var(--radius-small)', opacity: 0.7, transition: 'opacity 0.2s' }}>
+      <DialogPrimitive.Close style={{ position: 'absolute', right: '1rem', top: '1rem', borderRadius: 'var(--theme-radius-small)', opacity: 0.7, transition: 'opacity 0.2s' }}>
         <X style={{ height: '1rem', width: '1rem' }} />
         <span style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>Close</span>
       </DialogPrimitive.Close>
@@ -101,7 +101,7 @@ const DialogDescription = React.forwardRef<
   <DialogPrimitive.Description
     ref={ref}
     className={cn(className)}
-    style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', ...style }}
+    style={{ fontSize: '0.875rem', color: 'var(--theme-text-muted)', ...style }}
     {...props}
   />
 ));

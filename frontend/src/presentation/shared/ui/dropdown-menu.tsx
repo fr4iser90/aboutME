@@ -18,11 +18,11 @@ const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup;
 const dropdownItemStyle: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
-  borderRadius: 'var(--radius-small)',
+  borderRadius: 'var(--theme-radius-small)',
   padding: '0.25rem 0.75rem',
-  fontSize: 'var(--font-size-base)',
+  fontSize: 'var(--theme-font-size-base)',
   background: 'transparent',
-  color: 'var(--color-text)',
+  color: 'var(--theme-text)',
   cursor: 'pointer',
   transition: 'background 0.2s, color 0.2s',
 };
@@ -52,7 +52,7 @@ const DropdownMenuSubContent = React.forwardRef<
   <DropdownMenuPrimitive.SubContent
     ref={ref}
     className={cn(className)}
-    style={{ minWidth: '8rem', borderRadius: 'var(--radius-base)', background: 'var(--color-background)', color: 'var(--color-text)', boxShadow: 'var(--theme-shadow-lg)', padding: '0.25rem', ...style }}
+    style={{ minWidth: '8rem', borderRadius: 'var(--theme-radius-base)', background: 'var(--theme-background)', color: 'var(--theme-text)', boxShadow: 'var(--theme-shadow-lg)', padding: '0.25rem', ...style }}
     {...props}
   />
 ));
@@ -67,7 +67,7 @@ const DropdownMenuContent = React.forwardRef<
       ref={ref}
       sideOffset={sideOffset}
       className={cn(className)}
-      style={{ minWidth: '8rem', borderRadius: 'var(--radius-base)', background: 'var(--color-background)', color: 'var(--color-text)', boxShadow: 'var(--theme-shadow-md)', padding: '0.25rem', ...style }}
+      style={{ minWidth: '8rem', borderRadius: 'var(--theme-radius-base)', background: 'var(--theme-background)', color: 'var(--theme-text)', boxShadow: 'var(--theme-shadow-md)', padding: '0.25rem', ...style }}
       {...props}
     />
   </DropdownMenuPrimitive.Portal>
@@ -139,7 +139,7 @@ const DropdownMenuLabel = React.forwardRef<
   <DropdownMenuPrimitive.Label
     ref={ref}
     className={cn(className)}
-    style={{ fontSize: 'var(--font-size-base)', fontWeight: 600, padding: '0.25rem 0.75rem', ...(inset ? { paddingLeft: '2rem' } : {}), ...style }}
+    style={{ fontSize: 'var(--theme-font-size-base)', fontWeight: 600, padding: '0.25rem 0.75rem', ...(inset ? { paddingLeft: '2rem' } : {}), ...style }}
     {...props}
   />
 ));

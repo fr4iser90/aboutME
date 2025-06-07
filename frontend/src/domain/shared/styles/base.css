@@ -1,123 +1,130 @@
 :root {
-  /* Core Defaults - will be overridden by themeApi.ts */
+  /* ===== CORE THEME COLORS ===== */
   --theme-primary: #3B82F6; /* Fallback Blue */
   --theme-secondary: #10B981; /* Fallback Green */
-  --theme-body-foreground: rgb(255, 255, 255); /* Fallback White */
+  --theme-accent: #007bff; /* Fallback Blue */
+  --theme-background: rgb(2, 6, 23); /* Fallback Dark Blue */
+  --theme-foreground: rgb(255, 255, 255); /* Fallback White */
+  --theme-text: var(--theme-foreground); /* Default to foreground */
+  --theme-muted: #64748b; /* Fallback Slate 500 */
+  --theme-link: var(--theme-primary); /* Default to primary */
+
+  /* ===== BACKGROUND GRADIENTS ===== */
   --theme-body-background-start: rgb(2, 6, 23); /* Fallback Dark Blue */
   --theme-body-background-end: rgb(15, 23, 42); /* Fallback Dark Slate Blue */
+  --theme-text-gradient: linear-gradient(to right, #a78bfa, #f472b6, #60a5fa);
 
-  --theme-semantic-primary-foreground: #ffffff;
-  --theme-semantic-primary-hover-background: rgba(59, 130, 246, 0.9); /* Fallback */
-  --theme-semantic-secondary-foreground: #ffffff;
-  --theme-semantic-secondary-hover-background: rgba(16, 185, 129, 0.8); /* Fallback */
-  --theme-semantic-destructive: #ef4444; /* Fallback Red */
-  --theme-semantic-destructive-foreground: #ffffff;
-  --theme-semantic-destructive-hover-background: rgba(239, 68, 68, 0.9); /* Fallback */
-  --theme-semantic-card: #ffffff;
-  --theme-semantic-card-foreground: #020617; /* Fallback Almost Black */
-  --theme-semantic-popover: #ffffff;
-  --theme-semantic-popover-foreground: #020617;
-  --theme-semantic-accent: var(--theme-primary); /* Default to primary */
-  --theme-semantic-accent-foreground: var(--theme-semantic-primary-foreground); /* Default to primary foreground */
-  --theme-semantic-accent-hover-background: rgba(59, 130, 246, 0.9); /* Fallback */
-  --theme-semantic-muted: #64748b; /* Fallback Slate 500 */
-  --theme-semantic-muted-foreground: #94a3b8; /* Fallback Slate 400 */
-  --theme-semantic-input-border: #cbd5e1; /* Fallback Slate 300 */
-  --theme-semantic-background: #ffffff; /* General component background */
-  --theme-semantic-ring: var(--theme-primary); /* Default to primary */
-  
-  --theme-navbar-background: var(--theme-semantic-card-foreground); /* Fallback */
-
-  --theme-font-size-default: 0.875rem;
+  /* ===== TYPOGRAPHY ===== */
+  --theme-font-family: system-ui, -apple-system, sans-serif;
+  --theme-font-size-base: 1rem;
+  --theme-font-size-large: 1.25rem;
+  --theme-font-size-small: 0.875rem;
+  --theme-font-size-2xl: 2rem;
+  --theme-font-size-3xl: 2.5rem;
+  --theme-font-size-4xl: 3rem;
   --theme-font-weight-default: 500;
   --theme-line-height-default: 1.25rem;
+  --theme-line-height-tight: 1.25;
+  --theme-line-height-relaxed: 1.75;
 
+  /* ===== SPACING ===== */
+  --theme-spacing-base: 1rem;
+  --theme-spacing-large: 2rem;
+  --theme-spacing-small: 0.5rem;
   --theme-spacing-base-unit: 0.25rem;
-  --theme-spacing-card-default-padding: 1.5rem; /* Fallback for p-6 */
-  --theme-spacing-scale-1_5: 0.375rem; /* Fallback for space-y-1.5 */
-  --theme-spacing-scale-3: 0.75rem; /* Fallback for px-3 */
-  --theme-spacing-scale-8: 2rem; /* Fallback for px-8 */
+  --theme-spacing-card-default-padding: 1.5rem;
+  --theme-spacing-scale-1_5: 0.375rem;
+  --theme-spacing-scale-3: 0.75rem;
+  --theme-spacing-scale-8: 2rem;
+  --theme-spacing-12: 3rem;
+  --theme-spacing-16: 4rem;
+  --theme-spacing-20: 5rem;
+  --theme-spacing-24: 6rem;
 
-
-  --theme-sizing-button-default-height: 2.25rem;
-  --theme-sizing-button-small-height: 2rem;
-  --theme-sizing-button-large-height: 2.5rem;
-  --theme-sizing-button-icon-height: 2.25rem;
-  --theme-sizing-button-icon-width: 2.25rem;
-  
+  /* ===== BORDER RADIUS ===== */
+  --theme-radius-base: 0.25rem;
+  --theme-radius-large: 0.5rem;
+  --theme-radius-small: 0.125rem;
   --theme-border-radius-default: 0.25rem;
   --theme-border-radius-md: 0.375rem;
   --theme-border-radius-lg: 0.5rem;
+  --theme-border-radius-xl: 0.75rem;
+  --theme-border-radius-2xl: 1rem;
+  --theme-border-radius-3xl: 1.5rem;
+  --theme-border-radius-full: 9999px;
 
-
+  /* ===== SHADOWS ===== */
   --theme-shadow-default: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --theme-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --theme-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --theme-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --theme-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 
-  --color-primary: #007bff;
-  --color-secondary: #6c757d;
-  --color-accent: #007bff;
-  --color-background: #ffffff;
-  --color-text: #212529;
+  /* ===== CARD STYLES ===== */
+  --theme-card-bg: rgba(30,41,59,0.5);
+  --theme-card-blur: 4px;
+  --theme-card-border: #a78bfa33;
+  --theme-card-shadow: 0 4px 24px rgba(167,139,250,0.1);
+  --theme-card-radius: 1rem;
+  --theme-card-shadow-hover: 0 4px 24px rgba(167,139,250,0.2);
+  --theme-card-border-hover: #a78bfa55;
+  --theme-card-list-gap: 16px;
+  --theme-card-list-item-gap: 12px;
+  --theme-card-list-item-color: #b0b0b0;
+  --theme-card-list-icon-color: #a78bfa;
+  --theme-card-list-icon-font-size: 22px;
 
-  --font-family: system-ui, -apple-system, sans-serif;
-  --font-size-base: 1rem;
-  --font-size-large: 1.25rem;
-  --font-size-small: 0.875rem;
+  /* ===== SECTION STYLES ===== */
+  --theme-section-heading-font-size: 2.5rem;
+  --theme-section-heading-font-weight: bold;
+  --theme-section-heading-margin-bottom: 2rem;
+  --theme-section-heading-color: #fff;
+  --theme-section-heading-align: center;
+  --theme-section-paragraph-color: #b0b0b0;
+  --theme-section-paragraph-margin-bottom: 1.5rem;
+  --theme-section-paragraph-font-size: 1.15rem;
+  --theme-section-paragraph-align: center;
+  --theme-section-link-color: #a78bfa;
 
-  --spacing-base: 1rem;
-  --spacing-large: 2rem;
-  --spacing-small: 0.5rem;
+  /* ===== NAVBAR STYLES ===== */
+  --theme-navbar-link-color: #b0b0b0;
+  --theme-navbar-link-hover-color: #fff;
+  --theme-navbar-link-hover-bg: #7c3aed33;
+  --theme-navbar-link-active-color: #fff;
+  --theme-navbar-link-active-bg: #7c3aed;
+  --theme-navbar-link-padding: 0.5rem 1rem;
+  --theme-navbar-link-radius: 0.5rem;
+  --theme-navbar-link-font-size: 1rem;
+  --theme-navbar-link-font-weight: 500;
+  --theme-navbar-button-color: #fff;
+  --theme-navbar-button-bg: #010971;
+  --theme-navbar-button-radius: 0.5rem;
+  --theme-navbar-button-font-weight: 500;
+  --theme-navbar-button-padding: 0.5rem 1.25rem;
+  --theme-navbar-button-shadow: 0 2px 8px rgba(124,58,237,0.08);
+  --theme-navbar-button-hover-bg: #a78bfa;
+  --theme-navbar-button-hover-color: #fff;
 
-  /* Border Radius */
-  --radius-base: 0.25rem;
-  --radius-large: 0.5rem;
-  --radius-small: 0.125rem;
-
-  --text-gradient: linear-gradient(to right, #a78bfa, #f472b6, #60a5fa);
-
-  --card-bg: rgba(30,41,59,0.5);
-  --card-blur: 4px;
-  --card-border: #a78bfa33;
-  --card-shadow: 0 4px 24px rgba(167,139,250,0.1);
-  --card-radius: 1rem;
-  --card-shadow-hover: 0 4px 24px rgba(167,139,250,0.2);
-  --card-border-hover: #a78bfa55;
-  --card-list-gap: 16px;
-  --card-list-item-gap: 12px;
-  --card-list-item-color: #b0b0b0;
-  --card-list-icon-color: #a78bfa;
-  --card-list-icon-font-size: 22px;
-
-  --section-heading-font-size: 2.5rem;
-  --section-heading-font-weight: bold;
-  --section-heading-margin-bottom: 2rem;
-  --section-heading-color: #fff;
-  --section-heading-align: center;
-  --section-paragraph-color: #b0b0b0;
-  --section-paragraph-margin-bottom: 1.5rem;
-  --section-paragraph-font-size: 1.15rem;
-  --section-paragraph-align: center;
-  --section-link-color: #a78bfa;
-
-  --navbar-link-color: #b0b0b0;
-  --navbar-link-hover-color: #fff;
-  --navbar-link-hover-bg: #7c3aed33;
-  --navbar-link-active-color: #fff;
-  --navbar-link-active-bg: #7c3aed;
-  --navbar-link-padding: 0.5rem 1rem;
-  --navbar-link-radius: 0.5rem;
-  --navbar-link-font-size: 1rem;
-  --navbar-link-font-weight: 500;
-  --navbar-button-color: #fff;
-  --navbar-button-bg: #010971;
-  --navbar-button-radius: 0.5rem;
-  --navbar-button-font-weight: 500;
-  --navbar-button-padding: 0.5rem 1.25rem;
-  --navbar-button-shadow: 0 2px 8px rgba(124,58,237,0.08);
-  --navbar-button-hover-bg: #a78bfa;
-  --navbar-button-hover-color: #fff;
-
-  /* Additional Semantic States */
+  /* ===== SEMANTIC COLORS ===== */
+  --theme-semantic-primary-foreground: #ffffff;
+  --theme-semantic-primary-hover-background: rgba(59, 130, 246, 0.9);
+  --theme-semantic-secondary-foreground: #ffffff;
+  --theme-semantic-secondary-hover-background: rgba(16, 185, 129, 0.8);
+  --theme-semantic-destructive: #ef4444;
+  --theme-semantic-destructive-foreground: #ffffff;
+  --theme-semantic-destructive-hover-background: rgba(239, 68, 68, 0.9);
+  --theme-semantic-card: #ffffff;
+  --theme-semantic-card-foreground: #020617;
+  --theme-semantic-popover: #ffffff;
+  --theme-semantic-popover-foreground: #020617;
+  --theme-semantic-accent: var(--theme-primary);
+  --theme-semantic-accent-foreground: var(--theme-semantic-primary-foreground);
+  --theme-semantic-accent-hover-background: rgba(59, 130, 246, 0.9);
+  --theme-semantic-muted: #64748b;
+  --theme-semantic-muted-foreground: #94a3b8;
+  --theme-semantic-input-border: #cbd5e1;
+  --theme-semantic-background: #ffffff;
+  --theme-semantic-ring: var(--theme-primary);
   --theme-semantic-success: #10B981;
   --theme-semantic-success-foreground: #ffffff;
   --theme-semantic-success-hover-background: rgba(16, 185, 129, 0.9);
@@ -128,37 +135,13 @@
   --theme-semantic-info-foreground: #ffffff;
   --theme-semantic-info-hover-background: rgba(59, 130, 246, 0.9);
 
-  /* Additional Typography */
-  --theme-font-size-2xl: 2rem;
-  --theme-font-size-3xl: 2.5rem;
-  --theme-font-size-4xl: 3rem;
-  --theme-line-height-tight: 1.25;
-  --theme-line-height-relaxed: 1.75;
-
-  /* Additional Spacing */
-  --theme-spacing-12: 3rem;
-  --theme-spacing-16: 4rem;
-  --theme-spacing-20: 5rem;
-  --theme-spacing-24: 6rem;
-
-  /* Additional Border Radius */
-  --theme-border-radius-xl: 0.75rem;
-  --theme-border-radius-2xl: 1rem;
-  --theme-border-radius-3xl: 1.5rem;
-  --theme-border-radius-full: 9999px;
-
-  /* Additional Shadows */
-  --theme-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --theme-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --theme-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-
-  /* Animation Durations */
+  /* ===== ANIMATIONS ===== */
   --theme-transition-fast: 150ms;
   --theme-transition-normal: 250ms;
   --theme-transition-slow: 350ms;
   --theme-transition-slower: 500ms;
 
-  /* Z-Index Layers */
+  /* ===== Z-INDEX LAYERS ===== */
   --theme-z-index-dropdown: 1000;
   --theme-z-index-sticky: 1020;
   --theme-z-index-fixed: 1030;
@@ -167,25 +150,25 @@
   --theme-z-index-popover: 1060;
   --theme-z-index-tooltip: 1070;
 
-  /* Container Sizes */
+  /* ===== CONTAINER SIZES ===== */
   --theme-container-sm: 640px;
   --theme-container-md: 768px;
   --theme-container-lg: 1024px;
   --theme-container-xl: 1280px;
   --theme-container-2xl: 1536px;
 
-  /* Grid System */
+  /* ===== GRID SYSTEM ===== */
   --theme-grid-columns: 12;
   --theme-grid-gap: 1.5rem;
   --theme-grid-margin: 1rem;
 
-  /* Focus States */
+  /* ===== FOCUS STATES ===== */
   --theme-focus-ring-color: var(--theme-primary);
   --theme-focus-ring-width: 2px;
   --theme-focus-ring-offset: 2px;
   --theme-focus-ring-opacity: 0.5;
 
-  /* Scrollbar */
+  /* ===== SCROLLBAR ===== */
   --theme-scrollbar-width: 8px;
   --theme-scrollbar-track: #f1f1f1;
   --theme-scrollbar-thumb: #888;

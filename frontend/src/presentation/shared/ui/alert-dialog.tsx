@@ -40,10 +40,10 @@ const contentStyle: React.CSSProperties = {
   transform: 'translate(-50%, -50%)',
   gap: '1rem',
   border: '1px solid var(--color-border, #a78bfa)',
-  background: 'var(--color-background)',
+  background: 'var(--theme-background)',
   padding: '1.5rem',
   boxShadow: 'var(--theme-shadow-lg)',
-  borderRadius: 'var(--radius-large)',
+  borderRadius: 'var(--theme-radius-large)',
   transition: 'all 0.2s',
 };
 
@@ -101,7 +101,7 @@ const AlertDialogDescription = React.forwardRef<
   <AlertDialogPrimitive.Description
     ref={ref}
     className={cn(className)}
-    style={{ fontSize: '0.875rem', color: 'var(--color-text-muted, #94a3b8)', ...style }}
+    style={{ fontSize: '0.875rem', color: 'var(--theme-text-muted, #94a3b8)', ...style }}
     {...props}
   />
 ));

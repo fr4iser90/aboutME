@@ -7,10 +7,10 @@ export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const variantStyles: Record<string, React.CSSProperties> = {
   default: {
-    background: 'var(--color-background)',
-    color: 'var(--color-text)',
+    background: 'var(--theme-background)',
+    color: 'var(--theme-text)',
     border: '1px solid var(--color-border, #a78bfa)',
-    borderRadius: 'var(--radius-large)',
+    borderRadius: 'var(--theme-radius-large)',
     padding: '1rem',
     position: 'relative',
     width: '100%',
@@ -18,9 +18,9 @@ const variantStyles: Record<string, React.CSSProperties> = {
   },
   destructive: {
     background: 'var(--color-danger, #ef4444)',
-    color: 'var(--color-text, #fff)',
+    color: 'var(--theme-text, #fff)',
     border: '1px solid var(--color-danger, #ef4444)',
-    borderRadius: 'var(--radius-large)',
+    borderRadius: 'var(--theme-radius-large)',
     padding: '1rem',
     position: 'relative',
     width: '100%',

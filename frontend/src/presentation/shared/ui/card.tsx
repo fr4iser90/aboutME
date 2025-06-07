@@ -2,11 +2,11 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 const cardStyle: React.CSSProperties = {
-  borderRadius: 'var(--card-radius, var(--radius-large))',
-  border: '1px solid var(--card-border, #a78bfa)',
-  background: 'var(--card-bg, #fff)',
-  color: 'var(--card-text-color, #212529)',
-  boxShadow: 'var(--card-shadow, var(--theme-shadow-sm))',
+  borderRadius: 'var(--theme-card-radius, var(--theme-radius-large))',
+  border: '1px solid var(--theme-card-border, #a78bfa)',
+  background: 'var(--theme-card-bg, #fff)',
+  color: 'var(--theme-card-text-color, #212529)',
+  boxShadow: 'var(--theme-card-shadow, var(--theme-shadow-sm))',
 };
 
 const Card = React.forwardRef<
@@ -55,7 +55,7 @@ const CardDescription = React.forwardRef<
   <p
     ref={ref}
     className={cn(className)}
-    style={{ fontSize: '0.875rem', color: 'var(--color-text-muted, #94a3b8)', ...style }}
+    style={{ fontSize: '0.875rem', color: 'var(--theme-text-muted, #94a3b8)', ...style }}
     {...props}
   />
 ));

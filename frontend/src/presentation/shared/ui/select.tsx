@@ -22,11 +22,11 @@ const SelectTrigger = React.forwardRef<
       width: '100%',
       alignItems: 'center',
       justifyContent: 'space-between',
-      borderRadius: 'var(--radius-base)',
+      borderRadius: 'var(--theme-radius-base)',
       border: '1px solid var(--color-border)',
-      background: 'var(--color-background)',
+      background: 'var(--theme-background)',
       padding: '0.5rem 0.75rem',
-      fontSize: 'var(--font-size-base)',
+      fontSize: 'var(--theme-font-size-base)',
       outline: 'none',
       ...style
     }}
@@ -84,10 +84,10 @@ const SelectContent = React.forwardRef<
         maxHeight: '24rem',
         minWidth: '8rem',
         overflow: 'hidden',
-        borderRadius: 'var(--radius-base)',
+        borderRadius: 'var(--theme-radius-base)',
         border: '1px solid var(--color-border)',
-        background: 'var(--color-background)',
-        color: 'var(--color-text)',
+        background: 'var(--theme-background)',
+        color: 'var(--theme-text)',
         boxShadow: 'var(--theme-shadow-md)',
         ...style
       }}
@@ -113,7 +113,7 @@ const SelectLabel = React.forwardRef<
   <SelectPrimitive.Label
     ref={ref}
     className={cn(className)}
-    style={{ padding: '0.375rem 0.5rem 0.375rem 2rem', fontSize: 'var(--font-size-base)', fontWeight: 600, ...style }}
+    style={{ padding: '0.375rem 0.5rem 0.375rem 2rem', fontSize: 'var(--theme-font-size-base)', fontWeight: 600, ...style }}
     {...props}
   />
 ));
@@ -133,9 +133,9 @@ const SelectItem = React.forwardRef<
       cursor: 'default',
       userSelect: 'none',
       alignItems: 'center',
-      borderRadius: 'var(--radius-small)',
+      borderRadius: 'var(--theme-radius-small)',
       padding: '0.375rem 0.5rem 0.375rem 2rem',
-      fontSize: 'var(--font-size-base)',
+      fontSize: 'var(--theme-font-size-base)',
       outline: 'none',
       ...style
     }}

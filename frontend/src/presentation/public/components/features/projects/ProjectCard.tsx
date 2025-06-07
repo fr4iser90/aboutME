@@ -12,9 +12,9 @@ interface ProjectCardProps {
 export const ProjectCard = ({ project }: ProjectCardProps) => {
   const cardDesc = project.short_description || project.own_description || project.description;
   return (
-    <Card className="project-card" style={{ background: 'var(--card-bg)', color: 'var(--card-text-color)', border: '1px solid var(--card-border)', boxShadow: 'var(--card-shadow)', borderRadius: 'var(--card-radius, 1rem)', maxWidth: '400px', minHeight: '320px', margin: '0 auto' }}>
+    <Card className="project-card" style={{ background: 'var(--theme-card-bg)', color: 'var(--theme-card-text-color)', border: '1px solid var(--theme-card-border)', boxShadow: 'var(--theme-card-shadow)', borderRadius: 'var(--theme-card-radius, 1rem)', maxWidth: '400px', minHeight: '320px', margin: '0 auto' }}>
       {project.imageUrl && (
-        <div className="project-card__image-wrapper" style={{ maxHeight: '200px', overflow: 'hidden', borderTopLeftRadius: 'var(--card-radius, 1rem)', borderTopRightRadius: 'var(--card-radius, 1rem)' }}>
+        <div className="project-card__image-wrapper" style={{ maxHeight: '200px', overflow: 'hidden', borderTopLeftRadius: 'var(--theme-card-radius, 1rem)', borderTopRightRadius: 'var(--theme-card-radius, 1rem)' }}>
           <Image
             src={project.imageUrl}
             alt={project.title}
@@ -25,10 +25,10 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
         </div>
       )}
       <CardHeader>
-        <h3 className="project-card__title" style={{ color: 'var(--card-title-color)' }}>{project.title}</h3>
+        <h3 className="project-card__title" style={{ color: 'var(--theme-card-title-color)' }}>{project.title}</h3>
       </CardHeader>
       <CardContent className="project-card__content">
-        <p style={{ color: 'var(--card-text-color)' }}>{cardDesc}</p>
+        <p style={{ color: 'var(--theme-card-text-color)' }}>{cardDesc}</p>
         <div className="project-card-badges">
           {project.technologies?.map((tech) => (
             <Badge key={tech} variant="secondary" className="project-card-badge">
@@ -95,7 +95,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
       <CardFooter className="project-card__footer">
         <div className="project-card__links">
           {project.githubUrl && (
-            <Button variant="outline" size="sm" asChild style={{ background: 'var(--button-bg)', color: 'var(--button-text)', border: '1px solid var(--button-border)', boxShadow: 'var(--button-shadow)' }}>
+            <Button variant="outline" size="sm" asChild style={{ background: 'var(--theme-button-bg)', color: 'var(--theme-button-text)', border: '1px solid var(--theme-button-border)', boxShadow: 'var(--theme-button-shadow)' }}>
               <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
                 <Github className="project-card__link-icon" />
                 GitHub
@@ -103,7 +103,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
             </Button>
           )}
           {project.liveUrl && (
-            <Button variant="outline" size="sm" asChild style={{ background: 'var(--button-bg)', color: 'var(--button-text)', border: '1px solid var(--button-border)', boxShadow: 'var(--button-shadow)' }}>
+            <Button variant="outline" size="sm" asChild style={{ background: 'var(--theme-button-bg)', color: 'var(--theme-button-text)', border: '1px solid var(--theme-button-border)', boxShadow: 'var(--theme-button-shadow)' }}>
               <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="project-card__link-icon" />
                 Live Demo
@@ -111,7 +111,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
             </Button>
           )}
           {project.homepageUrl && (
-            <Button variant="outline" size="sm" asChild style={{ background: 'var(--button-bg)', color: 'var(--button-text)', border: '1px solid var(--button-border)', boxShadow: 'var(--button-shadow)' }}>
+            <Button variant="outline" size="sm" asChild style={{ background: 'var(--theme-button-bg)', color: 'var(--theme-button-text)', border: '1px solid var(--theme-button-border)', boxShadow: 'var(--theme-button-shadow)' }}>
               <a href={project.homepageUrl} target="_blank" rel="noopener noreferrer">
                 <Home className="project-card__link-icon" />
                 Homepage
@@ -120,7 +120,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
           )}
         </div>
         {project.updatedAt && (
-          <div className="project-card-updated" style={{ color: 'var(--card-list-item-color)' }}>
+          <div className="project-card-updated" style={{ color: 'var(--theme-card-list-item-color)' }}>
             <Clock className="project-card__updated-icon" />
             Last updated: {new Date(project.updatedAt).toLocaleDateString()}
           </div>

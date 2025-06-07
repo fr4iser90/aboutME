@@ -1,35 +1,35 @@
 .navbar-link:hover {
-    color: var(--navbar-link-hover-color, #fff);
-    background: var(--navbar-link-hover-bg, #7c3aed33);
+    color: var(--theme-navbar-link-hover-color, #fff);
+    background: var(--theme-navbar-link-hover-bg, #7c3aed33);
   }
   
   .navbar-link-active {
-    color: var(--navbar-link-active-color, #fff);
-    background: var(--navbar-link-active-bg, #7c3aed);
+    color: var(--theme-navbar-link-active-color, #fff);
+    background: var(--theme-navbar-link-active-bg, #7c3aed);
   }
   
   .navbar-link-button,
   .navbar-link-login,
   .navbar-link-admin {
-    color: var(--navbar-button-color, #fff);
-    background: var(--navbar-button-bg, #03afee);
-    border-radius: var(--navbar-button-radius, 0.5rem);
-    font-weight: var(--navbar-button-font-weight, 500);
-    padding: var(--navbar-button-padding, 0.5rem 1.25rem);
-    box-shadow: var(--navbar-button-shadow, 0 2px 8px rgba(124,58,237,0.08));
+    color: var(--theme-navbar-button-color, #fff);
+    background: var(--theme-navbar-button-bg, #03afee);
+    border-radius: var(--theme-navbar-button-radius, 0.5rem);
+    font-weight: var(--theme-navbar-button-font-weight, 500);
+    padding: var(--theme-navbar-button-padding, 0.5rem 1.25rem);
+    box-shadow: var(--theme-navbar-button-shadow, 0 2px 8px rgba(124,58,237,0.08));
     transition: background 0.2s, color 0.2s;
   }
   
   .navbar-link-login:hover,
   .navbar-link-admin:hover {
-    background: var(--navbar-button-hover-bg, #a78bfa);
-    color: var(--navbar-button-hover-color, #fff);
+    background: var(--theme-navbar-button-hover-bg, #a78bfa);
+    color: var(--theme-navbar-button-hover-color, #fff);
   }
   
   .navbar-brand {
     font-size: 1.25rem; /* text-xl */
     font-weight: 700; /* font-bold */
-    background: var(--text-gradient, linear-gradient(to right, #a78bfa, #f472b6, #60a5fa));
+    background: var(--theme-text-gradient, linear-gradient(to right, #a78bfa, #f472b6, #60a5fa));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -37,17 +37,17 @@
   }
   
   .navbar {
-    background: var(--navbar-background, rgba(34,197,94,0.8));
+    background: var(--theme-navbar-background, rgba(34,197,94,0.8));
   }
   
   .navbar-link {
-    color: var(--navbar-link-color, #fff);
+    color: var(--theme-navbar-link-color, #fff);
   }
   
   .navbar-inner {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: var(--navbar-height, 4rem);
+    height: var(--theme-navbar-height, 4rem);
   }
   

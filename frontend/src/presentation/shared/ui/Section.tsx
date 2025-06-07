@@ -2,9 +2,9 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 
 const sectionStyle: React.CSSProperties = {
-  paddingTop: 'var(--section-padding-y, 2rem)',
-  paddingBottom: 'var(--section-padding-y, 2rem)',
-  marginBottom: 'var(--section-margin-bottom, 2rem)',
+  paddingTop: 'var(--theme-section-padding-y, 2rem)',
+  paddingBottom: 'var(--theme-section-padding-y, 2rem)',
+  marginBottom: 'var(--theme-section-margin-bottom, 2rem)',
   width: '100%',
 };
 

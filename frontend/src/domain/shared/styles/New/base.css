@@ -53,69 +53,69 @@
   --theme-shadow-default: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --theme-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 
-  --color-primary: #007bff;
-  --color-secondary: #6c757d;
-  --color-accent: #007bff;
-  --color-background: #ffffff;
-  --color-text: #212529;
+  --theme-primary: #007bff;
+  --theme-secondary: #6c757d;
+  --theme-accent: #007bff;
+  --theme-background: #ffffff;
+  --theme-text: #212529;
 
-  --font-family: system-ui, -apple-system, sans-serif;
-  --font-size-base: 1rem;
-  --font-size-large: 1.25rem;
-  --font-size-small: 0.875rem;
+  --theme-font-family: system-ui, -apple-system, sans-serif;
+  --theme-font-size-base: 1rem;
+  --theme-font-size-large: 1.25rem;
+  --theme-font-size-small: 0.875rem;
 
-  --spacing-base: 1rem;
-  --spacing-large: 2rem;
-  --spacing-small: 0.5rem;
+  --theme-spacing-base: 1rem;
+  --theme-spacing-large: 2rem;
+  --theme-spacing-small: 0.5rem;
 
   /* Border Radius */
-  --radius-base: 0.25rem;
-  --radius-large: 0.5rem;
-  --radius-small: 0.125rem;
+  --theme-radius-base: 0.25rem;
+  --theme-radius-large: 0.5rem;
+  --theme-radius-small: 0.125rem;
 
-  --text-gradient: linear-gradient(to right, #a78bfa, #f472b6, #60a5fa);
+  --theme-text-gradient: linear-gradient(to right, #a78bfa, #f472b6, #60a5fa);
 
-  --card-bg: rgba(30,41,59,0.5);
-  --card-blur: 4px;
-  --card-border: #a78bfa33;
-  --card-shadow: 0 4px 24px rgba(167,139,250,0.1);
-  --card-radius: 1rem;
-  --card-shadow-hover: 0 4px 24px rgba(167,139,250,0.2);
-  --card-border-hover: #a78bfa55;
-  --card-list-gap: 16px;
-  --card-list-item-gap: 12px;
-  --card-list-item-color: #b0b0b0;
-  --card-list-icon-color: #a78bfa;
-  --card-list-icon-font-size: 22px;
+  --theme-card-bg: rgba(30,41,59,0.5);
+  --theme-card-blur: 4px;
+  --theme-card-border: #a78bfa33;
+  --theme-card-shadow: 0 4px 24px rgba(167,139,250,0.1);
+  --theme-card-radius: 1rem;
+  --theme-card-shadow-hover: 0 4px 24px rgba(167,139,250,0.2);
+  --theme-card-border-hover: #a78bfa55;
+  --theme-card-list-gap: 16px;
+  --theme-card-list-item-gap: 12px;
+  --theme-card-list-item-color: #b0b0b0;
+  --theme-card-list-icon-color: #a78bfa;
+  --theme-card-list-icon-font-size: 22px;
 
-  --section-heading-font-size: 2.5rem;
-  --section-heading-font-weight: bold;
-  --section-heading-margin-bottom: 2rem;
-  --section-heading-color: #fff;
-  --section-heading-align: center;
-  --section-paragraph-color: #b0b0b0;
-  --section-paragraph-margin-bottom: 1.5rem;
-  --section-paragraph-font-size: 1.15rem;
-  --section-paragraph-align: center;
-  --section-link-color: #a78bfa;
+  --theme-section-heading-font-size: 2.5rem;
+  --theme-section-heading-font-weight: bold;
+  --theme-section-heading-margin-bottom: 2rem;
+  --theme-section-heading-color: #fff;
+  --theme-section-heading-align: center;
+  --theme-section-paragraph-color: #b0b0b0;
+  --theme-section-paragraph-margin-bottom: 1.5rem;
+  --theme-section-paragraph-font-size: 1.15rem;
+  --theme-section-paragraph-align: center;
+  --theme-section-link-color: #a78bfa;
 
-  --navbar-link-color: #b0b0b0;
-  --navbar-link-hover-color: #fff;
-  --navbar-link-hover-bg: #7c3aed33;
-  --navbar-link-active-color: #fff;
-  --navbar-link-active-bg: #7c3aed;
-  --navbar-link-padding: 0.5rem 1rem;
-  --navbar-link-radius: 0.5rem;
-  --navbar-link-font-size: 1rem;
-  --navbar-link-font-weight: 500;
-  --navbar-button-color: #fff;
-  --navbar-button-bg: #010971;
-  --navbar-button-radius: 0.5rem;
-  --navbar-button-font-weight: 500;
-  --navbar-button-padding: 0.5rem 1.25rem;
-  --navbar-button-shadow: 0 2px 8px rgba(124,58,237,0.08);
-  --navbar-button-hover-bg: #a78bfa;
-  --navbar-button-hover-color: #fff;
+  --theme-navbar-link-color: #b0b0b0;
+  --theme-navbar-link-hover-color: #fff;
+  --theme-navbar-link-hover-bg: #7c3aed33;
+  --theme-navbar-link-active-color: #fff;
+  --theme-navbar-link-active-bg: #7c3aed;
+  --theme-navbar-link-padding: 0.5rem 1rem;
+  --theme-navbar-link-radius: 0.5rem;
+  --theme-navbar-link-font-size: 1rem;
+  --theme-navbar-link-font-weight: 500;
+  --theme-navbar-button-color: #fff;
+  --theme-navbar-button-bg: #010971;
+  --theme-navbar-button-radius: 0.5rem;
+  --theme-navbar-button-font-weight: 500;
+  --theme-navbar-button-padding: 0.5rem 1.25rem;
+  --theme-navbar-button-shadow: 0 2px 8px rgba(124,58,237,0.08);
+  --theme-navbar-button-hover-bg: #a78bfa;
+  --theme-navbar-button-hover-color: #fff;
 }
 
 body {
@@ -129,7 +129,7 @@ body {
 }
 
 .text {
-  background: var(--text-gradient, linear-gradient(to right, #a78bfa, #f472b6, #60a5fa));
+  background: var(--theme-text-gradient, linear-gradient(to right, #a78bfa, #f472b6, #60a5fa));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -137,34 +137,34 @@ body {
 }
 
 .card {
-  background: var(--card-bg, rgba(30,41,59,0.5));
-  backdrop-filter: blur(var(--card-blur, 4px));
-  border: 1px solid var(--card-border, #a78bfa33);
-  box-shadow: var(--card-shadow, 0 4px 24px rgba(167,139,250,0.1));
-  border-radius: var(--card-radius, 1rem);
+  background: var(--theme-card-bg, rgba(30,41,59,0.5));
+  backdrop-filter: blur(var(--theme-card-blur, 4px));
+  border: 1px solid var(--theme-card-border, #a78bfa33);
+  box-shadow: var(--theme-card-shadow, 0 4px 24px rgba(167,139,250,0.1));
+  border-radius: var(--theme-card-radius, 1rem);
   transition: box-shadow 0.3s, border-color 0.3s;
 }
 .card:hover {
-  box-shadow: var(--card-shadow-hover, 0 4px 24px rgba(167,139,250,0.2));
-  border-color: var(--card-border-hover, #a78bfa55);
+  box-shadow: var(--theme-card-shadow-hover, 0 4px 24px rgba(167,139,250,0.2));
+  border-color: var(--theme-card-border-hover, #a78bfa55);
 }
 
 .card-list {
   display: flex;
   flex-direction: column;
-  gap: var(--card-list-gap, 16px);
+  gap: var(--theme-card-list-gap, 16px);
 }
 
 .card-list-item {
   display: flex;
   align-items: center;
-  gap: var(--card-list-item-gap, 12px);
-  color: var(--card-list-item-color, #b0b0b0);
+  gap: var(--theme-card-list-item-gap, 12px);
+  color: var(--theme-card-list-item-color, #b0b0b0);
 }
 
 .card-list-icon {
-  color: var(--card-list-icon-color, #a78bfa);
-  font-size: var(--card-list-icon-font-size, 22px);
+  color: var(--theme-card-list-icon-color, #a78bfa);
+  font-size: var(--theme-card-list-icon-font-size, 22px);
 }
 
 .error-message {
