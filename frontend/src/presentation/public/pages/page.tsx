@@ -3,6 +3,7 @@
 import React, { useEffect, useState, FC } from 'react'; // Added FC
 import { Navbar } from '@/presentation/public/components/layout/Navbar';
 import { config } from '@/domain/shared/utils/config';
+import { Theme } from '@/domain/entities/Theme';
 // import { projectApi } from '@/domain/shared/utils/api';
 // Import existing section components - they will be refactored later
 import About from '@/presentation/public/components/sections/About';
@@ -27,10 +28,29 @@ interface ApiSection {
   updated_at: string;
 }
 
-export const HomeView: FC = () => { // Used FC type
+interface HomeViewProps {
+  initialTheme?: Theme | null;
+}
+
+export const HomeView: FC<HomeViewProps> = ({ initialTheme }) => {
   const [sections, setSections] = useState<ApiSection[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Apply initial theme immediately for ISR
+  useEffect(() => {
+    if (initialTheme && typeof window !== 'undefined') {
+      const root = document.documentElement;
+      if (initialTheme.style_properties?.colors) {
+        Object.entries(initialTheme.style_properties.colors).forEach(([key, value]) => {
+          if (value !== undefined) {
+            const cssVarName = `--theme-${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
+            root.style.setProperty(cssVarName, value);
+          }
+        });
+      }
+    }
+  }, [initialTheme]);
 
   useEffect(() => {
     let isMounted = true;
@@ -198,4 +218,4 @@ export const HomeView: FC = () => { // Used FC type
       </main>
     </>
   );
-}
+};
