@@ -181,14 +181,48 @@
 
 ---
 
-## 8. Rollback/Fail-Safe
+## 8. Erweiterte/Optionale Features (UX, Robustheit, CI/CD, a11y, Edge Cases)
+- **Undo/Redo-Stack im Editor:**
+  - Lokaler Stack im FullPageGridEditor (`useState`/`useReducer`)
+  - Buttons für Undo/Redo (z.B. oben rechts)
+  - Jeder Layout-Change wird gepusht, Undo/Redo springt im Stack
+  - Optional: Tastenkürzel (Ctrl+Z/Ctrl+Y)
+- **Optimistic UI/State-Management:**
+  - Nach Save sofort UI updaten, bei Fehler Rollback auf alten State
+  - Save-Button disabled während Save, Spinner anzeigen
+- **Accessibility (a11y) & Keyboard Shortcuts:**
+  - Tab-Navigation für alle Controls
+  - ARIA-Labels für Buttons, Grid, Modal
+  - Shortcuts: Save (Ctrl+S), Cancel (Esc), Undo (Ctrl+Z), Redo (Ctrl+Y)
+  - Fokus-Management nach Modal-Open/Close
+- **Automatisierte Backups/Restore:**
+  - Vor jedem Save ein Backup des alten Layouts (z.B. als History-Table oder im LocalStorage)
+  - Restore-Button im Editor für letztes Backup
+- **API-Rate-Limit-Feedback:**
+  - UI-Hinweis, wenn Rate-Limit erreicht (Toast, Banner)
+  - Save-Button disabled, Retry möglich
+- **Frontend-Error-Boundaries:**
+  - React ErrorBoundary um FullPageGridEditor und DynamicPageRenderer
+  - Zeigt Fehler-UI statt White-Screen
+- **Extremfälle/Edge Cases:**
+  - Sehr große Layouts: Virtualisierung, Lazy Rendering
+  - Viele Elemente: Scrollbare Grid-UI, Performance-Optimierung
+  - Mobile-UX: Responsive Drag/Resize, Touch-Support, Mobile-Controls
+  - Browser-Kompatibilität: Testen in allen gängigen Browsern
+- **CI/CD-Checks:**
+  - Linting, Type-Checks, Prettier, E2E-Tests im Build/PR
+  - Automatisierte Tests für alle Kernfeatures
+
+---
+
+## 9. Rollback/Fail-Safe
 - Wenn Fehler: Alles verwerfen, keine Migrationen, keine halben Änderungen!
 - Nur Änderungen an init.sql/seed.sql und klaren, modularen Komponenten
 - Rollback auf Default-Layout jederzeit möglich
 
 ---
 
-## 9. EXECUTION PLAN (Schritt für Schritt)
+## 10. EXECUTION PLAN (Schritt für Schritt)
 1. **DB:** layouts-Tabelle & seed.sql anpassen
 2. **Backend:** Model, Schema, API, Service, Repo pattern-konform anlegen
 3. **Frontend:**
@@ -202,4 +236,5 @@
 4. **Testing:** API, Frontend, E2E
 5. **Security:** Auth, CSRF, Input-Validation
 6. **UX:** Loading, Fehler, Optimistic Update, Fallback
-7. **Rollback:** Bei Fehler alles verwerfen 
+7. **Erweiterte Features:** Undo/Redo, a11y, Backups, ErrorBoundary, Edge Cases, CI/CD
+8. **Rollback:** Bei Fehler alles verwerfen 
