@@ -215,14 +215,7 @@
 
 ---
 
-## 9. Rollback/Fail-Safe
-- [ ] Wenn Fehler: Alles verwerfen, keine Migrationen, keine halben Änderungen!
-- [ ] Nur Änderungen an init.sql/seed.sql und klaren, modularen Komponenten
-- [ ] Rollback auf Default-Layout jederzeit möglich
-
----
-
-## 10. EXECUTION PLAN (Schritt für Schritt)
+## 9. EXECUTION PLAN (Schritt für Schritt)
 - [ ] **DB:** layouts-Tabelle & seed.sql anpassen
 - [ ] **Backend:** Model, Schema, API, Service, Repo pattern-konform anlegen
 - [ ] **Frontend:**
