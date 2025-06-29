@@ -52,7 +52,8 @@ galaxy_theme = {
             "warning": "#fde047",
             "warningForeground": "#1e293b",
             "warningHoverBackground": "#facc15",
-            "mutedHoverBackground": "#9ca3af"
+            "mutedHoverBackground": "#9ca3af",
+            "textGradient": "linear-gradient(to right, #a78bfa, #f472b6, #60a5fa)"
         },
         "typography": {
             "fontFamily": "Inter, sans-serif",

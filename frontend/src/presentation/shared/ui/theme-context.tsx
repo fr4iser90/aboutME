@@ -14,18 +14,20 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+interface ThemeProviderProps {
+  children: React.ReactNode;
+  initialTheme?: Theme | null;
+}
+
+export function ThemeProvider({ children, initialTheme }: ThemeProviderProps) {
+  const [theme, setTheme] = useState<Theme | null>(initialTheme || null);
+  const [isLoading, setIsLoading] = useState(!initialTheme);
   const [error, setError] = useState<Error | null>(null);
 
   const applyThemeToCssVariables = (theme: Theme) => {
     if (typeof window === 'undefined') return;
     const root = document.documentElement;
-    console.log('[ThemeContext] Eingehendes Theme-Objekt:', theme);
-    console.log('[ThemeContext] style_properties.colors:', theme.style_properties.colors);
     const vars = resolveThemeVariables(theme.style_properties.colors);
-    console.log('[ThemeContext] Resolver Output:', vars);
     Object.entries(vars).forEach(([key, value]) => {
       if (value !== undefined) root.style.setProperty(key, value);
     });
@@ -36,9 +38,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(true);
       setError(null);
       const response = await themeApi.getCurrentTheme();
-      console.log('[ThemeContext] API Response:', response);
       if (response.data) {
-        console.log('[ThemeContext] Aktives Theme:', response.data);
         setTheme(response.data);
         applyThemeToCssVariables(response.data);
       } else {
@@ -46,15 +46,17 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       }
     } catch (err) {
       setError(err instanceof Error ? err : new Error('Failed to load theme'));
-      console.error('[ThemeContext] Fehler beim Laden des Themes:', err);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    loadTheme();
-  }, []);
+    if (!initialTheme) {
+      loadTheme();
+    }
+    // Do NOT set theme variables again if initialTheme exists (SSR/ISR already did it)
+  }, [initialTheme]);
 
   const value = {
     theme,

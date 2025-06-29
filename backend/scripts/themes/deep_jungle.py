@@ -70,6 +70,7 @@ forest_mist_theme = {
             "semantic_card": "#e6f9ec",
             "semantic_card_foreground": "#14532d",
             "semantic_popover": "#e6f9ec",
+            "textGradient": "linear-gradient(to right, #22c55e, #a3e635, #4ade80)",
             "semantic_popover_foreground": "#14532d"
         },
         "typography": {

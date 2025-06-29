@@ -52,7 +52,8 @@ solar_flare_theme = {
             "warning": "#facc15",
             "warningForeground": "#1e293b",
             "warningHoverBackground": "#fbbf24",
-            "mutedHoverBackground": "#94a3b8"
+            "mutedHoverBackground": "#94a3b8",
+            "textGradient": "linear-gradient(to right, #fbbf24, #f59e42, #f87171)"
         },
         "typography": {
             "fontFamily": "Montserrat, sans-serif",

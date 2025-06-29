@@ -52,7 +52,8 @@ ocean_breeze_theme = {
             "warning": "#facc15",
             "warningForeground": "#1e293b",
             "warningHoverBackground": "#fbbf24",
-            "mutedHoverBackground": "#94a3b8"
+            "mutedHoverBackground": "#94a3b8",
+            "textGradient": "linear-gradient(to right, #38bdf8, #0ea5e9, #22d3ee)"
         },
         "typography": {
             "fontFamily": "Roboto, sans-serif",
