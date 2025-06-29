@@ -67,7 +67,77 @@
 
 ---
 
-## 4. Features & Pattern
+## 4. Editiermodus: Start, Ablauf, Beenden, Pattern, Fehlerfälle (EXPLIZIT)
+
+### **4.1 Start Editiermodus**
+- **EditButton** (nur für Admin sichtbar, z.B. oben rechts):
+  - Klick → `setIsEditing(true)` im EditContext
+  - Edit-Status global via `useEdit()` verfügbar
+  - Button-Icon wechselt zu "Save/Cancel"
+- **EditContext** (`src/presentation/admin/contexts/EditContext.tsx`):
+  - `isEditing`, `setIsEditing`, `useEdit()`
+  - Provider um alle relevanten Komponenten
+
+### **4.2 Editiermodus aktiv**
+- **FullPageGridEditor** wird als Modal/Overlay angezeigt
+- **Normale Seite wird ausgeblendet/disabled**
+- **Alle Page-Elemente** sind jetzt:
+  - Drag&Drop (Position ändern)
+  - Resizable (Größe ändern)
+  - Controls pro Element: 👁️ (Hide/Show), 🗑️ (Delete), ⚙️ (Settings), 📏 (Resize)
+- **State-Handling:**
+  - Änderungen werden im lokalen State (`useState`) gehalten
+  - Noch **nicht** gespeichert!
+  - Undo/Redo optional
+- **UX:**
+  - Visuelles Feedback beim Drag/Resize
+  - Disabled-Overlay für nicht-editierbare Bereiche
+
+### **4.3 Speichern/Verwerfen/Reset**
+- **Save-Button** (im Editor, z.B. rechts oben):
+  - Klick → API-Call `saveFullPageLayout()`
+  - Bei Erfolg: `setIsEditing(false)`, Editor schließt, Seite aktualisiert sich
+  - Bei Fehler: Fehlermeldung anzeigen, Editor bleibt offen
+- **Cancel-Button**:
+  - Klick → Änderungen im State verwerfen, `setIsEditing(false)`, Editor schließt
+- **Reset-Button**:
+  - Klick → Layout wird auf zuletzt gespeicherten Stand zurückgesetzt (erneut von API laden)
+- **Pattern:**
+  - Save/Cancel/Reset immer über EditContext und API-Client
+  - Keine Änderungen im Backend, solange nicht gespeichert
+
+### **4.4 Fehlerfälle & Edge Cases**
+- **API-Fehler:**
+  - Fehler beim Speichern → Fehlermeldung, Editor bleibt offen
+- **Validation:**
+  - Ungültiges Layout (z.B. Überlappung, leere Felder) → Fehler anzeigen, Save disabled
+- **Auth-Fehler:**
+  - Session abgelaufen → Editor schließt, Login-Dialog anzeigen
+- **Optimistic Update:**
+  - Nach Save sofort UI aktualisieren, bei Fehler Rollback
+- **Abbruch durch Navigation:**
+  - Warnung bei offenen Änderungen, wenn User Seite verlässt
+
+### **4.5 Code/Komponenten-Pattern**
+- **EditContext.tsx:**
+  - `const [isEditing, setIsEditing] = useState(false);`
+  - `useEdit()`-Hook für Zugriff in allen Komponenten
+- **EditButton.tsx:**
+  - Zeigt Edit-Icon, Save-Icon, Cancel-Icon je nach State
+  - onClick: `setIsEditing(!isEditing)`
+- **FullPageGridEditor.tsx:**
+  - Props: `elements`, `layout`, `onLayoutChange`, `onSave`, `onCancel`
+  - State: `localLayout`, `isSaving`, `error`
+  - Methoden: `handleDrag`, `handleResize`, `handleSave`, `handleCancel`, `handleReset`
+- **ElementControls.tsx:**
+  - Props: `onHide`, `onDelete`, `onSettings`, `onResize`
+- **DynamicPageRenderer.tsx:**
+  - Rendert immer aus aktuellem Layout-Array
+  - Kein statisches Fallback mehr
+
+---
+
+## 5. Features & Pattern
 - **Edit-Button Workflow:**
   - Edit-Button → setIsEditing(true) → Grid-Editor sichtbar
   - Grid-Editor: Drag&Drop, Resize, Hide/Show, Delete, Settings
@@ -86,7 +156,7 @@
 
 ---
 
-## 5. Testing & Validation
+## 6. Testing & Validation
 - **API-Tests:**
   - Layout-Endpoints, Auth, Fehlerfälle
 - **Frontend-Tests:**
@@ -98,7 +168,7 @@
 
 ---
 
-## 6. Security & Performance
+## 7. Security & Performance
 - **Security:**
   - Admin-Auth bei allen Layout-Requests
   - CSRF Protection für Layout-Forms
@@ -111,14 +181,14 @@
 
 ---
 
-## 7. Rollback/Fail-Safe
+## 8. Rollback/Fail-Safe
 - Wenn Fehler: Alles verwerfen, keine Migrationen, keine halben Änderungen!
 - Nur Änderungen an init.sql/seed.sql und klaren, modularen Komponenten
 - Rollback auf Default-Layout jederzeit möglich
 
 ---
 
-## 8. EXECUTION PLAN (Schritt für Schritt)
+## 9. EXECUTION PLAN (Schritt für Schritt)
 1. **DB:** layouts-Tabelle & seed.sql anpassen
 2. **Backend:** Model, Schema, API, Service, Repo pattern-konform anlegen
 3. **Frontend:**
