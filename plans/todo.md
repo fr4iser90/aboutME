@@ -1,100 +1,123 @@
-# Inline Page Editor: EIN Edit-Button auf Landing Page (ToDo, detailliert & pattern-konform)
+# Admin Grid-Editor: Drag&Drop Layout (ToDo, detailliert & pattern-konform)
 
 ---
 
-## **Frontend: Inline Page Editor**
+## **Frontend: Grid-Editor**
 
-- [ ] **EIN Edit-Button Komponente**
-  - [ ] Neue Komponente:
-    - `frontend/src/presentation/shared/ui/PageEditButton.tsx`
-      - EIN Edit-Button für die gesamte Landing Page
-      - Props: onEdit, position (top-right, bottom-right, etc.)
-      - **Nur du als Admin** siehst diesen Button
+- [ ] **Library installieren**
+  - [ ] `react-grid-layout` im richtigen Verzeichnis installieren:
+    - `cd frontend && npm install react-grid-layout`
 
-- [ ] **Landing Page Integration**
-  - [ ] **EIN Edit-Button auf der Landing Page** in
+- [ ] **EIN Edit-Button für JEDE Page**
+  - [ ] **Landing Page Edit-Button**:
     - `frontend/src/presentation/public/pages/page.tsx`
-      - EIN Edit-Button oben rechts auf der Page
-      - **Nur du als Admin** siehst den Edit-Button
-      - **Besucher** sehen nur die normale Page ohne Edit-Button
+    - EIN Edit-Button oben rechts auf der Landing Page
+    - **Nur du als Admin** siehst diesen Button
+    - **Besucher** sehen nur die normale Page ohne Edit-Button
+  - [ ] **Admin Page Edit-Button**:
+    - `frontend/src/presentation/admin/pages/page.tsx` (oder wo die Admin-Page ist)
+    - EIN Edit-Button oben rechts auf der Admin Page
+    - **Nur du als Admin** siehst diesen Button
+  - [ ] **Edit-Button Komponente**:
+    - `frontend/src/presentation/shared/ui/EditButton.tsx`
+    - Props: onToggle, isEditing, position
+    - Icon: Edit-Icon wenn nicht editing, Save-Icon wenn editing
 
-- [ ] **Admin-Auth Check**
-  - [ ] Admin-Context Integration:
-    - `frontend/src/presentation/admin/contexts/AdminContext.tsx` erweitern
-    - `isAdmin` State für Edit-Button Visibility
-  - [ ] **Edit-Button nur für Admins anzeigen**:
-    - Conditional Rendering basierend auf Admin-Status
-    - Besucher sehen niemals Edit-Button
+- [ ] **Grid-Editor Komponente**
+  - [ ] Neue Komponente:
+    - `frontend/src/presentation/admin/components/features/sections/AdminGridEditor.tsx`
+      - Grid-Editor-UI für Sections/Cards (Drag&Drop, Resize)
+      - Nutzt `react-grid-layout`
+      - Props: Sections, Layout, onLayoutChange, isEditing, etc.
+  - [ ] Optional: Gemeinsame Grid-Logik in
+    - `frontend/src/presentation/shared/ui/AdminGrid.tsx` (falls auch für andere Admin-Features nutzbar)
 
-- [ ] **Page Edit Mode**
-  - [ ] **Edit-Modus für gesamte Page**:
-    - EIN Button aktiviert Edit-Modus für alle Sections
-    - Alle editierbaren Bereiche werden hervorgehoben
-    - Klick auf Text/Content → direkt editierbar
-    - **EIN Save-Button** speichert alle Änderungen
-    - **EIN Cancel-Button** verwirft alle Änderungen
+- [ ] **State Management**
+  - [ ] **Global Edit-State**:
+    - `frontend/src/presentation/admin/contexts/EditContext.tsx`
+    - `isEditing` State für alle Pages
+    - `useEdit()` Hook für einfachen Zugriff
+  - [ ] **Layout-Änderungen** im State halten (`useState`)
+  - [ ] **API-Integration**:
+    - Laden: `GET /api/admin/layout`
+    - Speichern: `POST /api/admin/layout`
+    - API-Calls in `frontend/src/domain/shared/utils/api.ts`
+
+- [ ] **Page Integration**
+  - [ ] **Landing Page** (`frontend/src/presentation/public/pages/page.tsx`):
+    - EditContext Provider hinzufügen
+    - EditButton importieren & einbinden
+    - Conditional Rendering: `{isEditing ? <AdminGridEditor /> : <NormalSections />}`
+  - [ ] **Admin Page** (Admin-Page-Datei):
+    - EditContext Provider hinzufügen
+    - EditButton importieren & einbinden
+    - Conditional Rendering: `{isEditing ? <AdminGridEditor /> : <NormalSections />}`
+
+- [ ] **Fallback**
+  - [ ] Fallback auf Standard-Layout, falls kein Layout gespeichert
 
 ---
 
-## **Backend: Content-API**
+## **Backend: Layout-API**
 
 - [ ] **API-Endpunkte**
-  - [ ] `backend/app/api/endpoints/admin/content.py`
-    - Endpunkt: `GET /api/admin/content` (Alle Content laden)
-    - Endpunkt: `PUT /api/admin/content` (Alle Content speichern)
-    - **Nur du als Admin** darfst bearbeiten (Auth prüfen)
-    - **Besucher** dürfen nur Content lesen (GET), niemals bearbeiten
+  - [ ] `backend/app/api/endpoints/admin/layout.py`
+    - Endpunkt: `GET /api/admin/layout` (Layout laden)
+    - Endpunkt: `POST /api/admin/layout` (Layout speichern)
+    - **Nur du als Admin** darfst speichern/bearbeiten (Auth prüfen)
+    - **Besucher** dürfen nur das Layout lesen (GET), aber niemals speichern/bearbeiten
 
-- [ ] **Content Management**
+- [ ] **Domain & Infrastruktur**
   - [ ] Model:
-    - `backend/app/domain/models/content.py`
-      - Content-Entity (id, section_id, type, value, created_at, updated_at)
+    - `backend/app/domain/models/layout.py`
+      - Layout-Entity (id, page, layout_json, created_at, updated_at)
   - [ ] Schema:
-    - `backend/app/schemas/content.py`
-      - Pydantic-Model für Content (Request/Response)
+    - `backend/app/schemas/layout.py`
+      - Pydantic-Model für Layout (Request/Response)
   - [ ] Repository-Interface:
-    - `backend/app/domain/repositories/content_repository.py`
+    - `backend/app/domain/repositories/layout_repository.py`
   - [ ] Repository-Implementierung:
-    - `backend/app/infrastructure/database/repositories/content_repository_impl.py`
+    - `backend/app/infrastructure/database/repositories/layout_repository_impl.py`
   - [ ] DB-Model:
-    - `backend/app/infrastructure/database/models/content.py`
-      - SQLAlchemy-Model für Content
+    - `backend/app/infrastructure/database/models/layout.py`
+      - SQLAlchemy-Model für Layout
   - [ ] Migration:
-    - Neue Migration für Content-Tabelle
+    - Neue Migration für Layout-Tabelle (z.B. mit Alembic)
 
 ---
 
 ## **Integration & Features**
 
-- [ ] **Page Edit Workflow**
-  - [ ] **EIN Edit-Button klicken** → Page wird editierbar
-  - [ ] **Alle Sections** werden editierbar markiert
-  - [ ] **Klick auf Text** → direkt editierbar
-  - [ ] **EIN Save-Button** → alle Änderungen speichern
-  - [ ] **EIN Cancel-Button** → alle Änderungen verwerfen
-
-- [ ] **Real-time Updates**
-  - [ ] **Sofortige Anzeige** nach Speichern
-  - [ ] **Optimistic Updates** für bessere UX
-  - [ ] **Error Handling** bei Speicher-Fehlern
+- [ ] **Edit-Button Workflow**
+  - [ ] **Edit-Button klicken** → `setIsEditing(true)` → Grid-Editor aktiviert
+  - [ ] **Sections werden editierbar** → Drag&Drop, Resize möglich
+  - [ ] **Edit-Button wird zu Save-Button** → Icon ändert sich
+  - [ ] **Save-Button klicken** → Layout speichern → `setIsEditing(false)`
+  - [ ] **Cancel-Button** → Änderungen verwerfen → `setIsEditing(false)`
 
 - [ ] **Admin-Only Features**
-  - [ ] **EIN Edit-Button nur für Admins** sichtbar
-  - [ ] **Admin-Auth Check** bei jedem Edit-Request
-  - [ ] **Besucher** sehen niemals Edit-Funktionen
+  - [ ] **Edit-Button nur für Admins** sichtbar auf beiden Pages
+  - [ ] **Admin-Auth Check** bei jedem Layout-Request
+  - [ ] **Besucher** sehen niemals Edit-Buttons oder Grid-Editor
+
+- [ ] **Real-time Updates**
+  - [ ] **Sofortige Anzeige** nach Layout-Änderungen
+  - [ ] **Optimistic Updates** für bessere UX
+  - [ ] **Error Handling** bei Speicher-Fehlern
 
 ---
 
 ## **Testing & Validation**
 
 - [ ] **Testing**
-  - [ ] Tests für Page-Edit-Button Komponente
-  - [ ] Tests für Admin-Auth Integration
-  - [ ] Tests für Content-API
-  - [ ] E2E Tests für Edit-Workflow
+  - [ ] Tests für EditButton Komponente
+  - [ ] Tests für EditContext Integration
+  - [ ] Tests für AdminGridEditor
+  - [ ] Tests für Layout-API
+  - [ ] E2E Tests für Edit-Workflow auf beiden Pages
 
 - [ ] **Validation**
-  - [ ] Content-Validierung vor Speichern
+  - [ ] Layout-Validierung vor Speichern
   - [ ] Admin-Permission Validierung
   - [ ] Error-Handling für fehlgeschlagene Requests
 
@@ -103,12 +126,27 @@
 ## **Deployment & Security**
 
 - [ ] **Security**
-  - [ ] **Admin-Auth** bei allen Edit-Requests
-  - [ ] **CSRF Protection** für Edit-Forms
-  - [ ] **Input Sanitization** für HTML-Content
-  - [ ] **Rate Limiting** für Edit-Requests
+  - [ ] **Admin-Auth** bei allen Layout-Requests
+  - [ ] **CSRF Protection** für Layout-Forms
+  - [ ] **Input Sanitization** für Layout-JSON
+  - [ ] **Rate Limiting** für Layout-Requests
 
 - [ ] **Performance**
-  - [ ] **Lazy Loading** für Edit-Komponenten
+  - [ ] **Lazy Loading** für Grid-Editor Komponenten
   - [ ] **Optimistic Updates** für bessere UX
-  - [ ] **Caching** für Content-Daten 
+  - [ ] **Caching** für Layout-Daten
+
+---
+
+## **EXECUTION PLAN**
+
+1. **Dependencies**: `cd frontend && npm install react-grid-layout`
+2. **EditContext**: `frontend/src/presentation/admin/contexts/EditContext.tsx`
+3. **EditButton**: `frontend/src/presentation/shared/ui/EditButton.tsx`
+4. **AdminGridEditor**: `frontend/src/presentation/admin/components/features/sections/AdminGridEditor.tsx`
+5. **Landing Page Integration**: `frontend/src/presentation/public/pages/page.tsx`
+6. **Admin Page Integration**: Admin-Page-Datei
+7. **Backend API**: `backend/app/api/endpoints/admin/layout.py`
+8. **Models & Schemas**: Layout domain layer
+9. **Database**: Migration & repository
+10. **Testing**: Unit & E2E tests 
