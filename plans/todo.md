@@ -29,8 +29,15 @@
       - Grid-Editor-UI für Sections/Cards (Drag&Drop, Resize)
       - Nutzt `react-grid-layout`
       - Props: Sections, Layout, onLayoutChange, isEditing, etc.
-  - [ ] Optional: Gemeinsame Grid-Logik in
-    - `frontend/src/presentation/shared/ui/AdminGrid.tsx` (falls auch für andere Admin-Features nutzbar)
+  - [ ] **Erweiterte Grid-Features**:
+    - **Resize Sections**: Größe der Cards ändern (w, h)
+    - **Hide/Show Sections**: `is_visible` Toggle für jede Section
+    - **Section Controls**: Jede Section hat eigene Controls
+    - **Grid Snap**: Sections automatisch ausrichten
+  - [ ] **Section Control Panel**:
+    - `frontend/src/presentation/admin/components/features/sections/SectionControls.tsx`
+    - Props: section, onToggleVisibility, onResize, onDelete
+    - Buttons: 👁️ (hide/show), 📏 (resize), 🗑️ (delete), ⚙️ (settings)
 
 - [ ] **State Management**
   - [ ] **Global Edit-State**:
@@ -38,9 +45,10 @@
     - `isEditing` State für alle Pages
     - `useEdit()` Hook für einfachen Zugriff
   - [ ] **Layout-Änderungen** im State halten (`useState`)
+  - [ ] **Section Visibility** State basierend auf DB `is_visible` Feld
   - [ ] **API-Integration**:
-    - Laden: `GET /api/admin/layout`
-    - Speichern: `POST /api/admin/layout`
+    - Laden: `GET /api/admin/layout` + `GET /api/admin/sections`
+    - Speichern: `POST /api/admin/layout` + `PUT /api/admin/sections/{id}`
     - API-Calls in `frontend/src/domain/shared/utils/api.ts`
 
 - [ ] **Page Integration**
@@ -48,6 +56,7 @@
     - EditContext Provider hinzufügen
     - EditButton importieren & einbinden
     - Conditional Rendering: `{isEditing ? <AdminGridEditor /> : <NormalSections />}`
+    - Filter Sections: `sections.filter(s => s.is_visible)`
   - [ ] **Admin Page** (Admin-Page-Datei):
     - EditContext Provider hinzufügen
     - EditButton importieren & einbinden
@@ -66,6 +75,11 @@
     - Endpunkt: `POST /api/admin/layout` (Layout speichern)
     - **Nur du als Admin** darfst speichern/bearbeiten (Auth prüfen)
     - **Besucher** dürfen nur das Layout lesen (GET), aber niemals speichern/bearbeiten
+  - [ ] **Section Management**:
+    - `backend/app/api/endpoints/admin/sections.py`
+    - `GET /api/admin/sections` (Alle Sections mit Visibility-Status)
+    - `PUT /api/admin/sections/{id}` (Section Visibility ändern)
+    - `PUT /api/admin/sections/{id}/layout` (Section Position/Size ändern)
 
 - [ ] **Domain & Infrastruktur**
   - [ ] Model:
@@ -91,14 +105,23 @@
 - [ ] **Edit-Button Workflow**
   - [ ] **Edit-Button klicken** → `setIsEditing(true)` → Grid-Editor aktiviert
   - [ ] **Sections werden editierbar** → Drag&Drop, Resize möglich
+  - [ ] **Section Controls erscheinen** → Hide/Show, Resize, Delete Buttons
   - [ ] **Edit-Button wird zu Save-Button** → Icon ändert sich
-  - [ ] **Save-Button klicken** → Layout speichern → `setIsEditing(false)`
+  - [ ] **Save-Button klicken** → Layout + Visibility speichern → `setIsEditing(false)`
   - [ ] **Cancel-Button** → Änderungen verwerfen → `setIsEditing(false)`
+
+- [ ] **Section Management Features**
+  - [ ] **Hide/Show Sections**: `is_visible` Toggle für jede Section
+  - [ ] **Resize Sections**: Größe ändern (w, h in Grid-Layout)
+  - [ ] **Delete Sections**: Sections komplett entfernen (soft delete)
+  - [ ] **Section Settings**: Erweiterte Einstellungen pro Section
+  - [ ] **Bulk Operations**: Mehrere Sections gleichzeitig bearbeiten
 
 - [ ] **Admin-Only Features**
   - [ ] **Edit-Button nur für Admins** sichtbar auf beiden Pages
   - [ ] **Admin-Auth Check** bei jedem Layout-Request
   - [ ] **Besucher** sehen niemals Edit-Buttons oder Grid-Editor
+  - [ ] **Besucher** sehen nur `is_visible=true` Sections
 
 - [ ] **Real-time Updates**
   - [ ] **Sofortige Anzeige** nach Layout-Änderungen
@@ -113,11 +136,14 @@
   - [ ] Tests für EditButton Komponente
   - [ ] Tests für EditContext Integration
   - [ ] Tests für AdminGridEditor
+  - [ ] Tests für SectionControls
   - [ ] Tests für Layout-API
+  - [ ] Tests für Section Visibility API
   - [ ] E2E Tests für Edit-Workflow auf beiden Pages
 
 - [ ] **Validation**
   - [ ] Layout-Validierung vor Speichern
+  - [ ] Section Visibility Validierung
   - [ ] Admin-Permission Validierung
   - [ ] Error-Handling für fehlgeschlagene Requests
 
@@ -143,10 +169,11 @@
 1. **Dependencies**: `cd frontend && npm install react-grid-layout`
 2. **EditContext**: `frontend/src/presentation/admin/contexts/EditContext.tsx`
 3. **EditButton**: `frontend/src/presentation/shared/ui/EditButton.tsx`
-4. **AdminGridEditor**: `frontend/src/presentation/admin/components/features/sections/AdminGridEditor.tsx`
-5. **Landing Page Integration**: `frontend/src/presentation/public/pages/page.tsx`
-6. **Admin Page Integration**: Admin-Page-Datei
-7. **Backend API**: `backend/app/api/endpoints/admin/layout.py`
-8. **Models & Schemas**: Layout domain layer
-9. **Database**: Migration & repository
-10. **Testing**: Unit & E2E tests 
+4. **SectionControls**: `frontend/src/presentation/admin/components/features/sections/SectionControls.tsx`
+5. **AdminGridEditor**: `frontend/src/presentation/admin/components/features/sections/AdminGridEditor.tsx`
+6. **Landing Page Integration**: `frontend/src/presentation/public/pages/page.tsx`
+7. **Admin Page Integration**: Admin-Page-Datei
+8. **Backend API**: `backend/app/api/endpoints/admin/layout.py` + `sections.py`
+9. **Models & Schemas**: Layout domain layer
+10. **Database**: Migration & repository
+11. **Testing**: Unit & E2E tests 
