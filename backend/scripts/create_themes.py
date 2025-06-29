@@ -14,83 +14,42 @@ from scripts.themes.solar_flare import solar_flare_theme
 
 logger = logging.getLogger("create_themese")
 
+print("DEBUG THEME (forest_mist_theme):", forest_mist_theme)
+print("DEBUG style_properties (forest_mist_theme):", forest_mist_theme["style_properties"])
+
+def upsert_theme(db, theme_dict, is_active=False):
+    existing = db.query(ThemeModel).filter(ThemeModel.name == theme_dict["name"]).first()
+    if existing:
+        # Update all fields, including style_properties
+        existing.description = theme_dict["description"]
+        existing.style_properties = theme_dict["style_properties"]
+        existing.is_active = is_active
+        existing.is_visible = True
+        existing.is_public = True
+        existing.updated_at = datetime.utcnow()
+        logger.info(f"Theme '{theme_dict['name']}' updated!")
+    else:
+        theme = ThemeModel(
+            name=theme_dict["name"],
+            description=theme_dict["description"],
+            style_properties=theme_dict["style_properties"],
+            is_active=is_active,
+            is_visible=True,
+            is_public=True,
+            created_at=datetime.utcnow(),
+            updated_at=datetime.utcnow()
+        )
+        db.add(theme)
+        logger.info(f"Theme '{theme_dict['name']}' created successfully!")
+
 def ensure_default_theme():
     logger.info("Ensuring default theme in DB...")
     db = SessionLocal()
     try:
-        # Galaxy Theme
-        existing = db.query(ThemeModel).filter(ThemeModel.name == galaxy_theme["name"]).first()
-        if not existing:
-            theme = ThemeModel(
-                name=galaxy_theme["name"],
-                description=galaxy_theme["description"],
-                style_properties=galaxy_theme["style_properties"],
-                is_active=False,
-                is_visible=True,
-                is_public=True,
-                created_at=datetime.utcnow(),
-                updated_at=datetime.utcnow()
-            )
-            db.add(theme)
-            logger.info(f"Theme '{galaxy_theme['name']}' created successfully!")
-        else:
-            logger.info(f"Theme '{galaxy_theme['name']}' already exists.")
-
-        # Ocean Breeze Theme
-        existing = db.query(ThemeModel).filter(ThemeModel.name == ocean_breeze_theme["name"]).first()
-        if not existing:
-            theme = ThemeModel(
-                name=ocean_breeze_theme["name"],
-                description=ocean_breeze_theme["description"],
-                style_properties=ocean_breeze_theme["style_properties"],
-                is_active=False,
-                is_visible=True,
-                is_public=True,
-                created_at=datetime.utcnow(),
-                updated_at=datetime.utcnow()
-            )
-            db.add(theme)
-            logger.info(f"Theme '{ocean_breeze_theme['name']}' created successfully!")
-        else:
-            logger.info(f"Theme '{ocean_breeze_theme['name']}' already exists.")
-
-        # Solar Flare Theme
-        existing = db.query(ThemeModel).filter(ThemeModel.name == solar_flare_theme["name"]).first()
-        if not existing:
-            theme = ThemeModel(
-                name=solar_flare_theme["name"],
-                description=solar_flare_theme["description"],
-                style_properties=solar_flare_theme["style_properties"],
-                is_active=False,
-                is_visible=True,
-                is_public=True,
-                created_at=datetime.utcnow(),
-                updated_at=datetime.utcnow()
-            )
-            db.add(theme)
-            logger.info(f"Theme '{solar_flare_theme['name']}' created successfully!")
-        else:
-            logger.info(f"Theme '{solar_flare_theme['name']}' already exists.")
-
-        # Forest Mist Theme
-        existing = db.query(ThemeModel).filter(ThemeModel.name == forest_mist_theme["name"]).first()
-        if not existing:
-            theme = ThemeModel(
-                name=forest_mist_theme["name"],
-                description=forest_mist_theme["description"],
-                style_properties=forest_mist_theme["style_properties"],
-                is_active=True,
-                is_visible=True,
-                is_public=True,
-                created_at=datetime.utcnow(),
-                updated_at=datetime.utcnow()
-            )
-            db.add(theme)
-            logger.info(f"Theme '{forest_mist_theme['name']}' created successfully!")
-        else:
-            logger.info(f"Theme '{forest_mist_theme['name']}' already exists.")
-
-
+        upsert_theme(db, galaxy_theme, is_active=False)
+        upsert_theme(db, ocean_breeze_theme, is_active=False)
+        upsert_theme(db, solar_flare_theme, is_active=False)
+        upsert_theme(db, forest_mist_theme, is_active=True)
         db.commit()
     except Exception as e:
         logger.error(f"Error creating theme: {e}")
