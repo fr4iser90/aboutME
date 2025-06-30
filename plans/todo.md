@@ -1,8 +1,18 @@
-# Admin Full-Page Grid-Editor: Drag&Drop Layout (Pattern-konform, maximal detailliert)
+# 1. WICHTIG: Pydantic v2 + SQLAlchemy + JSONB Pattern (MUSS ALS ERSTES BEACHTET WERDEN!)
+- [ ] **KEINE Pydantic-Objekte in JSONB speichern!**
+  - [ ] Immer `.model_dump()` auf Pydantic-Objekten vor dem Speichern in JSONB.
+  - [ ] Beim Laden aus der DB: Immer dicts an Pydantic-Modelle übergeben.
+  - [ ] Niemals Pydantic-Objekte direkt aus der DB an API-Response geben.
+- [ ] **Fehlerursache:**  
+  - [ ] Pydantic v2 akzeptiert nur dicts oder native Pydantic-Objekte, keine SQLAlchemy-Objekte und keine Pydantic-Objekte, die als JSON gespeichert wurden.
+  - [ ] Fehler tritt auf, wenn Listen von Pydantic-Objekten in JSONB gespeichert werden.
+- [ ] **Lösung:**  
+  - [ ] Vor jedem Speichern in JSONB: `.model_dump()` auf alle Pydantic-Objekte.
+  - [ ] Nach jedem Laden aus JSONB: dicts an Pydantic-Modelle übergeben.
 
 ---
 
-## 1. Datenbank (init.sql & seed.sql ONLY!)
+# 2. Datenbank (init.sql & seed.sql ONLY!)
 - [ ] **layouts-Tabelle:**
   - [ ] id SERIAL PRIMARY KEY
   - [ ] page VARCHAR(255) NOT NULL DEFAULT 'home'
@@ -17,7 +27,7 @@
 
 ---
 
-## 2. Backend (Pattern-konform, keine Migrationen!)
+# 3. Backend (Pattern-konform, keine Migrationen!)
 - [ ] **Domain-Model:**
   - [ ] `Layout`: page, elements[], layout_config, ... (wie in DB)
   - [ ] `PageElement`: id, type, title, visible, grid_props, order, settings
@@ -38,7 +48,7 @@
 
 ---
 
-## 3. Frontend (Pattern-konform, modular, keine statischen Layouts mehr!)
+# 4. Frontend (Pattern-konform, modular, keine statischen Layouts mehr!)
 - [ ] **API-Client:**
   - [ ] `src/domain/shared/utils/layoutApi.ts` (getFullPageLayout, saveFullPageLayout)
 - [ ] **Edit-Context:**
@@ -67,9 +77,9 @@
 
 ---
 
-## 4. Editiermodus: Start, Ablauf, Beenden, Pattern, Fehlerfälle (EXPLIZIT)
+# 5. Editiermodus: Start, Ablauf, Beenden, Pattern, Fehlerfälle (EXPLIZIT)
 
-### **4.1 Start Editiermodus**
+### **5.1 Start Editiermodus**
 - [ ] **EditButton** (nur für Admin sichtbar, z.B. oben rechts):
   - [ ] Klick → `setIsEditing(true)` im EditContext
   - [ ] Edit-Status global via `useEdit()` verfügbar
@@ -78,7 +88,7 @@
   - [ ] `isEditing`, `setIsEditing`, `useEdit()`
   - [ ] Provider um alle relevanten Komponenten
 
-### **4.2 Editiermodus aktiv**
+### **5.2 Editiermodus aktiv**
 - [ ] **FullPageGridEditor** wird als Modal/Overlay angezeigt
 - [ ] **Normale Seite wird ausgeblendet/disabled**
 - [ ] **Alle Page-Elemente** sind jetzt:
@@ -93,7 +103,7 @@
   - [ ] Visuelles Feedback beim Drag/Resize
   - [ ] Disabled-Overlay für nicht-editierbare Bereiche
 
-### **4.3 Speichern/Verwerfen/Reset**
+### **5.3 Speichern/Verwerfen/Reset**
 - [ ] **Save-Button** (im Editor, z.B. rechts oben):
   - [ ] Klick → API-Call `saveFullPageLayout()`
   - [ ] Bei Erfolg: `setIsEditing(false)`, Editor schließt, Seite aktualisiert sich
@@ -106,7 +116,7 @@
   - [ ] Save/Cancel/Reset immer über EditContext und API-Client
   - [ ] Keine Änderungen im Backend, solange nicht gespeichert
 
-### **4.4 Fehlerfälle & Edge Cases**
+### **5.4 Fehlerfälle & Edge Cases**
 - [ ] **API-Fehler:**
   - [ ] Fehler beim Speichern → Fehlermeldung, Editor bleibt offen
 - [ ] **Validation:**
@@ -118,7 +128,7 @@
 - [ ] **Abbruch durch Navigation:**
   - [ ] Warnung bei offenen Änderungen, wenn User Seite verlässt
 
-### **4.5 Code/Komponenten-Pattern**
+### **5.5 Code/Komponenten-Pattern**
 - [ ] **EditContext.tsx:**
   - [ ] `const [isEditing, setIsEditing] = useState(false);`
   - [ ] `useEdit()`-Hook für Zugriff in allen Komponenten
@@ -137,7 +147,7 @@
 
 ---
 
-## 5. Features & Pattern
+# 6. Features & Pattern
 - [ ] **Edit-Button Workflow:**
   - [ ] Edit-Button → setIsEditing(true) → Grid-Editor sichtbar
   - [ ] Grid-Editor: Drag&Drop, Resize, Hide/Show, Delete, Settings
@@ -156,7 +166,7 @@
 
 ---
 
-## 6. Testing & Validation
+# 7. Testing & Validation
 - [ ] **API-Tests:**
   - [ ] Layout-Endpoints, Auth, Fehlerfälle
 - [ ] **Frontend-Tests:**
@@ -168,7 +178,7 @@
 
 ---
 
-## 7. Security & Performance
+# 8. Security & Performance
 - [ ] **Security:**
   - [ ] Admin-Auth bei allen Layout-Requests
   - [ ] CSRF Protection für Layout-Forms
@@ -181,7 +191,7 @@
 
 ---
 
-## 8. Erweiterte/Optionale Features (UX, Robustheit, CI/CD, a11y, Edge Cases)
+# 9. Erweiterte/Optionale Features (UX, Robustheit, CI/CD, a11y, Edge Cases)
 - [ ] **Undo/Redo-Stack im Editor:**
   - [ ] Lokaler Stack im FullPageGridEditor (`useState`/`useReducer`)
   - [ ] Buttons für Undo/Redo (z.B. oben rechts)
@@ -215,7 +225,7 @@
 
 ---
 
-## 9. EXECUTION PLAN (Schritt für Schritt)
+# 10. EXECUTION PLAN (Schritt für Schritt)
 - [ ] **DB:** layouts-Tabelle & seed.sql anpassen
 - [ ] **Backend:** Model, Schema, API, Service, Repo pattern-konform anlegen
 - [ ] **Frontend:**
@@ -230,4 +240,11 @@
 - [ ] **Security:** Auth, CSRF, Input-Validation
 - [ ] **UX:** Loading, Fehler, Optimistic Update, Fallback
 - [ ] **Erweiterte Features:** Undo/Redo, a11y, Backups, ErrorBoundary, Edge Cases, CI/CD
-- [ ] **Rollback:** Bei Fehler alles verwerfen 
+- [ ] **Rollback:** Bei Fehler alles verwerfen
+
+---
+
+**MERKE:**  
+- **Das Pydantic/JSONB-Pattern ist die absolute Grundlage!**  
+- **Erst wenn das sauber umgesetzt ist, Backend/Frontend/API bauen!**
+- **Fehlerursache und Pattern IMMER dokumentieren und bei jedem neuen Feature beachten!** 
