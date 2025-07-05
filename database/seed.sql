@@ -13,3 +13,7 @@ INSERT INTO skills (category, description, items, display_order) VALUES
   ('Kreativität & Projekte', 'Ich habe Spaß daran, neue Projektideen zu entwickeln und mit KI-Unterstützung umzusetzen.', '["Projektideen & Brainstorming", "KI-generierte Projekte bauen", "2D Multiplayer Framework (mit KI-Hilfe)"]', 3),
   ('Angeln', 'In meiner Freizeit bin ich gerne am Wasser – am liebsten an der Pleiße oder Lauer in Leipzig.', '["Ansitz auf Friedfisch", "Aktivangeln im Sommer", "Pleiße, Lauer & Umgebung (Leipzig)"]', 4);
 
+-- Default layout for home page with dynamic elements based on available sections
+-- This will be created automatically by the service when no layout exists
+-- The layout will include navbar, all available sections, skills, projects, and footer
+

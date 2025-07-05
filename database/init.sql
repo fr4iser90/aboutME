@@ -270,13 +270,25 @@ CREATE TABLE IF NOT EXISTS files (
 
 CREATE TABLE IF NOT EXISTS layouts (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
+    page VARCHAR(255) NOT NULL DEFAULT 'home',
+    elements JSONB NOT NULL DEFAULT '[]',
+    layout_config JSONB NOT NULL DEFAULT '{}',
     is_active BOOLEAN DEFAULT FALSE,
     is_visible BOOLEAN DEFAULT TRUE,
     is_public BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    -- Legacy fields for backward compatibility (not used in new implementation)
+    name VARCHAR(255),
+    description TEXT,
     grid_config JSONB,
     layout_variant VARCHAR(50),
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    sections_order JSONB,
+    layout_type VARCHAR(50),
+    show_sidebar BOOLEAN,
+    sidebar_position VARCHAR(50),
+    content JSONB
 );
+
+-- Index for efficient page-based queries
+CREATE INDEX IF NOT EXISTS idx_layouts_page ON layouts(page);
