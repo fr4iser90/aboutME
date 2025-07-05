@@ -6,74 +6,40 @@
 1. **Update Repository Interface FIRST**
    - [ ] Modify `LayoutRepository` interface methods
    - [ ] Remove old methods, add new ones
-   - [ ] **VERIFY:** Interface matches new requirements exactly
 
 2. **Update Domain Models FIRST**
    - [ ] Modify `Layout` and `PageElement` models
-   - [ ] **VERIFY:** Models match database schema exactly
 
 3. **Update Pydantic Schemas FIRST**
    - [ ] Modify all layout schemas
-   - [ ] **VERIFY:** Schemas match domain models exactly
 
 ### Phase 2: Implementation (ONLY AFTER INTERFACE)
 4. **Update SQLAlchemy Model**
    - [ ] Modify `LayoutModel` to match database schema
-   - [ ] **VERIFY:** Model fields match init.sql exactly
 
 5. **Update Repository Implementation**
    - [ ] Modify `SQLAlchemyLayoutRepository` to match interface
-   - [ ] **VERIFY:** All interface methods are implemented
-   - [ ] **TEST:** `python -c "from app.infrastructure.database.repositories.layout_repository_impl import SQLAlchemyLayoutRepository; print('OK')"`
 
 6. **Update Service Layer**
    - [ ] Modify `LayoutService` to use new interface
-   - [ ] **VERIFY:** Service methods match requirements
 
 7. **Update API Endpoints**
    - [ ] Modify admin and public layout endpoints
-   - [ ] **VERIFY:** Endpoints use correct service methods
 
 ### Phase 3: Database (BEFORE ANY CODE)
 8. **Update Database Schema FIRST**
    - [ ] Modify `init.sql` - layouts table structure
    - [ ] Modify `seed.sql` - default layout data
-   - [ ] **VERIFY:** Schema matches domain models exactly
 
 ### Phase 4: Frontend (ONLY AFTER BACKEND WORKS)
 9. **Update API Client**
    - [ ] Create/modify `layoutApi.ts`
-   - [ ] **VERIFY:** API methods match backend endpoints
 
 10. **Update Components**
     - [ ] Create/modify all React components
-    - [ ] **VERIFY:** Components use correct API methods
-
-### Phase 5: Integration Testing
-11. **Backend Compilation Test**
-    - [ ] `python -m py_compile app/schemas/layout.py`
-    - [ ] `python -m py_compile app/domain/models/layout.py`
-    - [ ] `python -m py_compile app/domain/repositories/layout_repository.py`
-    - [ ] `python -m py_compile app/infrastructure/database/repositories/layout_repository_impl.py`
-    - [ ] `python -m py_compile app/domain/services/layout_service.py`
-    - [ ] `python -m py_compile app/api/endpoints/admin/layout.py`
-    - [ ] `python -m py_compile app/api/endpoints/public/layout.py`
-
-12. **Frontend Compilation Test**
-    - [ ] `npx tsc --noEmit src/domain/shared/utils/layoutApi.ts`
-    - [ ] `npx tsc --noEmit src/presentation/admin/contexts/EditContext.tsx`
-    - [ ] `npx tsc --noEmit src/presentation/shared/ui/EditButton.tsx`
-    - [ ] `npx tsc --noEmit src/presentation/admin/components/features/FullPageGridEditor.tsx`
-    - [ ] `npx tsc --noEmit src/presentation/admin/components/features/ElementControls.tsx`
-    - [ ] `npx tsc --noEmit src/presentation/public/components/DynamicPageRenderer.tsx`
-    - [ ] `npx tsc --noEmit src/presentation/public/pages/DynamicPage.tsx`
 
 ### CRITICAL RULES (NEVER BREAK)
 - **ALWAYS** update interface before implementation
-- **ALWAYS** verify interface and implementation match exactly
-- **ALWAYS** test compilation after each phase
-- **NEVER** skip verification steps
-- **NEVER** assume anything works without testing
 - **ALWAYS** follow the exact order: Database → Interface → Implementation → API → Frontend
 
 ---
@@ -246,19 +212,7 @@
 
 ---
 
-# 7. Testing & Validation
-- [ ] **API-Tests:**
-  - [ ] Layout-Endpoints, Auth, Fehlerfälle
-- [ ] **Frontend-Tests:**
-  - [ ] Grid-Editor, Controls, Save/Cancel, EditButton, EditContext
-- [ ] **E2E-Tests:**
-  - [ ] Edit-Workflow, Admin-Only, Fallback, Fehlerfälle
-- [ ] **Validation:**
-  - [ ] Layout-Validierung vor Speichern, Admin-Check bei jedem Edit
-
----
-
-# 8. Security & Performance
+# 7. Security & Performance
 - [ ] **Security:**
   - [ ] Admin-Auth bei allen Layout-Requests
   - [ ] CSRF Protection für Layout-Forms
@@ -271,7 +225,7 @@
 
 ---
 
-# 9. Erweiterte/Optionale Features (UX, Robustheit, CI/CD, a11y, Edge Cases)
+# 8. Erweiterte/Optionale Features (UX, Robustheit, CI/CD, a11y, Edge Cases)
 - [ ] **Undo/Redo-Stack im Editor:**
   - [ ] Lokaler Stack im FullPageGridEditor (`useState`/`useReducer`)
   - [ ] Buttons für Undo/Redo (z.B. oben rechts)
@@ -305,7 +259,7 @@
 
 ---
 
-# 10. EXECUTION PLAN (Schritt für Schritt)
+# 9. EXECUTION PLAN (Schritt für Schritt)
 - [ ] **DB:** layouts-Tabelle & seed.sql anpassen
 - [ ] **Backend:** Model, Schema, API, Service, Repo pattern-konform anlegen
 - [ ] **Frontend:**
@@ -316,11 +270,9 @@
   - [ ] ElementControls
   - [ ] DynamicPageRenderer
   - [ ] Page-Integration (Landing/Admin)
-- [ ] **Testing:** API, Frontend, E2E
 - [ ] **Security:** Auth, CSRF, Input-Validation
 - [ ] **UX:** Loading, Fehler, Optimistic Update, Fallback
 - [ ] **Erweiterte Features:** Undo/Redo, a11y, Backups, ErrorBoundary, Edge Cases, CI/CD
-- [ ] **Rollback:** Bei Fehler alles verwerfen
 
 ---
 
