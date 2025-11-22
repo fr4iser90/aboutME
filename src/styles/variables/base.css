@@ -1,0 +1,81 @@
+/* Base Variables - Theme Independent
+ * Layout, spacing, and z-index variables that don't depend on theme
+ */
+
+:root {
+  /* Layout System */
+  --header-height: 6rem;
+  --footer-height: 200px;
+  --sidebar-width: 256px;
+  --content-height: calc(100vh - var(--header-height) - var(--footer-height));
+  --modal-height: calc(90vh - var(--header-height));
+  --editor-height: calc(100vh - var(--header-height));
+
+  /* Automatic Viewport System */
+  --viewport-height: 100vh;
+  --viewport-width: 100vw;
+  --auto-height: min(100vh, max-content);
+  --auto-scroll: auto;
+  --auto-overflow: hidden;
+  
+  /* Automatic Layout Heights */
+  --auto-sidebar-height: min(100vh, max-content);
+  --auto-content-height: calc(100vh - 120px);
+  --auto-editor-height: calc(100vh - 150px);
+  --auto-modal-height: calc(90vh - 2rem);
+
+  /* Spacing System */
+  --space-xs: 0.25rem;    /* 4px */
+  --space-sm: 0.5rem;     /* 8px */
+  --space-md: 1rem;       /* 16px */
+  --space-lg: 1.5rem;     /* 24px */
+  --space-xl: 2rem;        /* 32px */
+  --space-2xl: 3rem;       /* 48px */
+
+  /* Z-Index System */
+  --z-base: 0;                    /* 0-9: Grundlegende Inhalte (Text, Bilder) */
+  --z-content: 1;                 /* Basic content */
+  --z-elevated: 2;                /* Elevated content */
+  
+  --z-interactive: 10;           /* 10-99: Interaktive Elemente (Buttons, Links) */
+  --z-button: 10;                /* Buttons */
+  --z-link: 11;                  /* Links */
+  --z-form-element: 12;          /* Form elements */
+  --z-card-hover: 15;            /* Card hover states */
+  
+  --z-header: 50;               /* 100-199: Header, Navigation, Sidebars */
+  --z-navigation: 101;           /* Navigation */
+  --z-sidebar: 102;              /* Sidebars */
+  --z-subnav: 103;               /* Sub-navigation */
+  
+  --z-dropdown: 200;             /* 200-299: Dropdown-Menüs, Tooltips */
+  --z-tooltip: 201;              /* Tooltips */
+  --z-context-menu: 202;         /* Context menus */
+  --z-autocomplete: 203;          /* Autocomplete */
+  
+  --z-overlay: 300;              /* 300-399: Overlays, Popups */
+  --z-popup: 301;                /* Popups */
+  --z-lightbox: 302;             /* Lightbox */
+  --z-backdrop: 303;             /* Backdrop */
+  
+  --z-sticky: 400;               /* 400-499: Sticky Elemente */
+  --z-fixed-header: 401;         /* Fixed header */
+  --z-floating: 402;             /* Floating elements */
+  --z-scroll-indicator: 403;     /* Scroll indicators */
+  
+  --z-special-ui: 500;          /* 500-999: Spezielle UI-Elemente */
+  --z-terminal: 500;            /* Terminal component */
+  --z-floating-hero: 501;       /* Floating hero */
+  --z-timeline: 502;             /* Timeline */
+  --z-progress-bar: 503;         /* Progress bars */
+  --z-notification: 504;         /* Notifications */
+  --z-loading: 505;              /* Loading states */
+  --z-easter-egg: 506;           /* Easter eggs */
+  
+  --z-modal: 1000;              /* 1000+: Modals, Dialoge, Notifications */
+  --z-dialog: 1001;              /* Dialogs */
+  --z-toast: 1002;               /* Toast notifications */
+  --z-critical-modal: 1003;     /* Critical modals */
+  --z-debug: 9999;               /* Debug elements */
+}
+

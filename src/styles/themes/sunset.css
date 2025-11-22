@@ -1,0 +1,103 @@
+/* Sunset Theme - Color System Only
+ * Orange/red theme
+ * Design-specific styles are in src/styles/designs/
+ */
+
+:root[data-theme="sunset"],
+[data-theme="sunset"] {
+  /* Color System - Sunset/Warm */
+  --bg-primary: #1a0a0a;
+  --bg-secondary: #2e0f0f;
+  --bg-tertiary: #4a1a1a;
+  --bg-quaternary: #5a2a2a;
+  --text-primary: #ffffff;
+  --text-secondary: #ffe4d4;
+  --text-muted: #ffc8a8;
+  --text-subtle: #ffa878;
+  
+  /* Accent Colors - Sunset tones */
+  --neon-blue: #ff6b35;
+  --neon-purple: #f97316;
+  --neon-cyan: #fb923c;
+  --neon-pink: #ec4899;
+  --neon-green: #f59e0b;
+  
+  /* Dynamic Background Image */
+  --dynamic-bg-image: url('/assets/sunset.png');
+}
+
+/* Background Styles - Only apply if no design-specific background is set */
+:root:not([data-design]) body,
+html:not([data-design]) body {
+  background-image: var(--dynamic-bg-image);
+  background-size: cover;
+  background-position: center -50px;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+}
+
+/* Hide background when readability mode is active */
+body.background-hidden {
+  background-image: none !important;
+}
+
+body.background-hidden .galaxy-bg {
+  background-image: none !important;
+}
+
+body.background-hidden::before {
+  display: none !important;
+}
+
+/* Mobile Performance Optimization */
+@media (max-width: 768px) {
+  body {
+    background-attachment: fixed;
+    -webkit-transform: translateZ(0);
+  }
+}
+
+/* Animated background particles - Sunset/warm tones */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, rgba(255, 107, 53, 0.4), transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(249, 115, 22, 0.4), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(251, 146, 60, 0.3), transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(236, 72, 153, 0.3), transparent),
+    radial-gradient(2px 2px at 160px 30px, rgba(245, 158, 11, 0.4), transparent);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  animation: float 20s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Mobile Performance Optimization - Disable particles on mobile */
+@media (max-width: 768px) {
+  body::before {
+    display: none;
+  }
+}
+
+/* Galaxy Background for main container */
+.galaxy-bg {
+  background-image: var(--dynamic-bg-image);
+  background-size: cover;
+  background-position: center -50px;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+.min-h-screen {
+  background: transparent;
+}
+

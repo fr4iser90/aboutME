@@ -1,0 +1,12 @@
+{
+  "theme": "dark",
+  "commands": [
+    "help",
+    "about",
+    "projects",
+    "skills",
+    "contact",
+    "clear"
+  ],
+  "welcomeMessage": "Welcome to {{USERNAME}}'s terminal!"
+}

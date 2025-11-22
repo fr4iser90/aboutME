@@ -1,0 +1,52 @@
+/* Minimal Clean Design
+ * Complete design system: Clean effect + Centered layout + White background
+ * Combines: clean effect + centered layout + light theme background
+ */
+
+:root[data-design="minimal-clean"],
+[data-design="minimal-clean"] {
+  /* Use clean effect variables (modular) */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: var(--effect-glass-border-hover);
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+  
+  /* Use effect variables (modular) */
+  --design-blur: var(--effect-blur);
+  --design-border-radius: var(--effect-border-radius);
+  --design-backdrop-filter: var(--effect-backdrop-filter);
+  --design-transition: var(--effect-transition);
+  
+  /* Global Layout: Minimal (display mode) */
+  --global-layout-type: minimal;
+  
+  /* Section Layout Defaults */
+  --section-projects-layout: sidebar-left;
+  --section-skills-layout: grid;
+  --section-timeline-layout: vertical;
+  --section-blog-layout: list;
+  --section-aboutme-layout: centered;
+  --section-contact-layout: centered;
+  
+  /* Background: Clean white (no image) */
+  --design-bg-image: none;
+  --design-bg-color: var(--bg-primary);
+}
+
+/* Apply background to body AND preview containers */
+[data-design="minimal-clean"] body,
+.theme-preview__container[data-design="minimal-clean"],
+.full-theme-preview[data-design="minimal-clean"] {
+  background-image: none !important;
+  background-color: var(--design-bg-color) !important;
+}
+
+/* Dark Theme Override */
+:root[data-theme="dark"][data-design="minimal-clean"],
+[data-theme="dark"][data-design="minimal-clean"] {
+  --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+  --design-bg-color: var(--bg-primary);
+}
+

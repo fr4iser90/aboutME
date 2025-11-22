@@ -1,0 +1,59 @@
+/* Soft Effect System
+ * Soft shadows, pastel colors, gentle transitions
+ */
+
+:root[data-effect="soft"],
+[data-effect="soft"] {
+  /* Soft Background Variables - Pastel */
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-bg-hover: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass-border-hover: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --glass-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
+  
+  /* Effect Variables - Soft Rounded */
+  --design-blur: 0px;
+  --design-border-radius: 20px;
+  --design-backdrop-filter: none;
+  --design-transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark Theme Soft Overrides */
+:root[data-theme="dark"][data-effect="soft"],
+[data-theme="dark"][data-effect="soft"],
+:root[data-theme="dark-blue"][data-effect="soft"],
+[data-theme="dark-blue"][data-effect="soft"],
+:root[data-theme="dark-green"][data-effect="soft"],
+[data-theme="dark-green"][data-effect="soft"],
+:root[data-theme="forest"][data-effect="soft"],
+[data-theme="forest"][data-effect="soft"],
+:root[data-theme="ocean"][data-effect="soft"],
+[data-theme="ocean"][data-effect="soft"],
+:root[data-theme="sunset"][data-effect="soft"],
+[data-theme="sunset"][data-effect="soft"] {
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-bg-hover: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border-hover: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  --glass-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Light Theme Soft Overrides */
+:root[data-theme="light"][data-effect="soft"],
+[data-theme="light"][data-effect="soft"],
+:root[data-theme="light-warm"][data-effect="soft"],
+[data-theme="light-warm"][data-effect="soft"],
+:root[data-theme="light-cool"][data-effect="soft"],
+[data-theme="light-cool"][data-effect="soft"],
+:root[data-theme="light-alt"][data-effect="soft"],
+[data-theme="light-alt"][data-effect="soft"] {
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-bg-hover: rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(0, 0, 0, 0.05);
+  --glass-border-hover: rgba(0, 0, 0, 0.1);
+  --glass-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --glass-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+

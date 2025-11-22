@@ -1,0 +1,73 @@
+/* Clean Effect System
+ * Professional clean white effect with solid backgrounds
+ * Sharp borders, no shadows, minimal effects
+ */
+
+:root[data-effect="clean"],
+[data-effect="clean"] {
+  /* Clean Background Variables - Effect Prefix */
+  --effect-glass-bg: var(--bg-tertiary);
+  --effect-glass-bg-hover: var(--bg-quaternary);
+  --effect-glass-border: 1px solid rgba(255, 255, 255, 0.1);
+  --effect-glass-border-hover: 1px solid var(--neon-blue);
+  --effect-glass-shadow: none;
+  --effect-glass-shadow-hover: none;
+  
+  /* Effect Variables - Effect Prefix */
+  --effect-blur: 0px;
+  --effect-border-radius: 0px;
+  --effect-backdrop-filter: none;
+  --effect-transition: all 0.2s ease;
+  
+  /* Legacy Support - Map to design variables */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: var(--effect-glass-border-hover);
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+  --design-blur: var(--effect-blur);
+  --design-border-radius: var(--effect-border-radius);
+  --design-backdrop-filter: var(--effect-backdrop-filter);
+  --design-transition: var(--effect-transition);
+}
+
+/* Light Theme Clean Overrides - Clean white */
+:root[data-theme="light"][data-effect="clean"],
+[data-theme="light"][data-effect="clean"] {
+  --effect-glass-bg: var(--bg-secondary);
+  --effect-glass-bg-hover: var(--bg-tertiary);
+  --effect-glass-border: 1px solid rgba(0, 0, 0, 0.1);
+  --effect-glass-border-hover: 1px solid var(--neon-blue);
+  --effect-glass-shadow: none;
+  --effect-glass-shadow-hover: none;
+  
+  /* Legacy Support */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: var(--effect-glass-border-hover);
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+}
+
+/* Clean Effect - No background images in preview, solid background */
+.theme-preview__container[data-effect="clean"],
+.full-theme-preview[data-effect="clean"],
+[data-effect="clean"].theme-preview__container,
+[data-effect="clean"].full-theme-preview {
+  background-image: none !important;
+  background-color: var(--bg-primary) !important;
+  background: var(--bg-primary) !important;
+  position: relative;
+  z-index: 1;
+}
+
+/* Hide body background effects for clean effect preview */
+[data-effect="clean"] .theme-preview__container::before,
+[data-effect="clean"] .theme-preview__container::after,
+[data-effect="clean"] .full-theme-preview::before,
+[data-effect="clean"] .full-theme-preview::after {
+  display: none !important;
+}
+

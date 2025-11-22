@@ -1,0 +1,63 @@
+/* Glassmorphism Design
+ * Complete design system: Glassmorphism effect + Default layout + Galaxy background
+ * This is the default/current design - combines glassmorphism effect with galaxy background
+ * Works with any theme (dark/light/etc.)
+ */
+
+:root[data-design="glassmorphism"],
+[data-design="glassmorphism"] {
+  /* Use glassmorphism effect variables (modular) */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: var(--effect-glass-border-hover);
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+  
+  /* Use effect variables (modular) */
+  --design-blur: var(--effect-blur);
+  --design-border-radius: var(--effect-border-radius);
+  --design-backdrop-filter: var(--effect-backdrop-filter);
+  --design-transition: var(--effect-transition);
+  
+  /* Global Layout: Portfolio (display mode) */
+  --global-layout-type: portfolio;
+  
+  /* Section Layout Defaults */
+  --section-projects-layout: sidebar-left;
+  --section-skills-layout: grid;
+  --section-timeline-layout: vertical;
+  --section-blog-layout: list;
+  --section-aboutme-layout: centered;
+  --section-contact-layout: centered;
+  
+  /* Background: Galaxy image (from theme) */
+  --design-bg-image: var(--dynamic-bg-image);
+  --design-bg-size: cover;
+  --design-bg-position: center -50px;
+  --design-bg-attachment: fixed;
+}
+
+/* Apply background to body */
+[data-design="glassmorphism"] body {
+  background-image: var(--design-bg-image) !important;
+  background-size: var(--design-bg-size) !important;
+  background-position: var(--design-bg-position) !important;
+  background-attachment: var(--design-bg-attachment) !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Apply background to preview containers (responsive, no fixed attachment) */
+.theme-preview__container[data-design="glassmorphism"],
+.full-theme-preview[data-design="glassmorphism"] {
+  background-image: var(--design-bg-image) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: scroll !important; /* scroll statt fixed für Preview */
+  background-repeat: no-repeat !important;
+}
+
+/* Light Theme Override - Uses effect overrides automatically via data-effect */
+
+/* Mobile Performance Optimization - Uses effect mobile overrides automatically via data-effect */
+

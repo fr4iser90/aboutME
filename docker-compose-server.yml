@@ -1,0 +1,49 @@
+services:
+  portfolio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: fr4iser/portfolio:latest
+    container_name: portfolio
+    dns:
+      - 1.1.1.1
+    networks:
+      - proxy
+    labels:
+      # Basis-Konfiguration
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      # NO SUBDOMAIN , direct fr4iser.com
+      
+      # HTTP Router (redirects to HTTPS)
+      - "traefik.http.routers.portfolio-http.entrypoints=web"
+      - "traefik.http.routers.portfolio-http.rule=Host(`fr4iser.com`)"
+      - "traefik.http.routers.portfolio-http.middlewares=redirect-to-https"
+      
+      # HTTPS Router
+      - "traefik.http.routers.portfolio.entrypoints=websecure"
+      - "traefik.http.routers.portfolio.rule=Host(`fr4iser.com`)"
+      - "traefik.http.routers.portfolio.tls=true"
+      - "traefik.http.routers.portfolio.tls.certresolver=http_resolver"
+      
+      # Middleware für HTTP zu HTTPS Redirect
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true"
+      
+      # Service Konfiguration
+      - "traefik.http.services.portfolio.loadbalancer.server.port=3000"
+      
+      # Rate Limiting (optional für Portfolio)
+      - "traefik.http.middlewares.portfolio-rate-limit.ratelimit.burst=20"
+      - "traefik.http.middlewares.portfolio-rate-limit.ratelimit.average=10"
+      - "traefik.http.routers.portfolio.middlewares=portfolio-rate-limit"
+    restart: unless-stopped
+
+
+volumes:
+  portfolio_logs:
+    driver: local
+
+networks:
+  proxy:
+    external: true

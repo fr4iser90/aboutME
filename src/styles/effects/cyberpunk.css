@@ -1,0 +1,52 @@
+/* Cyberpunk Effect System
+ * Neon glows, dark backgrounds, vibrant accents
+ */
+
+:root[data-effect="cyberpunk"],
+[data-effect="cyberpunk"] {
+  /* Cyberpunk Background Variables - Effect Prefix */
+  --effect-glass-bg: rgba(0, 0, 0, 0.7);
+  --effect-glass-bg-hover: rgba(0, 0, 0, 0.8);
+  --effect-glass-border: 2px solid var(--neon-cyan);
+  --effect-glass-border-hover: 2px solid var(--neon-pink);
+  --effect-glass-shadow: 0 0 20px rgba(0, 212, 255, 0.5), 0 0 40px rgba(0, 212, 255, 0.3);
+  --effect-glass-shadow-hover: 0 0 30px rgba(236, 72, 153, 0.6), 0 0 60px rgba(236, 72, 153, 0.4);
+  
+  /* Effect Variables - Effect Prefix */
+  --effect-blur: 4px;
+  --effect-border-radius: 4px;
+  --effect-backdrop-filter: blur(4px);
+  --effect-transition: all 0.2s ease;
+  
+  /* Legacy Support - Map to design variables */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: var(--effect-glass-border-hover);
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+  --design-blur: var(--effect-blur);
+  --design-border-radius: var(--effect-border-radius);
+  --design-backdrop-filter: var(--effect-backdrop-filter);
+  --design-transition: var(--effect-transition);
+}
+
+/* Light Theme Cyberpunk Overrides */
+:root[data-theme="light"][data-effect="cyberpunk"],
+[data-theme="light"][data-effect="cyberpunk"] {
+  --effect-glass-bg: rgba(255, 255, 255, 0.9);
+  --effect-glass-bg-hover: rgba(255, 255, 255, 0.95);
+  --effect-glass-border: 2px solid var(--neon-blue);
+  --effect-glass-border-hover: 2px solid var(--neon-purple);
+  --effect-glass-shadow: 0 0 20px rgba(59, 130, 246, 0.4), 0 0 40px rgba(59, 130, 246, 0.2);
+  --effect-glass-shadow-hover: 0 0 30px rgba(139, 92, 246, 0.5), 0 0 60px rgba(139, 92, 246, 0.3);
+  
+  /* Legacy Support */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: var(--effect-glass-border-hover);
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+}
+

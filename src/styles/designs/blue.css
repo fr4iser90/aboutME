@@ -1,0 +1,72 @@
+/* Blue Design
+ * Complete design system: Glassmorphism effect + Default layout + Abstract Blue background
+ * Combines: glassmorphism effect + default layout + abstract blue background
+ * Works with any theme (dark/light/etc.)
+ */
+
+:root[data-design="blue"],
+[data-design="blue"] {
+  /* Use glassmorphism effect variables (modular) */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: rgba(0, 212, 255, 0.3); /* Custom override for blue */
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+  
+  /* Use effect variables (modular) */
+  --design-blur: var(--effect-blur);
+  --design-border-radius: var(--effect-border-radius);
+  --design-backdrop-filter: var(--effect-backdrop-filter);
+  --design-transition: var(--effect-transition);
+  
+  /* Global Layout: Carousel (display mode) */
+  --global-layout-type: carousel;
+  
+  /* Section Layout Defaults */
+  --section-projects-layout: sidebar-left;
+  --section-skills-layout: grid;
+  --section-timeline-layout: vertical;
+  --section-blog-layout: list;
+  --section-aboutme-layout: centered;
+  --section-contact-layout: centered;
+  
+  /* Background: Abstract Blue image */
+  --design-bg-image: url('/assets/abstract-blue.png');
+  --design-bg-size: cover;
+  --design-bg-position: center;
+  --design-bg-attachment: fixed;
+  --design-bg-color: #0a1628;
+}
+
+/* Apply background to body - Maximum specificity to override ALL other rules */
+:root[data-design="blue"] body,
+html[data-design="blue"] body,
+html[data-design="blue"] > body,
+body:has(html[data-design="blue"]),
+[data-design="blue"] body {
+  background-image: url('/assets/abstract-blue.png') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: fixed !important;
+  background-color: #0a1628 !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Apply background to preview containers (responsive, no fixed attachment) */
+.theme-preview__container[data-design="blue"],
+.full-theme-preview[data-design="blue"] {
+  background-image: var(--design-bg-image) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: scroll !important;
+  background-color: var(--design-bg-color) !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Light Theme Override - Custom blue colors */
+:root[data-theme="light"][data-design="blue"],
+[data-theme="light"][data-design="blue"] {
+  --glass-border-hover: rgba(0, 212, 255, 0.4); /* Override effect default */
+}
+

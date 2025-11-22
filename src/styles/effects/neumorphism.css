@@ -1,0 +1,48 @@
+/* Neumorphism Effect System
+ * Soft shadows, subtle depth, no transparency
+ */
+
+:root[data-effect="neumorphism"],
+[data-effect="neumorphism"] {
+  /* Neumorphism Background Variables - Effect Prefix */
+  --effect-glass-bg: var(--bg-secondary);
+  --effect-glass-bg-hover: var(--bg-tertiary);
+  --effect-glass-border: transparent;
+  --effect-glass-border-hover: transparent;
+  --effect-glass-shadow: 8px 8px 16px rgba(0, 0, 0, 0.2), -8px -8px 16px rgba(255, 255, 255, 0.1);
+  --effect-glass-shadow-hover: 12px 12px 24px rgba(0, 0, 0, 0.25), -12px -12px 24px rgba(255, 255, 255, 0.15);
+  
+  /* Effect Variables - Effect Prefix */
+  --effect-blur: 0px;
+  --effect-border-radius: 20px;
+  --effect-backdrop-filter: none;
+  --effect-transition: all 0.3s ease;
+  
+  /* Legacy Support - Map to design variables */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: var(--effect-glass-border-hover);
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+  --design-blur: var(--effect-blur);
+  --design-border-radius: var(--effect-border-radius);
+  --design-backdrop-filter: var(--effect-backdrop-filter);
+  --design-transition: var(--effect-transition);
+}
+
+/* Light Theme Neumorphism Overrides */
+:root[data-theme="light"][data-effect="neumorphism"],
+[data-theme="light"][data-effect="neumorphism"] {
+  --effect-glass-bg: var(--bg-secondary);
+  --effect-glass-bg-hover: var(--bg-tertiary);
+  --effect-glass-shadow: 8px 8px 16px rgba(0, 0, 0, 0.1), -8px -8px 16px rgba(255, 255, 255, 0.8);
+  --effect-glass-shadow-hover: 12px 12px 24px rgba(0, 0, 0, 0.15), -12px -12px 24px rgba(255, 255, 255, 0.9);
+  
+  /* Legacy Support */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+}
+

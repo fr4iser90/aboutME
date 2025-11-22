@@ -1,0 +1,78 @@
+/* Cyberpunk Design
+ * Complete design system: Cyberpunk effect + Sidebar-left layout + Neon background
+ * Combines: cyberpunk effect + sidebar-left layout + neon background
+ * Works with any theme (dark/light/etc.)
+ */
+
+:root[data-design="cyberpunk"],
+[data-design="cyberpunk"] {
+  /* Use cyberpunk effect variables (modular) */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: var(--effect-glass-border-hover);
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+  
+  /* Use effect variables (modular) */
+  --design-blur: var(--effect-blur);
+  --design-border-radius: var(--effect-border-radius);
+  --design-backdrop-filter: var(--effect-backdrop-filter);
+  --design-transition: var(--effect-transition);
+  
+  /* Global Layout: Dashboard (display mode) */
+  --global-layout-type: dashboard;
+  
+  /* Section Layout Defaults */
+  --section-projects-layout: sidebar-left;
+  --section-skills-layout: grid;
+  --section-timeline-layout: vertical;
+  --section-blog-layout: list;
+  --section-aboutme-layout: centered;
+  --section-contact-layout: centered;
+  
+  /* Background: Dark neon/cyberpunk image */
+  --design-bg-image: url('/assets/cyberpunk-city.png');
+  --design-bg-size: cover;
+  --design-bg-position: center;
+  --design-bg-attachment: fixed;
+  --design-bg-color: #000000;
+}
+
+/* Apply background to body - Maximum specificity to override ALL other rules */
+/* Using direct URL to ensure it works even if CSS variable resolution fails */
+:root[data-design="cyberpunk"] body,
+html[data-design="cyberpunk"] body,
+html[data-design="cyberpunk"] > body,
+body:has(html[data-design="cyberpunk"]),
+[data-design="cyberpunk"] body {
+  background-image: url('/assets/cyberpunk-city.png') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: fixed !important;
+  background-color: #000000 !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Apply background to preview containers (responsive, no fixed attachment) */
+.theme-preview__container[data-design="cyberpunk"],
+.full-theme-preview[data-design="cyberpunk"] {
+  background-image: var(--design-bg-image) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: scroll !important; /* scroll statt fixed für Preview */
+  background-color: var(--design-bg-color) !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Light Theme Override (not recommended for cyberpunk, but possible) */
+:root[data-theme="light"][data-design="cyberpunk"],
+[data-theme="light"][data-design="cyberpunk"] {
+  --glass-bg: rgba(255, 255, 255, 0.9);
+  --glass-bg-hover: rgba(255, 255, 255, 0.95);
+  --glass-border: 2px solid var(--neon-blue);
+  --glass-border-hover: 2px solid var(--neon-purple);
+  --glass-shadow: 0 0 20px rgba(59, 130, 246, 0.4), 0 0 40px rgba(59, 130, 246, 0.2);
+  --glass-shadow-hover: 0 0 30px rgba(139, 92, 246, 0.5), 0 0 60px rgba(139, 92, 246, 0.3);
+}
+

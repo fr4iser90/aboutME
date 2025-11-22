@@ -1,0 +1,72 @@
+/* Sunset Design
+ * Complete design system: Glassmorphism effect + Default layout + Sunset background
+ * Combines: glassmorphism effect + default layout + sunset background
+ * Works with any theme (dark/light/etc.)
+ */
+
+:root[data-design="sunset"],
+[data-design="sunset"] {
+  /* Use glassmorphism effect variables (modular) */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: rgba(255, 107, 53, 0.3); /* Custom override for sunset */
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+  
+  /* Use effect variables (modular) */
+  --design-blur: var(--effect-blur);
+  --design-border-radius: var(--effect-border-radius);
+  --design-backdrop-filter: var(--effect-backdrop-filter);
+  --design-transition: var(--effect-transition);
+  
+  /* Global Layout: Hero Content (display mode) */
+  --global-layout-type: hero-content;
+  
+  /* Section Layout Defaults */
+  --section-projects-layout: sidebar-left;
+  --section-skills-layout: grid;
+  --section-timeline-layout: vertical;
+  --section-blog-layout: list;
+  --section-aboutme-layout: centered;
+  --section-contact-layout: centered;
+  
+  /* Background: Sunset image */
+  --design-bg-image: url('/assets/sunset.png');
+  --design-bg-size: cover;
+  --design-bg-position: center;
+  --design-bg-attachment: fixed;
+  --design-bg-color: #1a0a00;
+}
+
+/* Apply background to body - Maximum specificity to override ALL other rules */
+:root[data-design="sunset"] body,
+html[data-design="sunset"] body,
+html[data-design="sunset"] > body,
+body:has(html[data-design="sunset"]),
+[data-design="sunset"] body {
+  background-image: url('/assets/sunset.png') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: fixed !important;
+  background-color: #1a0a00 !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Apply background to preview containers (responsive, no fixed attachment) */
+.theme-preview__container[data-design="sunset"],
+.full-theme-preview[data-design="sunset"] {
+  background-image: var(--design-bg-image) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: scroll !important;
+  background-color: var(--design-bg-color) !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Light Theme Override - Custom sunset colors */
+:root[data-theme="light"][data-design="sunset"],
+[data-theme="light"][data-design="sunset"] {
+  --glass-border-hover: rgba(255, 107, 53, 0.4); /* Override effect default */
+}
+

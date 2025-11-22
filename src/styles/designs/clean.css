@@ -1,0 +1,72 @@
+/* Clean Design
+ * Complete design system: Clean effect + Centered layout + White background
+ * 
+ * EFFECT: Clean (solid backgrounds, sharp borders, no shadows)
+ * LAYOUT: Centered (max-width container, centered content)
+ * BACKGROUND: White/solid (no image)
+ * 
+ * Differences:
+ * - Solid white backgrounds
+ * - Sharp borders (no radius)
+ * - No shadows
+ * - Centered layout
+ */
+
+:root[data-design="clean"],
+[data-design="clean"] {
+  /* Use clean effect variables (modular) */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: var(--effect-glass-border-hover);
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+  
+  /* Use effect variables (modular) */
+  --design-blur: var(--effect-blur);
+  --design-border-radius: var(--effect-border-radius);
+  --design-backdrop-filter: var(--effect-backdrop-filter);
+  --design-transition: var(--effect-transition);
+  
+  /* Global Layout: Minimal (display mode) */
+  --global-layout-type: minimal;
+  
+  /* Section Layout Defaults */
+  --section-projects-layout: sidebar-left;
+  --section-skills-layout: grid;
+  --section-timeline-layout: vertical;
+  --section-blog-layout: list;
+  --section-aboutme-layout: centered;
+  --section-contact-layout: centered;
+  
+  /* Background: Clean white (no image) */
+  --design-bg-image: none;
+  --design-bg-color: var(--bg-primary);
+}
+
+/* Apply background to body AND preview containers */
+[data-design="clean"] body,
+.theme-preview__container[data-design="clean"],
+.full-theme-preview[data-design="clean"] {
+  background-image: none !important;
+  background-color: var(--design-bg-color) !important;
+}
+
+/* Light Theme Override */
+:root[data-theme="light"][data-design="clean"],
+[data-theme="light"][data-design="clean"] {
+  --glass-bg: var(--bg-secondary);
+  --glass-bg-hover: var(--bg-tertiary);
+  --glass-border: 1px solid rgba(0, 0, 0, 0.1);
+  --glass-border-hover: 1px solid var(--neon-blue);
+  --glass-shadow: none;
+  --glass-shadow-hover: none;
+}
+
+/* Dark Theme Override */
+:root[data-theme="dark"][data-design="clean"],
+[data-theme="dark"][data-design="clean"] {
+  --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+  --design-bg-color: var(--bg-primary);
+}
+

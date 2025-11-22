@@ -1,0 +1,78 @@
+/* Flat Design
+ * Complete design system: Flat effect + Default layout + Theme background
+ * 
+ * EFFECT: Flat (no blur, solid backgrounds, clean borders)
+ * LAYOUT: Default (sidebar-left, standard layout)
+ * BACKGROUND: Theme background (galaxy.png for dark, white for light)
+ * 
+ * Differences:
+ * - No blur effects
+ * - Solid backgrounds (no transparency)
+ * - Clean borders
+ * - Standard layout
+ */
+
+:root[data-design="flat"],
+[data-design="flat"] {
+  /* Use flat effect variables (modular) */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: var(--effect-glass-border-hover);
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+  
+  /* Use effect variables (modular) */
+  --design-blur: var(--effect-blur);
+  --design-border-radius: var(--effect-border-radius);
+  --design-backdrop-filter: var(--effect-backdrop-filter);
+  --design-transition: var(--effect-transition);
+  
+  /* Global Layout: Portfolio (display mode) */
+  --global-layout-type: portfolio;
+  
+  /* Section Layout Defaults */
+  --section-projects-layout: sidebar-left;
+  --section-skills-layout: grid;
+  --section-timeline-layout: vertical;
+  --section-blog-layout: list;
+  --section-aboutme-layout: centered;
+  --section-contact-layout: centered;
+  
+  /* Background: Theme background (from theme) */
+  --design-bg-image: var(--dynamic-bg-image);
+  --design-bg-size: cover;
+  --design-bg-position: center -50px;
+  --design-bg-attachment: fixed;
+}
+
+/* Apply background to body */
+[data-design="flat"] body {
+  background-image: var(--design-bg-image) !important;
+  background-size: var(--design-bg-size) !important;
+  background-position: var(--design-bg-position) !important;
+  background-attachment: var(--design-bg-attachment) !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Apply background to preview containers (responsive, no fixed attachment) */
+.theme-preview__container[data-design="flat"],
+.full-theme-preview[data-design="flat"] {
+  background-image: var(--design-bg-image) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: scroll !important; /* scroll statt fixed für Preview */
+  background-repeat: no-repeat !important;
+}
+
+/* Light Theme Override */
+:root[data-theme="light"][data-design="flat"],
+[data-theme="light"][data-design="flat"] {
+  --glass-bg: var(--bg-secondary);
+  --glass-bg-hover: var(--bg-tertiary);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --glass-border-hover: var(--neon-blue);
+  --glass-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --glass-shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+

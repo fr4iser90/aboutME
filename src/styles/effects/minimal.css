@@ -1,0 +1,52 @@
+/* Minimal Effect System
+ * Very clean, sharp borders, minimal effects
+ */
+
+:root[data-effect="minimal"],
+[data-effect="minimal"] {
+  /* Minimal Background Variables - Effect Prefix */
+  --effect-glass-bg: transparent;
+  --effect-glass-bg-hover: var(--bg-tertiary);
+  --effect-glass-border: 1px solid rgba(255, 255, 255, 0.05);
+  --effect-glass-border-hover: 1px solid var(--neon-blue);
+  --effect-glass-shadow: none;
+  --effect-glass-shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  /* Effect Variables - Effect Prefix */
+  --effect-blur: 0px;
+  --effect-border-radius: 0px;
+  --effect-backdrop-filter: none;
+  --effect-transition: all 0.2s ease;
+  
+  /* Legacy Support - Map to design variables */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: var(--effect-glass-border-hover);
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+  --design-blur: var(--effect-blur);
+  --design-border-radius: var(--effect-border-radius);
+  --design-backdrop-filter: var(--effect-backdrop-filter);
+  --design-transition: var(--effect-transition);
+}
+
+/* Light Theme Minimal Overrides */
+:root[data-theme="light"][data-effect="minimal"],
+[data-theme="light"][data-effect="minimal"] {
+  --effect-glass-bg: transparent;
+  --effect-glass-bg-hover: var(--bg-tertiary);
+  --effect-glass-border: 1px solid rgba(0, 0, 0, 0.05);
+  --effect-glass-border-hover: 1px solid var(--neon-blue);
+  --effect-glass-shadow: none;
+  --effect-glass-shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.05);
+  
+  /* Legacy Support */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: var(--effect-glass-border-hover);
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+}
+

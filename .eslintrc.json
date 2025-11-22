@@ -1,0 +1,13 @@
+{
+  "extends": ["next/core-web-vitals"],
+  "rules": {
+    "import/no-relative-parent-imports": "warn",
+    "import/order": "off",
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
+    "react-hooks/exhaustive-deps": "warn",
+    "@next/next/no-img-element": "warn",
+    "@next/next/no-html-link-for-pages": "warn",
+    "react/no-unescaped-entities": "warn"
+  }
+}

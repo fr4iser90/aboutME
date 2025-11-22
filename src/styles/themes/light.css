@@ -1,0 +1,131 @@
+/* Light Theme - Color System Only
+ * Light background colors
+ * Design-specific styles are in src/styles/designs/
+ */
+
+:root[data-theme="light"],
+[data-theme="light"] {
+  /* Color System - Light Colors */
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;
+  --bg-quaternary: #e2e8f0;
+  --text-primary: #1a1a2e;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-subtle: #94a3b8;
+  
+  /* Accent Colors (Softer, lighter versions) */
+  --neon-blue: #3b82f6;
+  --neon-purple: #8b5cf6;
+  --neon-cyan: #06b6d4;
+  --neon-pink: #ec4899;
+  --neon-green: #10b981;
+  
+  /* Dynamic Background Image - Light version */
+  --dynamic-bg-image: url('/assets/galaxy.png');
+}
+
+/* Background Styles - Only apply if no design-specific background is set */
+:root:not([data-design]) body,
+html:not([data-design]) body {
+  background-image: var(--dynamic-bg-image);
+  background-size: cover;
+  background-position: center -50px;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  /* Overlay for better contrast on light theme */
+  position: relative;
+}
+
+/* Hide background when readability mode is active */
+body.background-hidden {
+  background-image: none !important;
+}
+
+body.background-hidden .galaxy-bg {
+  background-image: none !important;
+}
+
+body.background-hidden::before,
+body.background-hidden::after {
+  display: none !important;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(248, 250, 252, 0.7);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Mobile Performance Optimization */
+@media (max-width: 768px) {
+  body {
+    background-attachment: fixed;
+    -webkit-transform: translateZ(0);
+  }
+}
+
+/* Animated background particles - Lighter colors for light theme */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, rgba(59, 130, 246, 0.2), transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(139, 92, 246, 0.2), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(236, 72, 153, 0.2), transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(6, 182, 212, 0.2), transparent),
+    radial-gradient(2px 2px at 160px 30px, rgba(59, 130, 246, 0.2), transparent);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  animation: float 20s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Mobile Performance Optimization - Disable particles on mobile */
+@media (max-width: 768px) {
+  body::before {
+    display: none; /* Disable animated particles on mobile for better performance */
+  }
+}
+
+/* Galaxy Background for main container - Light version */
+.galaxy-bg {
+  background-image: var(--dynamic-bg-image);
+  background-size: cover;
+  background-position: center -50px;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  position: relative;
+}
+
+.galaxy-bg::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(248, 250, 252, 0.7);
+  pointer-events: none;
+}
+
+/* Ensure main container doesn't override background */
+.min-h-screen {
+  background: transparent;
+}
+

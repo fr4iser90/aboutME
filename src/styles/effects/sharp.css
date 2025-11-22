@@ -1,0 +1,55 @@
+/* Sharp Effect System
+ * Sharp corners, clear lines, minimal shadows
+ */
+
+:root[data-effect="sharp"],
+[data-effect="sharp"] {
+  /* Sharp Background Variables - Precise */
+  --glass-bg: var(--bg-tertiary);
+  --glass-bg-hover: var(--bg-quaternary);
+  --glass-border: 1px solid var(--text-muted);
+  --glass-border-hover: 2px solid var(--neon-blue);
+  --glass-shadow: none;
+  --glass-shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+  /* Effect Variables - Sharp */
+  --design-blur: 0px;
+  --design-border-radius: 0px;
+  --design-backdrop-filter: none;
+  --design-transition: all 0.2s ease;
+}
+
+/* Light Theme Sharp Overrides */
+:root[data-theme="light"][data-effect="sharp"],
+[data-theme="light"][data-effect="sharp"],
+:root[data-theme="light-warm"][data-effect="sharp"],
+[data-theme="light-warm"][data-effect="sharp"],
+:root[data-theme="light-cool"][data-effect="sharp"],
+[data-theme="light-cool"][data-effect="sharp"],
+:root[data-theme="light-alt"][data-effect="sharp"],
+[data-theme="light-alt"][data-effect="sharp"] {
+  --glass-bg: var(--bg-secondary);
+  --glass-bg-hover: var(--bg-tertiary);
+  --glass-border: 1px solid rgba(0, 0, 0, 0.1);
+  --glass-border-hover: 2px solid var(--neon-blue);
+  --glass-shadow: none;
+  --glass-shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Dark Theme Variants */
+:root[data-theme="dark"][data-effect="sharp"],
+[data-theme="dark"][data-effect="sharp"],
+:root[data-theme="dark-blue"][data-effect="sharp"],
+[data-theme="dark-blue"][data-effect="sharp"],
+:root[data-theme="dark-green"][data-effect="sharp"],
+[data-theme="dark-green"][data-effect="sharp"],
+:root[data-theme="forest"][data-effect="sharp"],
+[data-theme="forest"][data-effect="sharp"],
+:root[data-theme="ocean"][data-effect="sharp"],
+[data-theme="ocean"][data-effect="sharp"],
+:root[data-theme="sunset"][data-effect="sharp"],
+[data-theme="sunset"][data-effect="sharp"] {
+  --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+  --glass-border-hover: 2px solid var(--neon-blue);
+}
+

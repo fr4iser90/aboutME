@@ -1,0 +1,129 @@
+/* Light Cool Theme - Color System Only
+ * Cool light theme with blue-gray tones
+ * Design-specific styles are in src/styles/designs/
+ */
+
+:root[data-theme="light-cool"],
+[data-theme="light-cool"] {
+  /* Color System - Cool Light */
+  --bg-primary: #f0f4f8;
+  --bg-secondary: #e2e8f0;
+  --bg-tertiary: #cbd5e1;
+  --bg-quaternary: #b8c5d1;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #475569;
+  --text-subtle: #64748b;
+  
+  /* Accent Colors - Cool tones */
+  --neon-blue: #3b82f6;
+  --neon-purple: #6366f1;
+  --neon-cyan: #06b6d4;
+  --neon-pink: #3b82f6;
+  --neon-green: #06b6d4;
+  
+  /* Dynamic Background Image */
+  --dynamic-bg-image: url('/assets/light-cool.png');
+}
+
+/* Background Styles - Only apply if no design-specific background is set */
+:root:not([data-design]) body,
+html:not([data-design]) body {
+  background-image: var(--dynamic-bg-image);
+  background-size: cover;
+  background-position: center -50px;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  position: relative;
+}
+
+/* Hide background when readability mode is active */
+body.background-hidden {
+  background-image: none !important;
+}
+
+body.background-hidden .galaxy-bg {
+  background-image: none !important;
+}
+
+body.background-hidden::before,
+body.background-hidden::after {
+  display: none !important;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(240, 244, 248, 0.8);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Mobile Performance Optimization */
+@media (max-width: 768px) {
+  body {
+    background-attachment: fixed;
+    -webkit-transform: translateZ(0);
+  }
+}
+
+/* Animated background particles - Cool colors */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, rgba(59, 130, 246, 0.15), transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(99, 102, 241, 0.15), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(6, 182, 212, 0.15), transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(59, 130, 246, 0.1), transparent),
+    radial-gradient(2px 2px at 160px 30px, rgba(6, 182, 212, 0.15), transparent);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  animation: float 20s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Mobile Performance Optimization - Disable particles on mobile */
+@media (max-width: 768px) {
+  body::before {
+    display: none;
+  }
+}
+
+/* Galaxy Background for main container - Cool version */
+.galaxy-bg {
+  background-image: var(--dynamic-bg-image);
+  background-size: cover;
+  background-position: center -50px;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  position: relative;
+}
+
+.galaxy-bg::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(240, 244, 248, 0.8);
+  pointer-events: none;
+}
+
+.min-h-screen {
+  background: transparent;
+}
+

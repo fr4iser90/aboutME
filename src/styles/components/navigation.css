@@ -1,0 +1,20 @@
+/* Navigation Component - Theme Independent */
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: var(--design-backdrop-filter, blur(24px));
+  -webkit-backdrop-filter: var(--design-backdrop-filter, blur(24px));
+  border-bottom: 1px solid var(--glass-border);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-header);
+  transition: all 0.3s ease;
+}
+
+.glass:hover {
+  background: var(--glass-bg-hover);
+  border-bottom-color: var(--glass-border-hover);
+}
+

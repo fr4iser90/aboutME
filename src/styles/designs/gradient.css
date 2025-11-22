@@ -1,0 +1,81 @@
+/* Gradient Design
+ * Complete design system: Gradient effect + Masonry layout + Animated gradient background
+ * 
+ * EFFECT: Gradient (colorful gradients, vibrant backgrounds)
+ * LAYOUT: Masonry (grid layout with varying heights)
+ * BACKGROUND: Animated CSS gradient (NO image)
+ * 
+ * Differences:
+ * - Gradient backgrounds on cards
+ * - Rounded borders (16px)
+ * - Vibrant colors
+ * - Masonry layout
+ * - Animated gradient background
+ */
+
+:root[data-design="gradient"],
+[data-design="gradient"] {
+  /* Use gradient effect variables (modular) */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: var(--effect-glass-border-hover);
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+  
+  /* Use effect variables (modular) */
+  --design-blur: var(--effect-blur);
+  --design-border-radius: var(--effect-border-radius);
+  --design-backdrop-filter: var(--effect-backdrop-filter);
+  --design-transition: var(--effect-transition);
+  
+  /* Global Layout: Magazine (display mode) */
+  --global-layout-type: magazine;
+  
+  /* Section Layout Defaults */
+  --section-projects-layout: sidebar-left;
+  --section-skills-layout: grid;
+  --section-timeline-layout: vertical;
+  --section-blog-layout: list;
+  --section-aboutme-layout: centered;
+  --section-contact-layout: centered;
+  
+  /* Background: Animated CSS gradient (NO image) */
+  --design-bg-image: none;
+  --design-bg-gradient: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  --design-bg-size: 400% 400%;
+  --design-bg-animation: gradient 15s ease infinite;
+}
+
+/* Apply animated gradient background to body AND preview containers */
+[data-design="gradient"] body,
+.theme-preview__container[data-design="gradient"],
+.full-theme-preview[data-design="gradient"] {
+  background: var(--design-bg-gradient) !important;
+  background-size: var(--design-bg-size) !important;
+  animation: var(--design-bg-animation) !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Gradient animation keyframes */
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Light Theme Override */
+:root[data-theme="light"][data-design="gradient"],
+[data-theme="light"][data-design="gradient"] {
+  --glass-bg: linear-gradient(135deg, rgba(59, 130, 246, 0.8), rgba(139, 92, 246, 0.8));
+  --glass-bg-hover: linear-gradient(135deg, rgba(139, 92, 246, 0.9), rgba(236, 72, 153, 0.9));
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  --glass-shadow-hover: 0 12px 48px rgba(0, 0, 0, 0.2);
+}
+

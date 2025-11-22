@@ -1,0 +1,51 @@
+/* Brutalism Effect System
+ * Bold, strong contrasts, sharp edges
+ */
+
+:root[data-effect="brutalism"],
+[data-effect="brutalism"] {
+  /* Brutalism Background Variables - Bold */
+  --glass-bg: var(--bg-secondary);
+  --glass-bg-hover: var(--bg-tertiary);
+  --glass-border: 4px solid var(--text-primary);
+  --glass-border-hover: 6px solid var(--neon-blue);
+  --glass-shadow: 8px 8px 0px rgba(0, 0, 0, 1);
+  --glass-shadow-hover: 12px 12px 0px rgba(0, 0, 0, 1);
+  
+  /* Effect Variables - Sharp */
+  --design-blur: 0px;
+  --design-border-radius: 0px;
+  --design-backdrop-filter: none;
+  --design-transition: all 0.2s ease;
+}
+
+/* Light Theme Brutalism Overrides */
+:root[data-theme="light"][data-effect="brutalism"],
+[data-theme="light"][data-effect="brutalism"],
+:root[data-theme="light-warm"][data-effect="brutalism"],
+[data-theme="light-warm"][data-effect="brutalism"],
+:root[data-theme="light-cool"][data-effect="brutalism"],
+[data-theme="light-cool"][data-effect="brutalism"],
+:root[data-theme="light-alt"][data-effect="brutalism"],
+[data-theme="light-alt"][data-effect="brutalism"] {
+  --glass-border: 4px solid var(--text-primary);
+  --glass-border-hover: 6px solid var(--neon-blue);
+  --glass-shadow: 8px 8px 0px rgba(0, 0, 0, 0.3);
+  --glass-shadow-hover: 12px 12px 0px rgba(0, 0, 0, 0.4);
+}
+
+/* Dark Theme Variants */
+:root[data-theme="dark-blue"][data-effect="brutalism"],
+[data-theme="dark-blue"][data-effect="brutalism"],
+:root[data-theme="dark-green"][data-effect="brutalism"],
+[data-theme="dark-green"][data-effect="brutalism"],
+:root[data-theme="forest"][data-effect="brutalism"],
+[data-theme="forest"][data-effect="brutalism"],
+:root[data-theme="ocean"][data-effect="brutalism"],
+[data-theme="ocean"][data-effect="brutalism"],
+:root[data-theme="sunset"][data-effect="brutalism"],
+[data-theme="sunset"][data-effect="brutalism"] {
+  --glass-shadow: 8px 8px 0px rgba(0, 0, 0, 0.8);
+  --glass-shadow-hover: 12px 12px 0px rgba(0, 0, 0, 0.9);
+}
+

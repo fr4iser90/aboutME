@@ -1,0 +1,205 @@
+/* Project Modal Styles */
+
+.project-detail-modal {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Project Modal Layout */
+.project-modal-layout {
+  display: flex;
+  flex-direction: row;
+  height: calc(90vh - 120px);
+  gap: 0;
+}
+
+/* Sidebar Styles */
+.project-sidebar {
+  width: 280px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-right: 1px solid var(--glass-border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Content Area */
+.project-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+/* Sidebar Right Layout */
+.project-modal-layout.project-modal-layout--sidebar-right {
+  flex-direction: row;
+}
+
+.project-modal-layout.project-modal-layout--sidebar-right .project-sidebar {
+  order: 2;
+  border-right: none;
+  border-left: 1px solid var(--glass-border);
+}
+
+.project-modal-layout.project-modal-layout--sidebar-right .project-content {
+  order: 1;
+}
+
+/* Full Width Layout */
+.project-modal-layout--full-width {
+  flex-direction: column;
+}
+
+.project-modal-layout--full-width .project-sidebar {
+  display: none;
+}
+
+.project-modal-layout--full-width .project-content {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Two Column Layout */
+.project-modal-layout--two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+  padding: var(--space-md);
+}
+
+.project-modal-layout--two-column .project-sidebar {
+  display: none;
+}
+
+.project-modal-layout--two-column .project-content--column1,
+.project-modal-layout--two-column .project-content--column2 {
+  padding: var(--space-md);
+  overflow-y: auto;
+}
+
+/* Centered Layout */
+.project-modal-layout--centered {
+  flex-direction: column;
+  align-items: center;
+}
+
+.project-modal-layout--centered .project-sidebar {
+  display: none;
+}
+
+.project-modal-layout--centered .project-content--centered {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Masonry Layout */
+.project-modal-layout--masonry {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-md);
+  padding: var(--space-md);
+  align-items: start;
+}
+
+.project-modal-layout--masonry .project-sidebar {
+  display: none;
+}
+
+.project-modal-layout--masonry .project-content--masonry-item {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* Split Screen Layout */
+.project-modal-layout--split-screen {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  padding: var(--space-md);
+}
+
+.project-modal-layout--split-screen .project-sidebar {
+  display: none;
+}
+
+.project-modal-layout--split-screen .project-content--left,
+.project-modal-layout--split-screen .project-content--right {
+  padding: var(--space-md);
+  overflow-y: auto;
+}
+
+/* Sticky Sidebar Layout */
+.project-modal-layout--sticky-sidebar .project-sidebar--sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* Hero Content Layout */
+.project-modal-layout--hero-content {
+  flex-direction: column;
+}
+
+.project-modal-layout--hero-content .project-content--hero {
+  width: 100%;
+  padding: var(--space-lg);
+  min-height: 300px;
+}
+
+.project-modal-layout--hero-content > .project-modal-layout {
+  margin-top: var(--space-md);
+}
+
+/* Carousel Layout */
+.project-modal-layout--carousel {
+  flex-direction: column;
+}
+
+.project-modal-layout--carousel .project-content--carousel {
+  width: 100%;
+  padding: var(--space-lg);
+  min-height: 400px;
+  margin-bottom: var(--space-md);
+}
+
+/* Responsive project detail modal */
+@media (max-width: 768px) {
+  .project-modal-layout {
+    flex-direction: column;
+    height: calc(95vh - 120px);
+  }
+  
+  .project-sidebar {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    border-right: none;
+    border-bottom: 1px solid var(--glass-border);
+  }
+  
+  .project-content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .project-detail-modal .flex-1 {
+    padding: 1rem;
+  }
+  
+  .project-detail-modal .prose h2 {
+    font-size: 1.125rem;
+  }
+}
+
+/* Loading animation improvements */
+.project-detail-modal .animate-spin {
+  animation: spin 1s linear infinite;
+}
+

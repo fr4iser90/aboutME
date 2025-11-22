@@ -1,4 +1,8 @@
-data/
+# Alle Daten ignorieren
+public/data/
+private/
+
+backups/
 
 # Dependencies
 node_modules/
@@ -15,6 +19,7 @@ coverage/
 out/
 build/
 dist/
+cookies.txt
 
 # Production
 build/
@@ -33,7 +38,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+
 lib64/
 parts/
 sdist/
@@ -62,6 +67,7 @@ yarn-error.log*
 
 # IDEs and editors
 .idea/
+.cursor/
 .vscode/
 *.swp
 *.swo
@@ -108,6 +114,10 @@ lerna-debug.log*
 # System Files
 .DS_Store
 Thumbs.db
+
+# Auth temporary files
+.auth-lock
+.auth-secrets
 
 .env*
 !.env.example

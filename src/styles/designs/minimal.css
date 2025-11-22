@@ -1,0 +1,78 @@
+/* Minimal Design
+ * Complete design system: Minimal effect + Two-column layout + Transparent background
+ * 
+ * EFFECT: Minimal (transparent backgrounds, sharp borders, minimal effects)
+ * LAYOUT: Two-column (content in two columns)
+ * BACKGROUND: Transparent (shows theme background through)
+ * 
+ * Differences:
+ * - Transparent backgrounds
+ * - Sharp borders (no radius)
+ * - Minimal shadows
+ * - Two-column layout
+ */
+
+:root[data-design="minimal"],
+[data-design="minimal"] {
+  /* Use minimal effect variables (modular) */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: var(--effect-glass-border-hover);
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+  
+  /* Use effect variables (modular) */
+  --design-blur: var(--effect-blur);
+  --design-border-radius: var(--effect-border-radius);
+  --design-backdrop-filter: var(--effect-backdrop-filter);
+  --design-transition: var(--effect-transition);
+  
+  /* Global Layout: Dashboard (display mode) */
+  --global-layout-type: dashboard;
+  
+  /* Section Layout Defaults */
+  --section-projects-layout: sidebar-left;
+  --section-skills-layout: grid;
+  --section-timeline-layout: vertical;
+  --section-blog-layout: list;
+  --section-aboutme-layout: centered;
+  --section-contact-layout: centered;
+  
+  /* Background: Transparent (shows theme background) */
+  --design-bg-image: var(--dynamic-bg-image);
+  --design-bg-size: cover;
+  --design-bg-position: center -50px;
+  --design-bg-attachment: fixed;
+}
+
+/* Apply background to body */
+[data-design="minimal"] body {
+  background-image: var(--design-bg-image) !important;
+  background-size: var(--design-bg-size) !important;
+  background-position: var(--design-bg-position) !important;
+  background-attachment: var(--design-bg-attachment) !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Apply background to preview containers (responsive, no fixed attachment) */
+.theme-preview__container[data-design="minimal"],
+.full-theme-preview[data-design="minimal"] {
+  background-image: var(--design-bg-image) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: scroll !important; /* scroll statt fixed für Preview */
+  background-repeat: no-repeat !important;
+}
+
+/* Light Theme Override */
+:root[data-theme="light"][data-design="minimal"],
+[data-theme="light"][data-design="minimal"] {
+  --glass-bg: transparent;
+  --glass-bg-hover: var(--bg-tertiary);
+  --glass-border: 1px solid rgba(0, 0, 0, 0.05);
+  --glass-border-hover: 1px solid var(--neon-blue);
+  --glass-shadow: none;
+  --glass-shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+

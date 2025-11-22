@@ -1,0 +1,90 @@
+/* Project Card Component - Theme Independent */
+
+.project-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--design-backdrop-filter, blur(20px));
+  -webkit-backdrop-filter: var(--design-backdrop-filter, blur(20px));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--design-border-radius, 20px);
+  padding: 1.5rem;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Mobile Performance Optimization */
+@media (max-width: 768px) {
+  .project-card {
+    backdrop-filter: var(--design-backdrop-filter, blur(8px)); /* Reduced blur for better performance */
+    -webkit-backdrop-filter: var(--design-backdrop-filter, blur(8px));
+    transition: var(--design-transition, all 0.2s ease); /* Simpler transition */
+  }
+}
+
+/* BEM Elements - Project Card */
+.project-card__header {
+  margin-bottom: 1rem;
+}
+
+.project-card__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.project-card__description {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.project-card__tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.project-card__tech-item {
+  background: rgba(0, 212, 255, 0.1);
+  color: var(--neon-blue);
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.project-card__border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    var(--neon-blue), 
+    var(--neon-purple), 
+    var(--neon-pink));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* BEM Modifiers - Project Card States */
+.project-card--hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 30px rgba(0, 212, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.project-card--hover .project-card__border {
+  transform: scaleX(1);
+}
+

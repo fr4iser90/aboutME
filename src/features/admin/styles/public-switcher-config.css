@@ -1,0 +1,161 @@
+/* Public Switcher Config Styles */
+.public-switcher-config {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg, 1.5rem);
+}
+
+.public-switcher-config__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm, 0.5rem);
+  padding: var(--space-md, 1rem);
+  background: var(--glass-bg, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
+  border-radius: 8px;
+}
+
+.public-switcher-config__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-xs, 0.25rem);
+}
+
+.public-switcher-config__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary, #fff);
+  margin: 0;
+}
+
+.public-switcher-config__description {
+  color: var(--text-muted, rgba(255, 255, 255, 0.7));
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.public-switcher-config__label {
+  font-weight: 500;
+  color: var(--text-primary, #fff);
+  margin-bottom: var(--space-xs, 0.25rem);
+}
+
+.public-switcher-config__toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm, 0.5rem);
+  cursor: pointer;
+  user-select: none;
+}
+
+.public-switcher-config__toggle input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--primary-color, #3b82f6);
+}
+
+.public-switcher-config__toggle-label {
+  color: var(--text-primary, #fff);
+  font-weight: 500;
+}
+
+.public-switcher-config__help {
+  color: var(--text-muted, rgba(255, 255, 255, 0.7));
+  font-size: 0.85rem;
+  margin: 0;
+  margin-top: var(--space-xs, 0.25rem);
+}
+
+.public-switcher-config__info {
+  color: var(--text-muted, rgba(255, 255, 255, 0.6));
+  font-size: 0.85rem;
+  font-style: italic;
+  margin: 0;
+  margin-top: var(--space-xs, 0.25rem);
+}
+
+.public-switcher-config__select {
+  padding: var(--space-sm, 0.5rem) var(--space-md, 1rem);
+  background: var(--glass-bg, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
+  border-radius: 6px;
+  color: var(--text-primary, #fff);
+  font-size: 0.9rem;
+  cursor: pointer;
+  width: 100%;
+  max-width: 300px;
+}
+
+.public-switcher-config__select:focus {
+  outline: none;
+  border-color: var(--primary-color, #3b82f6);
+}
+
+.public-switcher-config__radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm, 0.5rem);
+}
+
+.public-switcher-config__radio {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm, 0.5rem);
+  cursor: pointer;
+  user-select: none;
+  padding: var(--space-sm, 0.5rem);
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.public-switcher-config__radio:hover {
+  background: var(--glass-bg-hover, rgba(255, 255, 255, 0.08));
+}
+
+.public-switcher-config__radio input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--primary-color, #3b82f6);
+}
+
+.public-switcher-config__radio span {
+  color: var(--text-primary, #fff);
+}
+
+.public-switcher-config__checkbox-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--space-sm, 0.5rem);
+  margin-top: var(--space-sm, 0.5rem);
+}
+
+.public-switcher-config__checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm, 0.5rem);
+  cursor: pointer;
+  user-select: none;
+  padding: var(--space-sm, 0.5rem);
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.public-switcher-config__checkbox:hover {
+  background: var(--glass-bg-hover, rgba(255, 255, 255, 0.08));
+}
+
+.public-switcher-config__checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--primary-color, #3b82f6);
+}
+
+.public-switcher-config__checkbox span {
+  color: var(--text-primary, #fff);
+  font-size: 0.9rem;
+}
+

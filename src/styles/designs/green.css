@@ -1,0 +1,72 @@
+/* Green Design
+ * Complete design system: Glassmorphism effect + Default layout + Abstract Green background
+ * Combines: glassmorphism effect + default layout + abstract green background
+ * Works with any theme (dark/light/etc.)
+ */
+
+:root[data-design="green"],
+[data-design="green"] {
+  /* Use glassmorphism effect variables (modular) */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: rgba(16, 185, 129, 0.3); /* Custom override for green */
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+  
+  /* Use effect variables (modular) */
+  --design-blur: var(--effect-blur);
+  --design-border-radius: var(--effect-border-radius);
+  --design-backdrop-filter: var(--effect-backdrop-filter);
+  --design-transition: var(--effect-transition);
+  
+  /* Global Layout: Grid (display mode) */
+  --global-layout-type: grid;
+  
+  /* Section Layout Defaults */
+  --section-projects-layout: sidebar-left;
+  --section-skills-layout: grid;
+  --section-timeline-layout: vertical;
+  --section-blog-layout: list;
+  --section-aboutme-layout: centered;
+  --section-contact-layout: centered;
+  
+  /* Background: Abstract Green image */
+  --design-bg-image: url('/assets/abstract-green.png');
+  --design-bg-size: cover;
+  --design-bg-position: center;
+  --design-bg-attachment: fixed;
+  --design-bg-color: #0a1a0a;
+}
+
+/* Apply background to body - Maximum specificity to override ALL other rules */
+:root[data-design="green"] body,
+html[data-design="green"] body,
+html[data-design="green"] > body,
+body:has(html[data-design="green"]),
+[data-design="green"] body {
+  background-image: url('/assets/abstract-green.png') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: fixed !important;
+  background-color: #0a1a0a !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Apply background to preview containers (responsive, no fixed attachment) */
+.theme-preview__container[data-design="green"],
+.full-theme-preview[data-design="green"] {
+  background-image: var(--design-bg-image) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: scroll !important;
+  background-color: var(--design-bg-color) !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Light Theme Override - Custom green colors */
+:root[data-theme="light"][data-design="green"],
+[data-theme="light"][data-design="green"] {
+  --glass-border-hover: rgba(16, 185, 129, 0.4); /* Override effect default */
+}
+

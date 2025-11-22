@@ -1,0 +1,303 @@
+/* Terminal Component - Theme Independent */
+
+.terminal-header {
+  background: linear-gradient(135deg, 
+    rgba(0, 0, 0, 0.9) 0%, 
+    rgba(5, 9, 17, 0.95) 50%, 
+    rgba(0, 0, 0, 0.9) 100%);
+  backdrop-filter: var(--design-backdrop-filter, blur(24px));
+  -webkit-backdrop-filter: var(--design-backdrop-filter, blur(24px));
+  border-bottom: 2px solid var(--neon-blue);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-header);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(0, 212, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+}
+
+.terminal-window-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(90deg, 
+    rgba(0, 0, 0, 0.8) 0%, 
+    rgba(5, 9, 17, 0.9) 50%, 
+    rgba(0, 0, 0, 0.8) 100%);
+  border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+  min-height: 60px;
+}
+
+.terminal-window-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.terminal-window-control {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.terminal-window-control--close {
+  background: #ff5f57;
+}
+
+.terminal-window-control--minimize {
+  background: #ffbd2e;
+}
+
+.terminal-window-control--maximize {
+  background: #28ca42;
+}
+
+.terminal-window-control:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.terminal-window-title {
+  color: var(--neon-blue);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.terminal-window-menu {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.terminal-menu-btn {
+  background: rgba(0, 212, 255, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  color: var(--neon-blue);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.terminal-menu-btn:hover {
+  background: rgba(0, 212, 255, 0.2);
+  border-color: rgba(0, 212, 255, 0.5);
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+}
+
+.terminal-content {
+  display: flex;
+  min-height: 120px;
+  position: relative;
+}
+
+.terminal-prompt {
+  padding: 1rem 1.5rem;
+  background: rgba(0, 0, 0, 0.6);
+  border-right: 1px solid rgba(0, 212, 255, 0.2);
+  min-width: 300px;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.terminal-user {
+  color: var(--neon-green);
+  font-weight: 600;
+}
+
+.terminal-separator {
+  color: var(--neon-blue);
+}
+
+.terminal-path {
+  color: var(--neon-purple);
+  font-weight: 500;
+}
+
+.terminal-cursor {
+  color: var(--neon-blue);
+  font-weight: bold;
+  animation: blink 1s infinite;
+}
+
+.terminal-cursor--visible {
+  opacity: 1;
+}
+
+.terminal-sidebar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 320px;
+  height: 100%;
+  background: linear-gradient(135deg, 
+    rgba(0, 0, 0, 0.95) 0%, 
+    rgba(5, 9, 17, 0.98) 100%);
+  backdrop-filter: var(--design-backdrop-filter, blur(20px));
+  -webkit-backdrop-filter: var(--design-backdrop-filter, blur(20px));
+  border-left: 2px solid var(--neon-blue);
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  z-index: var(--z-sidebar);
+  box-shadow: 
+    -10px 0 30px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(0, 212, 255, 0.2);
+}
+
+.terminal-sidebar--open {
+  transform: translateX(0);
+}
+
+.terminal-sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.terminal-sidebar-title {
+  color: var(--neon-blue);
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.terminal-sidebar-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.terminal-sidebar-close:hover {
+  color: var(--neon-blue);
+  background: rgba(0, 212, 255, 0.1);
+}
+
+.terminal-commands {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.terminal-command {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(0, 212, 255, 0.05);
+  border: 1px solid rgba(0, 212, 255, 0.1);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  font-family: inherit;
+}
+
+.terminal-command:hover {
+  background: rgba(0, 212, 255, 0.1);
+  border-color: rgba(0, 212, 255, 0.3);
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0, 212, 255, 0.2);
+}
+
+.terminal-command-icon {
+  font-size: 1rem;
+  min-width: 1.5rem;
+}
+
+.terminal-command-text {
+  flex: 1;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.terminal-command-arrow {
+  color: var(--neon-blue);
+  font-size: 0.875rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.terminal-command:hover .terminal-command-arrow {
+  opacity: 1;
+}
+
+.terminal-sidebar-footer {
+  padding: 1rem;
+  border-top: 1px solid rgba(0, 212, 255, 0.2);
+  margin-top: auto;
+}
+
+.terminal-tip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 8px;
+}
+
+.terminal-tip-icon {
+  font-size: 0.875rem;
+}
+
+.terminal-tip-text {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.terminal-main {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.terminal-output {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.terminal-line {
+  display: flex;
+  align-items: center;
+}
+
+.terminal-output-prompt {
+  color: var(--neon-green);
+  font-weight: 600;
+}
+
+.terminal-output-text {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .terminal-sidebar {
+    width: 100%;
+  }
+  
+  .terminal-prompt {
+    min-width: 200px;
+  }
+}
+

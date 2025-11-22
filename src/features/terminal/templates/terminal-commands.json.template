@@ -1,0 +1,13 @@
+{
+  "commands": {
+    "rm -rf /": " Nice try! This is a portfolio, not a real terminal! 😄",
+    "sudo rm -rf /": " Nice try! No sudo for you! 😂",
+    "format c:": " Nice try! Wrong OS! 😆",
+    "del /f /s /q c:\\*": " Nice try! Still wrong OS! 🤣",
+    "help": "Available commands: whoami, pwd, ls, cat, cd, rm, echo, date, uptime, ps, top, uname, history, neofetch, cmatrix, htop, free, df, su, logout, who, id, groups, passwd, last, w, find, touch, mkdir, chmod, stat, file, grep, head, tail, wc, sort, uniq, cut, awk, sed, tr, rev, tac, nl, fold, fmt, pr, column, expand, unexpand, join, paste, comm, diff, cmp, md5sum, sha1sum, sha256sum, base64, hexdump, od, xxd, strings, matrix, sl, fortune, cowsay, cowthink, figlet, toilet, banner, lolcat, rainbow, ascii, art, text, big, small, upper, lower, reverse, shuffle, random, scramble, mix, jumble, anagram, permute, combine, merge, join, concat, append, prepend, insert, replace, substitute, swap, exchange, interchange, transpose, flip, mirror, reflect, invert, rotate, shift, move, slide, glide, drift, float, hover, levitate, suspend, hang, dangle, swing, sway, rock, roll, tumble, fall, drop, plunge, dive, sink, submerge, immerse, dunk, soak, wet, drench, saturate, flood, deluge, torrent, cascade, waterfall, stream, flow, run, rush, dash, sprint, race, speed, velocity, momentum, acceleration, thrust, propel, launch, blast, explode, burst, erupt, cache-status, clear-cache\n\nNew hacker commands: file, strings, hexdump, find, ps, lsof, top, kill, netstat, ss, ping, nmap, chmod, chown, sudo, groups",
+    "cache-status": "=== TERMINAL CACHE STATUS ===\nSession ID: default-session\nUser: {{USERNAME}}\nLast Activity: 2025-10-25T21:38:19.473Z\nCommands Executed: 0\nOutput Lines: 0\nCache Status: ACTIVE",
+    "clear-cache": "Cache cleared! All sessions have been removed.",
+    "clear": "clear",
+    "exit": "exit"
+  }
+}

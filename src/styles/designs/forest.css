@@ -1,0 +1,72 @@
+/* Forest Design
+ * Complete design system: Glassmorphism effect + Default layout + Forest background
+ * Combines: glassmorphism effect + default layout + forest background
+ * Works with any theme (dark/light/etc.)
+ */
+
+:root[data-design="forest"],
+[data-design="forest"] {
+  /* Use glassmorphism effect variables (modular) */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: rgba(16, 185, 129, 0.3); /* Custom override for forest */
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+  
+  /* Use effect variables (modular) */
+  --design-blur: var(--effect-blur);
+  --design-border-radius: var(--effect-border-radius);
+  --design-backdrop-filter: var(--effect-backdrop-filter);
+  --design-transition: var(--effect-transition);
+  
+  /* Global Layout: Magazine (display mode) */
+  --global-layout-type: magazine;
+  
+  /* Section Layout Defaults */
+  --section-projects-layout: sidebar-left;
+  --section-skills-layout: grid;
+  --section-timeline-layout: vertical;
+  --section-blog-layout: list;
+  --section-aboutme-layout: centered;
+  --section-contact-layout: centered;
+  
+  /* Background: Forest image */
+  --design-bg-image: url('/assets/forest.png');
+  --design-bg-size: cover;
+  --design-bg-position: center;
+  --design-bg-attachment: fixed;
+  --design-bg-color: #0a1a0a;
+}
+
+/* Apply background to body - Maximum specificity to override ALL other rules */
+:root[data-design="forest"] body,
+html[data-design="forest"] body,
+html[data-design="forest"] > body,
+body:has(html[data-design="forest"]),
+[data-design="forest"] body {
+  background-image: url('/assets/forest.png') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: fixed !important;
+  background-color: #0a1a0a !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Apply background to preview containers (responsive, no fixed attachment) */
+.theme-preview__container[data-design="forest"],
+.full-theme-preview[data-design="forest"] {
+  background-image: var(--design-bg-image) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: scroll !important;
+  background-color: var(--design-bg-color) !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Light Theme Override - Custom forest colors */
+:root[data-theme="light"][data-design="forest"],
+[data-theme="light"][data-design="forest"] {
+  --glass-border-hover: rgba(16, 185, 129, 0.4); /* Override effect default */
+}
+

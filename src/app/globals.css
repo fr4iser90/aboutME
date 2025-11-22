@@ -1,0 +1,116 @@
+@unocss all;
+
+/* 1. Base Variables (Theme-independent) */
+@import '../styles/variables/base.css';
+
+/* 2. Base Styles */
+@import '../styles/base/reset.css';
+@import '../styles/base/typography.css';
+
+/* 3. Themes (Color System Only) */
+@import '../styles/themes/dark.css';
+@import '../styles/themes/light.css';
+@import '../styles/themes/light-alt.css';
+@import '../styles/themes/dark-blue.css';
+@import '../styles/themes/dark-green.css';
+@import '../styles/themes/light-warm.css';
+@import '../styles/themes/light-cool.css';
+@import '../styles/themes/forest.css';
+@import '../styles/themes/ocean.css';
+@import '../styles/themes/sunset.css';
+
+/* 3b. Effects (Visual Style System) */
+@import '../styles/effects/glassmorphism.css';
+@import '../styles/effects/flat.css';
+@import '../styles/effects/minimal.css';
+@import '../styles/effects/clean.css';
+@import '../styles/effects/neumorphism.css';
+@import '../styles/effects/cyberpunk.css';
+@import '../styles/effects/gradient.css';
+@import '../styles/effects/skeuomorphism.css';
+@import '../styles/effects/brutalism.css';
+@import '../styles/effects/soft.css';
+@import '../styles/effects/sharp.css';
+
+/* 3c. Designs (Complete Design System: Effects + Layouts + Backgrounds) */
+@import '../styles/designs/glassmorphism.css';
+@import '../styles/designs/modern-glass.css';
+@import '../styles/designs/minimal-clean.css';
+@import '../styles/designs/cyberpunk.css';
+@import '../styles/designs/flat.css';
+@import '../styles/designs/minimal.css';
+@import '../styles/designs/clean.css';
+@import '../styles/designs/neumorphism.css';
+@import '../styles/designs/gradient.css';
+@import '../styles/designs/sunset.css';
+@import '../styles/designs/ocean.css';
+@import '../styles/designs/forest.css';
+@import '../styles/designs/blue.css';
+@import '../styles/designs/green.css';
+@import '../styles/designs/light-cool.css';
+@import '../styles/designs/light-warm.css';
+
+/* 4. Components (Theme-independent, use variables) */
+@import '../styles/components/animations.css';
+@import '../styles/components/background.css';
+@import '../styles/components/buttons.css';
+@import '../styles/components/forms.css';
+@import '../styles/components/glass-card.css';
+@import '../styles/components/hero.css';
+@import '../styles/components/navigation.css';
+@import '../styles/components/project-card.css';
+@import '../styles/components/project-layout.css';
+@import '../styles/components/project-modal.css';
+@import '../styles/components/skill-card.css';
+@import '../styles/components/terminal.css';
+@import '../styles/components/flag.css';
+@import '../styles/components/social-link.css';
+@import '../styles/components/about-section-preview.css';
+@import '../styles/components/year-overview.css';
+@import '../styles/components/blog.css';
+@import '../styles/components/page-layout.css';
+@import '../styles/components/block-animations.css';
+
+/* 5. Feature Styles */
+@import '../features/auth/styles/login.css';
+@import '../features/editor/styles/editor.css';
+@import '../features/editor/styles/monaco.css';
+
+/* Main Content Wrapper */
+.main-content {
+  padding-top: 0; /* No header padding by default */
+  padding-bottom: 0; /* No padding for editor page */
+  min-height: 100vh; /* Full viewport height */
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  position: relative;
+  z-index: 1;
+}
+
+/* Add header padding only on main page */
+body:has([data-main-page="true"]) .main-content {
+  padding-top: 6rem; /* Space for fixed header */
+}
+
+/* Login Page - Hide Header */
+body:has([data-login="true"]) header {
+  display: none !important;
+}
+
+body:has([data-login="true"]) .main-content {
+  padding-top: 0 !important;
+  min-height: 100vh !important;
+}
+
+/* Login Page Container - Perfect Centering */
+body:has([data-login="true"]) .min-h-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  background-image: var(--dynamic-bg-image);
+  background-size: cover;
+  background-position: center -50px;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}

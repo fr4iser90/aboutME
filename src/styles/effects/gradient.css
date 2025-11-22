@@ -1,0 +1,48 @@
+/* Gradient Effect System
+ * Colorful gradients, vibrant backgrounds
+ */
+
+:root[data-effect="gradient"],
+[data-effect="gradient"] {
+  /* Gradient Background Variables - Effect Prefix */
+  --effect-glass-bg: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+  --effect-glass-bg-hover: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+  --effect-glass-border: 2px solid rgba(255, 255, 255, 0.3);
+  --effect-glass-border-hover: 2px solid rgba(255, 255, 255, 0.5);
+  --effect-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --effect-glass-shadow-hover: 0 12px 48px rgba(0, 0, 0, 0.4);
+  
+  /* Effect Variables - Effect Prefix */
+  --effect-blur: 0px;
+  --effect-border-radius: 16px;
+  --effect-backdrop-filter: none;
+  --effect-transition: all 0.3s ease;
+  
+  /* Legacy Support - Map to design variables */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: var(--effect-glass-border-hover);
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+  --design-blur: var(--effect-blur);
+  --design-border-radius: var(--effect-border-radius);
+  --design-backdrop-filter: var(--effect-backdrop-filter);
+  --design-transition: var(--effect-transition);
+}
+
+/* Light Theme Gradient Overrides */
+:root[data-theme="light"][data-effect="gradient"],
+[data-theme="light"][data-effect="gradient"] {
+  --effect-glass-bg: linear-gradient(135deg, rgba(59, 130, 246, 0.8), rgba(139, 92, 246, 0.8));
+  --effect-glass-bg-hover: linear-gradient(135deg, rgba(139, 92, 246, 0.9), rgba(236, 72, 153, 0.9));
+  --effect-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  --effect-glass-shadow-hover: 0 12px 48px rgba(0, 0, 0, 0.2);
+  
+  /* Legacy Support */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+}
+

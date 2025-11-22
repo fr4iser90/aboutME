@@ -1,0 +1,70 @@
+/* Modern Glass Design
+ * Complete design system: Glassmorphism effect + Full-width layout + Galaxy background
+ * Combines: glassmorphism effect + full-width layout + galaxy background
+ * Works with any theme (dark/light/etc.)
+ */
+
+:root[data-design="modern-glass"],
+[data-design="modern-glass"] {
+  /* Use glassmorphism effect variables (modular) */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: var(--effect-glass-border-hover);
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+  
+  /* Use effect variables (modular) */
+  --design-blur: var(--effect-blur);
+  --design-border-radius: var(--effect-border-radius);
+  --design-backdrop-filter: var(--effect-backdrop-filter);
+  --design-transition: var(--effect-transition);
+  
+  /* Global Layout: Grid (display mode) */
+  --global-layout-type: grid;
+  
+  /* Section Layout Defaults */
+  --section-projects-layout: sidebar-left;
+  --section-skills-layout: grid;
+  --section-timeline-layout: vertical;
+  --section-blog-layout: list;
+  --section-aboutme-layout: centered;
+  --section-contact-layout: centered;
+  
+  /* Background: Galaxy image */
+  --design-bg-image: url('/assets/galaxy.png');
+  --design-bg-size: cover;
+  --design-bg-position: center -50px;
+  --design-bg-attachment: fixed;
+}
+
+/* Apply background to body */
+[data-design="modern-glass"] body {
+  background-image: var(--design-bg-image) !important;
+  background-size: var(--design-bg-size) !important;
+  background-position: var(--design-bg-position) !important;
+  background-attachment: var(--design-bg-attachment) !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Apply background to preview containers (responsive, no fixed attachment) */
+.theme-preview__container[data-design="modern-glass"],
+.full-theme-preview[data-design="modern-glass"] {
+  background-image: var(--design-bg-image) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: scroll !important; /* scroll statt fixed für Preview */
+  background-repeat: no-repeat !important;
+}
+
+/* Light Theme Override */
+:root[data-theme="light"][data-design="modern-glass"],
+[data-theme="light"][data-design="modern-glass"] {
+  --glass-bg: rgba(255, 255, 255, 0.4);
+  --glass-bg-hover: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-border-hover: rgba(59, 130, 246, 0.3);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --glass-shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+

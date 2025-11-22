@@ -1,0 +1,9 @@
+{
+    "hostname": "{{HOSTNAME}}",
+    "username": "{{USERNAME}}",
+    "password": "{{PASSWORD_USER}}",
+    "password_hint": "{{PASSWORD_HINT}}",
+    "root_username": "root",
+    "root_password": "{{PASSWORD_ROOT}}",
+    "root_password_hint": "{{ROOT_PASSWORD_HINT}}"
+}

@@ -1,0 +1,67 @@
+/* Neumorphism Design
+ * Complete design system: Neumorphism effect + Sidebar-right layout + Gradient background
+ * 
+ * EFFECT: Neumorphism (soft shadows, subtle depth, no transparency)
+ * LAYOUT: Sidebar-right (sidebar on right, content on left)
+ * BACKGROUND: Subtle gradient (NO image)
+ * 
+ * Differences:
+ * - Soft shadows (inset/outset)
+ * - Rounded borders (20px)
+ * - No transparency
+ * - Sidebar-right layout
+ * - Gradient background (no image)
+ */
+
+:root[data-design="neumorphism"],
+[data-design="neumorphism"] {
+  /* Use neumorphism effect variables (modular) */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: var(--effect-glass-border-hover);
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+  
+  /* Use effect variables (modular) */
+  --design-blur: var(--effect-blur);
+  --design-border-radius: var(--effect-border-radius);
+  --design-backdrop-filter: var(--effect-backdrop-filter);
+  --design-transition: var(--effect-transition);
+  
+  /* Global Layout: Sticky Sidebar (display mode) */
+  --global-layout-type: sticky-sidebar;
+  
+  /* Section Layout Defaults */
+  --section-projects-layout: sidebar-left;
+  --section-skills-layout: grid;
+  --section-timeline-layout: vertical;
+  --section-blog-layout: list;
+  --section-aboutme-layout: centered;
+  --section-contact-layout: centered;
+  
+  /* Background: Subtle gradient (NO image) */
+  --design-bg-image: none;
+  --design-bg-gradient: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  --design-bg-color: var(--bg-primary);
+}
+
+/* Apply background to body AND preview containers */
+[data-design="neumorphism"] body,
+.theme-preview__container[data-design="neumorphism"],
+.full-theme-preview[data-design="neumorphism"] {
+  background-image: var(--design-bg-gradient) !important;
+  background-color: var(--design-bg-color) !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Light Theme Override */
+:root[data-theme="light"][data-design="neumorphism"],
+[data-theme="light"][data-design="neumorphism"] {
+  --glass-bg: var(--bg-secondary);
+  --glass-bg-hover: var(--bg-tertiary);
+  --glass-shadow: 8px 8px 16px rgba(0, 0, 0, 0.1), -8px -8px 16px rgba(255, 255, 255, 0.8);
+  --glass-shadow-hover: 12px 12px 24px rgba(0, 0, 0, 0.15), -12px -12px 24px rgba(255, 255, 255, 0.9);
+}
+

@@ -1,0 +1,217 @@
+{
+  "flags": [
+    {
+      "id": "flag_001",
+      "content": "CTF{hidden_in_plain_sight}",
+      "location": "/home/{{USERNAME}}/credentials.txt",
+      "difficulty": "easy",
+      "hints": ["Look for files with unusual names", "Check files that might contain credentials"],
+      "dependencies": []
+    },
+    {
+      "id": "flag_002", 
+      "content": "CTF{terminal_master_2024}",
+      "location": "/home/{{USERNAME}}/flag.txt",
+      "difficulty": "easy",
+      "hints": ["Check the .ssh directory", "Look for SSH keys"],
+      "dependencies": ["flag_001"]
+    },
+    {
+      "id": "flag_003",
+      "content": "CTF{ssh_key_master}",
+      "location": "/home/{{USERNAME}}/.ssh/id_rsa",
+      "difficulty": "medium",
+      "hints": ["SSH keys contain hidden information", "Use file analysis tools"],
+      "dependencies": ["flag_002"]
+    },
+    {
+      "id": "flag_004",
+      "content": "CTF{config_secrets}",
+      "location": "/home/{{USERNAME}}/config.json",
+      "difficulty": "medium",
+      "hints": ["Configuration files often contain secrets", "Check JSON structure carefully"],
+      "dependencies": ["flag_001"]
+    },
+    {
+      "id": "flag_005",
+      "content": "CTF{binary_analysis_master}",
+      "location": "/home/{{USERNAME}}/secret.bin",
+      "difficulty": "hard",
+      "hints": ["Binary files require special tools", "Use hexdump or strings command"],
+      "dependencies": ["flag_003", "flag_004"]
+    },
+    {
+      "id": "flag_006",
+      "content": "CTF{root_access_master}",
+      "location": "/root/final_flag.txt",
+      "difficulty": "expert",
+      "hints": ["Find SUID binaries", "Use backup_tool.sh to read root files"],
+      "dependencies": ["flag_005"]
+    }
+  ],
+  "hints": [
+    {
+      "id": "hint_001",
+      "content": "Look for files with unusual names",
+      "location": "/home/{{USERNAME}}/hint.md",
+      "type": "text",
+      "difficulty": "easy"
+    },
+    {
+      "id": "hint_002",
+      "content": "Check hidden directories (starting with .)",
+      "location": "/home/{{USERNAME}}/hint.md",
+      "type": "text",
+      "difficulty": "easy"
+    },
+    {
+      "id": "hint_003",
+      "content": "Some files contain binary data - use different tools",
+      "location": "/home/{{USERNAME}}/hint.md",
+      "type": "text",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hint_004",
+      "content": "Combine all clues to find the master flag",
+      "location": "/home/{{USERNAME}}/hint.md",
+      "type": "text",
+      "difficulty": "hard"
+    },
+    {
+      "id": "hint_005",
+      "content": "SSH keys often contain hidden information",
+      "location": "/home/{{USERNAME}}/.ssh/known_hosts",
+      "type": "hidden",
+      "difficulty": "medium"
+    }
+  ],
+  "templates": [
+    {
+      "name": "credentials.txt",
+      "type": "credential",
+      "template": "Username: admin\nPassword: secret123\nAPI_KEY: sk-1234567890abcdef\nDatabase: puzzle_db\nFlag: CTF{hidden_in_plain_sight}",
+      "variables": ["username", "hostname"],
+      "hidden": false,
+      "permissions": "-rw-r--r--",
+      "owner": "{{USERNAME}}",
+      "group": "{{USERNAME}}"
+    },
+    {
+      "name": "flag.txt",
+      "type": "flag",
+      "template": "Congratulations! You found the flag!\n\nCTF{terminal_master_2024}\n\nNext clue: Check the .ssh directory",
+      "variables": ["username"],
+      "hidden": false,
+      "permissions": "-rw-r--r--",
+      "owner": "{{USERNAME}}",
+      "group": "{{USERNAME}}"
+    },
+    {
+      "name": "hint.md",
+      "type": "hint",
+      "template": "# Puzzle Hints\n\n## Step 1\nLook for files with unusual names\n\n## Step 2\nCheck hidden directories (starting with .)\n\n## Step 3\nSome files contain binary data - use different tools\n\n## Final Step\nCombine all clues to find the master flag",
+      "variables": ["username"],
+      "hidden": false,
+      "permissions": "-rw-r--r--",
+      "owner": "{{USERNAME}}",
+      "group": "{{USERNAME}}"
+    },
+    {
+      "name": "config.json",
+      "type": "config",
+      "template": "{\n  \"server\": \"puzzle-server.local\",\n  \"port\": 8080,\n  \"secret\": \"admin_password_here\",\n  \"database\": {\n    \"host\": \"localhost\",\n    \"name\": \"puzzle_db\",\n    \"password\": \"db_secret_123\"\n  },\n  \"flag_location\": \"/home/{{USERNAME}}/.ssh/id_rsa\"\n}",
+      "variables": ["username"],
+      "hidden": false,
+      "permissions": "-rw-r--r--",
+      "owner": "{{USERNAME}}",
+      "group": "{{USERNAME}}"
+    },
+    {
+      "name": "id_rsa",
+      "type": "credential",
+      "template": "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAFwAAAAdzc2gtcn\nNhAAAAAwEAAQAAAQEA1234567890abcdef...\n-----END OPENSSH PRIVATE KEY-----\n\n# Hidden flag: CTF{ssh_key_master}",
+      "variables": ["username", "hostname"],
+      "hidden": true,
+      "permissions": "-rw-------",
+      "owner": "{{USERNAME}}",
+      "group": "{{USERNAME}}"
+    },
+    {
+      "name": "id_rsa.pub",
+      "type": "credential",
+      "template": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC1234567890abcdef... {{USERNAME}}@{{HOSTNAME}}",
+      "variables": ["username", "hostname"],
+      "hidden": true,
+      "permissions": "-rw-r--r--",
+      "owner": "{{USERNAME}}",
+      "group": "{{USERNAME}}"
+    },
+    {
+      "name": "known_hosts",
+      "type": "config",
+      "template": "github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC1234567890abcdef...\ngitlab.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC1234567890abcdef...\npuzzle-server.local ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC1234567890abcdef...\n\n# Hint: SSH keys often contain hidden information",
+      "variables": ["username"],
+      "hidden": true,
+      "permissions": "-rw-r--r--",
+      "owner": "{{USERNAME}}",
+      "group": "{{USERNAME}}"
+    },
+    {
+      "name": "secret.bin",
+      "type": "binary",
+      "template": "BINARY_CONTENT_PLACEHOLDER",
+      "variables": ["username"],
+      "hidden": false,
+      "permissions": "-rw-r--r--",
+      "owner": "{{USERNAME}}",
+      "group": "{{USERNAME}}"
+    },
+    {
+      "name": "backup_tool.sh",
+      "type": "suid",
+      "template": "#!/bin/bash\n# Backup tool - liest root-Dateien\necho \"Backing up: $1\"\ncat \"$1\"  # Liest jede Datei als root!",
+      "variables": ["username"],
+      "hidden": false,
+      "permissions": "-rwsr-xr-x",
+      "owner": "root",
+      "group": "root"
+    },
+    {
+      "name": "final_flag.txt",
+      "type": "flag",
+      "template": "🎉 CONGRATULATIONS! 🎉\n\nYou have successfully escalated privileges to root!\n\nCTF{root_access_master}\n\nYou are now a true hacker! 🚀",
+      "variables": [],
+      "hidden": false,
+      "permissions": "-rw-r--r--",
+      "owner": "root",
+      "group": "root"
+    }
+  ],
+  "hiddenFiles": [
+    ".ssh/id_rsa",
+    ".ssh/id_rsa.pub", 
+    ".ssh/known_hosts",
+    ".bashrc",
+    ".zshrc",
+    ".gitconfig",
+    ".vimrc"
+  ],
+  "binaryTypes": [
+    "mkv", "mp4", "avi", "mov",
+    "png", "jpg", "jpeg", "gif", "bmp",
+    "pdf", "doc", "docx",
+    "zip", "rar", "7z",
+    "exe", "bin"
+  ],
+  "credentialFiles": [
+    "credentials.txt",
+    "config.json",
+    ".ssh/id_rsa",
+    ".ssh/id_rsa.pub",
+    ".ssh/known_hosts"
+  ],
+  "suidBinaries": [
+    "Documents/server_stuff/backup_tool.sh"
+  ]
+}

@@ -1,0 +1,66 @@
+/* Light Warm Design
+ * Complete design system: Glassmorphism effect + Default layout + Light Warm background
+ * Combines: glassmorphism effect + default layout + light warm background
+ * Works with any theme (dark/light/etc.)
+ */
+
+:root[data-design="light-warm"],
+[data-design="light-warm"] {
+  /* Use glassmorphism effect variables (modular) - Light theme overrides apply automatically */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: rgba(245, 158, 11, 0.4); /* Custom override for light-warm */
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+  
+  /* Use effect variables (modular) */
+  --design-blur: var(--effect-blur);
+  --design-border-radius: var(--effect-border-radius);
+  --design-backdrop-filter: var(--effect-backdrop-filter);
+  --design-transition: var(--effect-transition);
+  
+  /* Global Layout: Portfolio (display mode) */
+  --global-layout-type: portfolio;
+  
+  /* Section Layout Defaults */
+  --section-projects-layout: sidebar-left;
+  --section-skills-layout: grid;
+  --section-timeline-layout: vertical;
+  --section-blog-layout: list;
+  --section-aboutme-layout: centered;
+  --section-contact-layout: centered;
+  
+  /* Background: Light Warm image */
+  --design-bg-image: url('/assets/light-warm.png');
+  --design-bg-size: cover;
+  --design-bg-position: center;
+  --design-bg-attachment: fixed;
+  --design-bg-color: #fff8f0;
+}
+
+/* Apply background to body - Maximum specificity to override ALL other rules */
+:root[data-design="light-warm"] body,
+html[data-design="light-warm"] body,
+html[data-design="light-warm"] > body,
+body:has(html[data-design="light-warm"]),
+[data-design="light-warm"] body {
+  background-image: url('/assets/light-warm.png') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: fixed !important;
+  background-color: #fff8f0 !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Apply background to preview containers (responsive, no fixed attachment) */
+.theme-preview__container[data-design="light-warm"],
+.full-theme-preview[data-design="light-warm"] {
+  background-image: var(--design-bg-image) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: scroll !important;
+  background-color: var(--design-bg-color) !important;
+  background-repeat: no-repeat !important;
+}
+

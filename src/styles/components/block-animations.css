@@ -1,0 +1,251 @@
+/**
+ * Block Animations CSS
+ * Keyframes and animation classes for blocks
+ * 
+ * Created: 2025-11-16
+ */
+
+/* Prefers Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .block-animation-fade-in,
+  .block-animation-fade-out,
+  .block-animation-slide-up,
+  .block-animation-slide-down,
+  .block-animation-slide-left,
+  .block-animation-slide-right,
+  .block-animation-zoom-in,
+  .block-animation-zoom-out,
+  .block-animation-bounce-in,
+  .block-animation-bounce-out,
+  .block-animation-rotate-in,
+  .block-animation-stagger,
+  .block-animation-count-up {
+    animation: none !important;
+  }
+}
+
+/* Fade In */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.block-animation-fade-in {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Fade Out */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.block-animation-fade-out {
+  animation: fadeOut 0.6s ease-in-out;
+}
+
+/* Slide Up */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.block-animation-slide-up {
+  animation: slideUp 0.6s ease-out;
+}
+
+/* Slide Down */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.block-animation-slide-down {
+  animation: slideDown 0.6s ease-out;
+}
+
+/* Slide Left */
+@keyframes slideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.block-animation-slide-left {
+  animation: slideLeft 0.6s ease-out;
+}
+
+/* Slide Right */
+@keyframes slideRight {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.block-animation-slide-right {
+  animation: slideRight 0.6s ease-out;
+}
+
+/* Zoom In */
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.block-animation-zoom-in {
+  animation: zoomIn 0.6s ease-out;
+}
+
+/* Zoom Out */
+@keyframes zoomOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+.block-animation-zoom-out {
+  animation: zoomOut 0.6s ease-out;
+}
+
+/* Bounce In */
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.block-animation-bounce-in {
+  animation: bounceIn 0.8s ease-out;
+}
+
+/* Bounce Out */
+@keyframes bounceOut {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+}
+
+.block-animation-bounce-out {
+  animation: bounceOut 0.8s ease-out;
+}
+
+/* Rotate In */
+@keyframes rotateIn {
+  from {
+    opacity: 0;
+    transform: rotate(-200deg);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0);
+  }
+}
+
+.block-animation-rotate-in {
+  animation: rotateIn 0.8s ease-out;
+}
+
+/* Stagger (for grids) */
+.block-animation-stagger > * {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.block-animation-stagger > *:nth-child(1) { animation-delay: 0.1s; }
+.block-animation-stagger > *:nth-child(2) { animation-delay: 0.2s; }
+.block-animation-stagger > *:nth-child(3) { animation-delay: 0.3s; }
+.block-animation-stagger > *:nth-child(4) { animation-delay: 0.4s; }
+.block-animation-stagger > *:nth-child(5) { animation-delay: 0.5s; }
+.block-animation-stagger > *:nth-child(6) { animation-delay: 0.6s; }
+
+/* Count Up (for stats) */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.block-animation-count-up {
+  animation: countUp 0.8s ease-out;
+}
+
+/* Responsive Hide Classes */
+.block-hide-mobile {
+  @media (max-width: 768px) {
+    display: none !important;
+  }
+}
+
+.block-hide-desktop {
+  @media (min-width: 769px) {
+    display: none !important;
+  }
+}
+

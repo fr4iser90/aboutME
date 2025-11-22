@@ -1,0 +1,60 @@
+{
+  "name": "aboutme-static-portfolio",
+  "version": "1.0.0",
+  "description": "Static portfolio generator with GitHub integration",
+  "main": "setup.ts",
+  "scripts": {
+    "setup": "npx tsx setup.ts",
+    "generate": "npx tsx src/features/setup/scripts/data-orchestrator.ts",
+    "generate-data": "npx tsx src/features/setup/scripts/data-orchestrator.ts",
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "reset-and-backup": "npx tsx scripts/reset-and-backup.ts"
+  },
+  "bin": {
+    "portfolio-setup": "./setup.ts"
+  },
+  "keywords": [
+    "portfolio",
+    "github",
+    "static",
+    "generator"
+  ],
+  "author": "fr4iser",
+  "license": "MIT",
+  "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "@monaco-editor/react": "^4.7.0",
+    "@types/node": "^24.7.2",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "autoprefixer": "^10.4.21",
+    "dotenv": "^17.2.3",
+    "gray-matter": "^4.0.3",
+    "marked": "^12.0.0",
+    "monaco-editor": "^0.54.0",
+    "next": "^16.0.0",
+    "playwright": "^1.56.1",
+    "postcss": "^8.5.6",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "@unocss/preset-attributify": "^66.5.4",
+    "@unocss/preset-icons": "^66.5.4",
+    "@unocss/preset-uno": "^66.5.4",
+    "@unocss/webpack": "^66.5.4",
+    "eslint-config-next": "^16.0.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
+    "playwright": "^1.56.0",
+    "unocss": "^66.5.4"
+  }
+}

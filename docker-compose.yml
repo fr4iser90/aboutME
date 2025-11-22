@@ -1,56 +1,106 @@
 services:
-  about-me-db:
+  portfolio:
     build:
-      context: ./database
+      context: .
       dockerfile: Dockerfile
-    image: fr4iser/about-me:db
-    container_name: about-me-db
+    image: fr4iser/portfolio:latest
+    container_name: portfolio
     ports:
-      - "5452:5432"
+      - "3000:3000"
     volumes:
-      - about-me-db-data:/var/lib/postgresql/data
-    env_file:
-      - .env
+      - portfolio_logs:/app/logs
     restart: unless-stopped
-
-  about-me-backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    image: fr4iser/about-me:backend
-    container_name: about-me-backend
-    ports:
-      - "8090:8000"
-    depends_on:
-      about-me-db:
-        condition: service_healthy
-    env_file:
-      - .env
-    volumes:
-      - backend_logs:/app/logs
-      - /var/run/docker.sock:/var/run/docker.sock
-    restart: unless-stopped
-
-#  about-me-frontend:
-#    build:
-#      context: ./frontend
-#      dockerfile: Dockerfile
-#    image: fr4iser/about-me:frontend
-#    container_name: about-me-frontend
-#    ports:
-#      - "4040:4000"
-#    depends_on:
-#      - about-me-backend
-#    env_file:
-#      - .env
-#    volumes:
-#      - frontend_logs:/app/logs
-#    restart: unless-stopped
+    
+    # ===== DOCKER SECRETS (Alternative zu .env) =====
+    # 
+    # Docker Secrets bieten höhere Sicherheit als .env Files:
+    # - Verschlüsselte Speicherung
+    # - Temporäre Mounts (/run/secrets/)
+    # - Nicht sichtbar im Container-Filesystem
+    # - Automatische Bereinigung nach Container-Stop
+    #
+    # AKTIVIERUNG: Entferne die Kommentare unten und erstelle secrets/ Ordner
+    #
+    # secrets:
+    #   - admin_password
+    #   - session_secret
+    #   - database_url
+    #   - github_token
+    #
+    # environment:
+    #   # Secrets werden als Dateien gemountet, nicht als ENV-Vars
+    #   - ADMIN_PASSWORD_FILE=/run/secrets/admin_password
+    #   - SESSION_SECRET_FILE=/run/secrets/session_secret
+    #   - DATABASE_URL_FILE=/run/secrets/database_url
+    #   - GITHUB_TOKEN_FILE=/run/secrets/github_token
+    #
+    # VORBEREITUNG:
+    # 1. Erstelle secrets/ Ordner: mkdir secrets
+    # 2. Erstelle Secret-Dateien:
+    #    echo "my-secure-admin-password" > secrets/admin_password
+    #    echo "my-session-secret-key" > secrets/session_secret
+    #    echo "postgresql://user:pass@db:5432/portfolio" > secrets/database_url
+    #    echo "ghp_your_github_token" > secrets/github_token
+    # 3. Setze korrekte Berechtigungen: chmod 600 secrets/*
+    # 4. Füge secrets/ zu .gitignore hinzu
+    #
+    # VORTEILE:
+    # ✅ Höhere Sicherheit (verschlüsselt)
+    # ✅ Nicht sichtbar im Container
+    # ✅ Automatische Bereinigung
+    # ✅ Enterprise-Level Sicherheit
+    #
+    # NACHTEILE:
+    # ❌ Komplexer als .env
+    # ❌ Mehr Setup-Aufwand
+    # ❌ Secrets müssen als Dateien gelesen werden
+    # ❌ Nicht für einfache Projekte nötig
+    #
+    # VERWENDUNG IM CODE:
+    # const adminPassword = fs.readFileSync(process.env.ADMIN_PASSWORD_FILE, 'utf8').trim();
+    # const sessionSecret = fs.readFileSync(process.env.SESSION_SECRET_FILE, 'utf8').trim();
+    #
+    # ALTERNATIVE: Docker Swarm Secrets (noch sicherer, aber komplexer)
+    # docker swarm init
+    # docker secret create admin_password ./secrets/admin_password
+    # docker service create --secret admin_password my-app
 
 volumes:
-  about-me-db-data:
+  portfolio_logs:
     driver: local
-  backend_logs:
-    driver: local
-#  frontend_logs:
-#    driver: local
+
+# ===== DOCKER SECRETS DEFINITION =====
+# 
+# secrets:
+#   admin_password:
+#     file: ./secrets/admin_password
+#   session_secret:
+#     file: ./secrets/session_secret
+#   database_url:
+#     file: ./secrets/database_url
+#   github_token:
+#     file: ./secrets/github_token
+#
+# EXTERNE SECRETS (Docker Swarm):
+# secrets:
+#   admin_password:
+#     external: true
+#   session_secret:
+#     external: true
+#
+# SECRETS MIT LABELS (Metadaten):
+# secrets:
+#   admin_password:
+#     file: ./secrets/admin_password
+#     labels:
+#       - "com.example.secret=admin"
+#       - "com.example.environment=production"
+#
+# SECRETS MIT TEMPLATES (Docker Swarm):
+# secrets:
+#   config:
+#     external: true
+#     template_driver: golang
+#     template_driver_opts:
+#       template: "{{ .Service.Name }}_{{ .Secret.Name }}"
+

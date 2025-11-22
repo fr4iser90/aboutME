@@ -1,0 +1,32 @@
+/* Background Effects - Theme Independent */
+
+/* Note: Background image variable is defined in theme file */
+/* This file contains background-related component styles */
+
+/* Mobile Performance Optimization - Disable complex animations on mobile */
+@media (max-width: 768px) {
+  /* Disable complex animations on mobile */
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  /* Disable hover effects on mobile */
+  .glass-card:hover,
+  .project-card:hover,
+  .skill-card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* Reduce blur effects on mobile */
+  .glass-card,
+  .project-card,
+  .modal,
+  .modal-overlay {
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+  }
+}
+

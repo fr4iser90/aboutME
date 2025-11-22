@@ -1,0 +1,67 @@
+/* Glassmorphism Effect System
+ * Glass effects with blur, transparency, and glowing borders
+ */
+
+:root[data-effect="glassmorphism"],
+[data-effect="glassmorphism"] {
+  /* Glass Background Variables - Effect Prefix */
+  --effect-glass-bg: rgba(255, 255, 255, 0.03);
+  --effect-glass-bg-hover: rgba(255, 255, 255, 0.06);
+  --effect-glass-border: rgba(255, 255, 255, 0.08);
+  --effect-glass-border-hover: rgba(0, 212, 255, 0.2);
+  --effect-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --effect-glass-shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.6);
+  
+  /* Effect Variables - Effect Prefix */
+  --effect-blur: 24px;
+  --effect-border-radius: 24px;
+  --effect-backdrop-filter: blur(24px);
+  --effect-transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  
+  /* Legacy Support - Map to design variables */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: var(--effect-glass-border-hover);
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+  --design-blur: var(--effect-blur);
+  --design-border-radius: var(--effect-border-radius);
+  --design-backdrop-filter: var(--effect-backdrop-filter);
+  --design-transition: var(--effect-transition);
+}
+
+/* Light Theme Glassmorphism Overrides */
+:root[data-theme="light"][data-effect="glassmorphism"],
+[data-theme="light"][data-effect="glassmorphism"] {
+  --effect-glass-bg: rgba(255, 255, 255, 0.4);
+  --effect-glass-bg-hover: rgba(255, 255, 255, 0.6);
+  --effect-glass-border: rgba(255, 255, 255, 0.5);
+  --effect-glass-border-hover: rgba(59, 130, 246, 0.3);
+  --effect-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --effect-glass-shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.15);
+  
+  /* Legacy Support */
+  --glass-bg: var(--effect-glass-bg);
+  --glass-bg-hover: var(--effect-glass-bg-hover);
+  --glass-border: var(--effect-glass-border);
+  --glass-border-hover: var(--effect-glass-border-hover);
+  --glass-shadow: var(--effect-glass-shadow);
+  --glass-shadow-hover: var(--effect-glass-shadow-hover);
+}
+
+/* Mobile Performance Optimization */
+@media (max-width: 768px) {
+  :root[data-effect="glassmorphism"],
+  [data-effect="glassmorphism"] {
+    --effect-blur: 8px;
+    --effect-backdrop-filter: blur(8px);
+    --effect-transition: all 0.3s ease;
+    
+    /* Legacy Support */
+    --design-blur: var(--effect-blur);
+    --design-backdrop-filter: var(--effect-backdrop-filter);
+    --design-transition: var(--effect-transition);
+  }
+}
+

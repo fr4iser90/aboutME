@@ -1,0 +1,163 @@
+/* Login Card Component - Feature Specific */
+
+.login-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    var(--glass-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+  z-index: var(--z-content);
+  max-width: 400px;
+  width: 100%;
+}
+
+/* Login Card Responsive */
+@media (max-width: 768px) {
+  .login-card {
+    padding: 1.25rem;
+    border-radius: 12px;
+    max-width: 350px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 1rem;
+    border-radius: 8px;
+    max-width: 320px;
+  }
+}
+
+/* BEM Elements - Login Card */
+.login-card__content {
+  position: relative;
+  z-index: 2;
+}
+
+.login-card__header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.login-card__icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.login-card__title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.login-card__subtitle {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.login-card__form {
+  margin-bottom: 1.5rem;
+}
+
+.login-card__field {
+  margin-bottom: 1rem;
+}
+
+.login-card__label {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.login-card__input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.login-card__input:focus {
+  outline: none;
+  border-color: var(--neon-blue);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+}
+
+.login-card__input::placeholder {
+  color: var(--text-muted);
+}
+
+.login-card__error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.login-card__submit {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, 
+    rgba(0, 212, 255, 0.1), 
+    rgba(139, 92, 246, 0.1));
+  border: 1px solid var(--neon-blue);
+  border-radius: 12px;
+  color: var(--neon-blue);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-card__submit:hover {
+  background: linear-gradient(135deg, 
+    rgba(0, 212, 255, 0.2), 
+    rgba(139, 92, 246, 0.2));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
+}
+
+.login-card__submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.login-card__footer {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.login-card__back-link {
+  color: var(--neon-blue);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.login-card__back-link:hover {
+  color: var(--neon-purple);
+}
+
