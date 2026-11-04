@@ -1,45 +1,41 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { applyThemeDesign, type ThemeType, type DesignType } from '@/features/shared/utils/themeDesign'
 
 /**
  * Theme Initialization Component
- * Loads theme config from API and applies it
- * The inline script in head handles initial load, this syncs with config
+ * Loads defaults from public config (no auth) and applies theme.
+ * Inline script in head handles FOUC; this syncs with config.json.
  */
 export function ThemeInit() {
-  const [mounted, setMounted] = useState(false)
-
   useEffect(() => {
-    setMounted(true)
-    
-    // Load theme config from API to get defaults
     async function loadThemeConfig() {
+      let defaultTheme: ThemeType = 'dark'
+      let defaultDesign: DesignType = 'minimal'
+
       try {
-        const response = await fetch('/api/admin/config/theme')
+        const response = await fetch('/data/config/config.json', { cache: 'no-store' })
         if (response.ok) {
-          const data = await response.json()
-          const config = data.config
-          
-          // Get saved preferences or use defaults from config
-          const savedTheme = (localStorage.getItem('portfolio-theme') || config.defaultTheme || 'dark') as ThemeType
-          const savedDesign = (localStorage.getItem('portfolio-design') || config.defaultDesign || 'glassmorphism') as DesignType
-          
-          // Apply theme (syncs with inline script)
-          applyThemeDesign(savedTheme, savedDesign)
+          const config = await response.json()
+          defaultTheme = (config.appearance?.defaultTheme ||
+            config.features?.theme?.defaultTheme ||
+            'dark') as ThemeType
+          defaultDesign = (config.appearance?.defaultDesign ||
+            config.features?.theme?.defaultDesign ||
+            'minimal') as DesignType
         }
-      } catch (error) {
-        // Fallback to localStorage or defaults
-        const savedTheme = (localStorage.getItem('portfolio-theme') || 'dark') as ThemeType
-        const savedDesign = (localStorage.getItem('portfolio-design') || 'glassmorphism') as DesignType
-        applyThemeDesign(savedTheme, savedDesign)
+      } catch {
+        /* use hardcoded defaults */
       }
+
+      const savedTheme = (localStorage.getItem('portfolio-theme') || defaultTheme) as ThemeType
+      const savedDesign = (localStorage.getItem('portfolio-design') || defaultDesign) as DesignType
+      applyThemeDesign(savedTheme, savedDesign)
     }
-    
+
     loadThemeConfig()
   }, [])
 
   return null
 }
-

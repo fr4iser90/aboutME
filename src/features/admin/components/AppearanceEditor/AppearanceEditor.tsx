@@ -9,6 +9,7 @@ import TypographyEditor from '../ThemeEditor/TypographyEditor'
 import EffectSlider from '../ThemeEditor/EffectSlider'
 import DesignEditor from '../ThemeEditor/DesignEditor'
 import DesignSelector from '../ThemeEditor/DesignSelector'
+import ThemePresets from '../ThemeEditor/ThemePresets'
 import BackgroundEditor from '../ThemeEditor/BackgroundEditor'
 import PublicSwitcherConfig from '../ThemeEditor/PublicSwitcherConfig'
 import ThemeCreator from '../Creator/ThemeCreator'
@@ -58,7 +59,7 @@ interface GlobalThemeConfig {
 export default function AppearanceEditor() {
   const [activeTab, setActiveTab] = useState<string>('design')
   const [currentTheme, setCurrentTheme] = useState<'dark' | 'light'>('dark')
-  const [selectedDesign, setSelectedDesign] = useState<string>('glassmorphism')
+  const [selectedDesign, setSelectedDesign] = useState<string>('minimal')
   const [themeConfig, setThemeConfig] = useState<ThemeConfig | null>(null)
   const [globalConfig, setGlobalConfig] = useState<GlobalThemeConfig | null>(null)
   const [backgroundImage, setBackgroundImage] = useState<string | undefined>(undefined)
@@ -266,6 +267,18 @@ export default function AppearanceEditor() {
             {/* Design System Tab */}
             {activeTab === 'design' && globalConfig.designs && (
               <>
+                <ThemePresets
+                  onApply={(theme, design) => {
+                    setCurrentTheme(theme === 'light' ? 'light' : 'dark')
+                    setSelectedDesign(design)
+                    setGlobalConfig({
+                      ...globalConfig,
+                      defaultTheme: theme,
+                      defaultDesign: design,
+                    })
+                    setHasChanges(true)
+                  }}
+                />
                 <div className="appearance-editor__section">
                   <div className="appearance-editor__section-header">
                     <h2 className="appearance-editor__section-title">Design System</h2>

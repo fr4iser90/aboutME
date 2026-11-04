@@ -234,39 +234,33 @@ export function useBuildWithValidation() {
   }
 
   /**
-   * Führt den Build-Prozess aus (JSON-only)
-   * Setzt Build-Status auf "published" nach erfolgreichem Build
+   * Führt den Publish-Prozess aus (private → public + site-status)
    */
   const performBuild = async () => {
     setIsBuilding(true)
     try {
-      console.log('🚀 Starting build process...')
+      console.log('🚀 Starting publish process...')
       
-      // Validiere alle Dateien erneut vor dem Build
       await validateAllFiles()
       
-      // Setze published: true automatisch nach erfolgreichem Build
-      try {
-        const statusResponse = await fetch('/api/site/status', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            published: true
-          })
-        })
+      const publishResponse = await fetch('/api/setup/publish', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({})
+      })
 
-        if (statusResponse.ok) {
-          console.log('✅ Published status set after successful build')
-        } else {
-          console.warn('⚠️ Failed to set published status, but build succeeded')
-        }
-      } catch (error) {
-        console.warn('⚠️ Failed to set published status:', error)
+      const publishResult = await publishResponse.json().catch(() => ({}))
+      if (!publishResponse.ok || publishResult.success === false) {
+        throw new Error(
+          publishResult.message ||
+            publishResult.error ||
+            `Publish failed (${publishResponse.status})`
+        )
       }
+
+      console.log('✅ Publish completed:', publishResult.message)
       
-      // Refresh page to update status
+      // Refresh page to update status / leave setup gates
       window.location.reload()
     } catch (error) {
       console.error('Build failed:', error)
@@ -504,7 +498,7 @@ export function useBuildWithValidation() {
           
           if (jsonData) {
             projects.push({
-              name: jsonData.name || file.name,
+              name: jsonData.name || file.filename.replace(/\.json$/, ''),
               status: (jsonData.status as 'active' | 'hidden' | 'draft') || 'active',
               featured: jsonData.featured === true,
               category: jsonData.category

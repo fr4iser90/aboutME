@@ -1,10 +1,7 @@
 'use client'
 
+import InlineHero from './InlineHero'
 import FloatingHero from './FloatingHero'
-// import HeroCard from './HeroCard' // Später
-// import HeroFullscreen from './HeroFullscreen' // Später
-// import HeroMinimal from './HeroMinimal' // Später
-// import HeroSplit from './HeroSplit' // Später
 
 interface UserData {
   name: string
@@ -20,7 +17,7 @@ interface UserData {
 
 interface HeroConfig {
   enabled: boolean
-  variant: 'floating' | 'card' | 'fullscreen' | 'minimal' | 'split'
+  variant: 'floating' | 'card' | 'fullscreen' | 'minimal' | 'split' | 'inline'
   animation?: {
     enabled: boolean
     type: 'fade' | 'slide' | 'zoom' | 'none'
@@ -36,24 +33,18 @@ interface HeroProps {
 }
 
 export default function Hero({ userData, config }: HeroProps) {
-  // Wenn Hero deaktiviert oder kein userData, nichts rendern
   if (!config?.enabled || !userData) return null
 
-  // Wähle Variante basierend auf Config
-  switch (config.variant) {
-    case 'floating':
-      return <FloatingHero userData={userData} />
-    // case 'card':
-    //   return <HeroCard userData={userData} config={config} />
-    // case 'fullscreen':
-    //   return <HeroFullscreen userData={userData} config={config} />
-    // case 'minimal':
-    //   return <HeroMinimal userData={userData} config={config} />
-    // case 'split':
-    //   return <HeroSplit userData={userData} config={config} />
-    default:
-      // Fallback zu Floating (aktuell einzige implementierte Variante)
-      return <FloatingHero userData={userData} />
+  const normalized = {
+    ...userData,
+    avatar_url: userData.avatar_url || userData.avatar || '',
+    public_repos: userData.public_repos ?? userData.publicRepos ?? 0,
   }
-}
 
+  // Default: in-flow hero. Floating is explicit opt-in only.
+  if (config.variant === 'floating') {
+    return <FloatingHero userData={normalized} />
+  }
+
+  return <InlineHero userData={normalized} />
+}

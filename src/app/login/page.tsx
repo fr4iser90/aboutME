@@ -49,12 +49,14 @@ export default function LoginPage() {
       <div className="login-card max-w-md w-full mx-auto">
         <div className="login-card__content">
           <div className="login-card__header">
-            <div className="login-card__icon">🔐</div>
+            <div className="login-card__icon" aria-hidden>
+              aM
+            </div>
             <h1 className="login-card__title neon-text">
               Admin Login
             </h1>
             <p className="login-card__subtitle">
-              Enter admin password to access editor
+              Single-admin password for the portfolio CMS
             </p>
           </div>
           

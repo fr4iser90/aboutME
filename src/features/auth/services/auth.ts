@@ -20,9 +20,17 @@ import path from 'path';
 let ADMIN_PASSWORD: string | undefined;
 let SESSION_SECRET: string | undefined;
 
-// Datei-basierte Synchronisation für Build-Prozess
-const LOCK_FILE = path.join(process.cwd(), '.auth-lock');
-const SECRET_FILE = path.join(process.cwd(), '.auth-secrets');
+// Datei-basierte Synchronisation für Build-Prozess / Docker
+const AUTH_STATE_DIR = process.env.AUTH_STATE_DIR || process.cwd();
+const LOCK_FILE = path.join(AUTH_STATE_DIR, '.auth-lock');
+const SECRET_FILE = path.join(AUTH_STATE_DIR, '.auth-secrets');
+const SESSION_STORE_FILE = path.join(AUTH_STATE_DIR, '.auth-sessions');
+
+try {
+  fs.mkdirSync(AUTH_STATE_DIR, { recursive: true });
+} catch {
+  /* ignore */
+}
 
 // Einmalige Initialisierung - verhindert mehrfache Ausgabe
 function initializeAuthConfig() {
@@ -56,7 +64,7 @@ function initializeAuthConfig() {
     ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || generateSecurePassword();
     SESSION_SECRET = process.env.SESSION_SECRET || generateSecureSecret();
     
-    // Speichere NUR Session Secret für andere WorkerWAS SOLL DAS ICHC HABE DOCH EXPLITZIT WAS ANDERES GESAGT?!?!?WAS SOLL DAS ICHC HABE DOCH EXPLITZIT WAS ANDERES GESAGT?!?!?WAS SOLL DAS ICHC HABE DOCH EXPLITZIT WAS ANDERES GESAGT?!?!?
+    // Persist session secret for other workers / restarts
     fs.writeFileSync(SECRET_FILE, JSON.stringify({
       sessionSecret: SESSION_SECRET,
       generated: true
@@ -134,6 +142,37 @@ interface SecureSession {
 const sessions = new Map<string, SecureSession>();
 const loginAttempts = new Map<string, { count: number; lastAttempt: number }>();
 
+function loadSessionsFromDisk() {
+  try {
+    if (!fs.existsSync(SESSION_STORE_FILE)) return;
+    const raw = JSON.parse(fs.readFileSync(SESSION_STORE_FILE, 'utf8')) as Record<string, SecureSession>;
+    const now = Date.now();
+    for (const [id, session] of Object.entries(raw || {})) {
+      if (session && session.expires > now) {
+        sessions.set(id, session);
+      }
+    }
+  } catch {
+    /* ignore corrupt store */
+  }
+}
+
+function persistSessionsToDisk() {
+  try {
+    const now = Date.now();
+    const out: Record<string, SecureSession> = {};
+    for (const [id, session] of sessions.entries()) {
+      if (session.expires > now) out[id] = session;
+      else sessions.delete(id);
+    }
+    fs.writeFileSync(SESSION_STORE_FILE, JSON.stringify(out));
+  } catch {
+    /* best-effort */
+  }
+}
+
+loadSessionsFromDisk();
+
 /**
  * SICHERE Session-Erstellung mit CSRF-Token
  */
@@ -154,6 +193,7 @@ export function createSecureSession(request: NextRequest): string {
     userAgent,
     csrfToken
   });
+  persistSessionsToDisk();
   
   return sessionId;
 }
@@ -162,6 +202,10 @@ export function createSecureSession(request: NextRequest): string {
  * SICHERE Session-Validierung mit IP/UserAgent Check
  */
 export function validateSecureSession(sessionId: string, request: NextRequest): boolean {
+  if (!sessions.has(sessionId)) {
+    loadSessionsFromDisk();
+  }
+
   const session = sessions.get(sessionId);
   
   if (!session) {
@@ -171,6 +215,7 @@ export function validateSecureSession(sessionId: string, request: NextRequest): 
   // Prüfe Ablaufzeit
   if (Date.now() > session.expires) {
     sessions.delete(sessionId);
+    persistSessionsToDisk();
     return false;
   }
   
@@ -183,6 +228,7 @@ export function validateSecureSession(sessionId: string, request: NextRequest): 
     if (session.ipAddress !== clientIP) {
       // IP geändert - Session ungültig
       sessions.delete(sessionId);
+      persistSessionsToDisk();
       return false;
     }
   }
@@ -246,6 +292,7 @@ export function recordLoginAttempt(ipAddress: string, success: boolean): void {
  */
 export function deleteSecureSession(sessionId: string): void {
   sessions.delete(sessionId);
+  persistSessionsToDisk();
 }
 
 /**

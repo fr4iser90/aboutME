@@ -7,7 +7,7 @@ interface HeroBlockProps {
   userData: UserData | null
   config?: {
     enabled?: boolean
-    variant?: 'floating' | 'card' | 'fullscreen' | 'minimal' | 'split'
+    variant?: 'floating' | 'card' | 'fullscreen' | 'minimal' | 'split' | 'inline'
     animation?: {
       enabled: boolean
       type: 'fade' | 'slide' | 'zoom' | 'none'
@@ -21,6 +21,17 @@ interface HeroBlockProps {
 export default function HeroBlock({ userData, config }: HeroBlockProps) {
   if (!config?.enabled || !userData) return null
   
-  return <Hero userData={userData} config={config} />
+  return (
+    <Hero
+      userData={userData as Parameters<typeof Hero>[0]['userData']}
+      config={{
+        enabled: config.enabled ?? true,
+        variant: config.variant ?? 'floating',
+        animation: config.animation,
+        showStats: config.showStats,
+        showSocialLinks: config.showSocialLinks,
+      }}
+    />
+  )
 }
 

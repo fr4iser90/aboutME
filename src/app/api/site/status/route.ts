@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { readSiteStatus, writeSiteStatus, calculateCurrentStatus, type SiteStatus } from '@/features/shared/utils/siteStatus';
+import { requireAdmin } from '@/features/auth/services/requireAdmin';
 
 /**
  * GET: Read site status
@@ -26,11 +27,8 @@ export async function GET() {
  */
 export async function POST(request: NextRequest) {
   try {
-    // Check authentication
-    const sessionCookie = request.cookies.get('admin_session')?.value;
-    if (!sessionCookie) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const unauthorized = requireAdmin(request);
+    if (unauthorized) return unauthorized;
 
     const body = await request.json();
     const updates: Partial<SiteStatus> = {};

@@ -10,6 +10,7 @@ import VideoLayout from './layouts/VideoLayout'
 import MixedLayout from './layouts/MixedLayout'
 import MediaLayoutRenderer from './layouts/MediaLayoutRenderer'
 import { getAllSectionLayouts, type SectionLayoutsConfig } from '@/features/shared/utils/layoutConfig'
+import { validateMediaLayout } from '@/features/shared/types/sectionLayouts'
 
 interface ProjectLayoutProps {
   project: Project
@@ -37,7 +38,10 @@ export default function ProjectLayout({ project, layout, sectionLayouts: provide
   })
 
   // Use section layout config if available, otherwise fall back to project.layout
-  const mediaLayout = sectionLayouts?.projects?.mediaLayout || layoutConfig.type || 'single'
+  const mediaLayout = validateMediaLayout(
+    sectionLayouts?.projects?.mediaLayout ||
+    (layoutConfig.type === 'auto' ? null : layoutConfig.type)
+  )
   const mediaColumns = sectionLayouts?.projects?.mediaColumns || layoutConfig.columns || 2
   const images = project.screenshots || []
 

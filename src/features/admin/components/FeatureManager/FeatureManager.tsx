@@ -10,13 +10,12 @@ interface Feature {
   enabled: boolean
   hasConfig?: boolean
   dependencies?: string[]
-  category: 'content' | 'presentation' | 'design' | 'administration'
+  category: 'content' | 'presentation' | 'design'
 }
 
 interface FeatureCategory {
   id: string
   name: string
-  icon: string
   description: string
   features: Feature[]
 }
@@ -29,241 +28,137 @@ interface FeatureManagerProps {
 export default function FeatureManager({ features, onChange }: FeatureManagerProps) {
   const router = useRouter()
 
-  // CMS-Kategorien (wie im Build Modal)
   const categories: FeatureCategory[] = [
     {
       id: 'content',
-      name: 'Content Management',
-      icon: '📝',
-      description: 'Content types and content management',
+      name: 'Content',
+      description: 'Sections shown on your public portfolio',
       features: [
         {
           id: 'projects',
-          label: 'Portfolio Projects',
-          description: 'Display your projects portfolio',
+          label: 'Projects',
+          description: 'Portfolio projects grid',
           enabled: features.projects !== false,
-          category: 'content'
+          category: 'content',
         },
         {
           id: 'skills',
-          label: 'Skills Section',
-          description: 'Showcase your technical skills',
+          label: 'Skills',
+          description: 'Technical skills section',
           enabled: features.skills !== false,
-          category: 'content'
+          category: 'content',
         },
         {
           id: 'aboutMe',
-          label: 'About Section',
-          description: 'Personal introduction and bio',
+          label: 'About',
+          description: 'Personal introduction',
           enabled: features.aboutMe !== false,
-          category: 'content'
+          category: 'content',
         },
         {
           id: 'blog',
           label: 'Blog',
-          description: 'Write and publish blog posts',
+          description: 'Blog posts',
           enabled: features.blog === true,
-          category: 'content'
-        }
-      ]
+          category: 'content',
+        },
+      ],
     },
     {
       id: 'presentation',
-      name: 'Presentation & Interaction',
-      icon: '🎨',
-      description: 'User interactions and frontend features',
+      name: 'Presentation',
+      description: 'Visitor-facing interactions',
       features: [
         {
           id: 'contact',
-          label: 'Contact Form',
-          description: 'Let visitors contact you',
+          label: 'Contact',
+          description: 'Contact links / form',
           enabled: features.contact === true,
-          category: 'presentation'
+          category: 'presentation',
         },
         {
           id: 'terminal',
-          label: 'Terminal Game',
-          description: 'Interactive terminal game (Terminal, Snake, Pacman)',
+          label: 'Terminal',
+          description: 'Optional interactive terminal on the public site',
           enabled: features.terminal === true,
           category: 'presentation',
-          hasConfig: true
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'design',
-      name: 'Presentation & Design',
-      icon: '🎨',
-      description: 'Themes, layouts, and styling customization',
+      name: 'Layout & Design',
+      description: 'Chrome and visual system',
       features: [
         {
           id: 'hero',
-          label: 'Hero Section',
-          description: 'Hero section with avatar, name, and bio',
+          label: 'Hero',
+          description: 'Hero with avatar, name, bio',
           enabled: features.hero !== false,
           category: 'design',
-          hasConfig: true
         },
         {
           id: 'header',
           label: 'Header',
-          description: 'Site header with navigation and branding',
+          description: 'Site header / navigation',
           enabled: features.header !== false,
           category: 'design',
-          hasConfig: true
         },
         {
           id: 'footer',
           label: 'Footer',
-          description: 'Site footer with copyright and terminal button',
+          description: 'Site footer',
           enabled: features.footer !== false,
           category: 'design',
-          hasConfig: true
         },
         {
           id: 'theme',
-          label: 'Theme & Design System',
-          description: 'Theme colors (dark/light) and design styles (glassmorphism/flat/minimal). Configure in Design & Themes.',
+          label: 'Theme system',
+          description: 'Colors and design styles — edit in Appearance',
           enabled: features.theme !== false,
           category: 'design',
-          hasConfig: true
-        }
-      ]
+          hasConfig: true,
+        },
+      ],
     },
-    {
-      id: 'administration',
-      name: 'Administration & Access',
-      icon: '🔐',
-      description: 'Admin tools and access control',
-      features: [
-        {
-          id: 'auth',
-          label: 'Authentication',
-          description: 'User authentication system',
-          enabled: features.auth === true,
-          category: 'administration',
-          hasConfig: true
-        },
-        {
-          id: 'editor',
-          label: 'Content Editor',
-          description: 'Edit content directly in the admin panel',
-          enabled: features.editor === true,
-          category: 'administration',
-          dependencies: ['auth']
-        },
-        {
-          id: 'fileUpload',
-          label: 'Media Library',
-          description: 'Upload and manage media files',
-          enabled: features.fileUpload === true,
-          category: 'administration',
-          dependencies: ['auth']
-        },
-        {
-          id: 'guestbook',
-          label: 'Guestbook',
-          description: 'Visitor guestbook with comments',
-          enabled: features.guestbook === true,
-          category: 'administration',
-          dependencies: ['auth']
-        }
-      ]
-    }
   ]
 
   const handleConfigure = (featureId: string) => {
-    if (featureId === 'terminal') {
-      router.push('/admin/features/games')
-    } else if (featureId === 'auth') {
-      alert('Auth configuration coming soon')
-    } else if (featureId === 'hero') {
-      alert('Hero configuration coming soon')
-    } else if (featureId === 'theme') {
-      router.push('/admin/theme')
+    if (featureId === 'theme') {
+      router.push('/admin/appearance')
     }
   }
 
   const handleToggle = (featureId: string, enabled: boolean) => {
-    // Check dependencies before disabling
-    const feature = categories
-      .flatMap(cat => cat.features)
-      .find(f => f.id === featureId)
-
-    if (feature?.dependencies && feature.dependencies.length > 0) {
-      // Check if all dependencies are enabled
-      const allDependenciesEnabled = feature.dependencies.every(
-        dep => features[dep] === true
-      )
-      
-      if (!allDependenciesEnabled && enabled) {
-        const missingDeps = feature.dependencies.filter(dep => features[dep] !== true)
-        alert(`Cannot enable ${feature.label}: requires ${missingDeps.join(', ')}`)
-        return
-      }
-    }
-
-    // Check if disabling auth - disable dependent features
-    if (featureId === 'auth' && !enabled) {
-      const dependentFeatures = ['editor', 'fileUpload', 'guestbook']
-      const hasEnabledDependents = dependentFeatures.some(dep => features[dep] === true)
-      if (hasEnabledDependents) {
-        if (confirm('Disabling Authentication will also disable: Content Editor, Media Library, and Guestbook. Continue?')) {
-          // Disable dependent features
-          dependentFeatures.forEach(dep => {
-            if (features[dep] === true) {
-              onChange(dep, false)
-            }
-          })
-          onChange('auth', false)
-        }
-        return
-      }
-    }
-
-    // Map special cases
-    if (featureId === 'terminal') {
-      onChange('terminal', enabled)
-    } else if (featureId === 'theme') {
-      onChange('theme', enabled)
-    } else {
-      onChange(featureId, enabled)
-    }
+    onChange(featureId, enabled)
   }
 
   return (
     <div className="feature-manager">
+      <p className="feature-manager__note text-sm opacity-70 mb-4">
+        Single-admin mode: one password unlocks the CMS. No multi-user / OAuth.
+      </p>
       {categories.map((category) => (
         <div key={category.id} className="feature-manager__section">
           <div className="feature-manager__section-header">
-            <h2 className="feature-manager__section-title">
-              <span className="feature-manager__section-icon">{category.icon}</span>
-              {category.name}
-            </h2>
+            <h2 className="feature-manager__section-title">{category.name}</h2>
             <p className="feature-manager__section-description">{category.description}</p>
           </div>
           <div className="feature-manager__list">
-            {category.features.map((feature) => {
-              // Check if feature is disabled due to missing dependencies
-              const isDisabledByDeps = feature.dependencies && feature.dependencies.length > 0
-                ? !feature.dependencies.every(dep => features[dep] === true)
-                : false
-
-              return (
+            {category.features.map((feature) => (
                 <FeatureToggle
                   key={feature.id}
                   name={feature.id}
                   label={feature.label}
                   description={feature.description}
                   enabled={feature.enabled}
-                  disabled={isDisabledByDeps}
                   hasConfig={feature.hasConfig}
-                  dependencies={feature.dependencies}
                   onChange={(enabled) => handleToggle(feature.id, enabled)}
-                  onConfigure={() => handleConfigure(feature.id)}
+                  onConfigure={
+                    feature.hasConfig ? () => handleConfigure(feature.id) : undefined
+                  }
                 />
-              )
-            })}
+            ))}
           </div>
         </div>
       ))}

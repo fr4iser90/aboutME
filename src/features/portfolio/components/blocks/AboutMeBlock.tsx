@@ -17,7 +17,7 @@ export default function AboutMeBlock({ userData, config, onAboutMeClick }: About
   
   return (
     <TerminalSection id="about" title="About Me">
-      <AboutMeSection userData={userData} onAboutMeClick={onAboutMeClick} />
+      <AboutMeSection userData={userData as Parameters<typeof AboutMeSection>[0]['userData']} onAboutMeClick={onAboutMeClick ?? (() => {})} />
     </TerminalSection>
   )
 }

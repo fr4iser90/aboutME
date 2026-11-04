@@ -20,7 +20,9 @@ export default function SetupBanner() {
   return (
     <div className="setup-banner">
       <div className="setup-banner__content">
-        <div className="setup-banner__icon">🚀</div>
+        <div className="setup-banner__icon" aria-hidden>
+          !
+        </div>
         <div className="setup-banner__text">
           <h3 className="setup-banner__title">Setup Required</h3>
           <p className="setup-banner__description">

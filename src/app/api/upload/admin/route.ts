@@ -11,6 +11,7 @@ import { FileValidator } from '@/features/upload/services/fileValidator';
 import { SecurityValidator } from '@/features/upload/services/securityValidator';
 import { FileStorage } from '@/features/upload/services/fileStorage';
 import { UploadCategory, FileUploadResponse, FileInfo } from '@/features/upload/types';
+import { isSecurelyAuthenticated } from '@/features/auth/services/auth';
 
 const UPLOAD_BASE_PATH = path.join(process.cwd(), 'public/uploads');
 const fileStorage = new FileStorage(UPLOAD_BASE_PATH);
@@ -19,8 +20,7 @@ const fileStorage = new FileStorage(UPLOAD_BASE_PATH);
  * Check authentication - uses same logic as other API routes
  */
 function checkAuthentication(request: NextRequest): boolean {
-  const sessionCookie = request.cookies.get('admin_session');
-  return !!sessionCookie?.value;
+  return isSecurelyAuthenticated(request);
 }
 
 /**

@@ -11,43 +11,49 @@ export default function DashboardPage() {
   const router = useRouter()
 
   const quickActions = [
-    { 
-      label: 'Edit Content', 
-      icon: '📝', 
+    {
+      label: 'Edit Content',
+      icon: 'Co',
       href: '/admin/content',
-      color: 'blue' as const
+      color: 'blue' as const,
     },
-    { 
-      label: 'Media Library', 
-      icon: '📁', 
+    {
+      label: 'Media Library',
+      icon: 'Me',
       href: '/admin/media',
-      color: 'orange' as const
+      color: 'pink' as const,
     },
-    { 
-      label: 'Manage Features', 
-      icon: '⚙️', 
+    {
+      label: 'Manage Features',
+      icon: 'Fe',
       href: '/admin/features',
-      color: 'purple' as const
+      color: 'purple' as const,
     },
-    { 
-      label: 'View Portfolio', 
-      icon: '🌐', 
+    {
+      label: 'Review Queue',
+      icon: 'Re',
+      href: '/admin/review',
+      color: 'green' as const,
+    },
+    {
+      label: 'View Portfolio',
+      icon: 'Go',
       href: '/',
       external: true,
-      color: 'cyan' as const
+      color: 'cyan' as const,
     },
-    { 
-      label: 'Settings', 
-      icon: '🔧', 
-      href: '/admin/settings',
-      color: 'green' as const
-    }
+    {
+      label: 'Appearance',
+      icon: 'Ap',
+      href: '/admin/appearance',
+      color: 'blue' as const,
+    },
   ]
 
   const recentActivity = [
-    { icon: '📝', text: 'Content editor accessed', time: '2h ago' },
-    { icon: '⚙️', text: 'Feature configuration updated', time: '5h ago' },
-    { icon: '💼', text: 'New project added', time: '1d ago' }
+    { text: 'Content editor accessed', time: '2h ago' },
+    { text: 'Feature configuration updated', time: '5h ago' },
+    { text: 'New project added', time: '1d ago' },
   ]
 
   const handleQuickAction = (href: string, external?: boolean) => {
@@ -60,44 +66,40 @@ export default function DashboardPage() {
 
   return (
     <AdminPageLayout
-      title="Welcome back, Admin 👋"
+      title="Welcome back"
       subtitle="Manage your portfolio from this control panel"
       centered={false}
       maxWidth="full"
     >
-      {/* Setup Banner */}
       <SetupBanner />
 
-      {/* Stats Grid */}
       <div className="dashboard__stats-grid">
-        <StatsCard 
+        <StatsCard
           label="Projects"
-          icon="💼"
+          icon="Pr"
           dataPath="/data/projects/projects.json"
           color="blue"
         />
-        <StatsCard 
+        <StatsCard
           label="Skills"
-          icon="🎯"
+          icon="Sk"
           dataPath="/data/skills/skills.json"
           countKey="skills"
           color="purple"
         />
-        <StatsCard 
+        <StatsCard
           label="Blog Posts"
-          icon="📝"
+          icon="Bl"
           dataPath="/data/blog/blog.json"
           countKey="posts"
           color="green"
         />
       </div>
 
-      {/* Feature Overview */}
       <div className="dashboard__features">
         <FeatureToggleCard />
       </div>
 
-      {/* Quick Actions */}
       <div className="dashboard__section">
         <h2 className="dashboard__section-title">Quick Actions</h2>
         <div className="dashboard__quick-actions">
@@ -114,14 +116,12 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Recent Activity */}
       <div className="dashboard__section">
         <h2 className="dashboard__section-title">Recent Activity</h2>
         <div className="glass-card dashboard__activity">
           <div className="dashboard__activity-list">
             {recentActivity.map((item, index) => (
               <div key={index} className="dashboard__activity-item">
-                <span className="dashboard__activity-icon">{item.icon}</span>
                 <span className="dashboard__activity-text">{item.text}</span>
                 <span className="dashboard__activity-time">{item.time}</span>
               </div>

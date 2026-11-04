@@ -69,48 +69,98 @@ function initializePortfolioConfig(): void {
     try {
       const userContent = fs.readFileSync(userFile, 'utf-8');
       const userData = JSON.parse(userContent);
-      
-      if (!userData.username || !userData.name) {
+      const displayName = (userData.name || '').trim();
+      const username = (userData.username || '').trim();
+
+      if (!username && !displayName) {
         validationErrors.push('user.json missing username or name');
+      } else if (!displayName && username) {
+        // Auto-heal empty name from username so setup mode can exit
+        userData.name = username;
+        fs.writeFileSync(userFile, JSON.stringify(userData, null, 2));
+        const privateUser = path.join(__dirname, 'private/data/user/user.json');
+        try {
+          if (fs.existsSync(privateUser)) {
+            const priv = JSON.parse(fs.readFileSync(privateUser, 'utf-8'));
+            if (!(priv.name || '').trim()) {
+              priv.name = username;
+              fs.writeFileSync(privateUser, JSON.stringify(priv, null, 2));
+            }
+          }
+        } catch { /* ignore */ }
       }
       
-      // Check About Me if enabled
-      if (config.features?.aboutMe?.enabled) {
-        if (!userData.aboutMe || userData.aboutMe === null) {
-          validationErrors.push('About Me is enabled but user.aboutMe is null/missing');
+      // Check About Me if enabled (supports boolean or { enabled: true })
+      const aboutEnabled =
+        config.features?.aboutMe === true ||
+        config.features?.aboutMe?.enabled === true;
+      if (aboutEnabled) {
+        const aboutFile = path.join(DATA_DIR, 'about', 'about.json');
+        const hasAboutFile = fs.existsSync(aboutFile);
+        if (!hasAboutFile && (userData.aboutMe === null || userData.aboutMe === undefined)) {
+          validationErrors.push('About Me is enabled but about content is missing');
         }
       }
     } catch (error) {
       validationErrors.push('Could not read/parse user.json');
     }
     
-    // Check projects.json if enabled
-    if (config.features?.projects?.enabled) {
-      try {
-        fs.accessSync(projectsFile);
-        const projectsContent = fs.readFileSync(projectsFile, 'utf-8');
-        const projectsData = JSON.parse(projectsContent);
-        
-        if (!projectsData.projects || projectsData.projects.length === 0) {
-          validationErrors.push('Projects is enabled but projects.json has no projects');
+    // Check projects.json if enabled (public, fallback private)
+    const projectsEnabled =
+      config.features?.projects === true ||
+      config.features?.projects?.enabled === true;
+    if (projectsEnabled) {
+      const privateProjectsFile = path.join(__dirname, 'private/data/projects/projects.json');
+      const candidates = [projectsFile, privateProjectsFile];
+      let projectsOk = false;
+      for (const candidate of candidates) {
+        try {
+          fs.accessSync(candidate);
+          const projectsContent = fs.readFileSync(candidate, 'utf-8');
+          const projectsData = JSON.parse(projectsContent);
+          const list = Array.isArray(projectsData)
+            ? projectsData
+            : projectsData.projects;
+          if (list && list.length > 0) {
+            projectsOk = true;
+            // Heal empty public index from private
+            if (candidate === privateProjectsFile && !fs.existsSync(projectsFile)) {
+              fs.mkdirSync(path.dirname(projectsFile), { recursive: true });
+            }
+            if (candidate === privateProjectsFile) {
+              const shaped = Array.isArray(projectsData)
+                ? { projects: projectsData, totalCount: projectsData.length }
+                : projectsData;
+              fs.mkdirSync(path.dirname(projectsFile), { recursive: true });
+              fs.writeFileSync(projectsFile, JSON.stringify(shaped, null, 2));
+            }
+            break;
+          }
+        } catch {
+          /* try next */
         }
-      } catch (error) {
-        validationErrors.push('Projects is enabled but projects.json missing/invalid');
+      }
+      if (!projectsOk) {
+        validationErrors.push('Projects is enabled but projects.json has no projects');
       }
     }
     
     // Check skills.json if enabled
-    if (config.features?.skills?.enabled) {
+    const skillsEnabled =
+      config.features?.skills === true ||
+      config.features?.skills?.enabled === true;
+    if (skillsEnabled) {
       try {
         fs.accessSync(skillsFile);
         const skillsContent = fs.readFileSync(skillsFile, 'utf-8');
         const skillsData = JSON.parse(skillsContent);
         
         if (!skillsData.languages && !skillsData.frameworks && !skillsData.tools) {
-          validationErrors.push('Skills is enabled but skills.json has no data');
+          // Soft: empty skills should not hard-block production site
+          logStructured('WARNING', 'skills_empty', 'Skills enabled but skills.json has no data', {});
         }
       } catch (error) {
-        validationErrors.push('Skills is enabled but skills.json missing/invalid');
+        logStructured('WARNING', 'skills_missing', 'Skills enabled but skills.json missing', {});
       }
     }
     

@@ -1,21 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-
-interface BlogPost {
-  id: string
-  title: string
-  excerpt: string
-  content: string
-  publishedAt: string
-  author: string
-  category: string
-  tags: string[]
-  featured: boolean
-  slug: string
-  readingTime: number
-  image?: string
-}
+import type { BlogPost } from '../types'
 
 interface BlogSectionProps {
   posts: BlogPost[]

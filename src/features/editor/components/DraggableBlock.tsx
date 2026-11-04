@@ -46,7 +46,6 @@ export default function DraggableBlock({
     listeners,
     setNodeRef,
     transform,
-    transition,
     isDragging
   } = useDraggable({
     id: `block-${block.id}`,
@@ -61,7 +60,6 @@ export default function DraggableBlock({
 
   const style_transform = {
     transform: CSS.Translate.toString(transform),
-    transition,
     opacity: isDragging ? 0.5 : 1
   }
 

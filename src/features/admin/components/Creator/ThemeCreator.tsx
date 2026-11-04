@@ -1,8 +1,32 @@
 'use client'
 
 import { useState } from 'react'
-import ColorPicker from '../ThemeEditor/ColorPicker'
 import '@/features/admin/styles/creator.css'
+
+function SimpleColorInput({
+  value,
+  onChange,
+}: {
+  value: string
+  onChange: (value: string) => void
+}) {
+  return (
+    <div className="creator__color-input-wrap">
+      <input
+        type="color"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="creator__color-swatch"
+      />
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="creator__color-hex"
+      />
+    </div>
+  )
+}
 
 interface ThemeCreatorProps {
   onThemeCreated?: () => void
@@ -179,28 +203,28 @@ export default function ThemeCreator({ onThemeCreated }: ThemeCreatorProps) {
           <div className="creator__color-grid">
             <div className="creator__color-field">
               <label className="creator__label">Primary Background</label>
-              <ColorPicker
+              <SimpleColorInput
                 value={colors.bgPrimary}
                 onChange={(value) => handleColorChange('bgPrimary', value)}
               />
             </div>
             <div className="creator__color-field">
               <label className="creator__label">Secondary Background</label>
-              <ColorPicker
+              <SimpleColorInput
                 value={colors.bgSecondary}
                 onChange={(value) => handleColorChange('bgSecondary', value)}
               />
             </div>
             <div className="creator__color-field">
               <label className="creator__label">Tertiary Background</label>
-              <ColorPicker
+              <SimpleColorInput
                 value={colors.bgTertiary}
                 onChange={(value) => handleColorChange('bgTertiary', value)}
               />
             </div>
             <div className="creator__color-field">
               <label className="creator__label">Quaternary Background</label>
-              <ColorPicker
+              <SimpleColorInput
                 value={colors.bgQuaternary}
                 onChange={(value) => handleColorChange('bgQuaternary', value)}
               />
@@ -214,28 +238,28 @@ export default function ThemeCreator({ onThemeCreated }: ThemeCreatorProps) {
           <div className="creator__color-grid">
             <div className="creator__color-field">
               <label className="creator__label">Primary Text</label>
-              <ColorPicker
+              <SimpleColorInput
                 value={colors.textPrimary}
                 onChange={(value) => handleColorChange('textPrimary', value)}
               />
             </div>
             <div className="creator__color-field">
               <label className="creator__label">Secondary Text</label>
-              <ColorPicker
+              <SimpleColorInput
                 value={colors.textSecondary}
                 onChange={(value) => handleColorChange('textSecondary', value)}
               />
             </div>
             <div className="creator__color-field">
               <label className="creator__label">Muted Text</label>
-              <ColorPicker
+              <SimpleColorInput
                 value={colors.textMuted}
                 onChange={(value) => handleColorChange('textMuted', value)}
               />
             </div>
             <div className="creator__color-field">
               <label className="creator__label">Subtle Text</label>
-              <ColorPicker
+              <SimpleColorInput
                 value={colors.textSubtle}
                 onChange={(value) => handleColorChange('textSubtle', value)}
               />
@@ -249,35 +273,35 @@ export default function ThemeCreator({ onThemeCreated }: ThemeCreatorProps) {
           <div className="creator__color-grid">
             <div className="creator__color-field">
               <label className="creator__label">Neon Blue</label>
-              <ColorPicker
+              <SimpleColorInput
                 value={colors.neonBlue}
                 onChange={(value) => handleColorChange('neonBlue', value)}
               />
             </div>
             <div className="creator__color-field">
               <label className="creator__label">Neon Purple</label>
-              <ColorPicker
+              <SimpleColorInput
                 value={colors.neonPurple}
                 onChange={(value) => handleColorChange('neonPurple', value)}
               />
             </div>
             <div className="creator__color-field">
               <label className="creator__label">Neon Cyan</label>
-              <ColorPicker
+              <SimpleColorInput
                 value={colors.neonCyan}
                 onChange={(value) => handleColorChange('neonCyan', value)}
               />
             </div>
             <div className="creator__color-field">
               <label className="creator__label">Neon Pink</label>
-              <ColorPicker
+              <SimpleColorInput
                 value={colors.neonPink}
                 onChange={(value) => handleColorChange('neonPink', value)}
               />
             </div>
             <div className="creator__color-field">
               <label className="creator__label">Neon Green</label>
-              <ColorPicker
+              <SimpleColorInput
                 value={colors.neonGreen}
                 onChange={(value) => handleColorChange('neonGreen', value)}
               />

@@ -1,128 +1,46 @@
 /**
- * FLEXIBLE AUTH-MODE SYSTEM
- * 
- * Unterstützt verschiedene Authentifizierungs-Modi:
- * - Custom Auth (Admin-Password)
- * - OAuth (Google, GitHub, etc.)
- * - Hybrid (Beide)
+ * Single-admin auth only.
+ * One ADMIN_PASSWORD via cookie session — no OAuth / multi-user.
  */
 
-export type AuthMode = 'custom' | 'oauth' | 'both';
+export type AuthMode = 'custom'
 
 export interface AuthConfig {
-  mode: AuthMode;
-  enableGoogleOAuth: boolean;
-  enableCustomAuth: boolean;
-  adminPassword?: string;
-  googleClientId?: string;
-  googleClientSecret?: string;
+  mode: AuthMode
+  enableCustomAuth: true
+  enableGoogleOAuth: false
+  adminPassword?: string
 }
 
-/**
- * Auth-Mode Detection
- */
 export function getAuthConfig(): AuthConfig {
-  const authMode = (process.env.AUTH_MODE as AuthMode) || 'custom';
-  
   return {
-    mode: authMode,
-    enableGoogleOAuth: authMode === 'oauth' || authMode === 'both',
-    enableCustomAuth: authMode === 'custom' || authMode === 'both',
+    mode: 'custom',
+    enableCustomAuth: true,
+    enableGoogleOAuth: false,
     adminPassword: process.env.ADMIN_PASSWORD,
-    googleClientId: process.env.GOOGLE_CLIENT_ID,
-    googleClientSecret: process.env.GOOGLE_CLIENT_SECRET
-  };
+  }
 }
 
-/**
- * Prüft ob Custom Auth aktiviert ist
- */
 export function isCustomAuthEnabled(): boolean {
-  const config = getAuthConfig();
-  // Custom Auth ist aktiviert wenn der Mode 'custom' oder 'both' ist
-  // Das Passwort wird dynamisch generiert wenn nicht in .env gesetzt
-  return config.enableCustomAuth;
+  return true
 }
 
-/**
- * Prüft ob OAuth aktiviert ist
- */
 export function isOAuthEnabled(): boolean {
-  const config = getAuthConfig();
-  return config.enableGoogleOAuth && !!config.googleClientId && !!config.googleClientSecret;
+  return false
 }
 
-/**
- * Prüft ob beide Auth-Modi verfügbar sind
- */
 export function isHybridAuthEnabled(): boolean {
-  return isCustomAuthEnabled() && isOAuthEnabled();
+  return false
 }
 
-/**
- * Validiert Auth-Konfiguration
- */
 export function validateAuthConfig(): { valid: boolean; errors: string[] } {
-  const config = getAuthConfig();
-  const errors: string[] = [];
-  
-  // Prüfe Auth-Mode
-  if (!['custom', 'oauth', 'both'].includes(config.mode)) {
-    errors.push('AUTH_MODE must be: custom, oauth, or both');
-  }
-  
-  // Prüfe Custom Auth - Passwort wird dynamisch generiert wenn nicht in .env gesetzt
-  // Keine Validierung nötig da generateSecurePassword() automatisch ein Passwort erstellt
-  
-  // Prüfe OAuth
-  if (config.enableGoogleOAuth) {
-    if (!config.googleClientId) {
-      errors.push('GOOGLE_CLIENT_ID is required for OAuth');
-    }
-    if (!config.googleClientSecret) {
-      errors.push('GOOGLE_CLIENT_SECRET is required for OAuth');
-    }
-  }
-  
-  // Prüfe ob mindestens ein Auth-Mode konfiguriert ist
-  if (!config.enableCustomAuth && !config.enableGoogleOAuth) {
-    errors.push('At least one auth mode must be enabled');
-  }
-  
-  return {
-    valid: errors.length === 0,
-    errors
-  };
+  return { valid: true, errors: [] }
 }
 
-/**
- * Gibt verfügbare Auth-Modi zurück
- */
 export function getAvailableAuthModes(): string[] {
-  const modes: string[] = [];
-  
-  if (isCustomAuthEnabled()) {
-    modes.push('custom');
-  }
-  
-  if (isOAuthEnabled()) {
-    modes.push('oauth');
-  }
-  
-  return modes;
+  return ['custom']
 }
 
-/**
- * Login-Type Detection für UI
- */
-export function getLoginType(): 'custom' | 'oauth' | 'hybrid' {
-  if (isHybridAuthEnabled()) {
-    return 'hybrid';
-  }
-  
-  if (isOAuthEnabled()) {
-    return 'oauth';
-  }
-  
-  return 'custom';
+export function getLoginType(): 'custom' {
+  return 'custom'
 }

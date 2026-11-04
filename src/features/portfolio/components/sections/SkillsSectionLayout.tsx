@@ -2,7 +2,7 @@
 
 import { TerminalSection } from '@/features/terminal'
 import { SkillCard, SkillsTimeline } from '@/features/portfolio'
-import type { Skill } from '../../types'
+import type { Skill, TimelineEntry } from '../../types'
 
 interface SkillsSectionLayoutProps {
   skills: Skill[]
@@ -45,7 +45,7 @@ export default function SkillsSectionLayout({
 
         {config.showTimeline && timeline.length > 0 && (
           <SkillsTimeline 
-            timeline={timeline} 
+            timeline={timeline as unknown as TimelineEntry[]} 
             skills={skills} 
             onYearClick={onYearClick}
           />
@@ -66,7 +66,7 @@ export default function SkillsSectionLayout({
 
         {config.showTimeline && timeline.length > 0 && (
           <SkillsTimeline 
-            timeline={timeline} 
+            timeline={timeline as unknown as TimelineEntry[]} 
             skills={skills} 
             onYearClick={onYearClick}
           />
@@ -89,7 +89,7 @@ export default function SkillsSectionLayout({
 
         {config.showTimeline && timeline.length > 0 && (
           <SkillsTimeline 
-            timeline={timeline} 
+            timeline={timeline as unknown as TimelineEntry[]} 
             skills={skills} 
             onYearClick={onYearClick}
           />
@@ -112,7 +112,7 @@ export default function SkillsSectionLayout({
 
       {config.showTimeline && timeline.length > 0 && (
         <SkillsTimeline 
-          timeline={timeline} 
+          timeline={timeline as unknown as TimelineEntry[]} 
           skills={skills} 
           onYearClick={onYearClick}
         />

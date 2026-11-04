@@ -10,13 +10,13 @@
 import React from 'react'
 import { DndContext, closestCenter, DragEndEvent } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import type { NavigationBlock } from '@/features/portfolio/types/blocks'
+import type { NavigationBlock as NavigationBlockType } from '@/features/portfolio/types/blocks'
 import type { MarkdownSection } from '@/features/shared/services/markdownParser'
 import NavigationBlock from '@/features/portfolio/components/blocks/NavigationBlock'
 import DraggableNavigationItem from './DraggableNavigationItem'
 
 interface SidebarDragEditorProps {
-  block: NavigationBlock
+  block: NavigationBlockType
   sections: MarkdownSection[]
   isEditMode: boolean
   onSectionsReorder: (newOrder: MarkdownSection[]) => void

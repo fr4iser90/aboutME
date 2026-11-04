@@ -6,8 +6,8 @@ interface ThemeSelectorProps {
 }
 
 const themes = [
-  { id: 'dark' as const, name: 'Dark', icon: '🌙', description: 'Dark theme with neon accents' },
-  { id: 'light' as const, name: 'Light', icon: '☀️', description: 'Light theme with blue accents' }
+  { id: 'dark' as const, name: 'Dark', icon: 'Dk', description: 'Dark theme with neon accents' },
+  { id: 'light' as const, name: 'Light', icon: 'Lt', description: 'Light theme with blue accents' }
 ]
 
 export default function ThemeSelector({

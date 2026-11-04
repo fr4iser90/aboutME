@@ -77,5 +77,31 @@
   --z-toast: 1002;               /* Toast notifications */
   --z-critical-modal: 1003;     /* Critical modals */
   --z-debug: 9999;               /* Debug elements */
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+
+  /* Motion */
+  --motion-fast: 120ms;
+  --motion-base: 220ms;
+  --motion-slow: 400ms;
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Shared accent / surface aliases (themes override color sources) */
+  --accent: var(--neon-cyan, #06b6d4);
+  --accent-strong: var(--neon-blue, #00d4ff);
+  --surface: color-mix(in srgb, var(--bg-secondary, #0a0a0f) 88%, transparent);
+  --border-subtle: color-mix(in srgb, var(--text-primary, #fff) 12%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast: 0ms;
+    --motion-base: 0ms;
+    --motion-slow: 0ms;
+  }
 }
 

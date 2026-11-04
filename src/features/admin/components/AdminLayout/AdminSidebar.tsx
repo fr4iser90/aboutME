@@ -6,7 +6,8 @@ import Link from 'next/link'
 interface NavItem {
   id: string
   label: string
-  icon: string
+  /** Short text mark shown in the nav (no emoji) */
+  mark: string
   href: string
   condition?: boolean
 }
@@ -19,12 +20,13 @@ interface SetupStatus {
 }
 
 const baseNavItems: NavItem[] = [
-  { id: 'dashboard', label: 'Dashboard', icon: '📊', href: '/admin' },
-  { id: 'content', label: 'Content', icon: '📝', href: '/admin/content' },
-  { id: 'appearance', label: 'Appearance', icon: '🎨', href: '/admin/appearance' },
-  { id: 'media', label: 'Media', icon: '📁', href: '/admin/media' },
-  { id: 'features', label: 'Features', icon: '⚙️', href: '/admin/features' },
-  { id: 'settings', label: 'Settings', icon: '🔧', href: '/admin/settings' }
+  { id: 'dashboard', label: 'Dashboard', mark: 'Da', href: '/admin' },
+  { id: 'content', label: 'Content', mark: 'Co', href: '/admin/content' },
+  { id: 'review', label: 'Review', mark: 'Re', href: '/admin/review' },
+  { id: 'appearance', label: 'Appearance', mark: 'Ap', href: '/admin/appearance' },
+  { id: 'media', label: 'Media', mark: 'Me', href: '/admin/media' },
+  { id: 'features', label: 'Features', mark: 'Fe', href: '/admin/features' },
+  { id: 'settings', label: 'Settings', mark: 'Se', href: '/admin/settings' },
 ]
 
 interface AdminSidebarProps {
@@ -32,7 +34,7 @@ interface AdminSidebarProps {
   setupStatus?: SetupStatus
 }
 
-export default function AdminSidebar({ collapsed = false, setupStatus }: AdminSidebarProps) {
+export default function AdminSidebar({ collapsed = false }: AdminSidebarProps) {
   const pathname = usePathname()
 
   const isActive = (href: string) => {
@@ -42,46 +44,45 @@ export default function AdminSidebar({ collapsed = false, setupStatus }: AdminSi
     return pathname.startsWith(href)
   }
 
-  // Build nav items - Setup is always visible
   const navItems: NavItem[] = [
     {
       id: 'setup',
       label: 'Setup',
-      icon: '🚀',
-      href: '/admin/setup'
+      mark: 'Su',
+      href: '/admin/setup',
     },
-    ...baseNavItems
+    ...baseNavItems,
   ]
 
   return (
     <aside className={`admin-sidebar ${collapsed ? 'admin-sidebar--collapsed' : ''}`}>
-      {/* Logo Section */}
       <div className="admin-sidebar__logo">
-        <span className="admin-sidebar__logo-icon">⚡</span>
+        <span className="admin-sidebar__logo-icon" aria-hidden>
+          aM
+        </span>
         {!collapsed && (
           <div className="admin-sidebar__logo-text">
             <h2 className="admin-sidebar__logo-title">Portfolio CMS</h2>
-            <p className="admin-sidebar__logo-subtitle">Control Center</p>
+            <p className="admin-sidebar__logo-subtitle">Single-admin control</p>
           </div>
         )}
       </div>
 
-      {/* Navigation */}
       <nav className="admin-nav">
         {navItems.map((item) => {
-          // Skip items that don't meet their condition
           if (item.condition === false) {
             return null
           }
-          
+
           const active = isActive(item.href)
           return (
             <Link
               key={item.id}
               href={item.href}
               className={`admin-nav__item ${active ? 'admin-nav__item--active' : ''}`}
+              title={item.label}
             >
-              <span className="admin-nav__item-icon">{item.icon}</span>
+              <span className="admin-nav__item-icon">{item.mark}</span>
               {!collapsed && <span className="admin-nav__item-label">{item.label}</span>}
             </Link>
           )

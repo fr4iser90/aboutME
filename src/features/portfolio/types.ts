@@ -23,6 +23,29 @@ export interface VideoConfig {
   url?: string // Full URL for validation
 }
 
+export interface Skill {
+  name: string
+  count: number
+  level: string
+  category: string
+  icon: string
+}
+
+export interface TimelineEntry {
+  year: number
+  projects: number
+  languages: string[]
+  frameworks: string[]
+  totalStars: number
+  totalCodeLines?: number
+  codeLinesByLanguage?: { [language: string]: number }
+  milestones: Array<{
+    project: string
+    stars: number
+    language: string
+  }>
+}
+
 export interface Project {
   id: number
   name: string

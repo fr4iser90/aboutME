@@ -14,16 +14,13 @@ export default function HeadingBlock({ block, context = 'content' }: HeadingBloc
   const responsiveClasses = getResponsiveClasses(block.responsive)
   const spacingStyles = getSpacingStyles(block.spacing)
 
-  const HeadingTag = `h${block.level}` as keyof JSX.IntrinsicElements
+  const HeadingTag = `h${block.level}` as keyof React.JSX.IntrinsicElements
   const className = `block block-heading block-heading--h${block.level} ${animationClasses} ${responsiveClasses}`.trim()
 
-  return (
-    <HeadingTag
-      className={className}
-      style={spacingStyles}
-    >
-      {block.content}
-    </HeadingTag>
+  return React.createElement(
+    HeadingTag,
+    { className, style: spacingStyles },
+    block.content
   )
 }
 

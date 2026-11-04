@@ -19,10 +19,14 @@
  */
 export type SectionDetailLayoutType = 
   | 'sidebar-left'
+  | 'sidebar-right'
   | 'two-column'
   | 'masonry'
   | 'centered'
   | 'full-width'
+  | 'hero-content'
+  | 'carousel-layout'
+  | 'sticky-sidebar'
   | null
 
 /**
@@ -56,10 +60,14 @@ export type SectionMediaLayoutType =
 export function validateDetailLayout(layout: string | null | undefined): SectionDetailLayoutType {
   const validLayouts: SectionDetailLayoutType[] = [
     'sidebar-left',
+    'sidebar-right',
     'two-column',
     'masonry',
     'centered',
     'full-width',
+    'hero-content',
+    'carousel-layout',
+    'sticky-sidebar',
     null
   ]
   

@@ -94,6 +94,7 @@ export interface ScreenshotBlock extends BaseBlock {
   layout: 'single' | 'grid' | 'gallery'
   images: string[]
   columns?: number
+  title?: string
 }
 
 /**
@@ -104,6 +105,7 @@ export interface VideoBlock extends BaseBlock {
   source: 'youtube' | 'vimeo'
   videoId: string // Video ID (YouTube/Vimeo ID, not block ID - block ID comes from BaseBlock)
   autoplay?: boolean
+  title?: string
 }
 
 /**
@@ -195,6 +197,7 @@ export interface CodeBlock extends BaseBlock {
   code: string
   theme?: 'dark' | 'light'
   showLineNumbers?: boolean
+  title?: string
 }
 
 /**

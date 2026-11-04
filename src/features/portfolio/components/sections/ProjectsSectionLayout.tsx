@@ -29,8 +29,9 @@ export default function ProjectsSectionLayout({
   
   if (!config?.enabled) return null
   
-  const currentProjects = currentView === 'featured' 
-    ? projects.filter(p => p.featured)
+  const featuredProjects = projects.filter(p => p.featured)
+  const currentProjects = currentView === 'featured'
+    ? (featuredProjects.length ? featuredProjects : projects)
     : projects
   
   // Grid Layout (default)

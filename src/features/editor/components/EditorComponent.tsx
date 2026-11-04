@@ -44,6 +44,7 @@ interface FileItem {
   content?: string
   category?: string
   filename?: string
+  source?: 'public' | 'private'
 }
 
 interface UserData {
@@ -1098,7 +1099,8 @@ export default function EditorComponent() {
       const projectsRes = await fetch('/data/projects/projects.json')
       if (projectsRes.ok) {
         const projectsData = await projectsRes.json()
-        setProjects(projectsData)
+        const list = Array.isArray(projectsData) ? projectsData : (projectsData.projects || [])
+        setProjects(list)
         console.log('✅ Projects data loaded')
       }
     } catch (error) {
@@ -1186,8 +1188,33 @@ export default function EditorComponent() {
         }
         return
       }
+
+      // JSON content files (projects, blog, skills, config, user, …)
+      const jsonPath = file.path || `${file.category}/${file.name}`
+      const source = (file as any).source === 'public' ? 'public' : 'private'
+      const jsonResponse = await fetch(
+        `/api/editor/json-file?path=${encodeURIComponent(jsonPath)}&source=${source}`
+      )
+      if (jsonResponse.ok) {
+        const result = await jsonResponse.json()
+        let raw = typeof result.content === 'string'
+          ? result.content
+          : JSON.stringify(result.data ?? result, null, 2)
+        try {
+          // Pretty-print
+          raw = JSON.stringify(JSON.parse(raw), null, 2)
+        } catch { /* keep raw */ }
+        setContent(raw)
+        setAboutData(null)
+        setFrontmatter(null)
+        setParsedMarkdown(null)
+        console.log('📄 JSON file loaded:', jsonPath)
+        return
+      }
+
+      console.warn('JSON load failed, falling back to markdown API', jsonResponse.status)
       
-      // Load Markdown content using Editor File API
+      // Load Markdown content using Editor File API (legacy)
       let apiPath;
       if (file.category === 'about') {
         apiPath = `/api/editor/file/about/${file.filename}`;
@@ -1400,8 +1427,38 @@ export default function EditorComponent() {
       }
       return
     }
+
+    // JSON files (projects/blog/etc.) — save via json-file API
+    if (selectedFile.name?.endsWith('.json')) {
+      try {
+        // Validate JSON before save
+        JSON.parse(content)
+        const jsonPath = selectedFile.path || `${selectedFile.category}/${selectedFile.name}`
+        const response = await fetch('/api/editor/json-file', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            path: jsonPath,
+            source: 'private',
+            content
+          })
+        })
+        if (response.ok) {
+          console.log('💾 JSON saved:', jsonPath)
+          setLastSaved(new Date())
+        } else {
+          const err = await response.json().catch(() => ({}))
+          console.error('❌ Failed to save JSON:', response.status, err)
+          alert(`Failed to save: ${err.error || err.message || response.status}`)
+        }
+      } catch (error) {
+        console.error('❌ Error saving JSON:', error)
+        alert(`Invalid JSON: ${error instanceof Error ? error.message : 'parse error'}`)
+      }
+      return
+    }
     
-    // Auto-add frontmatter if missing (beim ersten Editieren)
+    // Auto-add frontmatter if missing (beim ersten Editieren) — legacy markdown
     let contentToSave = content
     const { frontmatter: currentFrontmatter } = parseFrontmatter(content)
     
@@ -1790,13 +1847,37 @@ export default function EditorComponent() {
                         handleSave()
                       }}
                     />
+                  ) : selectedFile && selectedFile.name?.endsWith('.json') ? (
+                    <div className="editor-component__json-editor" style={{ height: '100%', minHeight: '480px' }}>
+                      <div className="flex items-center justify-between px-3 py-2 text-sm text-gray-400 border-b border-gray-700">
+                        <span>Editing: <code>{selectedFile.path || selectedFile.name}</code></span>
+                        <button
+                          type="button"
+                          className="px-3 py-1 rounded bg-cyan-600/80 text-white hover:bg-cyan-500"
+                          onClick={() => handleSave()}
+                        >
+                          Save JSON
+                        </button>
+                      </div>
+                      <Editor
+                        height="calc(100% - 40px)"
+                        defaultLanguage="json"
+                        theme="vs-dark"
+                        value={content}
+                        onChange={(value) => setContent(value || '')}
+                        onMount={handleEditorMount}
+                        options={{
+                          minimap: { enabled: false },
+                          fontSize: 14,
+                          wordWrap: 'on',
+                          automaticLayout: true,
+                        }}
+                      />
+                    </div>
                   ) : selectedFile ? (
                     <div className="editor-component__no-editor">
                       <p className="text-gray-400">
-                        Editor für {selectedFile.category}/{selectedFile.name} wird implementiert...
-                      </p>
-                      <p className="text-gray-500 text-sm mt-2">
-                        Aktuell nur about.json unterstützt. Weitere Editoren folgen.
+                        Kein Editor für {selectedFile.category}/{selectedFile.name}
                       </p>
                     </div>
                   ) : (
@@ -1822,10 +1903,20 @@ export default function EditorComponent() {
                           handleSave()
                         }}
                       />
+                    ) : selectedFile && selectedFile.name?.endsWith('.json') ? (
+                      <Editor
+                        height="100%"
+                        defaultLanguage="json"
+                        theme="vs-dark"
+                        value={content}
+                        onChange={(value) => setContent(value || '')}
+                        onMount={handleEditorMount}
+                        options={{ minimap: { enabled: false }, fontSize: 14, wordWrap: 'on', automaticLayout: true }}
+                      />
                     ) : selectedFile ? (
                       <div className="editor-component__no-editor">
                         <p className="text-gray-400">
-                          Editor für {selectedFile.category}/{selectedFile.name} wird implementiert...
+                          Kein Editor für {selectedFile.category}/{selectedFile.name}
                         </p>
                       </div>
                     ) : (

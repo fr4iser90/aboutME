@@ -66,7 +66,7 @@ export default function DetailPageLayoutEditor({ category, onSave }: DetailPageL
         setLoading(true)
         setError(null)
         // Convert file path to API path format
-        const relativePath = selectedProject.replace(/^.*\/private\/data\//, '')
+        const relativePath = selectedProject!.replace(/^.*\/private\/data\//, '')
         const apiPath = `/api/editor/file/${relativePath}`
         const response = await fetch(apiPath)
         if (!response.ok) throw new Error('Failed to load project')
@@ -75,7 +75,7 @@ export default function DetailPageLayoutEditor({ category, onSave }: DetailPageL
 
         // Parse frontmatter and create layout config
         const { frontmatter } = parseFrontmatter(content)
-        const parser = new MarkdownParser(content, frontmatter?.github, selectedProject.toLowerCase())
+        const parser = new MarkdownParser(content, frontmatter?.github, selectedProject!.toLowerCase())
         const parsed = parser.parse()
         setMarkdownSections(parsed.sections)
 

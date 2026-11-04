@@ -6,13 +6,13 @@ interface AppearanceTabsProps {
 }
 
 const tabs = [
-  { id: 'design', name: 'Design System', icon: '🎨' },
-  { id: 'themes', name: 'Themes', icon: '🌈' },
-  { id: 'layout', name: 'Layout Settings', icon: '📐' },
-  { id: 'switcher', name: 'Public Switcher', icon: '🔄' },
-  { id: 'creator', name: 'Creator', icon: '➕' },
-  { id: 'effects', name: 'Effects', icon: '✨' },
-  { id: 'preview', name: 'Preview', icon: '👁️' }
+  { id: 'design', name: 'Design System', icon: 'D' },
+  { id: 'themes', name: 'Themes', icon: 'Th' },
+  { id: 'layout', name: 'Layout Settings', icon: 'La' },
+  { id: 'switcher', name: 'Public Switcher', icon: 'Sw' },
+  { id: 'creator', name: 'Creator', icon: 'Cr' },
+  { id: 'effects', name: 'Effects', icon: 'Fx' },
+  { id: 'preview', name: 'Preview', icon: 'V' }
 ]
 
 export default function AppearanceTabs({ activeTab, onTabChange }: AppearanceTabsProps) {

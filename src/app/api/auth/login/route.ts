@@ -12,6 +12,16 @@ import path from 'path';
 async function getPortfolioStatus(): Promise<'unconfigured' | 'building' | 'active'> {
   try {
     const DATA_DIR = path.join(process.cwd(), 'public/data');
+    const statusPath = path.join(DATA_DIR, 'config', 'site-status.json');
+    try {
+      const status = JSON.parse(await fs.readFile(statusPath, 'utf8'));
+      if (status.published || status.validated) {
+        return 'active';
+      }
+    } catch {
+      /* fall through */
+    }
+
     const configFiles = [
       path.join(DATA_DIR, 'config', 'config.json'),
       path.join(DATA_DIR, 'user', 'user.json'),
@@ -35,61 +45,10 @@ async function getPortfolioStatus(): Promise<'unconfigured' | 'building' | 'acti
       return 'unconfigured';
     }
     
-    // Check for CSS changes
-    const hasCSSChanges = await checkCSSChanges();
-    if (hasCSSChanges) {
-      return 'building';
-    }
-    
-    return 'active';
+    return 'building';
   } catch (error) {
     console.error('Portfolio status detection error:', error);
     return 'unconfigured';
-  }
-}
-
-/**
- * Check if CSS files have changed since last build
- */
-async function checkCSSChanges(): Promise<boolean> {
-  try {
-    const cssFiles = [
-      path.join(process.cwd(), 'src/app/globals.css'),
-      path.join(process.cwd(), 'uno.config.ts')
-    ];
-
-    const lastBuildTime = await getLastBuildTimestamp();
-    
-    for (const filePath of cssFiles) {
-      try {
-        const stats = await fs.stat(filePath);
-        if (stats.mtime.getTime() > lastBuildTime) {
-          return true;
-        }
-      } catch {
-        // File doesn't exist, skip
-        continue;
-      }
-    }
-    
-    return false;
-  } catch (error) {
-    console.error('Error checking CSS changes:', error);
-    return false;
-  }
-}
-
-/**
- * Get last build timestamp
- */
-async function getLastBuildTimestamp(): Promise<number> {
-  const buildInfoPath = path.join(process.cwd(), '.next/build-info.json');
-  
-  try {
-    const buildInfo = JSON.parse(await fs.readFile(buildInfoPath, 'utf8'));
-    return buildInfo.lastBuildTime || 0;
-  } catch {
-    return 0;
   }
 }
 

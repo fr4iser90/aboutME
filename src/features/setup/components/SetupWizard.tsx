@@ -76,7 +76,7 @@ export default function SetupWizard({ onComplete, onCancel }: SetupWizardProps) 
       passwordAlreadySet: false,
     },
     appearance: {
-      design: 'glassmorphism',
+      design: 'minimal',
       theme: 'dark',
       displayMode: 'portfolio',
       useDesignDefaults: true,

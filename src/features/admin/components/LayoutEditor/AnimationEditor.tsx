@@ -79,7 +79,7 @@ export default function AnimationEditor({
       slots: Object.fromEntries(
         Object.entries(config.slots).map(([key, blocks]) => [
           key,
-          blocks?.map(block => {
+          blocks?.map((block: any) => {
             if (!block.animation && newGlobal.enabled) {
               return {
                 ...block,

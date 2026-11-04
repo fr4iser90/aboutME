@@ -28,7 +28,7 @@ async function readPortfolioConfig(): Promise<any> {
 // Helper function to read config.json
 async function readConfigJson(): Promise<any> {
   try {
-    const configPath = path.join(DATA_DIR, 'config', 'config.json')
+    const configPath = path.join(PRIVATE_DATA_DIR, 'config', 'config.json')
     const configContent = await fs.readFile(configPath, 'utf-8')
     return JSON.parse(configContent)
   } catch (error) {
@@ -183,11 +183,16 @@ export async function GET() {
     
     // Get theme config from portfolio.config.js or config.json
     // Themes and designs come from CSS files, config only overrides/extends
-    const existingThemeConfig = portfolioConfig.features?.theme || configJson.portfolio?.features?.theme
-    const themeConfig = existingThemeConfig || {
+    const existingThemeConfig =
+      portfolioConfig.features?.theme ||
+      configJson.portfolio?.features?.theme ||
+      configJson.features?.theme
+    const themeConfig = existingThemeConfig
+      ? { ...existingThemeConfig }
+      : {
       enabled: true,
       defaultTheme: 'dark',
-      defaultDesign: 'glassmorphism',
+      defaultDesign: 'minimal',
       themes: {},
       designs: {},
       persistChoice: true,
@@ -195,12 +200,37 @@ export async function GET() {
         enabled: false,
         allowThemeSwitch: true,
         allowDesignSwitch: true,
-        // availableThemes: Optional - wenn nicht gesetzt, werden alle enabled themes verwendet
-        // availableDesigns: Optional - wenn nicht gesetzt, werden alle enabled designs verwendet
-        // Admin kann hier explizit einschränken, welche Themes/Designs im Public Switcher erscheinen
-        // undefined oder nicht gesetzt = alle enabled Themes/Designs werden verwendet
+        availableThemes: ['dark', 'light'],
+        availableDesigns: ['minimal', 'glassmorphism', 'clean'],
         switcherType: 'combined',
         position: 'top-right'
+      }
+    }
+
+    // Prefer appearance defaults from config.json when present
+    if (configJson.appearance?.defaultTheme && !existingThemeConfig?.defaultTheme) {
+      themeConfig.defaultTheme = configJson.appearance.defaultTheme
+    }
+    if (configJson.appearance?.defaultDesign && !existingThemeConfig?.defaultDesign) {
+      themeConfig.defaultDesign = configJson.appearance.defaultDesign
+    }
+    if (!themeConfig.defaultDesign) {
+      themeConfig.defaultDesign = 'minimal'
+    }
+    if (!themeConfig.defaultTheme) {
+      themeConfig.defaultTheme = 'dark'
+    }
+    if (!themeConfig.publicSwitcher?.availableDesigns) {
+      themeConfig.publicSwitcher = {
+        ...(themeConfig.publicSwitcher || {
+          enabled: false,
+          allowThemeSwitch: true,
+          allowDesignSwitch: true,
+          switcherType: 'combined',
+          position: 'top-right',
+        }),
+        availableThemes: themeConfig.publicSwitcher?.availableThemes || ['dark', 'light'],
+        availableDesigns: ['minimal', 'glassmorphism', 'clean'],
       }
     }
     
@@ -263,7 +293,7 @@ export async function POST(request: NextRequest) {
     const { config } = await request.json()
     
     // Read existing config.json
-    const configDir = path.join(DATA_DIR, 'config')
+    const configDir = path.join(PRIVATE_DATA_DIR, 'config')
     await fs.mkdir(configDir, { recursive: true })
     
     const configPath = path.join(configDir, 'config.json')

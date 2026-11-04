@@ -2,15 +2,7 @@
 
 import { TerminalSection } from '@/features/terminal'
 import { BlogSection } from '@/features/blog'
-
-interface BlogPost {
-  id: string
-  title: string
-  date: string
-  excerpt: string
-  content?: string
-  tags?: string[]
-}
+import type { BlogPost } from '@/features/blog/types'
 
 interface BlogBlockProps {
   posts: BlogPost[]
@@ -25,7 +17,7 @@ export default function BlogBlock({ posts, config, onPostClick }: BlogBlockProps
   
   return (
     <TerminalSection id="blog" title="Blog Posts">
-      <BlogSection posts={posts} onPostClick={onPostClick} />
+      <BlogSection posts={posts} onPostClick={onPostClick ?? (() => {})} />
     </TerminalSection>
   )
 }

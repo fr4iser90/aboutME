@@ -14,7 +14,6 @@ import type { SectionMediaLayoutType } from '@/features/shared/types/sectionLayo
 import SingleImageLayout from './SingleImageLayout'
 import GridLayout from './GridLayout'
 import GalleryLayout from './GalleryLayout'
-import CarouselLayout from './CarouselLayout'
 import VideoLayout from './VideoLayout'
 import MixedLayout from './MixedLayout'
 
@@ -65,7 +64,6 @@ export default function MediaLayoutRenderer({
       return images.length > 0 ? (
         <GridLayout 
           images={images} 
-          alt={alt}
           columns={columns}
         />
       ) : null
@@ -74,15 +72,14 @@ export default function MediaLayoutRenderer({
       return images.length > 0 ? (
         <GalleryLayout 
           images={images} 
-          alt={alt}
         />
       ) : null
 
     case 'carousel':
       return images.length > 0 ? (
-        <CarouselLayout 
+        <GalleryLayout 
           images={images} 
-          alt={alt}
+          showThumbnails={true}
         />
       ) : null
 
@@ -92,15 +89,23 @@ export default function MediaLayoutRenderer({
       ) : null
 
     case 'mixed':
-      return (video || images.length > 0) ? (
-        <MixedLayout 
-          images={images} 
-          video={video}
-          layout={{
-            type: 'mixed',
-            columns: columns
-          }}
-        />
+      if (video && images.length > 0) {
+        return (
+          <MixedLayout 
+            images={images} 
+            video={video}
+            layout={{
+              type: 'mixed',
+              columns: columns
+            }}
+          />
+        )
+      }
+      if (video) {
+        return <VideoLayout video={video} />
+      }
+      return images.length > 0 ? (
+        <SingleImageLayout images={images} alt={alt} />
       ) : null
 
     default:

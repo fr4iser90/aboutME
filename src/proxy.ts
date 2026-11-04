@@ -40,18 +40,21 @@ function logStructured(
 
 /**
  * Simple auth check for middleware (Edge Runtime compatible)
+ * Validates session cryptographically via shared auth store when available.
  */
 function isAuthenticated(request: NextRequest): boolean {
   const sessionCookie = request.cookies.get('admin_session');
-  const hasSession = !!sessionCookie?.value;
-  
-  logStructured('DEBUG', 'auth_check', 'Authentication check performed', { 
-    pathname: request.nextUrl.pathname, 
-    hasSession,
-    sessionExists: !!sessionCookie?.value
-  });
-  
-  return hasSession;
+  const sessionId = sessionCookie?.value;
+  if (!sessionId) return false;
+
+  try {
+    // Prefer secure validation (shared Map + disk store)
+    const { validateSecureSession } = require('@/features/auth/services/auth');
+    return !!validateSecureSession(sessionId, request);
+  } catch {
+    // Fallback: cookie presence only (should not happen in Node runtime)
+    return true;
+  }
 }
 
 /**
@@ -118,17 +121,38 @@ export default function proxy(request: NextRequest) {
       return response;
     }
     
-    // Setup-Routen: Erlaube für eingeloggte Benutzer
-    const setupRoutes = ['/admin', '/preview', '/api/setup', '/api/editor', '/api/upload'];
+    // Setup-Routen: Erlaube für eingeloggte Benutzer (inkl. Admin-/Site-/Blog-APIs)
+    const setupRoutes = [
+      '/admin',
+      '/preview',
+      '/api/setup',
+      '/api/editor',
+      '/api/upload',
+      '/api/admin',
+      '/api/site',
+      '/api/blog',
+      '/api/agent',
+      '/api/auth/status',
+      '/api/auth/login',
+      '/api/data',
+    ];
     const isSetupRoute = setupRoutes.some(route => pathname.startsWith(route));
+    const isApiRoute = pathname.startsWith('/api/');
     
     if (isSetupRoute) {
-      if (isAuthenticated(request)) {
+      if (isAuthenticated(request) || pathname.startsWith('/api/auth/login')) {
         const response = NextResponse.next();
         setSecurityHeaders(response, false);
         return response;
+      } else if (isApiRoute) {
+        // APIs must not HTML-redirect — break admin fetch()/agents
+        const response = NextResponse.json(
+          { error: 'Unauthorized', setupMode: true },
+          { status: 401 }
+        );
+        setSecurityHeaders(response, false);
+        return response;
       } else {
-        // Nicht eingeloggt - redirect zu login
         const loginUrl = new URL('/login', request.url);
         loginUrl.searchParams.set('redirect', pathname);
         const response = NextResponse.redirect(loginUrl);
@@ -137,7 +161,16 @@ export default function proxy(request: NextRequest) {
       }
     }
     
-    // Alle anderen Routen im Setup-Modus → Redirect zu Login
+    // Alle anderen Routen im Setup-Modus
+    if (isApiRoute) {
+      const response = NextResponse.json(
+        { error: 'Unauthorized', setupMode: true },
+        { status: 401 }
+      );
+      setSecurityHeaders(response, false);
+      return response;
+    }
+
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('redirect', '/admin/setup');
     const response = NextResponse.redirect(loginUrl);
@@ -163,8 +196,8 @@ export default function proxy(request: NextRequest) {
         const { readSiteStatusSync } = require('@/features/shared/utils/siteStatus');
         const siteStatus = readSiteStatusSync();
         
-        if (!siteStatus.validated) {
-          // Build nicht validiert → Redirect zu Login (wenn nicht eingeloggt) oder Admin
+        // Public site when validated OR published
+        if (!siteStatus.validated && !siteStatus.published) {
           if (!isAuthenticated(request)) {
             const loginUrl = new URL('/login', request.url);
             loginUrl.searchParams.set('redirect', pathname);
@@ -172,7 +205,6 @@ export default function proxy(request: NextRequest) {
             setSecurityHeaders(response, false);
             return response;
           } else {
-            // Eingeloggt aber Build nicht validiert → Redirect zu Admin
             const adminUrl = new URL('/admin', request.url);
             const response = NextResponse.redirect(adminUrl);
             setSecurityHeaders(response, false);
@@ -180,7 +212,6 @@ export default function proxy(request: NextRequest) {
           }
         }
       } catch {
-        // Build-Status-Datei existiert nicht = Build nicht validiert
         if (!isAuthenticated(request)) {
           const loginUrl = new URL('/login', request.url);
           loginUrl.searchParams.set('redirect', pathname);
@@ -197,21 +228,35 @@ export default function proxy(request: NextRequest) {
     }
     
     // Public routes im Normal-Modus (nur wenn Build validiert)
-    const normalPublicRoutes = ['/login', '/api/auth/login'];
-    if (normalPublicRoutes.includes(pathname)) {
+    const normalPublicRoutes = ['/login', '/api/auth/login', '/api/site/status'];
+    if (normalPublicRoutes.includes(pathname) || pathname === '/api/site/status') {
       const response = NextResponse.next();
       setSecurityHeaders(response, false);
       return response;
     }
     
     // Admin-Routen: Nur für eingeloggte Admins
-    if (pathname.startsWith('/admin') || pathname.startsWith('/api/editor')) {
+    if (
+      pathname.startsWith('/admin') ||
+      pathname.startsWith('/api/editor') ||
+      pathname.startsWith('/api/setup') ||
+      pathname.startsWith('/api/admin') ||
+      pathname.startsWith('/api/upload') ||
+      pathname.startsWith('/api/agent') ||
+      (pathname.startsWith('/api/site') && pathname !== '/api/site/status')
+    ) {
       if (isAuthenticated(request)) {
         const response = NextResponse.next();
         setSecurityHeaders(response, false);
         return response;
+      } else if (pathname.startsWith('/api/')) {
+        const response = NextResponse.json(
+          { error: 'Unauthorized' },
+          { status: 401 }
+        );
+        setSecurityHeaders(response, false);
+        return response;
       } else {
-        // Nicht eingeloggt - redirect zu login
         const loginUrl = new URL('/login', request.url);
         loginUrl.searchParams.set('redirect', pathname);
         const response = NextResponse.redirect(loginUrl);

@@ -16,7 +16,7 @@ export default function ContactBlock({ userData, config }: ContactBlockProps) {
   
   return (
     <TerminalSection id="contact" title="Contact">
-      <ContactSection userData={userData} />
+      <ContactSection userData={userData as Parameters<typeof ContactSection>[0]['userData']} />
     </TerminalSection>
   )
 }

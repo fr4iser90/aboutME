@@ -21,54 +21,26 @@ export interface ValidationError {
  */
 export const techStackSchema = {
   type: 'object',
+  additionalProperties: true,
   properties: {
     languages: {
       type: 'object',
-      additionalProperties: { type: 'string' }
+      additionalProperties: {
+        oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'null' }]
+      }
     },
-    frontend: {
-      type: 'array',
-      items: { type: 'string' }
-    },
-    backend: {
-      type: 'array',
-      items: { type: 'string' }
-    },
-    database: {
-      type: 'array',
-      items: { type: 'string' }
-    },
-    devops: {
-      type: 'array',
-      items: { type: 'string' }
-    },
-    testing: {
-      type: 'array',
-      items: { type: 'string' }
-    },
-    frameworks: {
-      type: 'array',
-      items: { type: 'string' }
-    },
-    libraries: {
-      type: 'array',
-      items: { type: 'string' }
-    },
-    tools: {
-      type: 'array',
-      items: { type: 'string' }
-    },
-    dependencies: {
-      type: 'array',
-      items: { type: 'string' }
-    },
-    confidence: {
-      type: 'number',
-      minimum: 0,
-      maximum: 100
-    },
+    frontend: { type: 'array', items: { type: 'string' } },
+    backend: { type: 'array', items: { type: 'string' } },
+    database: { type: 'array', items: { type: 'string' } },
+    devops: { type: 'array', items: { type: 'string' } },
+    testing: { type: 'array', items: { type: 'string' } },
+    frameworks: { type: 'array', items: { type: 'string' } },
+    libraries: { type: 'array', items: { type: 'string' } },
+    tools: { type: 'array', items: { type: 'string' } },
+    dependencies: { type: 'array', items: { type: 'string' } },
+    confidence: { type: 'number', minimum: 0, maximum: 100 },
     summary: {
-      type: 'string'
+      oneOf: [{ type: 'string' }, { type: 'null' }]
     }
   }
 };
@@ -92,18 +64,26 @@ export const projectSchema = {
       minLength: 1
     },
     description: {
-      type: 'string',
-      minLength: 1
+      type: 'string'
     },
     content: {
-      type: 'string'
+      oneOf: [
+        { type: 'string' },
+        { type: 'null' }
+      ]
     },
     htmlContent: {
-      type: 'string'
+      oneOf: [
+        { type: 'string' },
+        { type: 'null' }
+      ]
     },
     githubUrl: {
-      type: 'string',
-      format: 'uri'
+      oneOf: [
+        { type: 'string', format: 'uri' },
+        { type: 'string', maxLength: 0 },
+        { type: 'null' }
+      ]
     },
     homepage: {
       oneOf: [
@@ -176,8 +156,11 @@ export const projectSchema = {
     screenshots: {
       type: 'array',
       items: {
-        type: 'string',
-        format: 'uri'
+        oneOf: [
+          { type: 'string', format: 'uri' },
+          { type: 'string' },
+          { type: 'null' }
+        ]
       }
     },
     readme: {
@@ -194,7 +177,10 @@ export const projectSchema = {
     },
     techStack: techStackSchema,
     techStackSummary: {
-      type: 'string'
+      oneOf: [
+        { type: 'string' },
+        { type: 'null' }
+      ]
     }
   }
 };
@@ -220,7 +206,10 @@ export const blogPostSchema = {
       minLength: 1
     },
     htmlContent: {
-      type: 'string'
+      oneOf: [
+        { type: 'string' },
+        { type: 'null' }
+      ]
     },
     excerpt: {
       type: 'string'
@@ -284,27 +273,57 @@ export const blogPostSchema = {
 export const aboutSchema = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   type: 'object',
-  required: ['content'],
   properties: {
     content: {
-      type: 'string',
-      minLength: 1
+      type: 'string'
     },
     htmlContent: {
-      type: 'string'
+      oneOf: [
+        { type: 'string' },
+        { type: 'null' }
+      ]
     },
     frontmatter: {
       type: 'object',
       additionalProperties: true
     },
+    // AboutEditor / setup-wizard shapes
+    header: { type: 'object', additionalProperties: true },
+    sections: { type: 'array' },
+    socialLinks: { type: 'object', additionalProperties: true },
+    metadata: { type: 'object', additionalProperties: true },
     lastModified: {
-      type: 'string',
-      format: 'date-time'
+      type: 'string'
     },
     generatedBy: {
       type: 'string'
     }
-  }
+  },
+  additionalProperties: true
+};
+
+/** Index / list files — accept object or array shapes */
+export const projectsIndexSchema = {
+  $schema: 'http://json-schema.org/draft-07/schema#',
+  oneOf: [
+    {
+      type: 'object',
+      properties: {
+        projects: { type: 'array' },
+        lastUpdated: { type: 'string' },
+        totalCount: { type: 'number' }
+      },
+      additionalProperties: true
+    },
+    { type: 'array' }
+  ]
+};
+
+/** Passthrough for config/user/skills/etc. */
+export const permissiveObjectSchema = {
+  $schema: 'http://json-schema.org/draft-07/schema#',
+  type: 'object',
+  additionalProperties: true
 };
 
 /**
@@ -329,15 +348,43 @@ export function getSchema(contentType: string): any {
  * Get schema for file path
  */
 export function getSchemaForPath(filePath: string): any {
-  if (filePath.includes('/projects/')) {
+  const normalized = filePath.replace(/\\/g, '/');
+
+  // Index / aggregate files (not single project details)
+  if (
+    normalized.endsWith('/projects/projects.json') ||
+    normalized.endsWith('/projects.json') ||
+    normalized.endsWith('/blog/blog.json') ||
+    normalized.endsWith('/blog.json')
+  ) {
+    return projectsIndexSchema;
+  }
+
+  if (normalized.includes('/projects/details/') || normalized.includes('/projects/')) {
+    // Single project detail objects
+    if (normalized.endsWith('projects.json')) {
+      return projectsIndexSchema;
+    }
     return projectSchema;
   }
-  if (filePath.includes('/blog/')) {
+  if (normalized.includes('/blog/posts/') || normalized.includes('/blog/')) {
+    if (normalized.endsWith('blog.json')) {
+      return projectsIndexSchema;
+    }
     return blogPostSchema;
   }
-  if (filePath.includes('/about/')) {
+  if (normalized.includes('/about/')) {
     return aboutSchema;
   }
-  return {};
+  if (
+    normalized.includes('/user/') ||
+    normalized.includes('/config/') ||
+    normalized.includes('/skills/') ||
+    normalized.includes('/timeline/') ||
+    normalized.includes('/terminal/')
+  ) {
+    return permissiveObjectSchema;
+  }
+  return permissiveObjectSchema;
 }
 

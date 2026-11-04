@@ -104,6 +104,20 @@ export async function GET(request: NextRequest) {
       }
     }
     
+    // Prefer private over public when both exist (source=all)
+    if (source === 'all') {
+      const byPath = new Map<string, JSONFileInfo>();
+      for (const file of allFiles) {
+        const key = file.path.replace(/\\/g, '/');
+        const existing = byPath.get(key);
+        if (!existing || file.source === 'private') {
+          byPath.set(key, file);
+        }
+      }
+      allFiles.length = 0;
+      allFiles.push(...byPath.values());
+    }
+    
     // Filter by category if specified
     let filteredFiles = allFiles;
     if (category) {

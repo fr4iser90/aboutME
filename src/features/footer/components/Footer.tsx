@@ -31,7 +31,7 @@ interface FooterProps {
 export default function Footer({ userData, config, terminalEnabled, onTerminalOpen }: FooterProps) {
   if (!config?.enabled || !userData) return null
 
-  const showTerminalButton = config.showTerminalButton !== false && terminalEnabled && onTerminalOpen
+  const showTerminalButton = config.showTerminalButton !== false && !!terminalEnabled && !!onTerminalOpen
 
   switch (config.variant) {
     case 'minimal':

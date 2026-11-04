@@ -13,6 +13,7 @@ node_modules/
 # Testing
 coverage/
 .nyc_output/
+.audit-out/
 
 # Next.js
 .next/
@@ -118,6 +119,7 @@ Thumbs.db
 # Auth temporary files
 .auth-lock
 .auth-secrets
+.auth-sessions
 
 .env*
 !.env.example

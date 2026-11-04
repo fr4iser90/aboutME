@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium --with-deps
+
+      - name: Prepare env
+        run: |
+          cp .env.example .env
+          echo "GITHUB_USERNAME=fr4iser90" >> .env
+          echo "ENABLE_AUTH=true" >> .env
+          echo "ADMIN_PASSWORD=ci-test-password-change-me" >> .env
+
+      - name: Seed minimal public data
+        run: |
+          mkdir -p public/data/config public/data/user public/data/projects public/data/about public/data/skills public/data/timeline
+          echo '{"name":"CI User","username":"ci-user","avatar":"","github":"https://github.com/ci-user"}' > public/data/user/user.json
+          echo '{"projects":[{"id":1,"name":"Demo","description":"CI project","featured":true,"githubUrl":"https://github.com/example/demo","stars":0}],"totalCount":1}' > public/data/projects/projects.json
+          echo '{"content":"About CI","htmlContent":null}' > public/data/about/about.json
+          echo '{"languages":{},"frameworks":{},"tools":{}}' > public/data/skills/skills.json
+          echo '{"timeline":[]}' > public/data/timeline/timeline.json
+          echo '{"features":{"projects":{"enabled":true,"showFeatured":true,"showAll":true},"skills":{"enabled":true},"aboutMe":{"enabled":true},"blog":{"enabled":false},"contact":{"enabled":true},"hero":{"enabled":true,"variant":"inline"},"theme":{"enabled":true},"header":{"enabled":true},"footer":{"enabled":true},"terminal":{"enabled":false},"background":{"useDefault":true,"defaultImage":"/assets/galaxy.png"}}}' > public/data/config/config.json
+          echo '{"setupComplete":true,"validated":true,"published":true,"setupAt":"2026-01-01T00:00:00.000Z","validatedAt":"2026-01-01T00:00:00.000Z","publishedAt":"2026-01-01T00:00:00.000Z"}' > public/data/config/site-status.json
+          mkdir -p private/data
+          cp -r public/data/. private/data/
+
+      - name: Build
+        run: npm run build
+
+      - name: Start server
+        run: |
+          npm run start &
+          for i in $(seq 1 60); do
+            if curl -sf http://127.0.0.1:3000 >/dev/null; then
+              echo "Server ready"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Server failed to start"
+          exit 1
+
+      - name: Smoke tests
+        run: npm test
+        env:
+          AUDIT_BASE: http://127.0.0.1:3000

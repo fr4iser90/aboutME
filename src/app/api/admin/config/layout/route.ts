@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { promises as fs } from 'fs'
 import path from 'path'
+import { requireAdmin } from '@/features/auth/services/requireAdmin'
 
-const DATA_DIR = path.join(process.cwd(), 'public/data')
+const PRIVATE_DATA_DIR = path.join(process.cwd(), 'private/data')
+const PUBLIC_DATA_DIR = path.join(process.cwd(), 'public/data')
 const PORTFOLIO_CONFIG_FILE = path.join(process.cwd(), 'portfolio.config.js')
 
-// Helper function to read portfolio.config.js
 async function readPortfolioConfig(): Promise<any> {
   try {
     const configContent = await fs.readFile(PORTFOLIO_CONFIG_FILE, 'utf-8')
@@ -15,40 +16,46 @@ async function readPortfolioConfig(): Promise<any> {
       return eval(`(function() { const path = require('path'); return (${configStr}); })()`)
     }
     return {}
-  } catch (error) {
-    console.warn('Could not read portfolio.config.js:', error)
+  } catch {
     return {}
   }
 }
 
-// Helper function to read config.json
-async function readConfigJson(): Promise<any> {
+async function readConfigJson(baseDir: string): Promise<any> {
   try {
-    const configPath = path.join(DATA_DIR, 'config', 'config.json')
-    const configContent = await fs.readFile(configPath, 'utf-8')
-    return JSON.parse(configContent)
-  } catch (error) {
-    console.warn('Could not read config.json:', error)
+    const configPath = path.join(baseDir, 'config', 'config.json')
+    return JSON.parse(await fs.readFile(configPath, 'utf-8'))
+  } catch {
     return {}
   }
 }
 
-// GET: Read global layout configuration
+function normalizeGlobalLayout(raw: any) {
+  const layout = raw?.layout || raw?.displayMode || 'portfolio'
+  return {
+    layout,
+    displayMode: layout,
+    template: raw?.template || 'sidebar-left',
+  }
+}
+
 export async function GET() {
   try {
     const portfolioConfig = await readPortfolioConfig()
-    const configJson = await readConfigJson()
-    
-    // Get layout config from portfolio.config.js or config.json
-    const layoutConfig = portfolioConfig.layout?.global || configJson.portfolio?.layout?.global || {
-      template: 'sidebar-left',
-      displayMode: 'portfolio'
-    }
-    
-    return NextResponse.json({ 
+    const privateJson = await readConfigJson(PRIVATE_DATA_DIR)
+    const publicJson = await readConfigJson(PUBLIC_DATA_DIR)
+
+    const layoutConfig = normalizeGlobalLayout(
+      portfolioConfig.layout?.global ||
+        privateJson.portfolio?.layout?.global ||
+        publicJson.portfolio?.layout?.global ||
+        { displayMode: 'portfolio' }
+    )
+
+    return NextResponse.json({
       config: {
-        globalLayout: layoutConfig
-      }
+        globalLayout: layoutConfig,
+      },
     })
   } catch (error) {
     console.error('Layout config GET error:', error)
@@ -59,46 +66,43 @@ export async function GET() {
   }
 }
 
-// POST: Save global layout configuration
 export async function POST(request: NextRequest) {
+  const unauthorized = requireAdmin(request)
+  if (unauthorized) return unauthorized
+
   try {
     const { config } = await request.json()
-    
-    // Validate config structure
+
     if (!config || !config.globalLayout) {
       return NextResponse.json(
-        { error: 'Invalid config structure. Expected { globalLayout: { template, displayMode } }' },
+        { error: 'Invalid config structure. Expected { globalLayout: { layout|displayMode } }' },
         { status: 400 }
       )
     }
-    
-    // Read existing config.json
-    const configDir = path.join(DATA_DIR, 'config')
-    await fs.mkdir(configDir, { recursive: true })
-    
-    const configPath = path.join(configDir, 'config.json')
-    let configJson: any = {}
-    
-    try {
-      const existingContent = await fs.readFile(configPath, 'utf-8')
-      configJson = JSON.parse(existingContent)
-    } catch {
-      // File doesn't exist, start with empty object
+
+    const globalLayout = normalizeGlobalLayout(config.globalLayout)
+
+    for (const baseDir of [PRIVATE_DATA_DIR, PUBLIC_DATA_DIR]) {
+      const configDir = path.join(baseDir, 'config')
+      await fs.mkdir(configDir, { recursive: true })
+      const configPath = path.join(configDir, 'config.json')
+      let configJson: any = {}
+      try {
+        configJson = JSON.parse(await fs.readFile(configPath, 'utf-8'))
+      } catch {
+        /* new */
+      }
+      if (!configJson.portfolio) configJson.portfolio = {}
+      if (!configJson.portfolio.layout) configJson.portfolio.layout = {}
+      configJson.portfolio.layout.global = globalLayout
+      await fs.writeFile(configPath, JSON.stringify(configJson, null, 2))
     }
-    
-    // Update layout config in config.json
-    if (!configJson.portfolio) {
-      configJson.portfolio = {}
-    }
-    if (!configJson.portfolio.layout) {
-      configJson.portfolio.layout = {}
-    }
-    configJson.portfolio.layout.global = config.globalLayout
-    
-    // Write updated config.json
-    await fs.writeFile(configPath, JSON.stringify(configJson, null, 2))
-    
-    return NextResponse.json({ success: true, message: 'Global layout configuration saved' })
+
+    return NextResponse.json({
+      success: true,
+      message: 'Global layout configuration saved',
+      globalLayout,
+    })
   } catch (error) {
     console.error('Layout config POST error:', error)
     return NextResponse.json(
@@ -107,4 +111,3 @@ export async function POST(request: NextRequest) {
     )
   }
 }
-

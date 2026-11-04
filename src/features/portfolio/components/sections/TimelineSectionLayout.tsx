@@ -1,8 +1,8 @@
 'use client'
 
 import { TerminalSection } from '@/features/terminal'
-import { SkillsTimeline } from '../SkillsTimeline'
-import type { Skill } from '../../types'
+import SkillsTimeline from '../SkillsTimeline'
+import type { Skill, TimelineEntry } from '../../types'
 
 interface TimelineSectionLayoutProps {
   timeline: Array<{
@@ -38,7 +38,7 @@ export default function TimelineSectionLayout({
       <TerminalSection id="timeline" title="Timeline">
         <div className="timeline-section timeline-section--vertical">
           <SkillsTimeline 
-            timeline={timeline}
+            timeline={timeline as unknown as TimelineEntry[]}
             skills={skills}
             onYearClick={onYearClick}
           />

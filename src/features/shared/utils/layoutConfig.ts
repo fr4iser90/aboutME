@@ -110,11 +110,11 @@ export async function getMainPageLayout(): Promise<MainPageLayoutConfig> {
     }
     const data = await response.json()
     // Support both old and new format
-    const globalLayout = data.config.globalLayout
-    if (globalLayout?.layout) {
+    const globalLayout = data.config?.globalLayout || {}
+    if (globalLayout.layout) {
       return { layout: globalLayout.layout }
     }
-    if (globalLayout?.displayMode) {
+    if (globalLayout.displayMode) {
       return { layout: globalLayout.displayMode }
     }
     return { layout: 'portfolio' }

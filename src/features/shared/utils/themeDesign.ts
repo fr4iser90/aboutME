@@ -31,6 +31,10 @@ export type DesignType =
   | 'green'
   | 'light-cool'
   | 'light-warm'
+  | 'skeuomorphism'
+  | 'brutalism'
+  | 'soft'
+  | 'sharp'
 
 export interface ThemeDesignCombination {
   theme: ThemeType
@@ -189,6 +193,10 @@ function getEffectForDesign(design: DesignType): string {
     'minimal-clean': 'clean',
     'neumorphism': 'neumorphism',
     'gradient': 'gradient',
+    'skeuomorphism': 'neumorphism',
+    'brutalism': 'flat',
+    'soft': 'minimal',
+    'sharp': 'clean',
   }
   return designToEffect[design] || 'glassmorphism'
 }

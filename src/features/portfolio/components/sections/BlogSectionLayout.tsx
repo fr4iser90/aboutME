@@ -2,15 +2,7 @@
 
 import { TerminalSection } from '@/features/terminal'
 import { BlogSection } from '@/features/blog'
-
-interface BlogPost {
-  id: string
-  title: string
-  date: string
-  excerpt: string
-  content?: string
-  tags?: string[]
-}
+import type { BlogPost } from '@/features/blog/types'
 
 interface BlogSectionLayoutProps {
   posts: BlogPost[]
@@ -37,7 +29,7 @@ export default function BlogSectionLayout({
   if (template === 'list') {
     return (
       <TerminalSection id="blog" title="Blog Posts">
-        <BlogSection posts={posts} onPostClick={onPostClick} />
+        <BlogSection posts={posts} onPostClick={onPostClick ?? (() => {})} />
       </TerminalSection>
     )
   }
@@ -55,7 +47,7 @@ export default function BlogSectionLayout({
             >
               <h3 className="blog-card__title">{post.title}</h3>
               <p className="blog-card__excerpt">{post.excerpt}</p>
-              <time className="blog-card__date">{post.date}</time>
+              <time className="blog-card__date">{post.publishedAt}</time>
             </article>
           ))}
         </div>
@@ -78,7 +70,7 @@ export default function BlogSectionLayout({
             >
               <h2 className="blog-card__title blog-card__title--large">{featuredPost.title}</h2>
               <p className="blog-card__excerpt blog-card__excerpt--large">{featuredPost.excerpt}</p>
-              <time className="blog-card__date">{featuredPost.date}</time>
+              <time className="blog-card__date">{featuredPost.publishedAt}</time>
             </article>
           )}
           <div className="blog-magazine__grid">
@@ -90,7 +82,7 @@ export default function BlogSectionLayout({
               >
                 <h3 className="blog-card__title">{post.title}</h3>
                 <p className="blog-card__excerpt">{post.excerpt}</p>
-                <time className="blog-card__date">{post.date}</time>
+                <time className="blog-card__date">{post.publishedAt}</time>
               </article>
             ))}
           </div>
@@ -110,7 +102,7 @@ export default function BlogSectionLayout({
             onClick={() => onPostClick?.(post)}
           >
             <h3 className="blog-card__title">{post.title}</h3>
-            <time className="blog-card__date">{post.date}</time>
+            <time className="blog-card__date">{post.publishedAt}</time>
           </article>
         ))}
       </div>

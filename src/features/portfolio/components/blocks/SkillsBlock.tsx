@@ -2,7 +2,7 @@
 
 import { TerminalSection } from '@/features/terminal'
 import { SkillCard, SkillsTimeline } from '@/features/portfolio'
-import type { Skill } from '@/features/portfolio/types'
+import type { Skill, TimelineEntry } from '@/features/portfolio/types'
 
 interface SkillsBlockProps {
   skills: Skill[]
@@ -32,7 +32,7 @@ export default function SkillsBlock({ skills, timeline, config, onYearClick }: S
 
       {config.showTimeline && timeline.length > 0 && (
         <SkillsTimeline 
-          timeline={timeline} 
+          timeline={timeline as unknown as TimelineEntry[]} 
           skills={skills} 
           onYearClick={onYearClick}
         />

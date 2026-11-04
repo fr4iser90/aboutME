@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { applyThemeDesign, getCurrentTheme, getCurrentDesign, type ThemeType, type DesignType } from '../utils/themeDesign'
+import { applyThemeDesign, getCurrentTheme, getCurrentDesign, isValidDesign, type ThemeType, type DesignType } from '../utils/themeDesign'
 
 interface DesignSwitcherProps {
   currentTheme?: ThemeType
@@ -96,7 +96,7 @@ export default function DesignSwitcher({ currentTheme, onDesignChange, available
           {designs.map((d) => (
             <button
               key={d.id}
-              onClick={() => handleDesignChange(d.id)}
+              onClick={() => isValidDesign(d.id) && handleDesignChange(d.id)}
               className={`p-2 rounded-lg transition-all ${
                 design === d.id
                   ? 'bg-blue-500 text-white'

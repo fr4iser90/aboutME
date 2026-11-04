@@ -41,7 +41,7 @@ export default function MainPageLayout({ layout, blocks }: MainPageLayoutProps) 
     'hero-content': 'hero-content',
     'carousel': 'carousel-layout',
     'sticky-sidebar': 'sticky-sidebar',
-    'portfolio': 'sidebar-left' // default portfolio layout
+    'portfolio': 'full-width' // clean public portfolio (sidebar layouts need more CSS polish)
   }
   
   const effectiveTemplate = layoutToTemplate[layout] || 'sidebar-left'

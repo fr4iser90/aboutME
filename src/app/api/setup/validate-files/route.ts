@@ -1,7 +1,8 @@
 /**
  * Validate Files API Route
- * 
+ *
  * Validates JSON files against JSON Schema definitions.
+ * Skips archive/ and other non-content directories.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -9,9 +10,30 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { jsonValidator, ValidationResult } from '@/features/editor/services/jsonValidator';
 
-// Validate files in private/data (during setup, before publishing)
 const PRIVATE_DATA_DIR = path.join(process.cwd(), 'private/data');
 const PUBLIC_DATA_DIR = path.join(process.cwd(), 'public/data');
+const SKIP_DIRS = new Set(['archive', 'backups', '.git']);
+
+async function findJsonFiles(dir: string): Promise<string[]> {
+  const found: string[] = [];
+  try {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      if (entry.isDirectory() && SKIP_DIRS.has(entry.name)) {
+        continue;
+      }
+      const fullPath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        found.push(...(await findJsonFiles(fullPath)));
+      } else if (entry.name.endsWith('.json')) {
+        found.push(fullPath);
+      }
+    }
+  } catch {
+    // Directory doesn't exist or can't be read
+  }
+  return found;
+}
 
 /**
  * GET: Validate all JSON files
@@ -21,26 +43,6 @@ export async function GET() {
     const results: Record<string, ValidationResult> = {};
     const files: string[] = [];
 
-    // Find all JSON files in private/data (during setup, before publishing)
-    async function findJsonFiles(dir: string): Promise<string[]> {
-      const found: string[] = [];
-      try {
-        const entries = await fs.readdir(dir, { withFileTypes: true });
-        for (const entry of entries) {
-          const fullPath = path.join(dir, entry.name);
-          if (entry.isDirectory()) {
-            found.push(...(await findJsonFiles(fullPath)));
-          } else if (entry.name.endsWith('.json')) {
-            found.push(fullPath);
-          }
-        }
-      } catch (error) {
-        // Directory doesn't exist or can't be read
-      }
-      return found;
-    }
-
-    // Try private/data first, fallback to public/data if private doesn't exist
     let dataDir = PRIVATE_DATA_DIR;
     try {
       await fs.access(PRIVATE_DATA_DIR);
@@ -60,11 +62,15 @@ export async function GET() {
         console.error(`Error validating ${filePath}:`, error);
         results[path.relative(dataDir, filePath)] = {
           isValid: false,
-          errors: [{
-            path: '/',
-            message: `Error reading file: ${error instanceof Error ? error.message : 'Unknown error'}`,
-            value: null
-          }],
+          errors: [
+            {
+              path: '/',
+              message: `Error reading file: ${
+                error instanceof Error ? error.message : 'Unknown error'
+              }`,
+              value: null,
+            },
+          ],
         };
       }
     }
@@ -105,7 +111,6 @@ export async function POST(request: NextRequest) {
 
     const results: Record<string, ValidationResult> = {};
 
-    // Try private/data first, fallback to public/data if private doesn't exist
     let dataDir = PRIVATE_DATA_DIR;
     try {
       await fs.access(PRIVATE_DATA_DIR);
@@ -114,7 +119,10 @@ export async function POST(request: NextRequest) {
     }
 
     for (const filePath of filePaths) {
-      // filePath is relative to data directory, construct full path
+      if (String(filePath).replace(/\\/g, '/').startsWith('archive/')) {
+        results[filePath] = { isValid: true, errors: [] };
+        continue;
+      }
       const fullPath = path.join(dataDir, filePath);
       try {
         const result = await jsonValidator.validateFile(fullPath);
@@ -123,11 +131,15 @@ export async function POST(request: NextRequest) {
         console.error(`Error validating ${filePath}:`, error);
         results[filePath] = {
           isValid: false,
-          errors: [{
-            path: '/',
-            message: `Error reading file: ${error instanceof Error ? error.message : 'Unknown error'}`,
-            value: null
-          }],
+          errors: [
+            {
+              path: '/',
+              message: `Error reading file: ${
+                error instanceof Error ? error.message : 'Unknown error'
+              }`,
+              value: null,
+            },
+          ],
         };
       }
     }
@@ -152,4 +164,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

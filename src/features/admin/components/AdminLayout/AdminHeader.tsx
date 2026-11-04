@@ -117,7 +117,7 @@ export default function AdminHeader({ buildHook }: AdminHeaderProps) {
           className={`admin-header__readability-button ${backgroundHidden ? 'admin-header__readability-button--active' : ''}`}
           title={backgroundHidden ? 'Show background image' : 'Hide background for better readability'}
         >
-          {backgroundHidden ? '👁️ Show Background' : '📖 Better Readability'}
+          {backgroundHidden ? 'Show background' : 'Better readability'}
         </button>
 
         {/* Build Button (wenn Build nötig) */}
@@ -127,7 +127,7 @@ export default function AdminHeader({ buildHook }: AdminHeaderProps) {
             disabled={buildHook.isBuilding || buildHook.isValidating}
             className="admin-header__build-button"
           >
-            {buildHook.isValidating ? '⏳ Validating...' : buildHook.isBuilding ? '⏳ Building...' : '🚀 Build Portfolio'}
+            {buildHook.isValidating ? 'Validating…' : buildHook.isBuilding ? 'Publishing…' : 'Publish'}
           </button>
         )}
 
@@ -159,7 +159,9 @@ export default function AdminHeader({ buildHook }: AdminHeaderProps) {
             <p className="admin-header__user-name">Admin</p>
             <p className="admin-header__user-role">Administrator</p>
           </div>
-          <div className="admin-header__user-avatar">👤</div>
+          <div className="admin-header__user-avatar" aria-hidden>
+            A
+          </div>
         </div>
       </div>
     </header>

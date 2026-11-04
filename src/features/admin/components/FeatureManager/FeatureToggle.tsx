@@ -14,7 +14,6 @@ interface FeatureToggleProps {
 }
 
 export default function FeatureToggle({
-  name,
   label,
   description,
   enabled,
@@ -23,30 +22,33 @@ export default function FeatureToggle({
   hasConfig = false,
   dependencies = [],
   onChange,
-  onConfigure
+  onConfigure,
 }: FeatureToggleProps) {
   return (
     <div className={`glass-card feature-toggle ${disabled ? 'feature-toggle--disabled' : ''}`}>
-      {/* Toggle Switch */}
       <div
         className={`feature-toggle__switch ${enabled ? 'feature-toggle__switch--enabled' : ''} ${disabled ? 'feature-toggle__switch--disabled' : ''}`}
         onClick={() => !disabled && onChange(!enabled)}
+        role="switch"
+        aria-checked={enabled}
+        aria-disabled={disabled}
       >
         <div className="feature-toggle__switch-handle" />
       </div>
 
-      {/* Feature Info */}
       <div className="feature-toggle__info">
         <div className="feature-toggle__header">
           <h4 className="feature-toggle__label">{label}</h4>
           {warning && (
-            <span className="feature-toggle__warning" title={warning}>⚠️</span>
+            <span className="feature-toggle__warning" title={warning}>
+              warn
+            </span>
           )}
         </div>
         <p className="feature-toggle__description">{description}</p>
-        {dependencies && dependencies.length > 0 && (
+        {dependencies.length > 0 && (
           <p className="feature-toggle__dependencies">
-            <span className="feature-toggle__dependencies-label">Requires:</span>
+            <span className="feature-toggle__dependencies-label">Requires:</span>{' '}
             <span className="feature-toggle__dependencies-list">
               {dependencies.join(', ')}
             </span>
@@ -54,22 +56,22 @@ export default function FeatureToggle({
         )}
       </div>
 
-      {/* Configure Button */}
-      {hasConfig && (
+      {hasConfig && onConfigure && (
         <button
+          type="button"
           className="feature-toggle__config-btn"
           onClick={(e) => {
             e.stopPropagation()
-            onConfigure?.()
+            onConfigure()
           }}
         >
-          <span>⚙️</span>
           Configure
         </button>
       )}
 
-      {/* Status Indicator */}
-      <div className={`feature-toggle__status ${enabled ? 'feature-toggle__status--enabled' : ''}`} />
+      <div
+        className={`feature-toggle__status ${enabled ? 'feature-toggle__status--enabled' : ''}`}
+      />
     </div>
   )
 }

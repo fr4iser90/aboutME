@@ -26,7 +26,7 @@ interface AppearanceStepProps {
 }
 
 export default function AppearanceStep({ config, onUpdate }: AppearanceStepProps) {
-  const [design, setDesign] = useState(config.appearance?.design || 'glassmorphism');
+  const [design, setDesign] = useState(config.appearance?.design || 'minimal');
   const [theme, setTheme] = useState(config.appearance?.theme || 'dark');
   const [displayMode, setDisplayMode] = useState(config.appearance?.displayMode || 'portfolio');
   const [useDesignDefaults, setUseDesignDefaults] = useState(
@@ -43,16 +43,14 @@ export default function AppearanceStep({ config, onUpdate }: AppearanceStepProps
   }, [design, theme, displayMode, useDesignDefaults, onUpdate]);
 
   const designs = [
-    { value: 'glassmorphism', label: 'Glassmorphism' },
-    { value: 'flat', label: 'Flat' },
     { value: 'minimal', label: 'Minimal' },
+    { value: 'glassmorphism', label: 'Terminal' },
+    { value: 'clean', label: 'Editorial' },
   ];
 
   const themes = [
     { value: 'dark', label: 'Dark' },
     { value: 'light', label: 'Light' },
-    { value: 'ocean', label: 'Ocean' },
-    { value: 'sunset', label: 'Sunset' },
   ];
 
   const displayModes = [

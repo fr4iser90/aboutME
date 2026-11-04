@@ -6,13 +6,13 @@ interface CategoryTabsProps {
 }
 
 const categories = [
-  { id: 'global', name: 'Global', icon: '🌐' },
-  { id: 'projects', name: 'Projects', icon: '📁' },
-  { id: 'skills', name: 'Skills', icon: '💼' },
-  { id: 'timeline', name: 'Timeline', icon: '📅' },
-  { id: 'blog', name: 'Blog', icon: '📝' },
-  { id: 'aboutMe', name: 'About Me', icon: '👤' },
-  { id: 'contact', name: 'Contact', icon: '📧' }
+  { id: 'global', name: 'Global', icon: 'G' },
+  { id: 'projects', name: 'Projects', icon: 'P' },
+  { id: 'skills', name: 'Skills', icon: 'S' },
+  { id: 'timeline', name: 'Timeline', icon: 'T' },
+  { id: 'blog', name: 'Blog', icon: 'B' },
+  { id: 'aboutMe', name: 'About Me', icon: 'A' },
+  { id: 'contact', name: 'Contact', icon: 'C' }
 ]
 
 export default function CategoryTabs({ activeCategory, onCategoryChange }: CategoryTabsProps) {

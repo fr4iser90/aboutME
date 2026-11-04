@@ -112,7 +112,7 @@ interface Config {
     }
     hero?: {
       enabled: boolean
-      variant?: 'floating' | 'card' | 'fullscreen' | 'minimal' | 'split'
+      variant?: 'floating' | 'card' | 'fullscreen' | 'minimal' | 'split' | 'inline'
       animation?: {
         enabled: boolean
         type: 'fade' | 'slide' | 'zoom' | 'none'
@@ -124,6 +124,7 @@ interface Config {
     theme: {
       enabled: boolean
       defaultTheme: string
+      defaultDesign?: string
       publicSwitcher?: {
         enabled: boolean
         allowThemeSwitch: boolean
@@ -133,6 +134,21 @@ interface Config {
         switcherType: 'separate' | 'combined'
         position: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
       }
+    }
+    header?: {
+      enabled: boolean
+      variant?: 'default' | 'minimal' | 'transparent'
+      showBranding?: boolean
+      showNavigation?: boolean
+    }
+    footer?: {
+      enabled: boolean
+      variant?: 'default' | 'minimal' | 'centered'
+      showCopyright?: boolean
+      showTerminalButton?: boolean
+    }
+    terminal?: {
+      enabled: boolean
     }
     background?: {
       useDefault: boolean
@@ -246,13 +262,22 @@ export default function Home() {
         }
 
         const responses = await Promise.allSettled(promises)
+
+        const readJson = async (settled: PromiseSettledResult<Response>) => {
+          if (settled.status !== 'fulfilled' || !settled.value.ok) return null
+          try {
+            return await settled.value.json()
+          } catch {
+            return null
+          }
+        }
         
-        const user = responses[0].status === 'fulfilled' ? await responses[0].value.json() : null
-        const projectsData = responses[1].status === 'fulfilled' ? await responses[1].value.json() : null
-        const skillsData = responses[2].status === 'fulfilled' ? await responses[2].value.json() : null
-        const configData = responses[3].status === 'fulfilled' ? await responses[3].value.json() : null
-        const blogData = responses[4]?.status === 'fulfilled' ? await responses[4].value.json() : null
-        const timelineData = responses[5]?.status === 'fulfilled' ? await responses[5].value.json() : null
+        const user = await readJson(responses[0])
+        const projectsData = await readJson(responses[1])
+        const skillsData = await readJson(responses[2])
+        const configData = await readJson(responses[3])
+        const blogData = await readJson(responses[4])
+        const timelineData = await readJson(responses[5])
 
         // Transform user data
         if (user) {
@@ -266,18 +291,45 @@ export default function Home() {
 
         // Set projects data
         if (projectsData) {
-          setAllProjects(projectsData.projects)
-          setProjects(projectsData.projects.filter((p: Project) => p.featured).slice(0, 6))
+          const list = Array.isArray(projectsData)
+            ? projectsData
+            : (projectsData.projects || [])
+          setAllProjects(list)
+          const featured = list.filter((p: Project) => p.featured)
+          setProjects((featured.length ? featured : list).slice(0, 6))
         }
 
-        // Set skills data
+        // Set skills data (supports array lists or language maps)
         if (skillsData) {
-          setSkills([...skillsData.languages, ...skillsData.frameworks, ...skillsData.tools].slice(0, 12))
+          const toSkillList = (value: unknown): Skill[] => {
+            if (Array.isArray(value)) return value as Skill[]
+            if (value && typeof value === 'object') {
+              return Object.entries(value as Record<string, unknown>).map(([name, meta]) => {
+                if (meta && typeof meta === 'object') {
+                  return { name, ...(meta as object) } as Skill
+                }
+                return {
+                  name,
+                  count: typeof meta === 'number' ? meta : 0,
+                  level: 'intermediate',
+                  category: 'language',
+                  icon: 'code',
+                } as Skill
+              })
+            }
+            return []
+          }
+          const merged = [
+            ...toSkillList(skillsData.languages),
+            ...toSkillList(skillsData.frameworks),
+            ...toSkillList(skillsData.tools),
+          ]
+          setSkills(merged.slice(0, 12))
         }
 
         // Set blog data
         if (blogData) {
-          setBlogPosts(blogData.posts || [])
+          setBlogPosts(blogData.posts || blogData.blog || [])
         }
 
         // Set timeline data
@@ -287,16 +339,27 @@ export default function Home() {
 
         // Set config - transform structure if needed
         if (configData) {
+          const rawFeatures = configData.portfolio?.features || configData.features || {}
+          const asFeature = (value: unknown, extra: Record<string, unknown> = {}) => {
+            if (value && typeof value === 'object') return { ...extra, ...(value as object) }
+            return { enabled: !!value, ...extra }
+          }
           // Transform config.json structure to match Config interface
           const transformedConfig: Config = {
             features: {
-              projects: configData.portfolio?.features?.projects || configData.features?.projects || { enabled: true, showFeatured: true, showAll: true },
-              skills: configData.portfolio?.features?.skills || configData.features?.skills || { enabled: true, showTimeline: true },
-              aboutMe: configData.portfolio?.features?.aboutMe || configData.features?.aboutMe || { enabled: true },
-              blog: configData.portfolio?.features?.blog || configData.features?.blog || { enabled: false },
-              contact: configData.portfolio?.features?.contact || configData.features?.contact || { enabled: false },
-              hero: configData.portfolio?.features?.hero || configData.features?.hero || { enabled: true, variant: 'floating' },
-              theme: configData.portfolio?.features?.theme || configData.features?.theme || { enabled: true, defaultTheme: 'dark' }
+              projects: asFeature(rawFeatures.projects, { showFeatured: true, showAll: true }) as Config['features']['projects'],
+              skills: asFeature(rawFeatures.skills, { showTimeline: true }) as Config['features']['skills'],
+              aboutMe: asFeature(rawFeatures.aboutMe) as Config['features']['aboutMe'],
+              blog: asFeature(rawFeatures.blog) as Config['features']['blog'],
+              contact: asFeature(rawFeatures.contact) as Config['features']['contact'],
+              hero: asFeature(rawFeatures.hero, { variant: 'inline' }) as Config['features']['hero'],
+              theme: asFeature(rawFeatures.theme, { defaultTheme: 'dark' }) as Config['features']['theme'],
+              header: asFeature(rawFeatures.header, { variant: 'default' }) as Config['features']['header'],
+              footer: asFeature(rawFeatures.footer, { variant: 'default' }) as Config['features']['footer'],
+              terminal: asFeature(rawFeatures.terminal) as Config['features']['terminal'],
+              background: (rawFeatures.background && typeof rawFeatures.background === 'object'
+                ? rawFeatures.background
+                : { useDefault: true, defaultImage: '/assets/galaxy.png' }) as any,
             },
             layout: configData.portfolio?.layout || configData.layout || {
               sections: {
@@ -305,6 +368,20 @@ export default function Home() {
             }
           }
           setConfig(transformedConfig)
+        } else {
+          // Safe defaults if config.json missing/invalid
+          setConfig({
+            features: {
+              projects: { enabled: true, showFeatured: true, showAll: true },
+              skills: { enabled: true, showTimeline: true },
+              aboutMe: { enabled: true },
+              blog: { enabled: false },
+              contact: { enabled: true },
+              hero: { enabled: true, variant: 'inline' },
+              theme: { enabled: true, defaultTheme: 'dark' },
+            },
+            layout: { sections: { order: ['hero', 'about', 'projects', 'skills', 'blog', 'contact'] } }
+          } as Config)
         }
 
         // Load layout configuration
@@ -346,19 +423,6 @@ export default function Home() {
     }
   }, [loading])
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-dark-950">
-        <div className="text-center">
-          <div className="loading-spinner mx-auto mb-6"></div>
-          <p className="text-gray-400 loading-dots text-lg">Loading portfolio</p>
-        </div>
-      </div>
-    )
-  }
-
-  const currentProjects = currentView === 'featured' ? projects : allProjects
-
   // Check if design is active
   useEffect(() => {
     const checkDesign = () => {
@@ -381,10 +445,23 @@ export default function Home() {
     return () => observer.disconnect()
   }, [])
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-dark-950">
+        <div className="text-center">
+          <div className="loading-spinner mx-auto mb-6"></div>
+          <p className="text-gray-400 loading-dots text-lg">Loading portfolio</p>
+        </div>
+      </div>
+    )
+  }
+
+  const currentProjects = currentView === 'featured' ? projects : allProjects
+
   // Get background image from config
   const backgroundImage = config?.features.background?.useDefault 
-    ? config.features.background?.defaultImage || '/assets/galaxy.png'
-    : config.features.background?.customImage
+    ? config?.features.background?.defaultImage || '/assets/galaxy.png'
+    : config?.features.background?.customImage
 
   return (
     <div className="min-h-screen text-white" data-main-page="true">
@@ -393,7 +470,15 @@ export default function Home() {
       
       {/* Header - Only on main page */}
       {config?.features.header?.enabled && (
-        <Header config={config.features.header} onAboutClick={handleAboutMeClick} />
+        <Header
+          config={{
+            enabled: true,
+            variant: config.features.header.variant || 'default',
+            showBranding: config.features.header.showBranding,
+            showNavigation: config.features.header.showNavigation,
+          }}
+          onAboutClick={handleAboutMeClick}
+        />
       )}
       
       {/* Theme Switcher - Only show if theme enabled AND public switcher enabled */}
@@ -439,34 +524,35 @@ export default function Home() {
               <ProjectsSectionLayout 
                 projects={currentProjects}
                 config={config?.features.projects}
-                layout={sectionLayouts?.projects}
+                layout={sectionLayouts?.projects as any}
                 onProjectClick={handleProjectClick}
               />
             ),
             skills: (
               <SkillsSectionLayout 
                 skills={skills}
-                timeline={timeline}
+                timeline={timeline as any}
                 config={config?.features.skills}
-                layout={sectionLayouts?.skills}
+                layout={sectionLayouts?.skills as any}
                 onYearClick={handleYearClick}
               />
             ),
-            timeline: timeline.length > 0 ? (
+            timeline:
+              timeline.length > 0 && !config?.features.skills?.showTimeline ? (
               <TimelineSectionLayout 
-                timeline={timeline}
+                timeline={timeline as any}
                 skills={skills}
                 config={config?.features.skills}
-                layout={sectionLayouts?.timeline}
+                layout={sectionLayouts?.timeline as any}
                 onYearClick={handleYearClick}
               />
             ) : null,
             blog: (
               <BlogSectionLayout 
-                posts={blogPosts}
+                posts={blogPosts as any}
                 config={config?.features.blog}
-                layout={sectionLayouts?.blog}
-                onPostClick={handlePostClick}
+                layout={sectionLayouts?.blog as any}
+                onPostClick={handlePostClick as any}
               />
             ),
             contact: (
@@ -490,7 +576,12 @@ export default function Home() {
       {config?.features.footer?.enabled && userData && (
         <Footer 
           userData={userData} 
-          config={config.features.footer}
+          config={{
+            enabled: true,
+            variant: config.features.footer.variant || 'default',
+            showCopyright: config.features.footer.showCopyright,
+            showTerminalButton: config.features.footer.showTerminalButton,
+          }}
           terminalEnabled={config?.features.terminal?.enabled === true}
           onTerminalOpen={handleTerminalOpen}
         />

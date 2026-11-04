@@ -126,6 +126,8 @@ export default function MainPageLayoutEditor({ onSave }: MainPageLayoutEditorPro
             {mainPageLayouts.map((layout) => (
               <button
                 key={layout.id}
+                type="button"
+                data-layout-id={layout.id}
                 onClick={() => handleLayoutChange(layout.id)}
                 className={`global-layout-editor__mode-card ${
                   config.layout === layout.id ? 'global-layout-editor__mode-card--selected' : ''

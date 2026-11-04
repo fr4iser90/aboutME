@@ -9,7 +9,7 @@ export function getThemeInitScript() {
     (function() {
       // Get saved preferences or use defaults from config
       const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
-      const savedDesign = localStorage.getItem('portfolio-design') || 'glassmorphism';
+      const savedDesign = localStorage.getItem('portfolio-design') || 'minimal';
       
       // Apply theme immediately (before React loads)
       const root = document.documentElement;

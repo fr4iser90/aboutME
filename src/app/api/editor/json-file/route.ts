@@ -10,6 +10,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { jsonValidator } from '@/features/editor/services/jsonValidator';
 import { getSchemaForPath } from '@/features/editor/services/jsonSchema';
+import { requireAdmin } from '@/features/auth/services/requireAdmin';
 
 const PUBLIC_DATA_DIR = path.join(process.cwd(), 'public/data');
 const PRIVATE_DATA_DIR = path.join(process.cwd(), 'private/data');
@@ -125,6 +126,9 @@ export async function GET(request: NextRequest) {
  * POST: Save JSON file
  */
 export async function POST(request: NextRequest) {
+  const unauthorized = requireAdmin(request);
+  if (unauthorized) return unauthorized;
+
   try {
     const body = await request.json();
     const { path: filePath, content, source = 'private' } = body;
