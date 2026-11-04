@@ -1115,13 +1115,13 @@ export default function EditorComponent() {
       
       for (const file of projectFiles) {
         try {
-          // Use the correct API path for loading project files
-          const apiPath = `/api/editor/file/projects/${file.filename}`
-          const response = await fetch(apiPath)
+          // Project details are JSON now; status/featured come from the file itself
+          const response = await fetch(
+            `/api/editor/json-file?path=${encodeURIComponent(file.path)}&source=${file.source || 'private'}`
+          )
           if (response.ok) {
-            const content = await response.text()
-            const { frontmatter } = parseFrontmatter(content)
-            metadata.set(file.path, frontmatter)
+            const payload = await response.json()
+            metadata.set(file.path, payload.data ?? null)
           }
         } catch (error) {
           console.error(`Error loading metadata for ${file.name}:`, error)

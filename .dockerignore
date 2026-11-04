@@ -1,0 +1,47 @@
+# Dependencies: the image installs them itself (pnpm on the host uses symlinks
+# into node_modules/.pnpm, which BuildKit cannot COPY over real directories)
+node_modules
+.pnp
+.pnp.js
+
+# Build output / caches
+.next
+out
+build
+dist
+.cache
+.tsbuildinfo
+*.tsbuildinfo
+
+# Local data: supplied at runtime through named volumes
+private
+backups
+logs
+*.log
+
+# Secrets and local session state
+.env
+.env.*
+!.env.example
+.auth-lock
+.auth-secrets
+.auth-sessions
+cookies.txt
+
+# VCS / editors / CI
+.git
+.gitignore
+.github
+.cursor
+.vscode
+
+# Tests and audit leftovers
+tests
+test-results
+playwright.config.ts
+.audit-out
+
+# Not needed to build or run the server
+docker-compose*.yml
+Dockerfile
+shell.nix

@@ -414,21 +414,11 @@ export async function POST(request: NextRequest) {
         await fs.mkdir(configDir, { recursive: true });
         
         const configPath = path.join(configDir, 'config.json');
-        let configJson: any = {};
-        
-        // Read existing config.json if it exists
-        try {
-          const existingContent = await fs.readFile(configPath, 'utf-8');
-          // Check if file is empty or only whitespace
-          if (existingContent && existingContent.trim().length > 0) {
-            configJson = JSON.parse(existingContent);
-          }
-        } catch (error) {
-          // File doesn't exist or is invalid, start with empty object
-          if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
-            console.warn('Could not parse existing config.json, starting fresh:', error);
-          }
-        }
+
+        // Merge base: draft first, published config as fallback (readConfigJson).
+        // An empty draft store (fresh volume) must not let a partial POST shrink an
+        // established config down to the few fields this request happens to carry.
+        let configJson: any = (await readConfigJson()) || {};
 
         // Update progress tracking if provided
         if (config.progress) {

@@ -44,6 +44,12 @@ COPY --from=builder --chown=appuser:appuser /app/public ./public
 COPY --from=builder --chown=appuser:appuser /app/scripts ./scripts
 RUN chmod +x /app/scripts/docker-entrypoint.sh
 
+# Named volumes are mounted on these paths. Creating them here (as appuser) makes
+# Docker seed fresh volumes with appuser ownership; otherwise they are created
+# root:root and the non-root server cannot write drafts, uploads, sessions,
+# publish backups or logs.
+RUN mkdir -p /app/private/data /app/logs /app/auth-state /app/backups
+
 # Set environment variables
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1

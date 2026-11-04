@@ -39,10 +39,10 @@ function logStructured(level, event, message, context = {}) {
 function validatePortfolioConfig() {
   try {
     const DATA_DIR = path.join(process.cwd(), 'public/data');
-    const configFile = path.join(DATA_DIR, 'config.json');
-    const userFile = path.join(DATA_DIR, 'user.json');
-    const projectsFile = path.join(DATA_DIR, 'projects.json');
-    const skillsFile = path.join(DATA_DIR, 'skills.json');
+    const configFile = path.join(DATA_DIR, 'config', 'config.json');
+    const userFile = path.join(DATA_DIR, 'user', 'user.json');
+    const projectsFile = path.join(DATA_DIR, 'projects', 'projects.json');
+    const skillsFile = path.join(DATA_DIR, 'skills', 'skills.json');
     
     // Step 1: Check critical files
     const criticalFiles = [configFile, userFile];
@@ -82,9 +82,10 @@ function validatePortfolioConfig() {
       }
       
       // Check About Me if enabled
-      if (config.features?.aboutMe?.enabled) {
-        if (!userData.aboutMe || userData.aboutMe === null) {
-          validationErrors.push('About Me is enabled but user.aboutMe is null/missing');
+      if (config.features?.aboutMe === true || config.features?.aboutMe?.enabled) {
+        const aboutFile = path.join(DATA_DIR, 'about', 'about.json');
+        if (!fs.existsSync(aboutFile) && !userData.aboutMe) {
+          validationErrors.push('About Me is enabled but about content is missing');
         }
       }
     } catch (error) {

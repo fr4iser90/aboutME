@@ -13,6 +13,10 @@ services:
       - portfolio_public_data:/app/public/data
       - portfolio_uploads:/app/public/uploads
       - portfolio_auth:/app/auth-state
+      - portfolio_backups:/app/backups
+    env_file:
+      - path: .env
+        required: false
     environment:
       - NODE_ENV=production
       - ENABLE_AUTH=true
@@ -29,4 +33,6 @@ volumes:
   portfolio_uploads:
     driver: local
   portfolio_auth:
+    driver: local
+  portfolio_backups:
     driver: local

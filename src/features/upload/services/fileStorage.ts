@@ -25,9 +25,9 @@ export class FileStorage {
     const categories: UploadCategory[] = ['hero', 'background', 'projects', 'blog', 'about', 'general'];
     
     for (const category of categories) {
-      const dirPath = path.join(this.basePath, category);
-      if (!fs.existsSync(dirPath)) {
-        fs.mkdirSync(dirPath, { recursive: true });
+      const dirPath = path.join(/*turbopackIgnore: true*/ this.basePath, category);
+      if (!fs.existsSync(/*turbopackIgnore: true*/ dirPath)) {
+        fs.mkdirSync(/*turbopackIgnore: true*/ dirPath, { recursive: true });
       }
     }
   }
@@ -52,19 +52,19 @@ export class FileStorage {
     const categories: UploadCategory[] = ['hero', 'background', 'projects', 'blog', 'about', 'general'];
     
     for (const category of categories) {
-      const categoryPath = path.join(this.basePath, category);
-      if (!fs.existsSync(categoryPath)) {
+      const categoryPath = path.join(/*turbopackIgnore: true*/ this.basePath, category);
+      if (!fs.existsSync(/*turbopackIgnore: true*/ categoryPath)) {
         continue;
       }
       
-      const files = fs.readdirSync(categoryPath);
+      const files = fs.readdirSync(/*turbopackIgnore: true*/ categoryPath);
       let categorySize = 0;
       let categoryCount = 0;
       
       for (const file of files) {
-        const filePath = path.join(categoryPath, file);
+        const filePath = path.join(/*turbopackIgnore: true*/ categoryPath, file);
         try {
-          const fileStats = fs.statSync(filePath);
+          const fileStats = fs.statSync(/*turbopackIgnore: true*/ filePath);
           if (fileStats.isFile()) {
             categorySize += fileStats.size;
             categoryCount++;

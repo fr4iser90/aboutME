@@ -16,15 +16,17 @@ export async function GET() {
       { path: path.join(DATA_DIR, 'projects'), category: 'projects' }
     ];
 
+    // Supplied by runtime volumes: a dynamic path here makes Turbopack trace the
+    // whole project into the build output, so opt each access out explicitly.
     for (const dir of markdownDirs) {
-      if (fs.existsSync(dir.path)) {
+      if (fs.existsSync(/*turbopackIgnore: true*/ dir.path)) {
         console.log('API: Scanning directory:', dir.path);
-        const dirFiles = fs.readdirSync(dir.path);
+        const dirFiles = fs.readdirSync(/*turbopackIgnore: true*/ dir.path);
         const mdFiles = dirFiles.filter(file => file.endsWith('.md'));
-        
+
         for (const file of mdFiles) {
-          const filePath = path.join(dir.path, file);
-          const stats = fs.statSync(filePath);
+          const filePath = path.join(/*turbopackIgnore: true*/ dir.path, file);
+          const stats = fs.statSync(/*turbopackIgnore: true*/ filePath);
           
           console.log('API: Processing Markdown file:', file, 'category:', dir.category);
           

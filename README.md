@@ -59,7 +59,14 @@ curl -X POST http://localhost:3000/api/agent/ingest \
 docker compose up -d --build
 ```
 
-Volumes: `private/data`, `public/data`, `public/uploads`, logs, auth state.
+`.env` is loaded through `env_file`, so `ADMIN_PASSWORD` reaches the container
+(without it a new random admin password is generated on every start and only
+printed to the logs).
+
+Volumes: `private/data` (drafts), `public/data`, `public/uploads`, logs, auth
+state, backups. On first start an **empty** `private/data` is seeded from
+`public/data`; `Publish` snapshots the published JSON to
+`backups/<timestamp>/public-data` before overwriting it (last 10 kept).
 
 ## License
 

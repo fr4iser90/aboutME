@@ -82,6 +82,13 @@ function setSecurityHeaders(response: NextResponse, allowIframe = false, domain?
   response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
 }
 
+/**
+ * frame-ancestors is enforced on the *framed* document, so the route /preview
+ * embeds (`<iframe src="/">`) has to allow framing — allowing only /preview
+ * leaves the live preview blank. Same-origin only ('self').
+ */
+const FRAMEABLE_PATHS = ['/', '/preview'];
+
 export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
@@ -279,7 +286,7 @@ export default function proxy(request: NextRequest) {
     
     // Alle anderen Routen im Normal-Modus → Erlauben
     const response = NextResponse.next();
-    setSecurityHeaders(response, pathname === '/preview', process.env.DOMAIN);
+    setSecurityHeaders(response, FRAMEABLE_PATHS.includes(pathname), process.env.DOMAIN);
     return response;
   }
 }

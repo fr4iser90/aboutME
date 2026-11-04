@@ -37,11 +37,35 @@ services:
       - "traefik.http.middlewares.portfolio-rate-limit.ratelimit.burst=20"
       - "traefik.http.middlewares.portfolio-rate-limit.ratelimit.average=10"
       - "traefik.http.routers.portfolio.middlewares=portfolio-rate-limit"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      - NODE_ENV=production
+      - ENABLE_AUTH=true
+      - AUTH_STATE_DIR=/app/auth-state
+    volumes:
+      - portfolio_logs:/app/logs
+      - portfolio_private_data:/app/private/data
+      - portfolio_public_data:/app/public/data
+      - portfolio_uploads:/app/public/uploads
+      - portfolio_auth:/app/auth-state
+      - portfolio_backups:/app/backups
     restart: unless-stopped
 
 
 volumes:
   portfolio_logs:
+    driver: local
+  portfolio_private_data:
+    driver: local
+  portfolio_public_data:
+    driver: local
+  portfolio_uploads:
+    driver: local
+  portfolio_auth:
+    driver: local
+  portfolio_backups:
     driver: local
 
 networks:

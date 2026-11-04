@@ -163,7 +163,7 @@ export async function downloadAssets(
         urlMapping[asset.url] = result.localPath;
         asset.localPath = result.localPath;
         // Mark file as used
-        const fullPath = path.join(process.cwd(), result.localPath.replace(/^\//, ''));
+        const fullPath = path.join(/*turbopackIgnore: true*/ process.cwd(), result.localPath.replace(/^\//, ''));
         usedFiles.add(fullPath);
       } else {
         console.log(`⚠️  Failed to download asset: ${asset.url} - ${result.error || 'Unknown error'}`);

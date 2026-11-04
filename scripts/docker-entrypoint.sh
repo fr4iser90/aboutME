@@ -21,7 +21,17 @@ else
   echo "{\"timestamp\":\"$(date -Iseconds)\",\"level\":\"INFO\",\"event\":\"normal_mode_activated\",\"message\":\"Normal mode - portfolio fully configured\",\"service\":\"docker-entrypoint\"}"
 fi
 
+# private/ is not part of the image, so a fresh draft volume starts empty and the
+# CMS editor would have nothing to edit. Seeding an empty store is idempotent:
+# as soon as it holds files this branch never runs again.
+if [ -z "$(ls -A /app/private/data 2>/dev/null)" ] && [ -n "$(ls -A /app/public/data 2>/dev/null)" ]; then
+  if cp -a /app/public/data/. /app/private/data/ 2>/dev/null; then
+    echo "{\"timestamp\":\"$(date -Iseconds)\",\"level\":\"INFO\",\"event\":\"private_data_seeded\",\"message\":\"Draft store seeded from published data\",\"service\":\"docker-entrypoint\"}"
+  else
+    echo "{\"timestamp\":\"$(date -Iseconds)\",\"level\":\"WARNING\",\"event\":\"private_data_seed_failed\",\"message\":\"Could not seed empty draft store\",\"service\":\"docker-entrypoint\"}"
+  fi
+fi
+
 # Start Next.js server
 echo "🚀 Starting Next.js server..."
 exec node server.js
-

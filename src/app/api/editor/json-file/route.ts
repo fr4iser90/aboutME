@@ -80,8 +80,8 @@ export async function GET(request: NextRequest) {
       );
     }
     
-    // Read file content
-    const content = await fs.readFile(validation.fullPath, 'utf-8');
+    // Read file content — data arrives on runtime volumes, so keep it out of the build trace
+    const content = await fs.readFile(/*turbopackIgnore: true*/ validation.fullPath, 'utf-8');
     
     // Parse JSON to validate
     let data: any;
@@ -193,7 +193,7 @@ export async function POST(request: NextRequest) {
     await fs.writeFile(validation.fullPath, JSON.stringify(data, null, 2), 'utf-8');
     
     // Get file stats
-    const stats = await fs.stat(validation.fullPath);
+    const stats = await fs.stat(/*turbopackIgnore: true*/ validation.fullPath);
     
     return NextResponse.json({
       success: true,
