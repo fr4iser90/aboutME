@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Static portfolio generator with GitHub integration",
   "main": "setup.ts",
+  "browserslist": [
+    "defaults"
+  ],
   "scripts": {
     "setup": "npx tsx setup.ts",
     "generate": "npx tsx src/features/setup/scripts/data-orchestrator.ts",

@@ -46,7 +46,7 @@
 /* Dark Theme Override */
 :root[data-theme="dark"][data-design="minimal-clean"],
 [data-theme="dark"][data-design="minimal-clean"] {
-  --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.1);
   --design-bg-color: var(--bg-primary);
 }
 

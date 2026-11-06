@@ -7,8 +7,8 @@
   /* Brutalism Background Variables - Bold */
   --glass-bg: var(--bg-secondary);
   --glass-bg-hover: var(--bg-tertiary);
-  --glass-border: 4px solid var(--text-primary);
-  --glass-border-hover: 6px solid var(--neon-blue);
+  --glass-border: var(--text-primary);
+  --glass-border-hover: var(--neon-blue);
   --glass-shadow: 8px 8px 0px rgba(0, 0, 0, 1);
   --glass-shadow-hover: 12px 12px 0px rgba(0, 0, 0, 1);
   
@@ -28,8 +28,8 @@
 [data-theme="light-cool"][data-effect="brutalism"],
 :root[data-theme="light-alt"][data-effect="brutalism"],
 [data-theme="light-alt"][data-effect="brutalism"] {
-  --glass-border: 4px solid var(--text-primary);
-  --glass-border-hover: 6px solid var(--neon-blue);
+  --glass-border: var(--text-primary);
+  --glass-border-hover: var(--neon-blue);
   --glass-shadow: 8px 8px 0px rgba(0, 0, 0, 0.3);
   --glass-shadow-hover: 12px 12px 0px rgba(0, 0, 0, 0.4);
 }

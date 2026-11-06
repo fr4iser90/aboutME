@@ -7,8 +7,8 @@
   /* Minimal Background Variables - Effect Prefix */
   --effect-glass-bg: transparent;
   --effect-glass-bg-hover: var(--bg-tertiary);
-  --effect-glass-border: 1px solid rgba(255, 255, 255, 0.05);
-  --effect-glass-border-hover: 1px solid var(--neon-blue);
+  --effect-glass-border: rgba(255, 255, 255, 0.05);
+  --effect-glass-border-hover: var(--neon-blue);
   --effect-glass-shadow: none;
   --effect-glass-shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.1);
   
@@ -36,8 +36,8 @@
 [data-theme="light"][data-effect="minimal"] {
   --effect-glass-bg: transparent;
   --effect-glass-bg-hover: var(--bg-tertiary);
-  --effect-glass-border: 1px solid rgba(0, 0, 0, 0.05);
-  --effect-glass-border-hover: 1px solid var(--neon-blue);
+  --effect-glass-border: rgba(0, 0, 0, 0.05);
+  --effect-glass-border-hover: var(--neon-blue);
   --effect-glass-shadow: none;
   --effect-glass-shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.05);
   

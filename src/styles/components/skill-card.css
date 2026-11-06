@@ -3,7 +3,6 @@
 .skill-card {
   background: var(--glass-bg);
   backdrop-filter: var(--design-backdrop-filter, blur(16px));
-  -webkit-backdrop-filter: var(--design-backdrop-filter, blur(16px));
   border: 1px solid var(--glass-border);
   border-radius: var(--design-border-radius, 8px);
   padding: 0.5rem;

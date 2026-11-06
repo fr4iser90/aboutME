@@ -8,8 +8,8 @@
   /* Clean Background Variables - Effect Prefix */
   --effect-glass-bg: var(--bg-tertiary);
   --effect-glass-bg-hover: var(--bg-quaternary);
-  --effect-glass-border: 1px solid rgba(255, 255, 255, 0.1);
-  --effect-glass-border-hover: 1px solid var(--neon-blue);
+  --effect-glass-border: rgba(255, 255, 255, 0.1);
+  --effect-glass-border-hover: var(--neon-blue);
   --effect-glass-shadow: none;
   --effect-glass-shadow-hover: none;
   
@@ -37,8 +37,8 @@
 [data-theme="light"][data-effect="clean"] {
   --effect-glass-bg: var(--bg-secondary);
   --effect-glass-bg-hover: var(--bg-tertiary);
-  --effect-glass-border: 1px solid rgba(0, 0, 0, 0.1);
-  --effect-glass-border-hover: 1px solid var(--neon-blue);
+  --effect-glass-border: rgba(0, 0, 0, 0.1);
+  --effect-glass-border-hover: var(--neon-blue);
   --effect-glass-shadow: none;
   --effect-glass-shadow-hover: none;
   

@@ -7,8 +7,8 @@
   /* Gradient Background Variables - Effect Prefix */
   --effect-glass-bg: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
   --effect-glass-bg-hover: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
-  --effect-glass-border: 2px solid rgba(255, 255, 255, 0.3);
-  --effect-glass-border-hover: 2px solid rgba(255, 255, 255, 0.5);
+  --effect-glass-border: rgba(255, 255, 255, 0.3);
+  --effect-glass-border-hover: rgba(255, 255, 255, 0.5);
   --effect-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   --effect-glass-shadow-hover: 0 12px 48px rgba(0, 0, 0, 0.4);
   

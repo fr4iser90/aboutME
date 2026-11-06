@@ -53,7 +53,9 @@ body.background-hidden::after {
   display: none !important;
 }
 
-body::after {
+/* Theme-scoped: a bare body::after would apply to every theme (last imported theme wins). */
+:root[data-theme="light-warm"] body::after,
+[data-theme="light-warm"] body::after {
   content: '';
   position: fixed;
   top: 0;
@@ -112,7 +114,8 @@ body::before {
   position: relative;
 }
 
-.galaxy-bg::after {
+:root[data-theme="light-warm"] .galaxy-bg::after,
+[data-theme="light-warm"] .galaxy-bg::after {
   content: '';
   position: absolute;
   top: 0;

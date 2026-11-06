@@ -7,8 +7,8 @@
   /* Sharp Background Variables - Precise */
   --glass-bg: var(--bg-tertiary);
   --glass-bg-hover: var(--bg-quaternary);
-  --glass-border: 1px solid var(--text-muted);
-  --glass-border-hover: 2px solid var(--neon-blue);
+  --glass-border: var(--text-muted);
+  --glass-border-hover: var(--neon-blue);
   --glass-shadow: none;
   --glass-shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.1);
   
@@ -30,8 +30,8 @@
 [data-theme="light-alt"][data-effect="sharp"] {
   --glass-bg: var(--bg-secondary);
   --glass-bg-hover: var(--bg-tertiary);
-  --glass-border: 1px solid rgba(0, 0, 0, 0.1);
-  --glass-border-hover: 2px solid var(--neon-blue);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --glass-border-hover: var(--neon-blue);
   --glass-shadow: none;
   --glass-shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
@@ -49,7 +49,7 @@
 [data-theme="ocean"][data-effect="sharp"],
 :root[data-theme="sunset"][data-effect="sharp"],
 [data-theme="sunset"][data-effect="sharp"] {
-  --glass-border: 1px solid rgba(255, 255, 255, 0.1);
-  --glass-border-hover: 2px solid var(--neon-blue);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border-hover: var(--neon-blue);
 }
 

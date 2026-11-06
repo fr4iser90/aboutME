@@ -342,7 +342,6 @@ body.background-hidden .admin-layout__background {
   width: var(--sidebar-width);
   background: var(--glass-bg);
   backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
   border-right: 1px solid var(--glass-border);
   display: flex;
   flex-direction: column;
@@ -494,7 +493,6 @@ body.background-hidden .admin-layout__background {
   padding: var(--space-lg) var(--space-xl);
   background: var(--glass-bg);
   backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--glass-border);
   position: sticky;
   top: 0;
@@ -1269,7 +1267,6 @@ body.background-hidden .admin-layout__background {
   z-index: var(--z-toast);
   background: var(--glass-bg);
   backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
   border: 2px solid;
   border-radius: 12px;
   padding: var(--space-md) var(--space-lg);
@@ -1768,7 +1765,6 @@ body.background-hidden .admin-layout__background {
 
   .admin-sidebar {
     backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
   }
 
   .admin-layout__main {

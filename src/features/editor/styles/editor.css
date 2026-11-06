@@ -198,7 +198,6 @@
   overflow: hidden;
   background: var(--glass-bg);
   backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   height: 100%;
   transition: width 0.1s ease-out;
 }
@@ -252,7 +251,6 @@
   min-height: calc(var(--space-md) * 3);
   background: var(--glass-bg);
   backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   display: flex;
   gap: var(--space-sm);
   align-items: center;
@@ -433,7 +431,6 @@
   overflow: hidden;
   background: var(--glass-bg);
   backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   height: 100%;
   transition: width 0.1s ease-out;
 }
@@ -485,7 +482,6 @@
   overflow-y: auto;
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border-right: 1px solid var(--glass-border);
   display: flex;
   flex-direction: column;
@@ -624,7 +620,6 @@
   justify-content: space-between;
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--glass-border);
   padding: 0 var(--space-md);
   flex-shrink: 0;
@@ -896,14 +891,12 @@
   overflow: hidden;
   background: var(--glass-bg);
   backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
 }
 
 .inline-preview-sidebar {
   width: 280px;
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border-right: 1px solid var(--glass-border);
   display: flex;
   flex-direction: column;
@@ -995,7 +988,6 @@
   overflow: hidden;
   background: var(--glass-bg);
   backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   height: 100%;
 }
 
@@ -1006,7 +998,6 @@
   border-top: 1px solid var(--glass-border);
   background: var(--glass-bg);
   backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   display: flex;
   gap: var(--space-sm);
   align-items: center;

@@ -70,8 +70,8 @@
 [data-theme="light"][data-design="minimal"] {
   --glass-bg: transparent;
   --glass-bg-hover: var(--bg-tertiary);
-  --glass-border: 1px solid rgba(0, 0, 0, 0.05);
-  --glass-border-hover: 1px solid var(--neon-blue);
+  --glass-border: rgba(0, 0, 0, 0.05);
+  --glass-border-hover: var(--neon-blue);
   --glass-shadow: none;
   --glass-shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.05);
 }

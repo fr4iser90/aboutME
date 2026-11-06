@@ -26,7 +26,6 @@
   .modal,
   .modal-overlay {
     backdrop-filter: blur(4px) !important;
-    -webkit-backdrop-filter: blur(4px) !important;
   }
 }
 
